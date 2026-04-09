@@ -11,6 +11,8 @@ import PropTypes from 'prop-types';
 
 function Row({ translateClass, direction }) {
 
+    const getAssetSrc = (asset) => asset?.src ?? asset;
+
     const items = [
         { text: "scalable", image: img7 },
         { text: "ai-powered", image: img2 },
@@ -52,7 +54,7 @@ function Row({ translateClass, direction }) {
                     <div className='imgdiv w-[5vh] h-[5vh]'>
                         <img 
                             className=''
-                            src={item.image} 
+                            src={getAssetSrc(item.image)} 
                         />
                     </div>
                 </div>

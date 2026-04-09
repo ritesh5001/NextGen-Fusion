@@ -1,4 +1,5 @@
-import './App.css'
+"use client";
+
 import Capsule from './components/Capsule/Index'
 import Craft from './components/Craft/Index'
 import { useEffect, useRef } from 'react';
@@ -8,23 +9,33 @@ import Para from './components/Paragraph/Index'
 import Para2 from './components/Paragraph2/Index'
 import Real from './components/Real/Index'
 import Team from './components/Team/Index'
-import LocomotiveScroll from 'locomotive-scroll';
 import Footer from './components/Footer/Index';
 
 function App() {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      const scroll = new LocomotiveScroll({
-        el: scrollRef.current,
-        smooth: true, 
-      });
+    let scroll;
+    let isCancelled = false;
 
-      return () => {
-        scroll.destroy();
-      };
-    }
+    const initScroll = async () => {
+      if (!scrollRef.current) return;
+
+      const { default: LocomotiveScroll } = await import('locomotive-scroll');
+      if (isCancelled) return;
+
+      scroll = new LocomotiveScroll({
+        el: scrollRef.current,
+        smooth: true,
+      });
+    };
+
+    initScroll();
+
+    return () => {
+      isCancelled = true;
+      scroll?.destroy();
+    };
   }, []);
 
   useEffect(() => {
@@ -36,10 +47,10 @@ function App() {
         start: "top 90%",
         end: "bottom 90%",
         onEnter: function(){
-          document.body.setAttribute("theme", e.dataset.color);
+          document.body.setAttribute("data-theme", e.dataset.color);
         },
         onEnterBack: function() {
-          document.body.setAttribute("theme", e.dataset.color);
+          document.body.setAttribute("data-theme", e.dataset.color);
         }
       })
       triggers.push(trigger)
@@ -54,7 +65,7 @@ function App() {
 
   return (
     
-    <div className='section main w-full '>
+    <div ref={scrollRef} className='section main w-full '>
       <Home  />
       <Craft />
       <Real />

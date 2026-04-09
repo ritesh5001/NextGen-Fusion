@@ -54,7 +54,7 @@ gsap.registerPlugin(ScrollTrigger);
                 className="capsule flex flex-col items-center gap-4 p-6 sm:-rotate-[16deg] sm:translate-y-10
                 rounded-full border-[1px] border-black">
                 <div className="image w-[74vw] h-[74vw] sm:w-[40vh] sm:h-[40vh]  rounded-full overflow-hidden">
-                    <img className="h-full w-full object-cover" src={cap1} />
+                    <img className="h-full w-full object-cover" src={cap1?.src ?? cap1} />
                 </div>
                 <div className="text text-center text-[6vw] sm:text-[3.2vh] font-semibold mt-10 leading-[4.8vh]">
                     <h3>Multi-vendor ecommerce <br/>
@@ -81,7 +81,7 @@ gsap.registerPlugin(ScrollTrigger);
                     </h4>
                 </div>
                 <div className="image w-[74vw] h-[74vw] sm:w-[40vh] sm:h-[40vh]  rounded-full overflow-hidden">
-                    <img className="h-full w-full object-cover" src={cap2} />
+                    <img className="h-full w-full object-cover" src={cap2?.src ?? cap2} />
                 </div>
                 
 

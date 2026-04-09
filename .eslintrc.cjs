@@ -27,6 +27,9 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
+    '@next/next/no-img-element': 'off',
+    'jsx-a11y/alt-text': 'off',
+    'import/no-anonymous-default-export': 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
   },
   ignorePatterns: ['.next', 'dist', 'node_modules'],

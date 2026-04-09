@@ -1,4 +1,3 @@
-import video from '../../assets/video/1ENIoa5sjq.mp4'
 import Row from '../Row'
 import Button from '../Button'
 import {useEffect, useState, useRef} from 'react';
@@ -11,8 +10,6 @@ import { useGSAP } from '@gsap/react';
 import { BiMenu } from "react-icons/bi";
 
 gsap.registerPlugin(ScrollTrigger);
-
-gsap.set(".slidesm", {scale: 5})
 
 function Home() {
 
@@ -44,6 +41,8 @@ function Home() {
 
 
     useGSAP(() => {
+        gsap.set(".slidesm", { scale: 5 });
+
         const tl = gsap.timeline({
             scrollTrigger: {
             trigger: ".home",
@@ -159,7 +158,7 @@ function Home() {
                     autoPlay
                     loop
                     muted
-                    src={video}
+                    src="/video/1ENIoa5sjq.mp4"
                 >
                 </video>
             </div>
