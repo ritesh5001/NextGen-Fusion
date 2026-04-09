@@ -1,7 +1,7 @@
 
 import Card from "../Card";
 import Button from "../Button";
-import {useRef, useEffect, useState} from 'react';
+import {useRef, useEffect} from 'react';
 
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,23 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 function Craft() {
 
-    // const [isMobile, setIsMobile] = useState(false);
     const container = useRef(null);
-    const textRef = useRef();
-
-    // useEffect(() => {
-    //     const handleResize = () => {
-    //       setIsMobile(window.innerWidth <= 768);
-    //     };
-    
-    //     // Attach the event listener
-    //     window.addEventListener("resize", handleResize);
-    
-    //     // Clean up the event listener when the component unmounts
-    //     return () => {
-    //       window.removeEventListener("resize", handleResize);
-    //     };
-    //   }, [isMobile]);
 
     useEffect(() => {
         var clutter = "";
@@ -83,6 +67,7 @@ function Craft() {
    
   return (
     <div 
+        id='services'
         data-color="cyan" 
         className="craft section w-full sm:flex gap-x-40 justify-between 
           items-center px-8 py-8 sm:px-10 relative "
@@ -92,14 +77,13 @@ function Craft() {
                 className="ptag font-[Sansita] text-[2.6vh] sm:text-[2.9vh] 
                 font-medium leading-[4.4vh] sm:leading-[4.2vh] "
             >
-                Significo is a custom health software developer founded on the belief
-                that technology can transform healthcare to put people first. We put
-                humanity back at the center of healthcare by simplifying complexity,
-                accelerating capacity, and improving outcomes.
+                At NextGen Fusion, we don&apos;t just build websites, we build digital systems that help your business grow, convert, and scale. 
+                From startups to growing brands, we deliver website development, e-commerce solutions, custom web applications, AI solutions, 
+                UI/UX design, and SEO performance optimization tailored to your goals.
             </p>
-            <h1 className="texthead font-[SansitaReg] text-[5vh] leading-[6vh] sm:text-[9.8vh] sm:leading-[12vh] mt-10 mb-10">We Craft Human-Centric Health Software</h1>
+            <h1 className="texthead font-[SansitaReg] text-[5vh] leading-[6vh] sm:text-[9.8vh] sm:leading-[12vh] mt-10 mb-10">Our Services</h1>
             {/* button */}
-            <Button  bgColor="bg-none" text="OUR SOLUTIONS" />
+            <Button  bgColor="bg-none" text="GET STARTED" href="#contact" />
         </div>
         <div
             ref={container} 

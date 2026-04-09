@@ -29,8 +29,9 @@ function App() {
 
   useEffect(() => {
     const list = document.querySelectorAll('.section')
+    const triggers = []
     list.forEach(function(e) {
-      ScrollTrigger.create({
+      const trigger = ScrollTrigger.create({
         trigger: e,
         start: "top 90%",
         end: "bottom 90%",
@@ -41,8 +42,13 @@ function App() {
           document.body.setAttribute("theme", e.dataset.color);
         }
       })
+      triggers.push(trigger)
     })
-  })
+
+    return () => {
+      triggers.forEach((trigger) => trigger.kill())
+    }
+  }, [])
       
 
 

@@ -12,21 +12,21 @@ import PropTypes from 'prop-types';
 function Row({ translateClass, direction }) {
 
     const items = [
-        { text: "useful", image: img7 },
-        { text: "intuitive", image: img2 },     
-        { text: "empathetic", image: img3 },     
-        { text: "useful", image: img4 },     
-        { text: "empathetic", image: img5 },
-        { text: "intuitive", image: img2 },
-        { text: "useful", image: img4 },     
-        { text: "empathetic", image: img5 },
-        { text: "intuitive", image: img2 },     
-        { text: "empathetic", image: img6 },
-        { text: "useful", image: img1 },      
-        { text: "empathetic", image: img6 },
-        { text: "empathetic", image: img5 },
-        { text: "intuitive", image: img2 },
-        { text: "useful", image: img4 },
+        { text: "scalable", image: img7 },
+        { text: "ai-powered", image: img2 },
+        { text: "modern", image: img3 },
+        { text: "fast", image: img4 },
+        { text: "secure", image: img5 },
+        { text: "conversion-focused", image: img2 },
+        { text: "scalable", image: img4 },
+        { text: "ai-powered", image: img5 },
+        { text: "modern", image: img2 },
+        { text: "growth-ready", image: img6 },
+        { text: "reliable", image: img1 },
+        { text: "cloud-ready", image: img6 },
+        { text: "secure", image: img5 },
+        { text: "performance", image: img2 },
+        { text: "scalable", image: img4 },
                       
     ]
 

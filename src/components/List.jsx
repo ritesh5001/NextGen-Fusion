@@ -14,15 +14,15 @@ import { gsap } from "gsap";
 import { Power4} from 'gsap/gsap-core';
 
 const data = [
-    {key: 1, title: "Dr. Rick McCartney", role: "CEO", img: img1},
-    {key: 2, title: "Chris Koha", role: "COO", img: img2},
-    {key: 3, title: "Caroline Nieto", role: "Chief Product Officer", img: img3},
-    {key: 4, title: "Victor Albertos", role: "CTO", img: img4},
-    {key: 5, title: "Dr. Jana Hapfelmeier", role: "Chief Innovation Officer", img: img5},
-    {key: 6, title: "Michael Robin", role: "VP of Marketing", img: img6},
-    {key: 7, title: "Adrian Rubio", role: "VP of Engineering", img: img7},
-    {key: 8, title: "Cy Serrano", role: "VP of Product", img: img8},
-    {key: 9, title: "Lenya McGrath", role: "VP of Partnerships", img: img9},
+  {key: 1, title: "Fast Delivery with High Quality", role: "On-time execution with clean architecture", img: img1},
+  {key: 2, title: "AI-Powered Solutions", role: "Chatbots, voice AI, and smart automation", img: img2},
+  {key: 3, title: "Business-Focused Approach", role: "Built for conversions and growth", img: img3},
+  {key: 4, title: "Affordable Pricing", role: "Flexible plans for startups and scaling teams", img: img4},
+  {key: 5, title: "Dedicated Support", role: "Reliable communication and long-term partnership", img: img5},
+  {key: 6, title: "Growth-Oriented Development", role: "Scalable products designed for expansion", img: img6},
+  {key: 7, title: "UI/UX Excellence", role: "Modern interfaces that improve engagement", img: img7},
+  {key: 8, title: "SEO & Performance First", role: "Technical SEO and speed optimization built-in", img: img8},
+  {key: 9, title: "Reliable Full-Stack Team", role: "React, Node.js, MongoDB, and cloud-ready delivery", img: img9},
 ]
 
 
@@ -65,7 +65,7 @@ function List() {
           duration: .1})
       })
     })
-  })
+  }, [])
 
   return (
     <div className="list-container">

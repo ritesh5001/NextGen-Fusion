@@ -5,44 +5,47 @@ import Button from  '../Button'
 
 function Footer() {
   return (
-    <div className="section w-full sm:mt-30 ">
+    <div id='contact' className="section w-full sm:mt-30 ">
       <div className="topfoot  bg-[#f5f19c] pt-16 pb-16 sm:flex items-center justify-between">
         <div className="left sm:w-1/2 px-8 sm:px-8  ">
           <div className="first order-1 font-[SansitaReg]  text-[6vh] leading-[7vh] sm:text-[4.2rem] w-1/3 sm:leading-[5rem] sm:mb-10 ">
-            <h1>Discover Significo.</h1>
+            <h1>Ready to Build Your Next Big Project?</h1>
           </div>
           {/* <Bu/> */}
-          <div className='middle order-3 sm:order-2 w-[20vh] text-center mt-6 px-4 py-4 sm:w-fit sm:px-4 sm:py-[1.6vh] bg-[--black] text-[#f5f19c] whitespace-nowrap'>
-            <div 
-              className= {`${styles.masker} flex items-center 
-              gap-2 overflow-hidden 
-              relative cursor-pointer`}
-            >
-              <span 
-                className={`${styles.spanMask} font-[Sansita] 
-                text-[2.1vh] capitalize tracking-normal 
-                font-semibold `}
+          <div className='middle order-3 sm:order-2 w-[28vh] text-center mt-6 px-4 py-4 sm:w-fit sm:px-4 sm:py-[1.6vh] bg-[--black] text-[#f5f19c] whitespace-nowrap'>
+            <a href='mailto:contact@nextgenfusion.in' className='block'>
+              <div 
+                className= {`${styles.masker} flex items-center 
+                gap-2 overflow-hidden 
+                relative cursor-pointer`}
               >
-                LET&apos;S GO
-              </span>
-              <LuArrowUpRight 
-                style={{
-                  fontSize: "24px", 
-                  color: "#f5f19c", 
-                }} 
-                className={`${styles.iconMask}`} 
-              /> 
-            </div>
+                <span 
+                  className={`${styles.spanMask} font-[Sansita] 
+                  text-[2.1vh] capitalize tracking-normal 
+                  font-semibold `}
+                >
+                  START YOUR PROJECT
+                </span>
+                <LuArrowUpRight 
+                  style={{
+                    fontSize: "24px", 
+                    color: "#f5f19c", 
+                  }} 
+                  className={`${styles.iconMask}`} 
+                /> 
+              </div>
+            </a>
           </div>
         </div>
 
         <div className="right order-2 sm:order-3  flex sm:w-1/2 items-center justify-between sm:px-10">
           <div className="rght1 sm:w-2/3 flex flex-col items-end px-8 mt-6">
             <h3 className="text-[2.4vh] sm:text-[1.4rem] font-[Sansita] font-medium">
-              Find out how Significo’s people-centered
-              designs can make health technology more
-              empowering.
+              Let&apos;s turn your idea into a powerful
+              digital product with modern web, AI,
+              and growth-focused engineering.
             </h3>
+            <p className='text-[2vh] mt-4 font-[Sansita] font-semibold'>Limited consultation slots available.</p>
           </div>
           <div className="hidden sm:inline-block rght2 relative w-[150px] h-[150px]  overflow: hidden;">
             <div className={`${styles.loopFoot} `}></div>
@@ -63,7 +66,7 @@ function Footer() {
       <div className="downfoot w-full h-fit bg-[var(--black)] px-8 py-10 sm:py-32">
         <div className='flex sm:flex-row sm:items-start justify-between space-y-4 sm:space-y-0 sm:space-x-4'>
           <div className=' hidden sm:inline-block '>
-            {["Home", "Solutions", "About", "Team", "Contact"].map((item, index) => {
+            {["Home", "Services", "Work", "Why Us", "Contact"].map((item, index) => {
               return (
                 <div key={index} className='pb-4'>
                   <h3 className='font-[SansitaReg] text-[2.5vh] text-white font-semibold'>
@@ -73,19 +76,18 @@ function Footer() {
               ) 
             })}
           </div>
-          <div className=''>
-            <h1 className='text-white pb-10 font-[SansitaReg] text-[2.8vh] font-semibold'>Join our mailing list for the latest updates.</h1>
-            <div className='flex items-center gap-6'>
-              <input 
-                type="text" 
-                placeholder="Enter your email address" 
-                className="bg-[var(--light)] w-full sm:w-[350px] h-[5.9vh] px-4 text-[2vh]"
-              />
-              <Button text="SUBSCRIBE" bgColor="bg-[#f5f19c]" />
+          <div id='contact-details' className=''>
+            <h1 className='text-white pb-4 font-[SansitaReg] text-[2.8vh] font-semibold'>Connect with NextGen Fusion</h1>
+            <div className='flex flex-col gap-2 mb-8'>
+              <a href='mailto:contact@nextgenfusion.in' className='text-white text-[2.2vh] font-[Sansita] hover:underline'>Email: contact@nextgenfusion.in</a>
+              <a href='tel:+917348228167' className='text-white text-[2.2vh] font-[Sansita] hover:underline'>Phone: +91 73482 28167</a>
+              <a href='https://wa.me/917348228167' target='_blank' rel='noreferrer' className='text-white text-[2.2vh] font-[Sansita] hover:underline'>WhatsApp: Chat With Us</a>
+              <a href='https://www.linkedin.com/company/nextgen-fusion' target='_blank' rel='noreferrer' className='text-white text-[2.2vh] font-[Sansita] hover:underline'>LinkedIn: NextGen Fusion</a>
             </div>
+            <Button text="BOOK FREE CONSULTATION" bgColor="bg-[#f5f19c]" href='mailto:contact@nextgenfusion.in' />
           </div>
           <div className=' hidden sm:inline-block '>
-            {["Insights", "Newsroom", "Resources", "Careers", "Contact"].map((item, index) => {
+            {["AI Solutions", "Web Apps", "UI/UX", "SEO", "Support"].map((item, index) => {
               return (
                 <div key={index} className='pb-4'>
                   <h3 className='font-[SansitaReg] text-[2.5vh] text-white font-semibold'>
