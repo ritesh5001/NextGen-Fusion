@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import HomePageClient from '../src/HomePageClient';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in';
@@ -43,6 +44,29 @@ const structuredData = {
       },
     },
   ],
+};
+
+export const metadata: Metadata = {
+  title: 'Website Development, AI Solutions & Digital Services',
+  description:
+    'NextGen Fusion builds websites, custom web apps, e-commerce platforms, and AI automations designed for growth.',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'NextGen Fusion | Website Development, AI Solutions & Digital Services',
+    description:
+      'Website development, e-commerce builds, custom web apps, and AI automation services for modern businesses.',
+    url: '/',
+    images: [
+      {
+        url: '/og-image.svg',
+        width: 1200,
+        height: 630,
+        alt: 'NextGen Fusion',
+      },
+    ],
+  },
 };
 
 export default function Page() {

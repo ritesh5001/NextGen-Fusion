@@ -1,9 +1,22 @@
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth';
 
 import LoginForm from './LoginForm';
+
+export const metadata: Metadata = {
+  title: 'Admin Login',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+  alternates: {
+    canonical: '/login',
+  },
+};
 
 export default function LoginPage() {
   const token = cookies().get(ADMIN_SESSION_COOKIE)?.value;

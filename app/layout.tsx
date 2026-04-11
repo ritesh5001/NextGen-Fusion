@@ -1,3 +1,4 @@
+import type { Metadata, Viewport } from 'next';
 import '../src/index.css';
 import '../src/site.css';
 
@@ -7,7 +8,7 @@ const siteTitle = 'NextGen Fusion | Website Development, AI Solutions & Digital 
 const siteDescription =
   'NextGen Fusion is a leading web development and AI solutions company offering website development, e-commerce solutions, custom web apps, and AI automation services to grow your business.';
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: siteTitle,
@@ -63,6 +64,11 @@ export const metadata = {
   icons: {
     icon: '/og-image.svg',
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }) {

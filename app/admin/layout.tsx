@@ -1,10 +1,21 @@
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import LogoutButton from './LogoutButton';
 import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth';
 
-export default function AdminLayout({ children }) {
+export const metadata: Metadata = {
+  title: 'Admin Dashboard',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+};
+
+export default function AdminLayout({ children }: { children: ReactNode }) {
   const token = cookies().get(ADMIN_SESSION_COOKIE)?.value;
   const session = readAdminSession(token);
 

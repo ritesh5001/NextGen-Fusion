@@ -1,6 +1,8 @@
+import type { MetadataRoute } from 'next';
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in';
 
-export default function sitemap() {
+export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
   return [
