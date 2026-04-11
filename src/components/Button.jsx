@@ -4,7 +4,7 @@ import styles from './Button.module.css';
 
 import PropTypes from 'prop-types';
 
-function Button({bgColor, text, href}) {
+function Button({ bgColor, text, href, onClick, type = 'button', disabled = false, className = '' }) {
   const buttonContent = (
     <div
       className= {`${styles.masker} flex items-center gap-2 overflow-hidden 
@@ -27,17 +27,19 @@ function Button({bgColor, text, href}) {
       </div>
   );
 
+  const outerClassName = `${bgColor} section w-fit sm:w-fit px-4 
+      py-[1.6vh] border-[1px] border-[--black] ${disabled ? 'opacity-60' : ''} ${className}`;
+
   return (
-    <div 
-      className={`${bgColor} section w-fit sm:w-fit px-4 
-      py-[1.6vh] border-[1px] border-[--black]`}
-    >
+    <div className={outerClassName}>
       {href ? (
         <a href={href} className='block'>
           {buttonContent}
         </a>
       ) : (
-        buttonContent
+        <button type={type} onClick={onClick} disabled={disabled} className="block w-full text-left">
+          {buttonContent}
+        </button>
       )}
     </div>
   )
@@ -47,6 +49,10 @@ Button.propTypes = {
   bgColor: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   href: PropTypes.string,
+  onClick: PropTypes.func,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  disabled: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 export default Button
