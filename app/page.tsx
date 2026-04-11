@@ -1,4 +1,4 @@
-import App from '../src/App';
+import HomePageClient from '../src/HomePageClient';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in';
 
@@ -10,7 +10,7 @@ const structuredData = {
       '@id': `${siteUrl}/#organization`,
       name: 'NextGen Fusion',
       url: siteUrl,
-      logo: `${siteUrl}/vite.svg`,
+      logo: `${siteUrl}/og-image.svg`,
       email: 'contact@nextgenfusion.in',
       telephone: '+91 73482 28167',
       sameAs: ['https://www.linkedin.com/company/nextgen-fusion'],
@@ -52,7 +52,7 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <App />
+      <HomePageClient />
     </>
   );
 }

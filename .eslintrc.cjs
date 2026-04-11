@@ -25,7 +25,7 @@ module.exports = {
       version: 'detect',
     },
   },
-  plugins: ['react', 'react-hooks', 'react-refresh'],
+  plugins: ['react', 'react-hooks'],
   rules: {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'react/react-in-jsx-scope': 'off',

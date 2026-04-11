@@ -1,5 +1,5 @@
 import '../src/index.css';
-import '../src/App.css';
+import '../src/site.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in';
 const siteName = 'NextGen Fusion';
@@ -61,7 +61,7 @@ export const metadata = {
     images: ['/og-image.svg'],
   },
   icons: {
-    icon: '/vite.svg',
+    icon: '/og-image.svg',
   },
 };
 
