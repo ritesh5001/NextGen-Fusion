@@ -24,6 +24,8 @@ Copy [.env.example](.env.example) to `.env.local` and set these values:
 - `ADMIN_NAME` optional
 - `NEXT_PUBLIC_SITE_URL` optional
 
+If your MongoDB password contains special characters such as `@`, URL-encode them in `MONGODB_URI`.
+
 ### Local setup
 
 1. Install dependencies with `npm install`.
