@@ -1,14 +1,24 @@
 import bcrypt from 'bcryptjs';
+import { WithId } from 'mongodb';
 
-import { getMongoDb } from './mongodb.js';
+import { getMongoDb } from './mongodb';
 
 const ADMIN_COLLECTION = 'admins';
 
-function normalizeEmail(email) {
+export type AdminDocument = {
+  name: string;
+  email: string;
+  passwordHash: string;
+  role: 'admin';
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
 
-export async function ensureAdminSeed() {
+export async function ensureAdminSeed(): Promise<WithId<AdminDocument>> {
   const email = process.env.ADMIN_EMAIL;
   const password = process.env.ADMIN_PASSWORD;
   const name = process.env.ADMIN_NAME?.trim() || 'Admin';
@@ -19,7 +29,7 @@ export async function ensureAdminSeed() {
 
   const normalizedEmail = normalizeEmail(email);
   const db = await getMongoDb();
-  const admins = db.collection(ADMIN_COLLECTION);
+  const admins = db.collection<AdminDocument>(ADMIN_COLLECTION);
 
   await admins.createIndex({ email: 1 }, { unique: true });
 
@@ -32,7 +42,7 @@ export async function ensureAdminSeed() {
   const passwordHash = await bcrypt.hash(password, 12);
   const now = new Date();
 
-  const adminDocument = {
+  const adminDocument: AdminDocument = {
     name,
     email: normalizedEmail,
     passwordHash,
@@ -49,9 +59,9 @@ export async function ensureAdminSeed() {
   };
 }
 
-export async function findAdminByEmail(email) {
+export async function findAdminByEmail(email: string): Promise<WithId<AdminDocument> | null> {
   const db = await getMongoDb();
-  const admins = db.collection(ADMIN_COLLECTION);
+  const admins = db.collection<AdminDocument>(ADMIN_COLLECTION);
 
   await admins.createIndex({ email: 1 }, { unique: true });
 

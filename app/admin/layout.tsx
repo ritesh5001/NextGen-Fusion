@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import LogoutButton from './LogoutButton.jsx';
-import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth.js';
+import LogoutButton from './LogoutButton';
+import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth';
 
 export default function AdminLayout({ children }) {
   const token = cookies().get(ADMIN_SESSION_COOKIE)?.value;

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../../../lib/auth.js';
+import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../../../lib/auth';
 
 export const runtime = 'nodejs';
 

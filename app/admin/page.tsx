@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 
-import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth.js';
+import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth';
 
 const adminHighlights = [
   {

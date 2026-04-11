@@ -1,10 +1,17 @@
 import { LuArrowUpRight } from "react-icons/lu";
 import styles from './Button.module.css';
 
+type ButtonProps = {
+  bgColor: string;
+  text: string;
+  href?: string;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  className?: string;
+};
 
-import PropTypes from 'prop-types';
-
-function Button({ bgColor, text, href, onClick, type = 'button', disabled = false, className = '' }) {
+function Button({ bgColor, text, href, onClick, type = 'button', disabled = false, className = '' }: ButtonProps) {
   const buttonContent = (
     <div
       className= {`${styles.masker} flex items-center gap-2 overflow-hidden 
@@ -44,15 +51,5 @@ function Button({ bgColor, text, href, onClick, type = 'button', disabled = fals
     </div>
   )
 }
-
-Button.propTypes = {
-  bgColor: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  href: PropTypes.string,
-  onClick: PropTypes.func,
-  type: PropTypes.oneOf(['button', 'submit', 'reset']),
-  disabled: PropTypes.bool,
-  className: PropTypes.string,
-};
 
 export default Button

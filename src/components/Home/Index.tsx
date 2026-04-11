@@ -4,7 +4,6 @@ import {useEffect, useState, useRef} from 'react';
 import {motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { gsap } from "gsap";
 import styles from './Style.module.css';
-import { Power2, Power4 } from 'gsap/gsap-core';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from '@gsap/react';
 import { BiMenu } from "react-icons/bi";
@@ -13,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 function Home() {
 
-    const container = useRef(null);
+    const container = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         let clutter = "";
@@ -53,25 +52,25 @@ function Home() {
          });
          tl.to(".vdodiv", {
             clipPath: 'circle(0% at 50% 50%)',
-            ease: Power4,
+                ease: 'power4.out',
           }, "start")
           tl.to(".slidesm", {
             scale: 1,
-            ease: Power2,
+                ease: 'power2.out',
          }, 'start');
          tl.to(".lft", {
             xPercent: -10,
             stagger: .03,
-            ease: Power4,
+                ease: 'power4.out',
             duration: 1,
          }, 'start');
          tl.to(".rgt", {
             xPercent: 10,
             stagger: .03,
-            ease: Power4,
+                ease: 'power4.out',
             duration: 1,
          }, 'start');
-    }, container )
+     }, { scope: container })
 
     const {scrollY} = useScroll();
     const [hidden, setHidden] = useState(false);

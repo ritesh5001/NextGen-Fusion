@@ -1,12 +1,16 @@
-import { MongoClient } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 
-const globalForMongo = globalThis;
+type GlobalMongoState = typeof globalThis & {
+  __nextGenFusionMongoClientPromise?: Promise<MongoClient> | null;
+};
+
+const globalForMongo = globalThis as GlobalMongoState;
 
 if (!globalForMongo.__nextGenFusionMongoClientPromise) {
   globalForMongo.__nextGenFusionMongoClientPromise = null;
 }
 
-function normalizeMongoUri(uri) {
+function normalizeMongoUri(uri: string): string {
   try {
     const parsedUrl = new URL(uri);
     const username = parsedUrl.username ? decodeURIComponent(parsedUrl.username) : '';
@@ -35,7 +39,7 @@ function normalizeMongoUri(uri) {
   }
 }
 
-export async function getMongoDb() {
+export async function getMongoDb(): Promise<Db> {
   const rawUri = process.env.MONGODB_URI;
 
   if (!rawUri) {

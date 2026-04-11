@@ -3,6 +3,19 @@ import jwt from 'jsonwebtoken';
 export const ADMIN_SESSION_COOKIE = 'nextgenfusion_admin_session';
 const TOKEN_TTL_SECONDS = 60 * 60 * 24 * 7;
 
+export type AdminSession = {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin';
+};
+
+type AdminLike = {
+  _id: { toString: () => string };
+  email: string;
+  name: string;
+};
+
 function getJwtSecret() {
   const secret = process.env.JWT_SECRET;
 
@@ -13,7 +26,7 @@ function getJwtSecret() {
   return secret;
 }
 
-export function createAdminSessionPayload(admin) {
+export function createAdminSessionPayload(admin: AdminLike): AdminSession {
   return {
     id: admin._id.toString(),
     email: admin.email,
@@ -22,18 +35,28 @@ export function createAdminSessionPayload(admin) {
   };
 }
 
-export function signAdminSession(payload) {
+export function signAdminSession(payload: AdminSession): string {
   return jwt.sign(payload, getJwtSecret(), {
     algorithm: 'HS256',
     expiresIn: TOKEN_TTL_SECONDS,
   });
 }
 
-export function verifyAdminSession(token) {
-  return jwt.verify(token, getJwtSecret());
+export function verifyAdminSession(token: string): AdminSession | null {
+  const decoded = jwt.verify(token, getJwtSecret());
+
+  if (!decoded || typeof decoded === 'string') {
+    return null;
+  }
+
+  if (!decoded.email || !decoded.id || !decoded.name || !decoded.role) {
+    return null;
+  }
+
+  return decoded as AdminSession;
 }
 
-export function readAdminSession(token) {
+export function readAdminSession(token?: string): AdminSession | null {
   if (!token) {
     return null;
   }
@@ -54,7 +77,7 @@ export function readAdminSession(token) {
 export function getAuthCookieOptions() {
   return {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'lax' as const,
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: TOKEN_TTL_SECONDS,
@@ -69,7 +92,7 @@ export function getClearedAuthCookieOptions() {
   };
 }
 
-export function toPublicAdmin(admin) {
+export function toPublicAdmin(admin: AdminLike) {
   return {
     id: admin._id.toString(),
     name: admin.name,

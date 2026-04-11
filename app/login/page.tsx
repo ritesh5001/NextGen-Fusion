@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth.js';
+import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth';
 
-import LoginForm from './LoginForm.jsx';
+import LoginForm from './LoginForm';
 
 export default function LoginPage() {
   const token = cookies().get(ADMIN_SESSION_COOKIE)?.value;

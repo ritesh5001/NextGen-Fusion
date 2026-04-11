@@ -5,7 +5,6 @@ import {useRef, useEffect} from 'react';
 
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Power4, } from 'gsap/gsap-core';
 import { useGSAP } from '@gsap/react';
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,8 +13,9 @@ function Craft() {
     const container = useRef(null);
 
     useEffect(() => {
-        var clutter = "";
+        let clutter = "";
         const para = document.querySelector(".texthead")
+        if (!para) return;
         const characters = para.textContent.split("")
         characters.forEach(function(e) {
             if(e === " ") clutter += `<span>&nbsp;</span>`
@@ -42,7 +42,7 @@ function Craft() {
     },[]);
 
     useGSAP(() => {
-        let mm = gsap.matchMedia();
+        const mm = gsap.matchMedia();
         mm.add("(min-width: 768px)", () => {
             const tl = gsap.timeline({
                 scrollTrigger: {
@@ -58,11 +58,11 @@ function Craft() {
                 y: 0,
                 scale: 1.1,
                 duration: .5,
-                ease: Power4,
+                ease: 'power4.out',
                 transformOrigin: "bottom 50% -50",
             });
         })                           
-    }, container );
+    }, { scope: container });
 
    
   return (

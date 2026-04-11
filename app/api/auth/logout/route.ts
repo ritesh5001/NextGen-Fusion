@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import {
   ADMIN_SESSION_COOKIE,
   getClearedAuthCookieOptions,
-} from '../../../../lib/auth.js';
+} from '../../../../lib/auth';
 
 export const runtime = 'nodejs';
 

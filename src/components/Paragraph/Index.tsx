@@ -7,8 +7,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 function Para() {
     useEffect(() => {
-        var clutter = "";
+        let clutter = "";
         const para = document.querySelector(".textpara")
+        if (!para) return;
         const characters = para.textContent.split("")
         characters.forEach(function(e) {
             
@@ -40,7 +41,7 @@ function Para() {
             <h3 className='textpara sm:w-[50%] text-blue-600 font-[Sansita] tracking-wide text-[2.4vh] sm:text-[3.5vh] font-medium text-center leading-[5vh] mb-10'>Technologies We Use: Frontend with React.js, Tailwind CSS, and JavaScript. Backend with Node.js, Express.js, and MongoDB. AI stack with Google Gemini, LangChain, and Pinecone. Tooling includes Docker, CI/CD, APIs, and cloud delivery workflows.</h3>
             <div className="pers w-[50%] flex flex-col items-center justify-center gap-2 ">
                 <div className="image w-24 h-24 overflow-hidden rounded-full ">
-                    <img src={img1?.src ?? img1} />
+                    <img src={img1.src} />
                 </div>
                 <h1 className=' text-[2.8vh] sm:text-[3.8vh] font-medium'>Testimonials Coming Soon</h1>
                 <h3 className='text-zinc-500 text-[2.4vh] whitespace-nowrap'>Real client stories will be published here.</h3>

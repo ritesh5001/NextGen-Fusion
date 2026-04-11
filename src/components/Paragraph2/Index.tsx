@@ -9,8 +9,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 function Para2() {
     useEffect(() => {
-        var clutter = "";
+        let clutter = "";
         const para = document.querySelector(".textpara2")
+        if (!para) return;
         const characters = para.textContent.split("")
         characters.forEach(function(e) {
            
@@ -39,7 +40,7 @@ function Para2() {
             <h3 className='textpara2 sm:w-[40%] text-purple-600 font-[Sansita] text-[2.4vh] sm:text-[3.5vh] font-medium text-center tracking-wide leading-[5vh] mb-10'>Our Process: Requirement Analysis, Planning & Strategy, Design & Prototyping, Development, Testing & Launch, and Support & Scaling. Every engagement is built to deliver measurable business impact and long-term growth.</h3>
             <div className="pers w-[40%] flex flex-col items-center justify-center gap-2">
                 <div className="image w-24 h-24 overflow-hidden rounded-full ">
-                    <img src={img1?.src ?? img1} />
+                    <img src={img1.src} />
                 </div>
                 <h1 className='text-[2.8vh] sm:text-[3.8vh] font-medium'>Case Studies Coming Soon</h1>
                 <h3 className='text-zinc-500 text-[2.4vh] whitespace-nowrap'>Detailed success stories will be added soon.</h3>

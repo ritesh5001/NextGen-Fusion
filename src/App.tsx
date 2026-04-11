@@ -12,7 +12,7 @@ import Team from './components/Team/Index'
 import Footer from './components/Footer/Index';
 
 function App() {
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let scroll;
@@ -39,7 +39,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const list = document.querySelectorAll('.section')
+    const list = document.querySelectorAll<HTMLElement>('.section')
     const triggers = []
     list.forEach(function(e) {
       const trigger = ScrollTrigger.create({

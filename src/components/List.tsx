@@ -11,7 +11,6 @@ import img9 from '../assets/images/team9.png';
 
 import {useEffect} from 'react';
 import { gsap } from "gsap";
-import { Power4} from 'gsap/gsap-core';
 
 const data = [
   {key: 1, title: "Fast Delivery with High Quality", role: "On-time execution with clean architecture", img: img1},
@@ -28,42 +27,42 @@ const data = [
 
 function List() {
 
-  const getAssetSrc = (asset) => asset?.src ?? asset;
+  const getAssetSrc = (asset: { src: string }) => asset.src;
 
   
   useEffect(() => {
-    var rotate = 0;
-    var diffrot = 0;
-    const list = document.querySelectorAll('.listelem')
+    let rotate = 0;
+    let diffrot = 0;
+    const list = document.querySelectorAll<HTMLElement>('.listelem')
 
     list.forEach((el) => {  
       el.addEventListener('mousemove', function(dets) {
-        
-        var diff = dets.clientY - el.getBoundingClientRect()
-        diffrot = dets.clientX - rotate;
-        rotate = dets.clientX;
+        const event = dets as MouseEvent;
+        const diff = event.clientY - el.getBoundingClientRect().top;
+        diffrot = event.clientX - rotate;
+        rotate = event.clientX;
         gsap.to(this.querySelector(".picture"), {
           opacity: 1,
-          ease: Power4,
+          ease: 'power4.out',
           top: diff,
-          left: dets.clientX,
+          left: event.clientX,
           rotate: gsap.utils.clamp(-20, 20, diffrot * 0.2),
         })
       })
       el.addEventListener('mouseleave', function() {
-        gsap.to(this.querySelector(".picture"), {opacity: 0, ease: Power4, duration: .5})
+        gsap.to(this.querySelector(".picture"), {opacity: 0, ease: 'power4.out', duration: .5})
       })
       el.addEventListener('mousemove', function() {
         gsap.to(this.querySelector(".bluelayer"), {
           height: '100%', 
-          ease: Power4,
+          ease: 'power4.out',
           duration: .1
         })
       })
       el.addEventListener('mouseleave', function() {
         gsap.to(this.querySelector(".bluelayer"), {
           height: '0%',  
-          ease: Power4, 
+          ease: 'power4.out', 
           duration: .1})
       })
     })

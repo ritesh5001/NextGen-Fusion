@@ -5,7 +5,6 @@ import cap2 from '../../assets/images/cap2.jpg'
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from '@gsap/react';
-import { Power4} from 'gsap/gsap-core';
 gsap.registerPlugin(ScrollTrigger);
 
  function Capsule() {
@@ -23,13 +22,13 @@ gsap.registerPlugin(ScrollTrigger);
         tl.to(".capsule:nth-child(2)", {
             y: 0,
             marginTop:32,
-            ease: Power4
+            ease: 'power4.out'
         })
         tl.to(".capsule:nth-child(1)", {
             marginTop: 32,
-            ease: Power4
+            ease: 'power4.out'
         })
-    }, container);
+    }, { scope: container });
 
 
   return (
@@ -54,7 +53,7 @@ gsap.registerPlugin(ScrollTrigger);
                 className="capsule flex flex-col items-center gap-4 p-6 sm:-rotate-[16deg] sm:translate-y-10
                 rounded-full border-[1px] border-black">
                 <div className="image w-[74vw] h-[74vw] sm:w-[40vh] sm:h-[40vh]  rounded-full overflow-hidden">
-                    <img className="h-full w-full object-cover" src={cap1?.src ?? cap1} />
+                    <img className="h-full w-full object-cover" src={cap1.src} />
                 </div>
                 <div className="text text-center text-[6vw] sm:text-[3.2vh] font-semibold mt-10 leading-[4.8vh]">
                     <h3>Multi-vendor ecommerce <br/>
@@ -81,7 +80,7 @@ gsap.registerPlugin(ScrollTrigger);
                     </h4>
                 </div>
                 <div className="image w-[74vw] h-[74vw] sm:w-[40vh] sm:h-[40vh]  rounded-full overflow-hidden">
-                    <img className="h-full w-full object-cover" src={cap2?.src ?? cap2} />
+                    <img className="h-full w-full object-cover" src={cap2.src} />
                 </div>
                 
 

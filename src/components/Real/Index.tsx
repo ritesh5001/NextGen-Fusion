@@ -13,7 +13,6 @@ import img8 from '../../assets/images/real8.jpg'
 import img9 from '../../assets/images/real9.jpg'
 import { useRef} from 'react';
 import { gsap } from "gsap";
-import { Power2,} from 'gsap/gsap-core';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from '@gsap/react';
 
@@ -21,7 +20,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 function Real() {
 
-    const container = useRef(null);
+    const container = useRef<HTMLDivElement | null>(null);
     
     useGSAP(() => {
         const tl = gsap.timeline({
@@ -34,12 +33,12 @@ function Real() {
          });
          tl.to(".slide", {
             xPercent: -300,
-            ease: Power2
+                ease: 'power2.out'
          })
          tl.to(".image7", {
             opacity: 0,
          })              
-    }, container );
+     }, { scope: container });
 
 
   return (
@@ -79,7 +78,7 @@ function Real() {
                     right-0 "
                 >
                     <img 
-                        src={img1?.src ?? img1}
+                        src={img1.src}
                         className="w-full h-full object-contain rounded-full"
                     />
 
@@ -95,7 +94,7 @@ function Real() {
                     top-10 -translate-y-1/2 right-1/6"
                 >
                     <img 
-                        src={img2?.src ?? img2}
+                        src={img2.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>
@@ -119,7 +118,7 @@ function Real() {
                     sm:top-2/3 sm:left-1/4 -translate-x-1/2"
                 >
                     <img 
-                        src={img4?.src ?? img4}
+                        src={img4.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>
@@ -129,7 +128,7 @@ function Real() {
                     translate-y-[20vh]"
                 >
                     <img 
-                        src={img3?.src ?? img3}
+                        src={img3.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>
@@ -139,7 +138,7 @@ function Real() {
                     sm:right-0 "
                 >
                     <img 
-                        src={img5?.src ?? img5}
+                        src={img5.src}
                         className="w-full h-full object-contain rounded-full"
                     />
 
@@ -157,7 +156,7 @@ function Real() {
                     sm:-translate-y-1/2 sm:right-1/6"
                 >
                     <img 
-                        src={icon2?.src ?? icon2}
+                        src={icon2.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>
@@ -182,7 +181,7 @@ function Real() {
                     translate-y-1/3 -translate-x-1/5"
                 >
                     <img 
-                        src={icon1?.src ?? icon1}
+                        src={icon1.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>
@@ -191,7 +190,7 @@ function Real() {
                     right-0 "
                 >
                     <img 
-                        src={icon3?.src ?? icon3}
+                        src={icon3.src}
                         className="w-full h-full object-contain rounded-full"
                     />
 
@@ -208,7 +207,7 @@ function Real() {
                     -translate-y-1/2 right-2/3"
                 >
                     <img 
-                        src={img6?.src ?? img6}
+                        src={img6.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>
@@ -225,7 +224,7 @@ function Real() {
                     translate-y-1/2 -translate-x-1/2"
                 >
                     <img 
-                        src={img7?.src ?? img7}
+                        src={img7.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>
@@ -234,7 +233,7 @@ function Real() {
                     sm:translate-x-2/3  sm:right-0 "
                 >
                     <img 
-                        src={img9?.src ?? img9}
+                        src={img9.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>
@@ -243,7 +242,7 @@ function Real() {
                     -translate-x-1/3  right-1/4 "
                 >
                     <img 
-                        src={img8?.src ?? img8}
+                        src={img8.src}
                         className="w-full h-full object-contain rounded-full"
                     />
                 </div>

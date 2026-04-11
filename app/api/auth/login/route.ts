@@ -1,14 +1,14 @@
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 
-import { ensureAdminSeed, findAdminByEmail } from '../../../../lib/admin.js';
+import { ensureAdminSeed, findAdminByEmail } from '../../../../lib/admin';
 import {
   ADMIN_SESSION_COOKIE,
   createAdminSessionPayload,
   getAuthCookieOptions,
   signAdminSession,
   toPublicAdmin,
-} from '../../../../lib/auth.js';
+} from '../../../../lib/auth';
 
 export const runtime = 'nodejs';
 

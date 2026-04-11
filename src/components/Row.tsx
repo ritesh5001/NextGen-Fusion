@@ -6,12 +6,14 @@ import img5 from '../assets/images/img5.png';
 import img6 from '../assets/images/img6.png';
 import img7 from '../assets/images/img7.png';
 
+type RowProps = {
+    translateClass: string;
+    direction: string;
+};
 
-import PropTypes from 'prop-types';
+function Row({ translateClass, direction }: RowProps) {
 
-function Row({ translateClass, direction }) {
-
-    const getAssetSrc = (asset) => asset?.src ?? asset;
+        const getAssetSrc = (asset: { src: string }) => asset.src;
 
     const items = [
         { text: "scalable", image: img7 },
@@ -63,10 +65,5 @@ function Row({ translateClass, direction }) {
     </div>
   )
 }
-
-Row.propTypes = {
-    translateClass: PropTypes.string.isRequired,
-    direction: PropTypes.string.isRequired
-  };
 
 export default Row
