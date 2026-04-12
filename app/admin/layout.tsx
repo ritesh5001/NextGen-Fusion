@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -36,6 +37,27 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               {session.name}
             </h1>
             <p className="mt-1 text-sm text-white/60">{session.email}</p>
+
+            <nav className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href="/admin"
+                className="rounded-lg border border-white/20 bg-white/5 px-3 py-1.5 text-xs uppercase tracking-[0.2em] text-white/75 transition hover:bg-white/10"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/admin/campaigns"
+                className="rounded-lg border border-white/20 bg-white/5 px-3 py-1.5 text-xs uppercase tracking-[0.2em] text-white/75 transition hover:bg-white/10"
+              >
+                Campaigns
+              </Link>
+              <Link
+                href="/admin/campaigns/new"
+                className="rounded-lg border border-white/20 bg-white/5 px-3 py-1.5 text-xs uppercase tracking-[0.2em] text-white/75 transition hover:bg-white/10"
+              >
+                New
+              </Link>
+            </nav>
           </div>
 
           <div className="flex items-center gap-4">

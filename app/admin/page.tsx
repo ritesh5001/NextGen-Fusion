@@ -1,22 +1,23 @@
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 
 import { ADMIN_SESSION_COOKIE, readAdminSession } from '../../lib/auth';
 
 const adminHighlights = [
   {
-    title: 'Session status',
-    value: 'Active',
-    description: 'The current admin session is verified by a signed httpOnly cookie.',
+    title: 'Campaign setup',
+    value: 'Create draft',
+    description: 'Define a subject and HTML message, then add recipients by CSV or manual entry.',
   },
   {
-    title: 'Database',
-    value: 'MongoDB',
-    description: 'Credentials are stored in the admins collection with hashed passwords.',
+    title: 'Delivery pacing',
+    value: '100 / 24h',
+    description: 'Queue sending to distribute emails over time and reduce spam-like traffic spikes.',
   },
   {
-    title: 'Access',
-    value: 'Restricted',
-    description: 'Only the seeded admin account can sign in to the protected area.',
+    title: 'Lifecycle tracking',
+    value: 'End-to-end',
+    description: 'Monitor queued, sent, delivered, opened, clicked, and failed statuses per recipient.',
   },
 ];
 
@@ -34,9 +35,25 @@ export default function AdminDashboardPage() {
           Welcome back, {session?.name || 'Admin'}.
         </h2>
         <p className="mt-4 max-w-2xl text-base leading-7 text-white/70 sm:text-lg">
-          This protected area is ready for future admin tools. For now it confirms the login flow,
-          MongoDB connection, and session persistence are all wired correctly.
+          Campaign management is now available in the protected dashboard. Build campaigns, import
+          business-owner recipients, and monitor where each email is queued, sent, opened, clicked,
+          or failed.
         </p>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/admin/campaigns"
+            className="rounded-xl bg-[#f5f19c] px-5 py-3 font-[SansitaBold] text-black transition hover:brightness-95"
+          >
+            Open campaigns
+          </Link>
+          <Link
+            href="/admin/campaigns/new"
+            className="rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-white transition hover:bg-white/10"
+          >
+            Create new campaign
+          </Link>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
