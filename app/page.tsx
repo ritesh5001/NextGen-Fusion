@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import HomePageClient from '../src/HomePageClient';
 
+export const dynamic = 'force-dynamic';
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in';
 
 const structuredData = {
