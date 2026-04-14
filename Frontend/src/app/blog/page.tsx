@@ -157,7 +157,7 @@ export default function BlogPage() {
                     width={400}
                     height={240}
                     className="w-full h-64 object-cover"
-                    unoptimized={normalizeImagePath(post.cover_image).includes('livingtechcreative.com')}
+                    unoptimized={normalizeImagePath(post.cover_image).startsWith('http')}
                   />
 
                   {/* Category Badge */}

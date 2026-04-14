@@ -1,10 +1,10 @@
-# Living Tech Creative
+# NextGen Fusion
 
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-Modern, responsive website for Living Tech Creative, built with Next.js, TypeScript, and Tailwind CSS.
+Modern, responsive website for NextGen Fusion, built with Next.js, TypeScript, and Tailwind CSS.
 
 ## 🚀 Features
 

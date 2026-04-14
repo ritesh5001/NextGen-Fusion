@@ -82,7 +82,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
                   alt={portfolio.title}
                   fill
                   className="object-fill group-hover:scale-105 transition-transform duration-300"
-                  unoptimized={normalizeImagePath(portfolio.cover_image)?.includes("livingtechcreative.com")}
+                  unoptimized={normalizeImagePath(portfolio.cover_image).startsWith("http")}
                 />
 
                 {/* Category Badge */}
@@ -129,7 +129,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
                   alt={portfolio.title}
                   fill
                   className="object-fill group-hover:scale-105 transition-transform duration-300"
-                  unoptimized={normalizeImagePath(portfolio.cover_image)?.includes("livingtechcreative.com")}
+                  unoptimized={normalizeImagePath(portfolio.cover_image).startsWith("http")}
                 />
 
                 {/* Category Badge */}

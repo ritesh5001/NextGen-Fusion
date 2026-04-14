@@ -18,8 +18,8 @@ export function normalizeImagePath(imagePath: string | null | undefined): string
     return imagePath
   }
   
-  // Configurable asset base URL (fallback to dashboard domain)
-  const assetBase = process.env.NEXT_PUBLIC_ASSET_BASE_URL || 'https://dashboard.livingtechcreative.com'
+  // Configurable asset base URL
+  const assetBase = process.env.NEXT_PUBLIC_ASSET_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'
   
   // Handle storage paths from backend
   if (imagePath.startsWith('/storage/')) {

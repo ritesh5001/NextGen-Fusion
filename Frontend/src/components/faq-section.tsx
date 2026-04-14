@@ -136,7 +136,7 @@ export default function FAQSection() {
       answer: "We work with businesses of all sizes, from startups to established enterprises.",
     },
     {
-      question: "How do I get started with Living Tech Creative?",
+      question: "How do I get started with NextGen Fusion?",
       answer:
         "Simply reach out through our contact form or schedule a consultation call to discuss your project needs.",
     },
@@ -155,12 +155,12 @@ export default function FAQSection() {
       answer: "Yes, we offer various maintenance and support packages to keep your digital solutions running smoothly.",
     },
     {
-      question: "Does Living Tech Creative offer any courses or training?",
+      question: "Does NextGen Fusion offer any courses or training?",
       answer:
         "We occasionally offer workshops and training sessions. Follow us on social media for updates on upcoming educational opportunities.",
     },
     {
-      question: "What are the working hours of Living Tech Creative?",
+      question: "What are the working hours of NextGen Fusion?",
       answer:
         "We typically work Monday to Friday, 9 AM to 6 PM. However, we're flexible and can accommodate different time zones for our clients.",
     },

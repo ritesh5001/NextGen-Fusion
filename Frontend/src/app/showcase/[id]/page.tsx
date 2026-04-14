@@ -72,7 +72,7 @@ export default async function ShowcaseDetailPage(props: Props) {
 									width={600}
 									height={400}
 									className="w-full h-auto object-cover"
-									unoptimized={normalizeImagePath(showcaseItem.image).includes('livingtechcreative.com')}
+									unoptimized={normalizeImagePath(showcaseItem.image).startsWith('http')}
 								/>
 								<div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
 									<a

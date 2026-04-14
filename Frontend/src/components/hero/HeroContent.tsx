@@ -118,7 +118,7 @@ export const HeroContent = ({ variants }: HeroContentProps) => {
         variants={animationVariants.subtitle}
       >
         <p className="mb-2">
-          Living Tech Creative is a professional digital agency that helps you grow.
+          NextGen Fusion is a professional digital agency that helps you grow.
         </p>
         <p>
           From strategy to execution, we grow your product without the stress.

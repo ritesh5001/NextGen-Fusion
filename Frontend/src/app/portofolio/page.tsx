@@ -122,7 +122,7 @@ export default function PortfolioPage() {
                     width={400}
                     height={256}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    unoptimized={normalizeImagePath(portfolio.cover_image).includes('livingtechcreative.com')}
+                    unoptimized={normalizeImagePath(portfolio.cover_image).startsWith('http')}
                   />
 
                   {/* Category Badge */}

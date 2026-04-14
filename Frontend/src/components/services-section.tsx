@@ -213,7 +213,7 @@ export default function ServicesSection() {
             className="text-gray-600 text-sm sm:text-base lg:text-lg max-w-3xl leading-relaxed"
             variants={textVariants}
           >
-            At Living Tech Creative, we offer comprehensive digital solutions from concept to execution.
+            At NextGen Fusion, we offer comprehensive digital solutions from concept to execution.
             We combine cutting-edge technology with creative excellence to deliver results that drive your business forward.
           </motion.p>
         </motion.div>

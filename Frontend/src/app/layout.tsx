@@ -12,10 +12,10 @@ import IntegratedNavbar from "@/components/integrated-navbar";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.livingtechcreative.com"),
+  metadataBase: new URL("https://www.nextgenfusion.in"),
   title: {
-    default: "LivingTech Creative - Web Development & Design Agency",
-    template: "%s | LivingTech Creative",
+    default: "NextGen Fusion - Web Development & Design Agency",
+    template: "%s | NextGen Fusion",
   },
   description:
     "We create stunning, high-performance websites that don't ghost you after launch. Your success is our priority, from concept to launch and beyond.",
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     "web design",
     "digital agency",
     "website creation",
-    "LivingTech Creative",
+    "NextGen Fusion",
     "custom websites",
     "SEO optimization",
   ],
-  authors: [{ name: "LivingTech Creative" }],
-  creator: "LivingTech Creative",
-  publisher: "LivingTech Creative",
+  authors: [{ name: "NextGen Fusion" }],
+  creator: "NextGen Fusion",
+  publisher: "NextGen Fusion",
   category: "technology",
 
   icons: {
@@ -98,9 +98,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.livingtechcreative.com",
-    siteName: "LivingTech Creative",
-    title: "LivingTech Creative - Web Development & Design Agency",
+    url: "https://www.nextgenfusion.in",
+    siteName: "NextGen Fusion",
+    title: "NextGen Fusion - Web Development & Design Agency",
     description:
       "We create stunning, high-performance websites that don't ghost you after launch. Your success is our priority, from concept to launch and beyond.",
     images: [
@@ -108,7 +108,7 @@ export const metadata: Metadata = {
         url: "/metaicon.svg",
         width: 1200,
         height: 630,
-        alt: "LivingTech Creative - Web Development & Design Agency",
+        alt: "NextGen Fusion - Web Development & Design Agency",
       },
     ],
   },
@@ -116,11 +116,11 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "LivingTech Creative - Web Development & Design Agency",
+    title: "NextGen Fusion - Web Development & Design Agency",
     description:
       "We create stunning, high-performance websites that don't ghost you after launch. Your success is our priority, from concept to launch and beyond.",
     images: ["/metaicon.svg"],
-    creator: "@livingtechcreative",
+    creator: "@nextgenfusion",
   },
 
   // Additional meta tags
@@ -164,7 +164,7 @@ export default function RootLayout({
     >
       <head>
         {/* Canonical URL */}
-        <link rel="canonical" href="https://www.livingtechcreative.com" />
+        <link rel="canonical" href="https://www.nextgenfusion.in" />
 
         {/* Meta tags tambahan untuk compatibility */}
         <meta
@@ -182,7 +182,7 @@ export default function RootLayout({
         <meta name="rating" content="general" />
         <meta httpEquiv="content-language" content="en-us" />
 
-        {/* Favicon - Custom Living Tech Creative favicon (existing generated files) */}
+        {/* Favicon - generated files */}
         <link
           rel="icon"
           type="image/png"
@@ -261,15 +261,6 @@ export default function RootLayout({
         {/* Manifest */}
         <link rel="manifest" href="/favicon/manifest.json" />
 
-        {/* Preconnect untuk external resources */}
-        <link
-          rel="preconnect"
-          href="https://dashboard.livingtechcreative.com"
-        />
-        <link
-          rel="dns-prefetch"
-          href="https://dashboard.livingtechcreative.com"
-        />
       </head>
       <body className="min-h-screen bg-white md:pb-0 pb-24">
         <ErrorBoundary>

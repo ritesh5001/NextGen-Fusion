@@ -6,19 +6,19 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'livingtech.anshoria.my.id',
+        hostname: 'nextgenfusion.in',
         port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'livingtechcreative.com',
+        hostname: 'www.nextgenfusion.in',
         port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'dashboard.livingtechcreative.com',
+        hostname: 'dashboard.nextgenfusion.in',
         port: '',
         pathname: '/**',
       }

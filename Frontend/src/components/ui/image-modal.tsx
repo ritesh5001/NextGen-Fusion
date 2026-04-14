@@ -78,7 +78,7 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt }: ImageModa
                   width={1920}
                   height={1080}
                   className="max-w-full max-h-[85vh] object-contain rounded-lg"
-                  unoptimized={normalizeImagePath(imageSrc).includes('livingtechcreative.com')}
+                  unoptimized={normalizeImagePath(imageSrc).startsWith('http')}
                 />
               </div>
             </div>

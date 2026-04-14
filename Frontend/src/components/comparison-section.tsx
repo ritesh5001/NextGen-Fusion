@@ -231,13 +231,13 @@ export default function ComparisonSection() {
                     >
                       <Image 
                         src="/images/logos.svg" 
-                        alt="Living Tech Creative" 
+                        alt="NextGen Fusion" 
                         width={24}
                         height={24}
                         className="w-6 h-6"
                       />
                     </motion.div>
-                    <span className="font-semibold text-black">Living Tech Creative</span>
+                    <span className="font-semibold text-black">NextGen Fusion</span>
                   </div>
                 </th>
                 <th className="bg-white p-6 text-left font-semibold text-gray-900">Other Agencies</th>
@@ -307,13 +307,13 @@ export default function ComparisonSection() {
                     >
                       <Image 
                         src="/images/logos.svg" 
-                        alt="Living Tech Creative" 
+                        alt="NextGen Fusion" 
                         width={20}
                         height={20}
                         className="w-5 h-5"
                       />
                     </motion.div>
-                    <span className="font-semibold text-black text-sm">Living Tech Creative</span>
+                    <span className="font-semibold text-black text-sm">NextGen Fusion</span>
                   </div>
                 </th>
                 <th className="bg-white p-4 text-left font-semibold text-gray-900 text-sm">Other Agencies</th>

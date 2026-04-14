@@ -19,12 +19,12 @@ export default function Footer() {
   const socialLinks = [
     {
       name: "Instagram",
-      href: "https://www.instagram.com/livingtechcreatives/",
+      href: "https://www.instagram.com/nextgenfusion.in/",
     },
-    { name: "Twitter", href: "#" },
-    { name: "Youtube", href: "#" },
-    { name: "Layers", href: "https://layers.to/livingtechcrtv" },
-    { name: "Behance", href: "https://www.behance.net/livingtechcreative" },
+    { name: "Twitter", href: "https://x.com/nextgenfusion" },
+    { name: "Youtube", href: "https://www.youtube.com/@nextgenfusion" },
+    { name: "Dribbble", href: "https://dribbble.com/nextgenfusion" },
+    { name: "Behance", href: "https://www.behance.net/nextgenfusion" },
   ];
 
   return (
@@ -57,14 +57,14 @@ export default function Footer() {
                 <div className="space-y-6">
                   <div className="text-2xl lg:text-3xl font-medium">
                     <a
-                      href="mailto:livingtechbusiness@gmail.com?subject=Hello%20Living%20Tech%20Creative&body=Hi%20there,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20meeting.%0A%0AThank%20you!"
+                      href="mailto:hello@nextgenfusion.in?subject=Hello%20NextGen%20Fusion&body=Hi%20there,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20meeting.%0A%0AThank%20you!"
                       className="bg-gradient-to-r bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200 cursor-pointer"
                       style={{
                         backgroundImage:
                           "linear-gradient(90deg, #F6F7FD 2%, #7D85EC 33%, #C79CFF 66%, #59F3FA 100%)",
                       }}
                     >
-                      livingtechbusiness@gmail.com
+                      hello@nextgenfusion.in
                     </a>
                   </div>
 
@@ -121,7 +121,7 @@ export default function Footer() {
             {/* Copyright */}
             <div className="mt-8 pt-6">
               <p className="text-gray-200 text-sm text-right">
-                © 2025 Living Tech Creative. All rights reserved.
+                © 2025 NextGen Fusion. All rights reserved.
               </p>
             </div>
           </div>
@@ -141,14 +141,14 @@ export default function Footer() {
             <div className="border border-white/20 rounded-lg p-4 sm:p-6 bg-black/20 backdrop-blur-sm">
               <div className="text-xl font-medium">
                 <a
-                  href="mailto:livingtechbusiness@gmail.com?subject=Hello%20Living%20Tech%20Creative&body=Hi%20there,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20meeting.%0A%0AThank%20you!"
+                  href="mailto:hello@nextgenfusion.in?subject=Hello%20NextGen%20Fusion&body=Hi%20there,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20meeting.%0A%0AThank%20you!"
                   className="bg-gradient-to-r bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200 cursor-pointer"
                   style={{
                     backgroundImage:
                       "linear-gradient(90deg, #F6F7FD 2%, #7D85EC 33%, #C79CFF 66%, #59F3FA 100%)",
                   }}
                 >
-                  livingtechbusiness@gmail.com
+                  hello@nextgenfusion.in
                 </a>
               </div>
             </div>
@@ -204,7 +204,7 @@ export default function Footer() {
                 Built by the Talented and Creative Crew
               </p>
               <p className="text-gray-200 text-sm">
-                © 2025 Living Tech Creative. All rights reserved.
+                © 2025 NextGen Fusion. All rights reserved.
               </p>
             </div>
           </div>

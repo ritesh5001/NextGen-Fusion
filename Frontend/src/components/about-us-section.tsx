@@ -157,9 +157,9 @@ export default function AboutUsSection() {
                 </span>
                 <span>. We are</span>
               </div>
-              <span className="text-gray-900">Living Tech</span>
+              <span className="text-gray-900">NextGen</span>
               <br />
-              <span className="text-gray-900">Creative</span>
+              <span className="text-gray-900">Fusion</span>
             </motion.h1>
           </motion.div>
 

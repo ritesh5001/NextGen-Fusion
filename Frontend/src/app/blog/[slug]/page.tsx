@@ -145,7 +145,7 @@ export const dynamic = 'force-dynamic'  // Menggunakan SSR
               <div className="flex items-center justify-center gap-4">
                 <ShareButton 
                   title={blogPost.title}
-                  url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://livingtechcreative.com'}/blog/${blogPost.slug}`}
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'}/blog/${blogPost.slug}`}
                 />
                 
                 {/* No live/code links for blog posts */}
@@ -164,7 +164,7 @@ export const dynamic = 'force-dynamic'  // Menggunakan SSR
                   alt={blogPost.title}
                   fill
                   className="object-cover"
-                  unoptimized={normalizeImagePath(blogPost.cover_image).includes('livingtechcreative.com')}
+                  unoptimized={normalizeImagePath(blogPost.cover_image).startsWith('http')}
                 />
               </div>
             </div>
@@ -268,7 +268,7 @@ export const dynamic = 'force-dynamic'  // Menggunakan SSR
                                 alt={relatedPost.title}
                                 fill
                                 className="object-cover"
-                                unoptimized={normalizeImagePath(relatedPost.cover_image).includes('livingtechcreative.com')}
+                                unoptimized={normalizeImagePath(relatedPost.cover_image).startsWith('http')}
                               />
                             </div>
                             <div className="flex-1 min-w-0">

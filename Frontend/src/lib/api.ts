@@ -1,9 +1,10 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://dashboard.livingtechcreative.com/api/%7Bpanel%7D'
+const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL}/api`
  
  // Default to the live API base URL if env is not provided
   // The docs URL is not an API endpoint; keep it only for documentation reference
- // Example override in .env.local: NEXT_PUBLIC_API_BASE_URL=https://dashboard.livingtechcreative.com/api/%7Bpanel%7D
- const __API_DEFAULT_CHECK__ = 'https://dashboard.livingtechcreative.com/api/%7Bpanel%7D'
+ // Example override in .env.local: NEXT_PUBLIC_API_BASE_URL=https://api.nextgenfusion.in
+ const __API_DEFAULT_CHECK__ = `${DEFAULT_SITE_URL}/api`
  
   export interface ShowcaseItem {
     id: number
@@ -143,7 +144,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://dashboard.
         goal: "Build a modern, responsive online store",
         conclution: "Successfully delivered a high-performance platform",
         cover_image: "/placeholder.svg",
-        project_url: "https://example.com",
+        project_url: "https://nextgenfusion.in",
         display_order: 1,
         is_active: true,
         is_featured: true,
@@ -164,7 +165,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://dashboard.
         goal: "Create user-friendly mobile experience",
         conclution: "Delivered award-winning design system",
         cover_image: "/placeholder.svg",
-        project_url: "https://example.com",
+        project_url: "https://nextgenfusion.in",
         display_order: 2,
         is_active: true,
         is_featured: true,

@@ -125,7 +125,7 @@ export default async function PortfolioDetailPage({ params }: PageProps) {
                       fill
                       className="object-contain w-full h-full"
                       style={{ objectFit: 'contain' }}
-                      unoptimized={normalizeImagePath(portfolio.cover_image).includes('livingtechcreative.com')}
+                      unoptimized={normalizeImagePath(portfolio.cover_image).startsWith('http')}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                     />
                   </div>
@@ -248,7 +248,7 @@ export default async function PortfolioDetailPage({ params }: PageProps) {
                                 fill
                                 className="object-contain w-full h-full"
                                 style={{ objectFit: 'contain' }}
-                                unoptimized={normalizeImagePath(sol.image).includes('livingtechcreative.com')}
+                                unoptimized={normalizeImagePath(sol.image).startsWith('http')}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                               />
                             </div>

@@ -1,6 +1,6 @@
 # Testing Documentation
 
-Dokumentasi lengkap untuk testing sistem website LivingTechCreative.
+Dokumentasi lengkap untuk testing sistem website NextGen Fusion.
 
 ## 🧪 Overview Testing
 
@@ -261,7 +261,7 @@ npx playwright test --trace on
 ## 🌐 API Configuration
 
 ### API Endpoint
-Website ini menggunakan API endpoint: `https://livingtechcreative.com/api`
+Website ini menggunakan API endpoint: `https://nextgenfusion.in/api`
 
 ### API Testing
 - Unit tests menggunakan mock API service

@@ -369,7 +369,7 @@ export default function ContactSection() {
                       type="text"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange("firstName", e.target.value)}
-                      placeholder="Vederico Van Basten"
+                      placeholder="Alex Morgan"
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 text-sm sm:text-base"
                     />
                   </motion.div>
@@ -385,7 +385,7 @@ export default function ContactSection() {
                       type="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange("email", e.target.value)}
-                      placeholder="vederico@example.mail"
+                      placeholder="alex@nextgenfusion.in"
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 text-sm sm:text-base"
                     />
                   </motion.div>

@@ -13,7 +13,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'dashboard.livingtechcreative.com',
+        hostname: 'dashboard.nextgenfusion.in',
+        pathname: '/storage/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'nextgenfusion.in',
         pathname: '/storage/**',
       },
     ],

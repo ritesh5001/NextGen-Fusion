@@ -47,7 +47,7 @@ export const MenuSection = ({ menu, onItemClick }: MenuSectionProps) => {
           <div className="flex items-center">
             <Image
               src="/images/livtechlogo.svg"
-              alt="LivingTech Creative Logo"
+              alt="NextGen Fusion Logo"
               width={140}
               height={40}
               className="h-9 w-auto"
