@@ -105,7 +105,7 @@ const rowVariants = {
 }
 
 // Create motion-enabled table row to avoid undefined motion.tr in some builds
-const MotionTr = motion("tr")
+const MotionTr = motion.create("tr")
 
 export default function ComparisonSection() {
   const { getIconSrc } = useMobileIcon()

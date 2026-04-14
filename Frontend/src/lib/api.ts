@@ -1,10 +1,13 @@
 const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL}/api`
+const DEFAULT_API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? `${DEFAULT_SITE_URL}/api`
+  : 'http://localhost:8000/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_BASE_URL
  
  // Default to the live API base URL if env is not provided
   // The docs URL is not an API endpoint; keep it only for documentation reference
  // Example override in .env.local: NEXT_PUBLIC_API_BASE_URL=https://api.nextgenfusion.in
- const __API_DEFAULT_CHECK__ = `${DEFAULT_SITE_URL}/api`
+ const __API_DEFAULT_CHECK__ = DEFAULT_API_BASE_URL
  
   export interface ShowcaseItem {
     id: number
@@ -108,7 +111,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL
   }
  
   class ApiService {
-   private async fetchApi<T>(endpoint: string): Promise<ApiResponse<T>> {
+  private portfolioEndpoint: string | null | undefined = undefined
+
+   private async fetchApi<T>(endpoint: string, options?: { quiet?: boolean }): Promise<ApiResponse<T>> {
+    const quiet = options?.quiet === true
     try {
       const url = `${API_BASE_URL}${endpoint}`
       const response = await fetch(url, {
@@ -116,13 +122,17 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL
         headers: { 'Content-Type': 'application/json' }
       })
       if (!response.ok) {
-        console.error(`API request failed: ${response.status} ${response.statusText} for ${url}`)
+        if (!quiet) {
+          console.error(`API request failed: ${response.status} ${response.statusText} for ${url}`)
+        }
         throw new Error(`API request failed: ${response.status}`)
       }
       const data = await response.json() as ApiResponse<T>
       return data
     } catch (error) {
-      console.error(`API Error for ${endpoint}:`, error)
+      if (!quiet) {
+        console.error(`API Error for ${endpoint}:`, error)
+      }
       throw error
     }
   }
@@ -177,25 +187,41 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL
 
   async getPortfolios(): Promise<Portfolio[]> {
     try {
+      // If we already know no portfolio endpoint is available, skip retries.
+      if (this.portfolioEndpoint === null) {
+        return this.getMockPortfolios()
+      }
+
+      // Reuse the previously successful endpoint.
+      if (typeof this.portfolioEndpoint === 'string') {
+        try {
+          const response = await this.fetchApi<Portfolio[]>(this.portfolioEndpoint, { quiet: true })
+          return response.data
+        } catch {
+          this.portfolioEndpoint = null
+          return this.getMockPortfolios()
+        }
+      }
+
       // Try multiple possible endpoints
       const endpoints = ['/portofolios', '/portfolios', '/portfolio']
       
       for (const endpoint of endpoints) {
         try {
-          const response = await this.fetchApi<Portfolio[]>(endpoint)
+          const response = await this.fetchApi<Portfolio[]>(endpoint, { quiet: true })
+          this.portfolioEndpoint = endpoint
           return response.data
         } catch (error) {
-          console.warn(`Endpoint ${endpoint} failed, trying next...`)
           continue
         }
       }
       
       // If all endpoints fail, return mock data for development
-      console.warn('All portfolio endpoints failed, using mock data')
+      this.portfolioEndpoint = null
       return this.getMockPortfolios()
       
     } catch (error) {
-      console.error('Failed to fetch portfolios:', error)
+      this.portfolioEndpoint = null
       // Return mock data as fallback
       return this.getMockPortfolios()
     }
@@ -207,7 +233,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL
       
       for (const endpoint of endpoints) {
         try {
-          const response = await this.fetchApi<Portfolio>(endpoint)
+          const response = await this.fetchApi<Portfolio>(endpoint, { quiet: true })
           return response.data
         } catch (error) {
           continue
@@ -248,7 +274,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL
       
       for (const endpoint of endpoints) {
         try {
-          const response = await this.fetchApi<PortfolioTag[]>(endpoint)
+          const response = await this.fetchApi<PortfolioTag[]>(endpoint, { quiet: true })
           return response.data
         } catch (error) {
           continue
@@ -334,7 +360,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL
     try {
       // Try to fetch from showcases endpoint (note the plural)
       try {
-        const response = await this.fetchApi<ShowcaseItem[]>('/showcases')
+        const response = await this.fetchApi<ShowcaseItem[]>('/showcases', { quiet: true })
         return response.data
       } catch (showcaseError) {
         console.warn('Showcases endpoint not available, using portfolio data as fallback')
@@ -365,7 +391,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL
     try {
       // Try to fetch from showcases endpoint first (note the plural)
       try {
-        const response = await this.fetchApi<ShowcaseItem>(`/showcases/${id}`)
+        const response = await this.fetchApi<ShowcaseItem>(`/showcases/${id}`, { quiet: true })
         return response.data
       } catch (showcaseError) {
         console.warn(`Showcases item endpoint not available, using portfolio data as fallback for ID: ${id}`)
@@ -382,10 +408,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${DEFAULT_SITE_URL
 
   async getBlogPosts(): Promise<BlogPost[]> {
     try {
-      const response = await this.fetchApi<BlogPost[]>('/blog-posts')
+      const response = await this.fetchApi<BlogPost[]>('/blog-posts', { quiet: true })
       return response.data
     } catch (error) {
-      console.error('Failed to fetch blog posts:', error)
+      console.warn('Blog posts endpoint not available, using empty list')
       return []
     }
   }

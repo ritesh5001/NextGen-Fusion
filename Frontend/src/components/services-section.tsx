@@ -113,6 +113,11 @@ export default function ServicesSection() {
       icon: "/icons/uiuxdesign.svg",
     },
     {
+      title: "Mobile App Development",
+      description: "Build scalable Android and iOS experiences with modern stacks and smooth performance for real-world users.",
+      icon: "/icons/webdev.svg",
+    },
+    {
       title: "No-Code Development",
       description: "Launch powerful apps and platforms quickly with cutting-edge no-code solutions like Bubble, Webflow, and Adalo.",
       icon: "/icons/nocode.svg",
@@ -125,6 +130,11 @@ export default function ServicesSection() {
     {
       title: "Data Analysis",
       description: "Transform raw data into actionable insights using advanced analytics tools and visualization techniques for informed decision-making.",
+      icon: "/icons/dataanalys.svg",
+    },
+    {
+      title: "SEO Optimization",
+      description: "Improve rankings, visibility, and organic traffic with technical SEO, content strategy, and on-page improvements.",
       icon: "/icons/dataanalys.svg",
     },
     {
@@ -146,6 +156,16 @@ export default function ServicesSection() {
       title: "Branding",
       description: "Develop a cohesive, memorable brand identity with strategic positioning, visual systems, and messaging that builds trust and recognition.",
       icon: "/icons/branding.svg",
+    },
+    {
+      title: "Performance Marketing",
+      description: "Run measurable campaigns across digital channels to generate qualified leads, increase conversions, and scale growth.",
+      icon: "/icons/branding.svg",
+    },
+    {
+      title: "Education Programs",
+      description: "Join practical training tracks in development, design, and data skills to upskill your team or launch your career.",
+      icon: "/images/books.svg",
     },
   ]
 
