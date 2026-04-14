@@ -108,64 +108,64 @@ export default function ServicesSection() {
   
   const services = [
     {
-      title: "UI/UX Design",
-      description: "Craft intuitive, user-friendly interfaces that captivate and engage your audience with seamless user experiences.",
+      title: "Website Development Services",
+      description: "Build fast, scalable, and conversion-focused websites using modern frameworks, clean architecture, and SEO-ready structure.",
+      icon: "/icons/webdev.svg",
+    },
+    {
+      title: "E-commerce Web Development Services",
+      description: "Launch secure online stores with product catalogs, payment gateway integration, checkout optimization, and order management flows.",
       icon: "/icons/uiuxdesign.svg",
     },
     {
-      title: "Mobile App Development",
-      description: "Build scalable Android and iOS experiences with modern stacks and smooth performance for real-world users.",
+      title: "Android App Development Services",
+      description: "Create robust Android applications with smooth UI performance, API connectivity, push notifications, and long-term maintainability.",
       icon: "/icons/webdev.svg",
     },
     {
-      title: "No-Code Development",
-      description: "Launch powerful apps and platforms quickly with cutting-edge no-code solutions like Bubble, Webflow, and Adalo.",
-      icon: "/icons/nocode.svg",
+      title: "Web Design Services",
+      description: "Design modern, user-centric web experiences with clear information hierarchy, responsive layouts, and strong visual branding.",
+      icon: "/icons/uiuxdesign.svg",
     },
     {
-      title: "Website Development",
-      description: "Build responsive, high-performance websites with modern frameworks like Next.js, React, and Node.js tailored to your business goals.",
-      icon: "/icons/webdev.svg",
-    },
-    {
-      title: "Data Analysis",
-      description: "Transform raw data into actionable insights using advanced analytics tools and visualization techniques for informed decision-making.",
-      icon: "/icons/dataanalys.svg",
-    },
-    {
-      title: "SEO Optimization",
-      description: "Improve rankings, visibility, and organic traffic with technical SEO, content strategy, and on-page improvements.",
-      icon: "/icons/dataanalys.svg",
-    },
-    {
-      title: "Data Science",
-      description: "Harness machine learning and statistical modeling to unlock predictive insights and drive data-driven business strategies.",
+      title: "AI Automation and AI Development Services",
+      description: "Automate repetitive workflows and develop AI-powered features like smart assistants, recommendations, and intelligent data processing.",
       icon: "/icons/datascience.svg",
     },
     {
-      title: "Graphic Design",
-      description: "Create stunning visual communications that capture your brand essence, from logos and marketing materials to digital assets.",
+      title: "SEO Services",
+      description: "Improve your organic visibility with technical SEO, keyword strategy, on-page optimization, and content performance tracking.",
+      icon: "/icons/dataanalys.svg",
+    },
+    {
+      title: "PPC Services",
+      description: "Run high-intent paid campaigns across Google and social platforms with ad optimization, budget control, and ROI-focused reporting.",
+      icon: "/icons/branding.svg",
+    },
+    {
+      title: "Social Media Marketing Services",
+      description: "Grow your brand reach with strategic content, campaign planning, audience engagement, and performance-driven social media execution.",
       icon: "/icons/graphicdesign.svg",
     },
     {
-      title: "Video Editing",
-      description: "Produce compelling video content with professional editing, motion graphics, and storytelling that captivates your audience.",
+      title: "Website Maintenance Services",
+      description: "Keep your website secure and reliable with regular updates, uptime monitoring, bug fixes, backups, and performance checks.",
       icon: "/icons/videoediting.svg",
     },
     {
-      title: "Branding",
-      description: "Develop a cohesive, memorable brand identity with strategic positioning, visual systems, and messaging that builds trust and recognition.",
-      icon: "/icons/branding.svg",
+      title: "Software Development Services",
+      description: "Develop custom software solutions tailored to your business processes, from planning and architecture to deployment and support.",
+      icon: "/icons/webdev.svg",
     },
     {
-      title: "Performance Marketing",
-      description: "Run measurable campaigns across digital channels to generate qualified leads, increase conversions, and scale growth.",
-      icon: "/icons/branding.svg",
+      title: "API Integration Services",
+      description: "Connect third-party tools, CRMs, payment systems, and internal platforms through reliable API integrations and secure data flows.",
+      icon: "/icons/nocode.svg",
     },
     {
-      title: "Education Programs",
-      description: "Join practical training tracks in development, design, and data skills to upskill your team or launch your career.",
-      icon: "/images/books.svg",
+      title: "Cloud Solutions",
+      description: "Design and deploy cloud-ready infrastructure for scalability, resilience, and secure application delivery across modern environments.",
+      icon: "/icons/datascience.svg",
     },
   ]
 
