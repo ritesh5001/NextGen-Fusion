@@ -87,7 +87,7 @@ function Footer() {
             <Button text="BOOK FREE CONSULTATION" bgColor="bg-[#f5f19c]" href='mailto:contact@nextgenfusion.in' />
           </div>
           <div className=' hidden sm:inline-block '>
-            {["AI Solutions", "Web Apps", "UI/UX", "SEO", "Support"].map((item, index) => {
+            {["Web Development", "Mobile Apps", "UI/UX Design", "AI Automation", "SEO and Growth", "DevOps and Cloud"].map((item, index) => {
               return (
                 <div key={index} className='pb-4'>
                   <h3 className='font-[SansitaReg] text-[2.5vh] text-white font-semibold'>

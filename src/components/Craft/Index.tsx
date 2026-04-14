@@ -77,9 +77,9 @@ function Craft() {
                 className="ptag font-[Sansita] text-[2.6vh] sm:text-[2.9vh] 
                 font-medium leading-[4.4vh] sm:leading-[4.2vh] "
             >
-                At NextGen Fusion, we don&apos;t just build websites, we build digital systems that help your business grow, convert, and scale. 
-                From startups to growing brands, we deliver website development, e-commerce solutions, custom web applications, AI solutions, 
-                UI/UX design, and SEO performance optimization tailored to your goals.
+                At NextGen Fusion, we design, build, automate, and scale digital systems for modern businesses.
+                Our SEO-optimized service stack covers development, mobile apps, UI/UX design, AI automation,
+                marketing growth, support, software systems, integrations, conversion optimization, and cloud DevOps.
             </p>
             <h1 className="texthead font-[SansitaReg] text-[5vh] leading-[6vh] sm:text-[9.8vh] sm:leading-[12vh] mt-10 mb-10">Our Services</h1>
             {/* button */}

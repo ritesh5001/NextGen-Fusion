@@ -33,11 +33,22 @@ const structuredData = {
       areaServed: 'Worldwide',
       serviceType: [
         'Website Development',
+        'Custom Web Application Development',
         'E-commerce Development',
-        'Custom Web Applications',
-        'AI Solutions',
+        'Landing Page Development',
+        'SaaS Platform Development',
+        'API Development and Integration',
+        'Android App Development',
+        'React Native App Development',
         'UI/UX Design',
-        'SEO Optimization',
+        'AI Chatbot Development',
+        'AI Business Automation',
+        'SEO Services',
+        'Google Ads Management',
+        'Custom Software Development',
+        'Payment and Third-party API Integration',
+        'Conversion Optimization',
+        'Cloud Deployment and DevOps',
       ],
       provider: {
         '@id': `${siteUrl}/#organization`,
@@ -47,16 +58,16 @@ const structuredData = {
 };
 
 export const metadata: Metadata = {
-  title: 'Website Development, AI Solutions & Digital Services',
+  title: 'SEO-Optimized Development, AI Automation & Growth Services',
   description:
-    'NextGen Fusion builds websites, custom web apps, e-commerce platforms, and AI automations designed for growth.',
+    'NextGen Fusion delivers SEO-optimized development, mobile app engineering, UI/UX design, AI automation, digital marketing, custom software, API integrations, and cloud DevOps services.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'NextGen Fusion | Website Development, AI Solutions & Digital Services',
+    title: 'NextGen Fusion | SEO-Optimized Development and AI Growth Services',
     description:
-      'Website development, e-commerce builds, custom web apps, and AI automation services for modern businesses.',
+      'Website and app development, AI chatbot and automation solutions, SEO and growth marketing, software integrations, and cloud DevOps for modern businesses.',
     url: '/',
     images: [
       {

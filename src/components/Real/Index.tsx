@@ -107,10 +107,10 @@ function Real() {
                         From startups to scaling businesses, we build digital products that improve conversion, efficiency, and long-term growth.
                     </h3>
                     <h1 className=' font-semibold text-[10vh] sm:text-[20vh] leading-none text-white '>
-                        6+
+                        10+
                     </h1>
                     <h3 className=' text-[2vh] sm:text-[5vh] font-semibold sm:leading-[7vh]'>
-                        Core services: web development, ecommerce, web apps, AI, UI/UX, and SEO optimization.
+                        SEO-optimized services across development, mobile, design, AI automation, marketing, support, and cloud.
                     </h3>    
                 </div>
                 <div 

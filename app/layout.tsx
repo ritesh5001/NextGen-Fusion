@@ -4,9 +4,9 @@ import '../src/site.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in';
 const siteName = 'NextGen Fusion';
-const siteTitle = 'NextGen Fusion | Website Development, AI Solutions & Digital Services';
+const siteTitle = 'NextGen Fusion | SEO-Optimized Development, AI Automation & Growth Services';
 const siteDescription =
-  'NextGen Fusion is a leading web development and AI solutions company offering website development, e-commerce solutions, custom web apps, and AI automation services to grow your business.';
+  'NextGen Fusion is a digital services company offering website development, mobile apps, UI/UX design, AI automation, SEO and marketing, custom software, API integrations, and cloud DevOps solutions.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -17,13 +17,35 @@ export const metadata: Metadata = {
   description: siteDescription,
   keywords: [
     'website development company',
+    'web development services',
+    'custom web development',
     'ecommerce website development',
+    'landing page development',
+    'saas platform development',
+    'api integration services',
+    'mobile app development company',
+    'android app development',
+    'react native app development',
+    'ui ux design services',
+    'website design company',
+    'app design services',
     'AI development company',
-    'chatbot development services',
-    'web application development',
-    'full stack development services',
-    'SEO optimization services',
-    'digital solutions company',
+    'ai chatbot development',
+    'business automation services',
+    'digital marketing agency',
+    'seo services',
+    'google ads agency',
+    'website maintenance services',
+    'custom software development',
+    'crm development company',
+    'erp solutions',
+    'payment gateway integration',
+    'whatsapp api integration',
+    'conversion rate optimization',
+    'sales funnel development',
+    'ai saas product development',
+    'cloud deployment services',
+    'devops services',
   ],
   alternates: {
     canonical: '/',
@@ -51,7 +73,7 @@ export const metadata: Metadata = {
         url: '/og-image.svg',
         width: 1200,
         height: 630,
-        alt: 'NextGen Fusion - Web Development and AI Solutions',
+        alt: 'NextGen Fusion - SEO-Optimized Development and AI Growth Services',
       },
     ],
   },
