@@ -15,31 +15,7 @@ function App() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    let scroll;
-    let isCancelled = false;
-
-    const initScroll = async () => {
-      if (!scrollRef.current) return;
-
-      const { default: LocomotiveScroll } = await import('locomotive-scroll');
-      if (isCancelled) return;
-
-      scroll = new LocomotiveScroll({
-        el: scrollRef.current,
-        smooth: true,
-      });
-    };
-
-    initScroll();
-
-    return () => {
-      isCancelled = true;
-      scroll?.destroy();
-    };
-  }, []);
-
-  useEffect(() => {
-    const list = document.querySelectorAll<HTMLElement>('.section')
+    const list = document.querySelectorAll<HTMLElement>('[data-color]')
     const triggers = []
     list.forEach(function(e) {
       const trigger = ScrollTrigger.create({
@@ -47,10 +23,14 @@ function App() {
         start: "top 90%",
         end: "bottom 90%",
         onEnter: function(){
-          document.body.setAttribute("data-theme", e.dataset.color);
+          if (e.dataset.color) {
+            document.body.setAttribute("data-theme", e.dataset.color);
+          }
         },
         onEnterBack: function() {
-          document.body.setAttribute("data-theme", e.dataset.color);
+          if (e.dataset.color) {
+            document.body.setAttribute("data-theme", e.dataset.color);
+          }
         }
       })
       triggers.push(trigger)
@@ -65,7 +45,7 @@ function App() {
 
   return (
     
-    <div ref={scrollRef} className='section main w-full '>
+    <div ref={scrollRef} className='main w-full overflow-x-hidden'>
       <Home  />
       <Craft />
       <Real />

@@ -19,13 +19,14 @@ function Home() {
         const para = document.querySelector(".toptext")
         if (!para) return;
 
-        const characters = para.textContent.split("")
+        const originalText = para.textContent ?? '';
+        const characters = originalText.split("")
         characters.forEach(function(e) {
             clutter += `<span>${e}</span>`
         })
         para.innerHTML = clutter;
         gsap.set(".toptext span", {opacity: .1})
-        gsap.to(".toptext span", {
+        const textTween = gsap.to(".toptext span", {
             scrollTrigger: {
                 trigger: ".home",
                 start: "top 50%",
@@ -36,6 +37,12 @@ function Home() {
             stagger: .03,
 
         })
+
+        return () => {
+            textTween.scrollTrigger?.kill();
+            textTween.kill();
+            para.textContent = originalText;
+        }
     },[]);
 
 
@@ -78,11 +85,17 @@ function Home() {
     useMotionValueEvent(scrollY, "change", (latest) => {
 
         const previous = scrollY.getPrevious() ?? 0;
+        const delta = latest - previous;
 
-        if(latest > previous) {
+        if (latest < 80) {
+        setHidden(false);
+        return;
+        }
+
+        if(delta > 8) {
         setHidden(true);
         }
-        else {
+        else if (delta < -8) {
         setHidden(false);
         }
     });
@@ -99,7 +112,7 @@ function Home() {
                 }}
                 animate={hidden ? "hidden" : "visible"}
                 transition={{duration: 0.35, ease: "easeInOut"}}
-                className="section w-[100vw] sm:w-full px-6 fixed top-0 left-0 z-[9]"
+                className="w-full px-6 fixed top-0 left-0 z-[9]"
             >
                 <div className="w-full flex sm:flex items-center justify-between  ">
                     <a href='#' className="logo w-[12vh] h-[12vh] sm:w-[16vh] sm:h-[10vh] cursor-pointer z-[9] flex items-center">
