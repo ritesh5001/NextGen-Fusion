@@ -1,0 +1,11 @@
+/* Admin-area scoped styles. The admin uses default browser fonts and a
+   neutral color palette so it stays readable regardless of the marketing
+   site's theme. */
+.ngf-admin {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.ngf-admin input,
+.ngf-admin textarea,
+.ngf-admin select {
+  font-family: inherit;
+}

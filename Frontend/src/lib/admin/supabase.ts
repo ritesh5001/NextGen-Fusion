@@ -1,0 +1,94 @@
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
+
+let cached: SupabaseClient | null = null
+
+export function getSupabaseAdmin(): SupabaseClient {
+  if (cached) return cached
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) {
+    throw new Error(
+      'Missing Supabase env vars. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local'
+    )
+  }
+  cached = createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
+  return cached
+}
+
+export type Contact = {
+  id: string
+  email: string
+  name: string | null
+  company: string | null
+  phone: string | null
+  website: string | null
+  industry: string | null
+  notes: string | null
+  custom_fields: Record<string, unknown> | null
+  unsubscribed: boolean
+  created_at: string
+  updated_at: string
+}
+
+export type CampaignStatus = 'draft' | 'active' | 'paused' | 'completed'
+
+export type Campaign = {
+  id: string
+  name: string
+  description: string | null
+  status: CampaignStatus
+  from_name: string
+  from_email: string
+  reply_to: string | null
+  subject: string
+  body_html: string
+  followup_enabled: boolean
+  followup_days: number
+  followup_subject: string | null
+  followup_body_html: string | null
+  max_followups: number
+  send_interval_seconds: number
+  started_at: string | null
+  completed_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type RecipientStatus =
+  | 'pending'
+  | 'sent'
+  | 'followup_pending'
+  | 'followup_sent'
+  | 'completed'
+  | 'failed'
+  | 'unsubscribed'
+
+export type CampaignRecipient = {
+  id: string
+  campaign_id: string
+  contact_id: string
+  status: RecipientStatus
+  next_send_at: string | null
+  initial_sent_at: string | null
+  last_sent_at: string | null
+  followup_count: number
+  last_error: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type EmailLog = {
+  id: string
+  campaign_id: string | null
+  contact_id: string | null
+  recipient_id: string | null
+  email_type: string
+  resend_message_id: string | null
+  status: string
+  subject: string | null
+  to_email: string | null
+  error: string | null
+  created_at: string
+}
