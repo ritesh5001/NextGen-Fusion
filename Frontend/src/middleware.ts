@@ -17,11 +17,13 @@ async function isValid(token: string | undefined): Promise<boolean> {
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
+  const normalizedPath = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/'
+  const isAdminLogin = normalizedPath === '/admin/login'
+  const isAdminApiLogin = normalizedPath === '/api/admin/login'
 
   // Only guard /admin pages and /api/admin/* (but not the login endpoint)
-  const isAdminPage = pathname.startsWith('/admin') && pathname !== '/admin/login'
-  const isAdminApi =
-    pathname.startsWith('/api/admin') && pathname !== '/api/admin/login'
+  const isAdminPage = normalizedPath.startsWith('/admin') && !isAdminLogin
+  const isAdminApi = normalizedPath.startsWith('/api/admin') && !isAdminApiLogin
 
   if (!isAdminPage && !isAdminApi) return NextResponse.next()
 
