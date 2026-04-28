@@ -2,7 +2,7 @@ const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfus
 const DEFAULT_API_BASE_URL = process.env.NODE_ENV === 'production'
   ? `${DEFAULT_SITE_URL}/api`
   : 'http://localhost:8000/api'
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_BASE_URL
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_BASE_URL
  
  // Default to the live API base URL if env is not provided
   // The docs URL is not an API endpoint; keep it only for documentation reference
