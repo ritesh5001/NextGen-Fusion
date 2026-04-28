@@ -11,6 +11,16 @@ import {
   ShieldCheck,
   Sparkles,
   TrendingUp,
+  Bot,
+  Cloud,
+  Code2,
+  Megaphone,
+  MonitorSmartphone,
+  Plug,
+  Search,
+  Settings,
+  ShoppingCart,
+  Smartphone,
   type LucideIcon,
 } from "lucide-react"
 
@@ -19,7 +29,7 @@ import IntegratedNavbar from "@/components/integrated-navbar"
 import Footer from "@/components/footer"
 
 export interface ServiceBenefit {
-  icon: LucideIcon
+  icon: ServiceIconName
   title: string
   text: string
 }
@@ -45,7 +55,7 @@ export interface ServicePageData {
   heroTitle: string
   heroTitleHighlight: string
   heroDescription: string
-  aboutIcon: LucideIcon
+  aboutIcon: ServiceIconName
   aboutDescription: string
   whoForDescription: string
   painPointsHeading: string
@@ -64,13 +74,36 @@ export interface ServicePageData {
   ctaDescription: string
 }
 
+export type ServiceIconName = keyof typeof SERVICE_ICON_MAP
+
+const SERVICE_ICON_MAP = {
+  'bar-chart-3': BarChart3,
+  bot: Bot,
+  cloud: Cloud,
+  'code-2': Code2,
+  'check-circle-2': CheckCircle2,
+  'clock-3': Clock3,
+  megaphone: Megaphone,
+  'monitor-smartphone': MonitorSmartphone,
+  plug: Plug,
+  rocket: Rocket,
+  search: Search,
+  settings: Settings,
+  'shield-check': ShieldCheck,
+  'shopping-cart': ShoppingCart,
+  smartphone: Smartphone,
+  sparkles: Sparkles,
+  'trending-up': TrendingUp,
+  zap: CheckCircle2,
+} as const satisfies Record<string, LucideIcon>
+
 const sectionVariants = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 }
 
 export default function ServicePageTemplate({ data }: { data: ServicePageData }) {
-  const AboutIcon = data.aboutIcon
+  const AboutIcon = SERVICE_ICON_MAP[data.aboutIcon]
 
   return (
     <div className="min-h-screen bg-white">
@@ -201,7 +234,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
             <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {data.benefits.map((benefit) => (
                 <div key={benefit.title} className="rounded-2xl border border-gray-100 p-6 bg-white shadow-sm">
-                  <benefit.icon className="h-5 w-5 text-[#2B35AB]" />
+                  {(() => {
+                    const BenefitIcon = SERVICE_ICON_MAP[benefit.icon]
+                    return <BenefitIcon className="h-5 w-5 text-[#2B35AB]" />
+                  })()}
                   <h3 className="mt-3 font-semibold text-gray-900">{benefit.title}</h3>
                   <p className="mt-2 text-sm text-gray-600 leading-relaxed">{benefit.text}</p>
                 </div>
