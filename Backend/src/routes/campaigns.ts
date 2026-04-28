@@ -153,7 +153,7 @@ router.get('/campaigns/:id/recipients', requireAuth, async (req, res) => {
       .eq('campaign_id', req.params.id)
       .order('next_send_at', { ascending: true, nullsFirst: false })
       .order('created_at', { ascending: true })
-      .limit(1000)
+      .limit(50000)
     if (statuses && statuses.length) q = q.in('status', statuses)
     const { data, error } = await q
     if (error) { res.status(500).json({ error: error.message }); return }
