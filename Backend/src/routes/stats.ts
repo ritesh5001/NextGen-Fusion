@@ -7,20 +7,31 @@ const router = Router()
 router.get('/stats', requireAuth, async (_req, res) => {
   try {
     const sb = getSupabaseAdmin()
-    const [contacts, campaigns, activeCampaigns, queued, sent] = await Promise.all([
-      sb.from('contacts').select('id', { count: 'exact', head: true }),
-      sb.from('campaigns').select('id', { count: 'exact', head: true }),
-      sb.from('campaigns').select('id', { count: 'exact', head: true }).eq('status', 'active'),
-      sb.from('campaign_recipients').select('id', { count: 'exact', head: true }).in('status', ['pending', 'followup_pending']),
-      sb.from('email_logs').select('id', { count: 'exact', head: true }).eq('status', 'sent'),
+    async function safeCount(query: any): Promise<number> {
+      const result = await query
+      if (result.error && (result.error.code === '42P01' || /schema cache|could not find the table/i.test(result.error.message || ''))) {
+        return 0
+      }
+      return result.count || 0
+    }
+    const [contacts, campaigns, activeCampaigns, queued, sent, formSubmissions, repliedForms] = await Promise.all([
+      safeCount(sb.from('contacts').select('id', { count: 'exact', head: true })),
+      safeCount(sb.from('campaigns').select('id', { count: 'exact', head: true })),
+      safeCount(sb.from('campaigns').select('id', { count: 'exact', head: true }).eq('status', 'active')),
+      safeCount(sb.from('campaign_recipients').select('id', { count: 'exact', head: true }).in('status', ['pending', 'followup_pending'])),
+      safeCount(sb.from('email_logs').select('id', { count: 'exact', head: true }).eq('status', 'sent')),
+      safeCount(sb.from('contact_forms').select('id', { count: 'exact', head: true })),
+      safeCount(sb.from('contact_forms').select('id', { count: 'exact', head: true }).eq('status', 'replied')),
     ])
     res.json({
       data: {
-        contacts: contacts.count || 0,
-        campaigns: campaigns.count || 0,
-        activeCampaigns: activeCampaigns.count || 0,
-        queued: queued.count || 0,
-        sent: sent.count || 0,
+        contacts,
+        campaigns,
+        activeCampaigns,
+        queued,
+        sent,
+        formSubmissions,
+        repliedForms,
       }
     })
   } catch (err) {

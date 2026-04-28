@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser'
 import type { NextFunction, Request, Response } from 'express'
 import authRoutes from './routes/auth'
 import campaignRoutes from './routes/campaigns'
+import { startCampaignProcessor } from './lib/campaign-processor'
+import contactFormRoutes from './routes/contact-forms'
 import contactRoutes from './routes/contacts'
 import cronRoutes from './routes/cron'
 import leadsRoutes from './routes/leads'
@@ -14,7 +16,20 @@ const app = express()
 const PORT = process.env.PORT || 4000
 const requestBodyLimit = process.env.REQUEST_BODY_LIMIT || '2mb'
 
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000').split(',').map(s => s.trim())
+const defaultOrigins = [
+  'http://localhost:3000',
+  'https://nextgenfusion.in',
+  'https://www.nextgenfusion.in',
+]
+const allowedOrigins = Array.from(
+  new Set(
+    (process.env.ALLOWED_ORIGINS || '')
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+      .concat(defaultOrigins),
+  ),
+)
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -37,6 +52,7 @@ app.use('/api/admin', statsRoutes)
 app.use('/api/admin', campaignRoutes)
 app.use('/api/admin', contactRoutes)
 app.use('/api/admin', leadsRoutes)
+app.use('/api', contactFormRoutes)
 app.use('/api/cron', cronRoutes)
 
 app.get('/health', (_req, res) => res.json({ ok: true }))
@@ -59,4 +75,5 @@ app.use((error: unknown, _req: Request, res: Response, next: NextFunction) => {
 
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`)
+  startCampaignProcessor()
 })

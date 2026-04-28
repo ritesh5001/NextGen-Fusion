@@ -30,6 +30,24 @@ export type Contact = {
   updated_at: string
 }
 
+export type ContactFormSubmission = {
+  id: string
+  name: string
+  email: string
+  phone: string
+  message: string
+  information_source: string
+  status: 'new' | 'replied'
+  admin_reply_subject: string | null
+  admin_reply_body: string | null
+  last_emailed_at: string | null
+  email_count: number
+  last_email_message_id: string | null
+  last_email_error: string | null
+  created_at: string
+  updated_at: string
+}
+
 export type CampaignStatus = 'draft' | 'active' | 'paused' | 'completed'
 
 export type Campaign = {

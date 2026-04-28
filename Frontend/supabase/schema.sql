@@ -29,6 +29,31 @@ create index if not exists contacts_company_idx on contacts (company);
 create index if not exists contacts_created_at_idx on contacts (created_at desc);
 
 -- =========================
+-- Website form submissions
+-- =========================
+create table if not exists contact_forms (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  phone text not null,
+  message text not null,
+  information_source text not null,
+  status text not null default 'new', -- new | replied
+  admin_reply_subject text,
+  admin_reply_body text,
+  last_emailed_at timestamptz,
+  email_count int not null default 0,
+  last_email_message_id text,
+  last_email_error text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists contact_forms_created_at_idx on contact_forms (created_at desc);
+create index if not exists contact_forms_email_idx on contact_forms (email);
+create index if not exists contact_forms_status_idx on contact_forms (status);
+
+-- =========================
 -- Campaigns
 -- =========================
 create table if not exists campaigns (
@@ -125,6 +150,10 @@ $$ language plpgsql;
 
 drop trigger if exists trg_contacts_updated_at on contacts;
 create trigger trg_contacts_updated_at before update on contacts
+  for each row execute function set_updated_at();
+
+drop trigger if exists trg_contact_forms_updated_at on contact_forms;
+create trigger trg_contact_forms_updated_at before update on contact_forms
   for each row execute function set_updated_at();
 
 drop trigger if exists trg_campaigns_updated_at on campaigns;
