@@ -1,20 +1,3 @@
-import {
-  BarChart3,
-  Bot,
-  Cloud,
-  Code2,
-  Megaphone,
-  MonitorSmartphone,
-  Plug,
-  Search,
-  Settings,
-  ShieldCheck,
-  ShoppingCart,
-  Smartphone,
-  TrendingUp,
-  Zap,
-  Clock3,
-} from "lucide-react"
 import type { ServicePageData } from "./ServicePageTemplate"
 
 export const ecommerceServiceData: ServicePageData = {
@@ -23,7 +6,7 @@ export const ecommerceServiceData: ServicePageData = {
   heroTitleHighlight: "Drive Sales, Reduce Cart Abandonment, and Scale Revenue",
   heroDescription:
     "We build high-converting online stores with optimized product discovery, frictionless checkout, and deep integrations that help your business sell more — every single day.",
-  aboutIcon: ShoppingCart,
+  aboutIcon: 'shopping-cart',
   aboutDescription:
     "Our E-commerce Web Development Services combine storefront design, payment infrastructure, inventory management, and performance engineering into a single delivery. We build for conversion, not just aesthetics.",
   whoForDescription:
@@ -58,10 +41,10 @@ export const ecommerceServiceData: ServicePageData = {
     { title: "Launch & Growth Support", description: "Staged rollout, analytics configuration, and post-launch conversion monitoring." },
   ],
   benefits: [
-    { icon: TrendingUp, title: "Higher Conversion Rate", text: "Optimized flows and trust signals turn more browsers into buyers." },
-    { icon: ShoppingCart, title: "Lower Cart Abandonment", text: "Streamlined checkout removes friction that causes drop-off." },
-    { icon: Search, title: "Better Organic Reach", text: "SEO-ready product pages attract qualified shoppers without paid ads." },
-    { icon: BarChart3, title: "Trackable Revenue Growth", text: "Full analytics setup gives you visibility into what drives sales." },
+    { icon: 'trending-up', title: "Higher Conversion Rate", text: "Optimized flows and trust signals turn more browsers into buyers." },
+    { icon: 'shopping-cart', title: "Lower Cart Abandonment", text: "Streamlined checkout removes friction that causes drop-off." },
+    { icon: 'search', title: "Better Organic Reach", text: "SEO-ready product pages attract qualified shoppers without paid ads." },
+    { icon: 'bar-chart-3', title: "Trackable Revenue Growth", text: "Full analytics setup gives you visibility into what drives sales." },
   ],
   technologies: ["Next.js", "React", "TypeScript", "Stripe", "Razorpay", "Supabase", "PostgreSQL", "Redis", "Cloudflare CDN", "Vercel", "Google Analytics 4", "Meta Pixel", "Shipway"],
   caseStudies: [
@@ -90,7 +73,7 @@ export const androidServiceData: ServicePageData = {
   heroTitleHighlight: "Performance, Retention, and Long-Term Growth",
   heroDescription:
     "We build robust, scalable Android applications with smooth native performance, seamless API connectivity, and user experiences that keep customers coming back.",
-  aboutIcon: Smartphone,
+  aboutIcon: 'smartphone',
   aboutDescription:
     "Our Android App Development Services cover everything from UX design and native development to backend integration, Play Store publishing, and post-launch support — delivered as a complete business solution.",
   whoForDescription:
@@ -125,10 +108,10 @@ export const androidServiceData: ServicePageData = {
     { title: "Play Store Launch & Support", description: "App submission, rating optimization, and post-launch monitoring and iteration." },
   ],
   benefits: [
-    { icon: Zap, title: "Fast, Smooth Performance", text: "Native Kotlin ensures buttery UX with minimal battery and memory footprint." },
-    { icon: TrendingUp, title: "Higher User Retention", text: "Push notifications and seamless UX keep users engaged and returning." },
-    { icon: BarChart3, title: "Business Insights", text: "Analytics integration gives you clear data on user behavior and drop-off." },
-    { icon: Clock3, title: "Faster Time-to-Market", text: "Structured milestones and parallel workstreams reduce launch timelines." },
+    { icon: 'zap', title: "Fast, Smooth Performance", text: "Native Kotlin ensures buttery UX with minimal battery and memory footprint." },
+    { icon: 'trending-up', title: "Higher User Retention", text: "Push notifications and seamless UX keep users engaged and returning." },
+    { icon: 'bar-chart-3', title: "Business Insights", text: "Analytics integration gives you clear data on user behavior and drop-off." },
+    { icon: 'clock-3', title: "Faster Time-to-Market", text: "Structured milestones and parallel workstreams reduce launch timelines." },
   ],
   technologies: ["Kotlin", "Jetpack Compose", "Android SDK", "Firebase", "REST APIs", "Room Database", "Retrofit", "Hilt", "Google Play Console", "Crashlytics", "Figma"],
   caseStudies: [
@@ -157,7 +140,7 @@ export const webDesignServiceData: ServicePageData = {
   heroTitleHighlight: "Customers Through Clarity, Trust, and Visual Excellence",
   heroDescription:
     "We design modern, conversion-focused web experiences with clear information hierarchy, responsive layouts, and strong visual branding that make your business look and perform its best.",
-  aboutIcon: MonitorSmartphone,
+  aboutIcon: 'monitor-smartphone',
   aboutDescription:
     "Our Web Design Services go beyond aesthetics. We combine UX strategy, conversion psychology, and brand identity to create designs that are both visually outstanding and business-effective.",
   whoForDescription:
@@ -192,10 +175,10 @@ export const webDesignServiceData: ServicePageData = {
     { title: "Development Handoff", description: "Annotated design files, asset exports, and developer briefing for clean implementation." },
   ],
   benefits: [
-    { icon: TrendingUp, title: "Higher Conversion Rates", text: "Strategic layouts and clear CTAs guide visitors to take action more often." },
-    { icon: BarChart3, title: "Stronger Brand Perception", text: "Premium design signals trust and quality before a word is read." },
-    { icon: Zap, title: "Faster Development", text: "Clean, well-documented designs reduce development ambiguity and rework." },
-    { icon: Search, title: "Better User Retention", text: "Intuitive UX keeps visitors on your site longer and returning more often." },
+    { icon: 'trending-up', title: "Higher Conversion Rates", text: "Strategic layouts and clear CTAs guide visitors to take action more often." },
+    { icon: 'bar-chart-3', title: "Stronger Brand Perception", text: "Premium design signals trust and quality before a word is read." },
+    { icon: 'zap', title: "Faster Development", text: "Clean, well-documented designs reduce development ambiguity and rework." },
+    { icon: 'search', title: "Better User Retention", text: "Intuitive UX keeps visitors on your site longer and returning more often." },
   ],
   technologies: ["Figma", "Adobe XD", "Framer", "Tailwind CSS", "Shadcn UI", "Next.js", "Lottie", "Framer Motion"],
   caseStudies: [
@@ -224,7 +207,7 @@ export const aiServiceData: ServicePageData = {
   heroTitleHighlight: "Unlock Intelligent, Scalable Business Operations",
   heroDescription:
     "We build AI-powered automation systems, intelligent assistants, and custom AI features that help your team work faster, make smarter decisions, and scale without proportionally increasing headcount.",
-  aboutIcon: Bot,
+  aboutIcon: 'bot',
   aboutDescription:
     "Our AI Automation and Development Services combine workflow automation, large language model integration, custom AI tooling, and intelligent data processing to deliver real operational leverage for your business.",
   whoForDescription:
@@ -259,10 +242,10 @@ export const aiServiceData: ServicePageData = {
     { title: "Deployment & Monitoring", description: "Live deployment with logging, drift monitoring, and continuous improvement loops." },
   ],
   benefits: [
-    { icon: Clock3, title: "Hours Saved Weekly", text: "Automated tasks eliminate manual work, freeing your team for high-value activity." },
-    { icon: Zap, title: "Faster Decision Making", text: "AI surfaces insights and recommendations instantly instead of after manual analysis." },
-    { icon: TrendingUp, title: "Scalable Operations", text: "Handle more volume without proportional headcount growth." },
-    { icon: BarChart3, title: "Measurable ROI", text: "Every automation is tied to quantifiable time or cost savings from day one." },
+    { icon: 'clock-3', title: "Hours Saved Weekly", text: "Automated tasks eliminate manual work, freeing your team for high-value activity." },
+    { icon: 'zap', title: "Faster Decision Making", text: "AI surfaces insights and recommendations instantly instead of after manual analysis." },
+    { icon: 'trending-up', title: "Scalable Operations", text: "Handle more volume without proportional headcount growth." },
+    { icon: 'bar-chart-3', title: "Measurable ROI", text: "Every automation is tied to quantifiable time or cost savings from day one." },
   ],
   technologies: ["OpenAI GPT-4", "Claude API", "Gemini", "LangChain", "Python", "n8n", "Zapier", "Make", "FastAPI", "Supabase", "Pinecone", "Qdrant", "Node.js"],
   caseStudies: [
@@ -291,7 +274,7 @@ export const seoServiceData: ServicePageData = {
   heroTitleHighlight: "Deliver Compounding, Long-Term Traffic Growth",
   heroDescription:
     "We improve your search rankings through technical SEO, strategic keyword targeting, content optimization, and authority building — turning Google into a reliable, predictable source of qualified leads.",
-  aboutIcon: Search,
+  aboutIcon: 'search',
   aboutDescription:
     "Our SEO Services combine technical excellence with content strategy and off-page authority building to create a complete SEO program that grows your organic presence sustainably.",
   whoForDescription:
@@ -326,10 +309,10 @@ export const seoServiceData: ServicePageData = {
     { title: "Monthly Review & Reporting", description: "Rank tracking, traffic analysis, and strategy refinement based on real performance data." },
   ],
   benefits: [
-    { icon: TrendingUp, title: "Compounding Traffic Growth", text: "SEO builds over time — rankings earned today generate traffic for years." },
-    { icon: Search, title: "Lower Cost Per Lead", text: "Organic leads cost significantly less than paid traffic at scale." },
-    { icon: BarChart3, title: "Full Visibility", text: "Monthly reports show exactly what moved, why, and what is next." },
-    { icon: Clock3, title: "Long-Term Asset", text: "Unlike ads, SEO authority compounds and does not disappear when you stop spending." },
+    { icon: 'trending-up', title: "Compounding Traffic Growth", text: "SEO builds over time — rankings earned today generate traffic for years." },
+    { icon: 'search', title: "Lower Cost Per Lead", text: "Organic leads cost significantly less than paid traffic at scale." },
+    { icon: 'bar-chart-3', title: "Full Visibility", text: "Monthly reports show exactly what moved, why, and what is next." },
+    { icon: 'clock-3', title: "Long-Term Asset", text: "Unlike ads, SEO authority compounds and does not disappear when you stop spending." },
   ],
   technologies: ["Google Search Console", "Google Analytics 4", "Ahrefs", "Semrush", "Screaming Frog", "SurferSEO", "Google Tag Manager", "PageSpeed Insights", "Schema.org"],
   caseStudies: [
@@ -358,7 +341,7 @@ export const ppcServiceData: ServicePageData = {
   heroTitleHighlight: "Rupee and Dollar Spent on Paid Advertising",
   heroDescription:
     "We run high-intent, ROI-focused paid campaigns across Google and Meta that bring qualified traffic, lower your cost per acquisition, and generate measurable business results from day one.",
-  aboutIcon: Megaphone,
+  aboutIcon: 'megaphone',
   aboutDescription:
     "Our PPC Services combine strategic campaign architecture, continuous bid optimization, ad creative testing, and conversion-focused landing pages to make your paid budget work harder than it ever has.",
   whoForDescription:
@@ -393,10 +376,10 @@ export const ppcServiceData: ServicePageData = {
     { title: "Monthly Reporting & Strategy Review", description: "Full performance report with ROAS, CPA, and next-month strategy adjustments." },
   ],
   benefits: [
-    { icon: Zap, title: "Immediate Traffic", text: "PPC delivers qualified visitors from day one — no waiting for organic growth." },
-    { icon: BarChart3, title: "Full ROAS Visibility", text: "Every rupee tracked from ad click to conversion with clear attribution." },
-    { icon: TrendingUp, title: "Lower CPA Over Time", text: "Continuous optimization drives cost per acquisition down month over month." },
-    { icon: Search, title: "Competitive Intelligence", text: "Campaign data reveals what messaging and offers resonate best with your market." },
+    { icon: 'zap', title: "Immediate Traffic", text: "PPC delivers qualified visitors from day one — no waiting for organic growth." },
+    { icon: 'bar-chart-3', title: "Full ROAS Visibility", text: "Every rupee tracked from ad click to conversion with clear attribution." },
+    { icon: 'trending-up', title: "Lower CPA Over Time", text: "Continuous optimization drives cost per acquisition down month over month." },
+    { icon: 'search', title: "Competitive Intelligence", text: "Campaign data reveals what messaging and offers resonate best with your market." },
   ],
   technologies: ["Google Ads", "Meta Ads Manager", "Google Analytics 4", "Google Tag Manager", "Meta Pixel", "Semrush", "Unbounce", "Hotjar"],
   caseStudies: [
@@ -425,7 +408,7 @@ export const socialMediaServiceData: ServicePageData = {
   heroTitleHighlight: "Turn Followers Into Paying Customers",
   heroDescription:
     "We create and execute strategic social media programs that grow your brand presence, build community trust, and generate real business results through consistent, platform-native content.",
-  aboutIcon: Megaphone,
+  aboutIcon: 'megaphone',
   aboutDescription:
     "Our Social Media Marketing Services cover strategy, content creation, scheduling, community management, and paid amplification — managed as a complete program aligned to your business and revenue goals.",
   whoForDescription:
@@ -460,10 +443,10 @@ export const socialMediaServiceData: ServicePageData = {
     { title: "Monthly Review & Reporting", description: "Performance analysis, content performance review, and strategy adjustments for the next month." },
   ],
   benefits: [
-    { icon: TrendingUp, title: "Growing Brand Awareness", text: "Consistent, quality content builds brand recognition and authority over time." },
-    { icon: BarChart3, title: "Measurable Engagement", text: "Clear metrics show exactly how your audience is growing and engaging." },
-    { icon: Zap, title: "Consistent Content Output", text: "Never miss a post or struggle for content ideas again." },
-    { icon: Search, title: "Audience Insights", text: "Social analytics reveal what your market cares about and responds to." },
+    { icon: 'trending-up', title: "Growing Brand Awareness", text: "Consistent, quality content builds brand recognition and authority over time." },
+    { icon: 'bar-chart-3', title: "Measurable Engagement", text: "Clear metrics show exactly how your audience is growing and engaging." },
+    { icon: 'zap', title: "Consistent Content Output", text: "Never miss a post or struggle for content ideas again." },
+    { icon: 'search', title: "Audience Insights", text: "Social analytics reveal what your market cares about and responds to." },
   ],
   technologies: ["Meta Business Suite", "Instagram", "LinkedIn", "YouTube", "Canva Pro", "Later", "Buffer", "Hootsuite", "Meta Ads Manager", "CapCut"],
   caseStudies: [
@@ -492,7 +475,7 @@ export const maintenanceServiceData: ServicePageData = {
   heroTitleHighlight: "Secure, Fast, and Performing at Its Best — Always",
   heroDescription:
     "We proactively monitor, update, and maintain your website so you never have to worry about security vulnerabilities, broken features, or performance degradation affecting your business.",
-  aboutIcon: Settings,
+  aboutIcon: 'settings',
   aboutDescription:
     "Our Website Maintenance Services include regular updates, security patching, uptime monitoring, performance optimization, backup management, and bug resolution — covering everything that keeps a website reliable.",
   whoForDescription:
@@ -527,10 +510,10 @@ export const maintenanceServiceData: ServicePageData = {
     { title: "Monthly Reporting", description: "Detailed report shared monthly with health status, actions taken, and upcoming work." },
   ],
   benefits: [
-    { icon: ShieldCheck, title: "Always Secure", text: "Proactive patching means vulnerabilities are closed before they can be exploited." },
-    { icon: Clock3, title: "Maximum Uptime", text: "Monitoring catches downtime immediately, minimizing customer-facing impact." },
-    { icon: Zap, title: "Sustained Performance", text: "Regular optimization keeps your site fast as it grows and evolves." },
-    { icon: BarChart3, title: "Full Visibility", text: "Monthly reports keep you informed of your website's health without technical jargon." },
+    { icon: 'shield-check', title: "Always Secure", text: "Proactive patching means vulnerabilities are closed before they can be exploited." },
+    { icon: 'clock-3', title: "Maximum Uptime", text: "Monitoring catches downtime immediately, minimizing customer-facing impact." },
+    { icon: 'zap', title: "Sustained Performance", text: "Regular optimization keeps your site fast as it grows and evolves." },
+    { icon: 'bar-chart-3', title: "Full Visibility", text: "Monthly reports keep you informed of your website's health without technical jargon." },
   ],
   technologies: ["Cloudflare", "Vercel", "AWS", "Sentry", "UptimeRobot", "GitHub Actions", "Lighthouse", "WP Engine", "UpdraftPlus", "Wordfence"],
   caseStudies: [
@@ -559,7 +542,7 @@ export const softwareServiceData: ServicePageData = {
   heroTitleHighlight: "Your Business Needs to Operate, Scale, and Compete",
   heroDescription:
     "We design and develop custom software solutions — from internal tools and SaaS platforms to business automation systems — tailored precisely to your processes and growth requirements.",
-  aboutIcon: Code2,
+  aboutIcon: 'code-2',
   aboutDescription:
     "Our Software Development Services cover the full lifecycle: requirements analysis, system architecture, development, testing, deployment, and ongoing support — delivered by engineers who prioritize business outcomes over technical complexity.",
   whoForDescription:
@@ -594,10 +577,10 @@ export const softwareServiceData: ServicePageData = {
     { title: "Ongoing Support & Iteration", description: "Post-launch support, bug resolution, and feature iteration based on real usage." },
   ],
   benefits: [
-    { icon: Zap, title: "Operational Efficiency", text: "Custom software eliminates the workarounds and manual steps that slow your team down." },
-    { icon: TrendingUp, title: "Scalable by Design", text: "Architecture built for your growth trajectory, not just today's needs." },
-    { icon: BarChart3, title: "Competitive Advantage", text: "Proprietary systems give you capabilities your competitors cannot easily replicate." },
-    { icon: Clock3, title: "Long-term Maintainability", text: "Clean code and documentation reduce future maintenance cost significantly." },
+    { icon: 'zap', title: "Operational Efficiency", text: "Custom software eliminates the workarounds and manual steps that slow your team down." },
+    { icon: 'trending-up', title: "Scalable by Design", text: "Architecture built for your growth trajectory, not just today's needs." },
+    { icon: 'bar-chart-3', title: "Competitive Advantage", text: "Proprietary systems give you capabilities your competitors cannot easily replicate." },
+    { icon: 'clock-3', title: "Long-term Maintainability", text: "Clean code and documentation reduce future maintenance cost significantly." },
   ],
   technologies: ["Node.js", "Python", "TypeScript", "React", "Next.js", "PostgreSQL", "MongoDB", "Redis", "Docker", "Kubernetes", "AWS", "GitHub Actions", "Terraform"],
   caseStudies: [
@@ -626,7 +609,7 @@ export const apiServiceData: ServicePageData = {
   heroTitleHighlight: "Eliminate the Manual Work Between Disconnected Systems",
   heroDescription:
     "We design and implement reliable API integrations that make your platforms, CRMs, payment systems, and third-party tools work together seamlessly — turning data silos into unified business workflows.",
-  aboutIcon: Plug,
+  aboutIcon: 'plug',
   aboutDescription:
     "Our API Integration Services cover discovery, design, implementation, and monitoring of integrations between any systems that expose an API — reducing manual data transfer and enabling automated workflows.",
   whoForDescription:
@@ -661,10 +644,10 @@ export const apiServiceData: ServicePageData = {
     { title: "Monitoring & Maintenance", description: "Ongoing integration health monitoring and updates when APIs change." },
   ],
   benefits: [
-    { icon: Clock3, title: "Hours Saved Weekly", text: "Automated data flows eliminate manual transfer and re-entry work." },
-    { icon: Zap, title: "Real-time Data Sync", text: "Systems stay in sync without delays or manual intervention." },
-    { icon: BarChart3, title: "Single Source of Truth", text: "Unified data across tools means everyone works from the same accurate information." },
-    { icon: TrendingUp, title: "Scalable Workflows", text: "Automated integrations handle volume growth without additional manual effort." },
+    { icon: 'clock-3', title: "Hours Saved Weekly", text: "Automated data flows eliminate manual transfer and re-entry work." },
+    { icon: 'zap', title: "Real-time Data Sync", text: "Systems stay in sync without delays or manual intervention." },
+    { icon: 'bar-chart-3', title: "Single Source of Truth", text: "Unified data across tools means everyone works from the same accurate information." },
+    { icon: 'trending-up', title: "Scalable Workflows", text: "Automated integrations handle volume growth without additional manual effort." },
   ],
   technologies: ["REST APIs", "GraphQL", "Webhooks", "OAuth 2.0", "Node.js", "Python", "Postman", "HubSpot API", "Salesforce API", "Stripe API", "Razorpay", "Zapier", "n8n"],
   caseStudies: [
@@ -693,7 +676,7 @@ export const cloudServiceData: ServicePageData = {
   heroTitleHighlight: "Resilient, and Cost-Efficient Infrastructure",
   heroDescription:
     "We design, deploy, and manage cloud infrastructure that scales with your growth, keeps your applications reliable, and optimizes your hosting costs — without requiring deep DevOps expertise in-house.",
-  aboutIcon: Cloud,
+  aboutIcon: 'cloud',
   aboutDescription:
     "Our Cloud Solutions cover architecture design, cloud migration, infrastructure-as-code, CI/CD pipeline setup, CDN configuration, and ongoing infrastructure management for businesses of all sizes.",
   whoForDescription:
@@ -728,10 +711,10 @@ export const cloudServiceData: ServicePageData = {
     { title: "Monitoring & Ongoing Management", description: "CloudWatch/Datadog monitoring, cost alerting, and ongoing infrastructure maintenance." },
   ],
   benefits: [
-    { icon: TrendingUp, title: "Infinite Scalability", text: "Auto-scaling handles traffic spikes without manual intervention or downtime." },
-    { icon: Zap, title: "Faster Deployments", text: "CI/CD pipelines cut deployment time from hours to minutes." },
-    { icon: BarChart3, title: "Optimized Costs", text: "Right-sized infrastructure and reserved capacity reduces cloud spend 20–40%." },
-    { icon: Clock3, title: "Maximum Reliability", text: "Multi-AZ deployments and automated recovery eliminate single points of failure." },
+    { icon: 'trending-up', title: "Infinite Scalability", text: "Auto-scaling handles traffic spikes without manual intervention or downtime." },
+    { icon: 'zap', title: "Faster Deployments", text: "CI/CD pipelines cut deployment time from hours to minutes." },
+    { icon: 'bar-chart-3', title: "Optimized Costs", text: "Right-sized infrastructure and reserved capacity reduces cloud spend 20–40%." },
+    { icon: 'clock-3', title: "Maximum Reliability", text: "Multi-AZ deployments and automated recovery eliminate single points of failure." },
   ],
   technologies: ["AWS", "Google Cloud", "Vercel", "Cloudflare", "Docker", "Kubernetes", "Terraform", "GitHub Actions", "Datadog", "PagerDuty", "Nginx", "Let's Encrypt"],
   caseStudies: [

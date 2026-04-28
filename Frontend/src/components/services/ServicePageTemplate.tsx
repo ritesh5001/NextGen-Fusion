@@ -21,6 +21,7 @@ import {
   Settings,
   ShoppingCart,
   Smartphone,
+  Zap,
   type LucideIcon,
 } from "lucide-react"
 
@@ -94,7 +95,7 @@ const SERVICE_ICON_MAP = {
   smartphone: Smartphone,
   sparkles: Sparkles,
   'trending-up': TrendingUp,
-  zap: CheckCircle2,
+  zap: Zap,
 } as const satisfies Record<string, LucideIcon>
 
 const sectionVariants = {
