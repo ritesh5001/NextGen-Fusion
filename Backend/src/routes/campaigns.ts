@@ -4,6 +4,7 @@ import { getSupabaseAdmin } from '../lib/supabase'
 import { processOnce } from './cron'
 
 const router = Router()
+const PAGE_SIZE = 1000
 
 const CAMPAIGN_FIELDS = [
   'name', 'description', 'status', 'from_name', 'from_email', 'reply_to',
@@ -15,6 +16,48 @@ function pickCampaign(body: any): Record<string, unknown> {
   const out: Record<string, unknown> = {}
   for (const f of CAMPAIGN_FIELDS) if (f in body) out[f] = body[f]
   return out
+}
+
+async function fetchAllContacts(
+  sb: ReturnType<typeof getSupabaseAdmin>,
+  filter?: { company?: string; industry?: string }
+): Promise<string[]> {
+  const contactIds: string[] = []
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    let q = sb.from('contacts').select('id').eq('unsubscribed', false).order('id', { ascending: true }).range(offset, offset + PAGE_SIZE - 1)
+    if (filter?.company) q = q.ilike('company', `%${filter.company}%`)
+    if (filter?.industry) q = q.ilike('industry', `%${filter.industry}%`)
+    const { data, error } = await q
+    if (error) throw error
+    const ids = (data || []).map((r: { id: string }) => r.id)
+    contactIds.push(...ids)
+    if (ids.length < PAGE_SIZE) break
+  }
+  return contactIds
+}
+
+async function fetchAllCampaignRecipients(
+  sb: ReturnType<typeof getSupabaseAdmin>,
+  campaignId: string,
+  statuses?: string[]
+) {
+  const rows: any[] = []
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    let q = sb
+      .from('campaign_recipients')
+      .select('id, status, next_send_at, initial_sent_at, last_sent_at, followup_count, last_error, created_at, contacts(id, email, name, company)')
+      .eq('campaign_id', campaignId)
+      .order('next_send_at', { ascending: true, nullsFirst: false })
+      .order('created_at', { ascending: true })
+      .range(offset, offset + PAGE_SIZE - 1)
+    if (statuses && statuses.length) q = q.in('status', statuses)
+    const { data, error } = await q
+    if (error) throw error
+    const chunk = data || []
+    rows.push(...chunk)
+    if (chunk.length < PAGE_SIZE) break
+  }
+  return rows
 }
 
 // GET /api/admin/campaigns
@@ -147,16 +190,7 @@ router.get('/campaigns/:id/recipients', requireAuth, async (req, res) => {
   try {
     const sb = getSupabaseAdmin()
     const statuses = (req.query.status as string | undefined)?.split(',').filter(Boolean)
-    let q = sb
-      .from('campaign_recipients')
-      .select('id, status, next_send_at, initial_sent_at, last_sent_at, followup_count, last_error, created_at, contacts(id, email, name, company)')
-      .eq('campaign_id', req.params.id)
-      .order('next_send_at', { ascending: true, nullsFirst: false })
-      .order('created_at', { ascending: true })
-      .limit(50000)
-    if (statuses && statuses.length) q = q.in('status', statuses)
-    const { data, error } = await q
-    if (error) { res.status(500).json({ error: error.message }); return }
+    const data = await fetchAllCampaignRecipients(sb, req.params.id, statuses)
     res.json({ data })
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Internal error' })
@@ -174,12 +208,10 @@ router.post('/campaigns/:id/recipients', requireAuth, async (req, res) => {
     if (Array.isArray(body?.contact_ids)) {
       contactIds = body.contact_ids.filter((x: unknown) => typeof x === 'string')
     } else if (body?.all === true || body?.filter) {
-      let q = sb.from('contacts').select('id').eq('unsubscribed', false).limit(200000)
-      if (body?.filter?.company) q = q.ilike('company', `%${body.filter.company}%`)
-      if (body?.filter?.industry) q = q.ilike('industry', `%${body.filter.industry}%`)
-      const { data, error } = await q
-      if (error) { res.status(500).json({ error: error.message }); return }
-      contactIds = (data || []).map((r: { id: string }) => r.id)
+      contactIds = await fetchAllContacts(sb, {
+        company: body?.filter?.company,
+        industry: body?.filter?.industry,
+      })
     } else {
       res.status(400).json({ error: 'Provide contact_ids[], all:true, or filter{}' })
       return
@@ -219,10 +251,13 @@ router.post('/campaigns/:id/recipients', requireAuth, async (req, res) => {
       next_send_at: new Date(baseTimeMs + i * intervalMs).toISOString(),
     }))
 
-    const { error: insErr } = await sb
-      .from('campaign_recipients')
-      .upsert(rows, { onConflict: 'campaign_id,contact_id', ignoreDuplicates: true })
-    if (insErr) { res.status(500).json({ error: insErr.message }); return }
+    for (let i = 0; i < rows.length; i += PAGE_SIZE) {
+      const chunk = rows.slice(i, i + PAGE_SIZE)
+      const { error: insErr } = await sb
+        .from('campaign_recipients')
+        .upsert(chunk, { onConflict: 'campaign_id,contact_id', ignoreDuplicates: true })
+      if (insErr) { res.status(500).json({ error: insErr.message }); return }
+    }
     if (campaign.status === 'active') {
       try {
         await processOnce()
