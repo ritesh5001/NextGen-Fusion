@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import type { RouteHandlerContext } from 'next/server'
 
 function buildBackendUrl(pathname: string, search: string): string {
   const baseUrl = process.env.BACKEND_URL || 'http://localhost:4000'
@@ -6,16 +6,18 @@ function buildBackendUrl(pathname: string, search: string): string {
   return `${normalizedBase}${pathname}${search}`
 }
 
-async function proxyRequest(req: NextRequest, method: string, path: string) {
-  const backendUrl = buildBackendUrl(`/api/admin/${path}`, req.nextUrl.search)
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  }
+async function proxyRequest(req: Request, method: string, path: string) {
+  const { search } = new URL(req.url)
+  const backendUrl = buildBackendUrl(`/api/admin/${path}`, search)
+  const headers = new Headers()
+
+  const contentType = req.headers.get('content-type')
+  if (contentType) headers.set('content-type', contentType)
 
   const cookie = req.headers.get('cookie')
-  if (cookie) headers.cookie = cookie
+  if (cookie) headers.set('cookie', cookie)
 
-  const body = method === 'GET' || method === 'HEAD' ? undefined : await req.text()
+  const body = method === 'GET' || method === 'HEAD' ? undefined : await req.arrayBuffer()
 
   const upstream = await fetch(backendUrl, {
     method,
@@ -38,18 +40,18 @@ async function proxyRequest(req: NextRequest, method: string, path: string) {
   })
 }
 
-export async function GET(req: NextRequest, context: { params: { path: string[] } }) {
+export async function GET(req: Request, context: RouteHandlerContext<{ path: string[] }>) {
   return proxyRequest(req, 'GET', context.params.path.join('/'))
 }
 
-export async function POST(req: NextRequest, context: { params: { path: string[] } }) {
+export async function POST(req: Request, context: RouteHandlerContext<{ path: string[] }>) {
   return proxyRequest(req, 'POST', context.params.path.join('/'))
 }
 
-export async function PATCH(req: NextRequest, context: { params: { path: string[] } }) {
+export async function PATCH(req: Request, context: RouteHandlerContext<{ path: string[] }>) {
   return proxyRequest(req, 'PATCH', context.params.path.join('/'))
 }
 
-export async function DELETE(req: NextRequest, context: { params: { path: string[] } }) {
+export async function DELETE(req: Request, context: RouteHandlerContext<{ path: string[] }>) {
   return proxyRequest(req, 'DELETE', context.params.path.join('/'))
 }
