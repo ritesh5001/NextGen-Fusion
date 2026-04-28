@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { AdminShell, PageHeader } from '@/components/admin/admin-shell'
 import { Plus, MessageSquare } from 'lucide-react'
 
@@ -43,8 +43,10 @@ type Interaction = {
   created_at: string
 }
 
-export default function LeadDetailPage({ params }: { params: { id: string } }) {
+export default function LeadDetailPage() {
   const router = useRouter()
+  const params = useParams<{ id: string }>()
+  const id = params.id
   const [lead, setLead] = useState<Lead | null>(null)
   const [interactions, setInteractions] = useState<Interaction[]>([])
   const [saving, setSaving] = useState(false)
@@ -58,8 +60,8 @@ export default function LeadDetailPage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     Promise.all([
-      fetch(`/api/admin/leads/${params.id}`).then((r) => r.json()),
-      fetch(`/api/admin/leads/${params.id}/interactions`).then((r) => r.json()),
+      fetch(`/api/admin/leads/${id}`).then((r) => r.json()),
+      fetch(`/api/admin/leads/${id}/interactions`).then((r) => r.json()),
     ]).then(([leadData, intData]) => {
       if (leadData.error) { setError(leadData.error); return }
       setLead(leadData)
@@ -68,7 +70,7 @@ export default function LeadDetailPage({ params }: { params: { id: string } }) {
       ))
       setInteractions(Array.isArray(intData) ? intData : [])
     })
-  }, [params.id])
+  }, [id])
 
   function set(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -79,7 +81,7 @@ export default function LeadDetailPage({ params }: { params: { id: string } }) {
     setSaving(true)
     setError(null)
     try {
-      const res = await fetch(`/api/admin/leads/${params.id}`, {
+      const res = await fetch(`/api/admin/leads/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -99,7 +101,7 @@ export default function LeadDetailPage({ params }: { params: { id: string } }) {
     if (!iForm.summary.trim()) return
     setISaving(true)
     try {
-      const res = await fetch(`/api/admin/leads/${params.id}/interactions`, {
+      const res = await fetch(`/api/admin/leads/${id}/interactions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(iForm),
