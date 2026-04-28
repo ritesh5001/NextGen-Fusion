@@ -182,6 +182,16 @@ export default function CampaignDetailPage() {
     },
     { total: 0 } as Record<string, number>
   )
+  const queue = recipients
+    .filter((r) => r.status === 'pending' || r.status === 'followup_pending')
+    .slice()
+    .sort((a, b) => {
+      const at = a.next_send_at ? new Date(a.next_send_at).getTime() : Number.POSITIVE_INFINITY
+      const bt = b.next_send_at ? new Date(b.next_send_at).getTime() : Number.POSITIVE_INFINITY
+      return at - bt
+    })
+  const nextMail = queue[0] || null
+  const timeline = queue.slice(0, 8)
 
   return (
     <AdminShell>
@@ -284,6 +294,66 @@ export default function CampaignDetailPage() {
           <Stat label="Initial sent" value={(counts.followup_pending || 0) + (counts.completed || 0)} />
           <Stat label="Completed" value={counts.completed || 0} />
           <Stat label="Failed" value={counts.failed || 0} tone="red" />
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-3 mb-6">
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="text-sm text-slate-500 mb-1">Queue</div>
+            <div className="text-3xl font-semibold text-slate-900">{queue.length}</div>
+            <div className="mt-2 text-sm text-slate-600">
+              {queue.length === 0
+                ? 'No recipients waiting to be sent.'
+                : `${queue.length.toLocaleString()} recipients are waiting in the send queue.`}
+            </div>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="text-sm text-slate-500 mb-1">Next mail</div>
+            {nextMail ? (
+              <div className="space-y-2">
+                <div className="text-lg font-semibold text-slate-900 truncate">
+                  {nextMail.contacts?.email || '(deleted contact)'}
+                </div>
+                <div className="text-sm text-slate-600">
+                  {nextMail.status === 'followup_pending' ? 'Follow-up' : 'Initial send'} queued for{' '}
+                  {nextMail.next_send_at ? new Date(nextMail.next_send_at).toLocaleString() : '—'}
+                </div>
+                <div className="text-xs text-slate-500">
+                  {formatTimeUntil(nextMail.next_send_at)} · {nextMail.contacts?.company || 'No company'}
+                </div>
+              </div>
+            ) : (
+              <div className="text-sm text-slate-600">Nothing is queued right now.</div>
+            )}
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="text-sm text-slate-500 mb-1">Timeline</div>
+            <div className="space-y-3 max-h-48 overflow-y-auto pr-1">
+              {timeline.length === 0 ? (
+                <div className="text-sm text-slate-600">No scheduled sends.</div>
+              ) : (
+                timeline.map((r, idx) => (
+                  <div key={r.id} className="flex gap-3">
+                    <div className="flex flex-col items-center">
+                      <div className="h-2.5 w-2.5 rounded-full bg-slate-900 mt-1" />
+                      {idx !== timeline.length - 1 && <div className="w-px flex-1 bg-slate-200 mt-1" />}
+                    </div>
+                    <div className="min-w-0 pb-3">
+                      <div className="text-sm font-medium text-slate-900 truncate">
+                        {r.contacts?.email || '(deleted contact)'}
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        {r.status === 'followup_pending' ? 'Follow-up' : 'Initial'} ·{' '}
+                        {r.next_send_at ? new Date(r.next_send_at).toLocaleString() : '—'} ·{' '}
+                        {formatTimeUntil(r.next_send_at)}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Tabs */}
