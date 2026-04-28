@@ -7,6 +7,7 @@ import authRoutes from './routes/auth'
 import campaignRoutes from './routes/campaigns'
 import contactRoutes from './routes/contacts'
 import cronRoutes from './routes/cron'
+import leadsRoutes from './routes/leads'
 import statsRoutes from './routes/stats'
 
 const app = express()
@@ -35,6 +36,7 @@ app.use('/api/admin', authRoutes)
 app.use('/api/admin', statsRoutes)
 app.use('/api/admin', campaignRoutes)
 app.use('/api/admin', contactRoutes)
+app.use('/api/admin', leadsRoutes)
 app.use('/api/cron', cronRoutes)
 
 app.get('/health', (_req, res) => res.json({ ok: true }))

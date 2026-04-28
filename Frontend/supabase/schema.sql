@@ -133,3 +133,76 @@ create trigger trg_campaigns_updated_at before update on campaigns
 drop trigger if exists trg_campaign_recipients_updated_at on campaign_recipients;
 create trigger trg_campaign_recipients_updated_at before update on campaign_recipients
   for each row execute function set_updated_at();
+
+-- =====================================================================
+-- B2B Lead Targeting Database
+-- Stores prospect businesses that NextGen Fusion wants to pitch services to.
+-- Separate from `contacts` which are email-campaign subscribers.
+-- =====================================================================
+
+create table if not exists leads (
+  id uuid primary key default gen_random_uuid(),
+
+  -- Business identity
+  company_name text not null,
+  contact_name text,
+  contact_title text,             -- e.g. "Founder", "Marketing Manager"
+  email text,
+  phone text,
+  website text,
+
+  -- Targeting metadata
+  industry text,                  -- e.g. "E-commerce", "Real Estate", "Healthcare"
+  company_size text,              -- e.g. "1-10", "11-50", "51-200", "200+"
+  location text,                  -- city / country
+  linkedin_url text,
+
+  -- Which NextGen Fusion service to pitch
+  target_service text,            -- matches service names from service-data.ts
+  pain_point text,                -- what problem they likely have
+
+  -- Lead lifecycle
+  status text not null default 'new',
+  -- new | contacted | replied | meeting_scheduled | proposal_sent | won | lost | not_interested
+
+  -- Outreach tracking
+  last_contacted_at timestamptz,
+  next_followup_at timestamptz,
+  source text,                    -- e.g. "manual", "csv_upload", "linkedin", "referral"
+  assigned_to text,               -- team member name or email
+
+  -- Free-form notes
+  notes text,
+  custom_fields jsonb default '{}'::jsonb,
+
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists leads_company_name_idx on leads (company_name);
+create index if not exists leads_status_idx on leads (status);
+create index if not exists leads_target_service_idx on leads (target_service);
+create index if not exists leads_industry_idx on leads (industry);
+create index if not exists leads_created_at_idx on leads (created_at desc);
+create index if not exists leads_next_followup_idx on leads (next_followup_at)
+  where status not in ('won', 'lost', 'not_interested');
+
+drop trigger if exists trg_leads_updated_at on leads;
+create trigger trg_leads_updated_at before update on leads
+  for each row execute function set_updated_at();
+
+-- =========================
+-- Lead interaction log
+-- =========================
+create table if not exists lead_interactions (
+  id uuid primary key default gen_random_uuid(),
+  lead_id uuid not null references leads(id) on delete cascade,
+  interaction_type text not null, -- email | call | linkedin | meeting | note
+  summary text not null,
+  outcome text,                   -- positive | neutral | negative
+  next_action text,
+  created_by text,
+  created_at timestamptz default now()
+);
+
+create index if not exists lead_interactions_lead_idx on lead_interactions (lead_id, created_at desc);

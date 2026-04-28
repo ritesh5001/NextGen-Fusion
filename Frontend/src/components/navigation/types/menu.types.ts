@@ -84,9 +84,37 @@ export const menuData: MenuChannel[] = [
     ],
   },
   {
-    label: "Solutions",
-    id: "solutions-channel",
-    lists: [],
+    label: "Services",
+    id: "services-channel",
+    lists: [
+      {
+        label: "Web & Design",
+        list: [
+          { label: "Website Development", callout: "High-performance, SEO-ready sites", icon: "brand-vue", url: "/services/website-development-services", target: "_self" },
+          { label: "E-commerce Development", callout: "Stores that convert and scale", icon: "brand-nuxt", url: "/services/ecommerce-web-development-services", target: "_self" },
+          { label: "Web Design", callout: "Conversion-focused UI/UX design", icon: "maas-dt", url: "/services/web-design-services", target: "_self" },
+          { label: "Android App Development", callout: "Native Kotlin apps for growth", icon: "brand-vue", url: "/services/android-app-development-services", target: "_self" },
+        ],
+      },
+      {
+        label: "Marketing & Growth",
+        list: [
+          { label: "SEO Services", callout: "Compounding organic traffic growth", icon: "external-link", url: "/services/seo-services", target: "_self" },
+          { label: "PPC Services", callout: "ROI-focused paid campaigns", icon: "maas-az", url: "/services/ppc-services", target: "_self" },
+          { label: "Social Media Marketing", callout: "Brand authority that converts", icon: "edit-alt", url: "/services/social-media-marketing-services", target: "_self" },
+        ],
+      },
+      {
+        label: "Technology",
+        list: [
+          { label: "AI Automation & Development", callout: "LLM integration & workflow automation", icon: "brand-figma", url: "/services/ai-automation-development-services", target: "_self" },
+          { label: "Software Development", callout: "Custom software for your workflow", icon: "maas-mr", url: "/services/software-development-services", target: "_self" },
+          { label: "API Integration", callout: "Connect all your tools seamlessly", icon: "maas-ve", url: "/services/api-integration-services", target: "_self" },
+          { label: "Cloud Solutions", callout: "Scalable, cost-optimised infrastructure", icon: "maas-robot", url: "/services/cloud-solutions", target: "_self" },
+          { label: "Website Maintenance", callout: "Keep your site secure & fast", icon: "help-circle", url: "/services/website-maintenance-services", target: "_self" },
+        ],
+      },
+    ],
   },
   {
     label: "Product",
