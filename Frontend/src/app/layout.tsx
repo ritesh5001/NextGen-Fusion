@@ -268,7 +268,7 @@ export default function RootLayout({
             <ConsoleEasterEgg />
             <IntegratedNavbar />
             {children}
-            <FloatingWhatsApp />
+            <FloatingWhatsApp phoneNumber="917348228167" message="Hi! I came across NextGen Fusion and I'm interested in discussing a project. Could we schedule a quick call?" />
             <Footer />
           </LenisProvider>
         </ErrorBoundary>

@@ -57,14 +57,14 @@ export default function Footer() {
                 <div className="space-y-6">
                   <div className="text-2xl lg:text-3xl font-medium">
                     <a
-                      href="mailto:hello@nextgenfusion.in?subject=Hello%20NextGen%20Fusion&body=Hi%20there,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20meeting.%0A%0AThank%20you!"
+                      href="mailto:contact@nextgenfusion.in?subject=Project%20Enquiry%20-%20NextGen%20Fusion&body=Hi%20NextGen%20Fusion%20Team,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20call.%0A%0AThank%20you!"
                       className="bg-gradient-to-r bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200 cursor-pointer"
                       style={{
                         backgroundImage:
                           "linear-gradient(90deg, #F6F7FD 2%, #7D85EC 33%, #C79CFF 66%, #59F3FA 100%)",
                       }}
                     >
-                      hello@nextgenfusion.in
+                      contact@nextgenfusion.in
                     </a>
                   </div>
 
@@ -141,14 +141,14 @@ export default function Footer() {
             <div className="border border-white/20 rounded-lg p-4 sm:p-6 bg-black/20 backdrop-blur-sm">
               <div className="text-xl font-medium">
                 <a
-                  href="mailto:hello@nextgenfusion.in?subject=Hello%20NextGen%20Fusion&body=Hi%20there,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20meeting.%0A%0AThank%20you!"
+                  href="mailto:contact@nextgenfusion.in?subject=Project%20Enquiry%20-%20NextGen%20Fusion&body=Hi%20NextGen%20Fusion%20Team,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20call.%0A%0AThank%20you!"
                   className="bg-gradient-to-r bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200 cursor-pointer"
                   style={{
                     backgroundImage:
                       "linear-gradient(90deg, #F6F7FD 2%, #7D85EC 33%, #C79CFF 66%, #59F3FA 100%)",
                   }}
                 >
-                  hello@nextgenfusion.in
+                  contact@nextgenfusion.in
                 </a>
               </div>
             </div>

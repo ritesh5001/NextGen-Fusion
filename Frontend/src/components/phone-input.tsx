@@ -17,7 +17,7 @@ interface PhoneInputProps {
 }
 
 const countries: Country[] = [
-  { code: "ID", name: "Indonesia", flag: "🇮🇩", dialCode: "+62" },
+  { code: "IN", name: "India", flag: "🇮🇳", dialCode: "+91" },
   { code: "US", name: "United States", flag: "🇺🇸", dialCode: "+1" },
   { code: "GB", name: "United Kingdom", flag: "🇬🇧", dialCode: "+44" },
   { code: "CA", name: "Canada", flag: "🇨🇦", dialCode: "+1" },
@@ -55,7 +55,6 @@ const countries: Country[] = [
   { code: "JP", name: "Japan", flag: "🇯🇵", dialCode: "+81" },
   { code: "KR", name: "South Korea", flag: "🇰🇷", dialCode: "+82" },
   { code: "CN", name: "China", flag: "🇨🇳", dialCode: "+86" },
-  { code: "IN", name: "India", flag: "🇮🇳", dialCode: "+91" },
   { code: "TH", name: "Thailand", flag: "🇹🇭", dialCode: "+66" },
   { code: "VN", name: "Vietnam", flag: "🇻🇳", dialCode: "+84" },
   { code: "PH", name: "Philippines", flag: "🇵🇭", dialCode: "+63" },
@@ -104,7 +103,7 @@ const countries: Country[] = [
 ]
 
 export default function PhoneInput({ onChange, placeholder = "Phone number" }: Omit<PhoneInputProps, 'value'>) {
-  const [selectedCountry, setSelectedCountry] = useState<Country>(countries[0]) // Default to Indonesia
+  const [selectedCountry, setSelectedCountry] = useState<Country>(countries[0])
   const [isOpen, setIsOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")

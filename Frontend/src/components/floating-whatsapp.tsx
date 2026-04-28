@@ -9,9 +9,9 @@ interface FloatingWhatsAppProps {
   message?: string
 }
 
-export default function FloatingWhatsApp({ 
-  phoneNumber = "6281311846525", // Default Indonesian number format
-  message = "Hello! I'm interested in your services."
+export default function FloatingWhatsApp({
+  phoneNumber = "917348228167",
+  message = "Hi! I'm interested in your services. Could we schedule a quick call?"
 }: FloatingWhatsAppProps) {
   const [isVisible, setIsVisible] = useState(false)
 

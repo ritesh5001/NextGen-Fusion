@@ -25,11 +25,13 @@ export default function ConsoleEasterEgg() {
 
 `)
 
-    console.log('📱 Want to work with us? Contact us on WhatsApp:')
+    console.log('📱 Want to work with us? Reach us at:')
 
-    console.log('  📞 +62 896-5903-84')
+    console.log('  📞 +91 73482 28167')
 
-    console.log('  🔗 https://wa.me/62896590384')
+    console.log('  📧 contact@nextgenfusion.in')
+
+    console.log('  🔗 https://wa.me/917348228167')
   }, [])
 
   // Component ini tidak render apa-apa
