@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import type { NextFunction, Request, Response } from 'express'
 import authRoutes from './routes/auth'
 import campaignRoutes from './routes/campaigns'
 import contactRoutes from './routes/contacts'
@@ -10,6 +11,7 @@ import statsRoutes from './routes/stats'
 
 const app = express()
 const PORT = process.env.PORT || 4000
+const requestBodyLimit = process.env.REQUEST_BODY_LIMIT || '2mb'
 
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000').split(',').map(s => s.trim())
 
@@ -24,9 +26,9 @@ app.use(cors({
   credentials: true,
 }))
 
-app.use(express.json())
+app.use(express.json({ limit: requestBodyLimit }))
 app.use(express.text({ type: 'text/plain' }))
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true, limit: requestBodyLimit }))
 app.use(cookieParser())
 
 app.use('/api/admin', authRoutes)
@@ -36,6 +38,22 @@ app.use('/api/admin', contactRoutes)
 app.use('/api/cron', cronRoutes)
 
 app.get('/health', (_req, res) => res.json({ ok: true }))
+
+app.use((error: unknown, _req: Request, res: Response, next: NextFunction) => {
+  if (
+    error &&
+    typeof error === 'object' &&
+    'type' in error &&
+    error.type === 'entity.too.large'
+  ) {
+    return res.status(413).json({
+      error: 'Request payload is too large',
+      limit: requestBodyLimit,
+    })
+  }
+
+  return next(error)
+})
 
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`)
