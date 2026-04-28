@@ -118,7 +118,7 @@ export default function CampaignDetailPage() {
     return () => clearInterval(t)
   }, [campaign?.status, load])
 
-  async function setStatus(status: 'active' | 'paused' | 'completed' | 'draft') {
+  async function setStatus(status: 'active' | 'paused' | 'completed' | 'draft' | 'restart') {
     setBusy(true)
     try {
       const res = await fetch(`/api/admin/campaigns/${id}/status`, {
@@ -240,6 +240,24 @@ export default function CampaignDetailPage() {
                   className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 text-white px-3 py-2 text-sm font-medium hover:bg-emerald-700"
                 >
                   <Play className="h-4 w-4" /> Resume
+                </button>
+              )}
+              {campaign.status === 'completed' && (
+                <button
+                  onClick={() => {
+                    if (
+                      confirm(
+                        'Restart this completed campaign? This will reset recipient progress and queue the campaign again.'
+                      )
+                    ) {
+                      setStatus('restart')
+                    }
+                  }}
+                  disabled={busy || counts.total === 0}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 text-white px-3 py-2 text-sm font-medium hover:bg-emerald-700 disabled:opacity-50"
+                  title={counts.total === 0 ? 'Add recipients first' : 'Reset and send again'}
+                >
+                  <Play className="h-4 w-4" /> Restart campaign
                 </button>
               )}
               <button

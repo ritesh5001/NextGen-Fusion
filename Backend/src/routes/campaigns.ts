@@ -60,6 +60,26 @@ async function fetchAllCampaignRecipients(
   return rows
 }
 
+async function fetchAllCampaignRecipientIds(
+  sb: ReturnType<typeof getSupabaseAdmin>,
+  campaignId: string
+): Promise<string[]> {
+  const ids: string[] = []
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    const { data, error } = await sb
+      .from('campaign_recipients')
+      .select('id')
+      .eq('campaign_id', campaignId)
+      .order('created_at', { ascending: true })
+      .range(offset, offset + PAGE_SIZE - 1)
+    if (error) throw error
+    const chunk = (data || []).map((r: { id: string }) => r.id)
+    ids.push(...chunk)
+    if (chunk.length < PAGE_SIZE) break
+  }
+  return ids
+}
+
 // GET /api/admin/campaigns
 router.get('/campaigns', requireAuth, async (_req, res) => {
   try {
@@ -146,16 +166,46 @@ router.delete('/campaigns/:id', requireAuth, async (req, res) => {
 router.post('/campaigns/:id/status', requireAuth, async (req, res) => {
   try {
     const sb = getSupabaseAdmin()
-    const ALLOWED = new Set(['draft', 'active', 'paused', 'completed'])
+    const ALLOWED = new Set(['draft', 'active', 'paused', 'completed', 'restart'])
     const status = req.body?.status
     if (!ALLOWED.has(status)) { res.status(400).json({ error: 'Invalid status' }); return }
-    const update: Record<string, unknown> = { status }
-    if (status === 'active') update.started_at = new Date().toISOString()
-    if (status === 'completed') update.completed_at = new Date().toISOString()
+    const nowIso = new Date().toISOString()
+    const update: Record<string, unknown> =
+      status === 'restart'
+        ? { status: 'active', started_at: nowIso, completed_at: null }
+        : { status }
+    if (status === 'active') update.started_at = nowIso
+    if (status === 'completed') update.completed_at = nowIso
     const { data, error } = await sb
       .from('campaigns').update(update).eq('id', req.params.id).select().single()
     if (error) { res.status(500).json({ error: error.message }); return }
-    if (status === 'active') {
+    if (status === 'restart') {
+      const campaign = data as { send_interval_seconds?: number | null } | null
+      const recipientIds = await fetchAllCampaignRecipientIds(sb, req.params.id)
+      const intervalSeconds = Math.max(1, campaign?.send_interval_seconds || 60)
+      const intervalMs = intervalSeconds * 1000
+      const rows = recipientIds.map((id, i) => ({
+        id,
+        status: 'pending' as const,
+        next_send_at: new Date(Date.now() + i * intervalMs).toISOString(),
+        initial_sent_at: null,
+        last_sent_at: null,
+        followup_count: 0,
+        last_error: null,
+      }))
+      for (let i = 0; i < rows.length; i += PAGE_SIZE) {
+        const chunk = rows.slice(i, i + PAGE_SIZE)
+        const { error: resetErr } = await sb.from('campaign_recipients').upsert(chunk, {
+          onConflict: 'id',
+        })
+        if (resetErr) { res.status(500).json({ error: resetErr.message }); return }
+      }
+      try {
+        await processOnce()
+      } catch {
+        // Ignore cron errors here; restart still succeeded.
+      }
+    } else if (status === 'active') {
       try {
         await processOnce()
       } catch {
