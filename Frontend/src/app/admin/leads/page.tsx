@@ -48,16 +48,24 @@ export default function LeadsPage() {
   const [statusFilter, setStatusFilter] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [setupWarning, setSetupWarning] = useState<string | null>(null)
 
   async function load(query = q, status = statusFilter) {
     setLoading(true)
     setError(null)
+    setSetupWarning(null)
     try {
       const params = new URLSearchParams({ limit: '200' })
       if (query) params.set('q', query)
       if (status) params.set('status', status)
       const res = await fetch(`/api/admin/leads?${params}`)
       const json = await res.json()
+      if (json?.setupRequired) {
+        setItems([])
+        setCount(0)
+        setSetupWarning(json?.message || 'Leads storage is not provisioned yet.')
+        return
+      }
       if (!res.ok) throw new Error(json?.error || 'Failed to load')
       setItems(json.data || [])
       setCount(json.count || 0)
@@ -110,6 +118,12 @@ export default function LeadsPage() {
             </div>
           }
         />
+
+        {setupWarning && (
+          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+            {setupWarning}
+          </div>
+        )}
 
         {/* Filters */}
         <form onSubmit={onSearch} className="mt-6 flex flex-wrap gap-3">
