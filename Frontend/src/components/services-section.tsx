@@ -2,12 +2,14 @@
 
 import { motion, useScroll, useTransform, useInView } from "framer-motion"
 import { useRef } from "react"
+import Link from "next/link"
 import BadgeSubtitle from "./badge-subtitle"
 import Image from "next/image"
 import { useState } from "react"
 import { RetroGrid } from "./ui/retro-grid"
 import { OptimizedIcon } from "./ui/optimized-icon"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
+import { serviceRoutes } from "./services/service-data"
 
 // Animation variants
 const containerVariants = {
@@ -246,67 +248,60 @@ export default function ServicesSection() {
         >
           {services.map((service, index) => {
             const isActive = activeCard === index
-            const descriptionRef = useRef<HTMLDivElement>(null)
-            const isDescriptionInView = useInView(descriptionRef, { once: true, margin: "-50px" })
+            const href = serviceRoutes[service.title] ?? "#"
 
             return (
-              <motion.div
-                key={index}
-                className="group relative p-4 sm:p-6 lg:p-8 cursor-pointer overflow-hidden transition-all duration-500"
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -3, transition: { duration: 0.3, ease: "easeOut" } }}
-                onClick={() => handleCardClick(index)}
-              >
-                {/* Hover overlay effect */}
+              <Link key={index} href={href} className="block">
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-[#2B35AB]/3 via-[#8A38F5]/3 to-[#13CBD4]/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  initial={false}
-                  animate={isActive ? { opacity: 1 } : { opacity: 0 }}
-                />
-                {/* Service Content */}
-                <div className="relative z-10">
-                  {/* Service Icon */}
+                  className="group relative p-4 sm:p-6 lg:p-8 cursor-pointer overflow-hidden transition-all duration-500"
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -3, transition: { duration: 0.3, ease: "easeOut" } }}
+                  onClick={() => handleCardClick(index)}
+                >
+                  {/* Hover overlay effect */}
                   <motion.div
-                    className="mb-6 sm:mb-8"
-                    variants={iconVariants}
-                  >
-                  <div className="relative w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 flex items-center justify-center">
-                    {/* Subtle icon background - only visible on hover */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-[#2B35AB]/5 via-[#8A38F5]/5 to-[#13CBD4]/5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500"
-                      whileHover={{
-                        scale: 1.05,
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <div className="relative z-10 w-6 h-6 sm:w-7 sm:h-7 lg:w-9 lg:h-9 flex items-center justify-center">
-                      <OptimizedIcon
-                        src={service.icon || "/placeholder.svg"}
-                        alt={service.title}
-                        variants={iconVariants}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
+                    className="absolute inset-0 bg-gradient-to-br from-[#2B35AB]/3 via-[#8A38F5]/3 to-[#13CBD4]/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    initial={false}
+                    animate={isActive ? { opacity: 1 } : { opacity: 0 }}
+                  />
+                  {/* Service Content */}
+                  <div className="relative z-10">
+                    {/* Service Icon */}
+                    <motion.div className="mb-6 sm:mb-8" variants={iconVariants}>
+                      <div className="relative w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 flex items-center justify-center">
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-br from-[#2B35AB]/5 via-[#8A38F5]/5 to-[#13CBD4]/5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500"
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.3 }}
+                        />
+                        <div className="relative z-10 w-6 h-6 sm:w-7 sm:h-7 lg:w-9 lg:h-9 flex items-center justify-center">
+                          <OptimizedIcon
+                            src={service.icon || "/placeholder.svg"}
+                            alt={service.title}
+                            variants={iconVariants}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
 
-                {/* Service Content */}
-                <motion.div variants={textVariants} className="text-left">
-                  <h3 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 mb-2 sm:mb-3 group-hover:bg-gradient-to-r group-hover:from-[#2B35AB] group-hover:via-[#8A38F5] group-hover:to-[#13CBD4] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                    {service.title}
-                  </h3>
-                  {/* Hide description on desktop, show on mobile */}
-                  <div className="overflow-hidden">
-                    <p className="text-gray-600 leading-relaxed text-xs sm:text-sm md:text-base transition-all duration-300 block lg:hidden lg:group-hover:block lg:opacity-0 lg:h-0 lg:group-hover:opacity-100 lg:group-hover:h-auto lg:mt-2">
-                      {service.description}
-                    </p>
+                    {/* Service Content */}
+                    <motion.div variants={textVariants} className="text-left">
+                      <h3 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 mb-2 sm:mb-3 group-hover:bg-gradient-to-r group-hover:from-[#2B35AB] group-hover:via-[#8A38F5] group-hover:to-[#13CBD4] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                        {service.title}
+                      </h3>
+                      <div className="overflow-hidden">
+                        <p className="text-gray-600 leading-relaxed text-xs sm:text-sm md:text-base transition-all duration-300 block lg:hidden lg:group-hover:block lg:opacity-0 lg:h-0 lg:group-hover:opacity-100 lg:group-hover:h-auto lg:mt-2">
+                          {service.description}
+                        </p>
+                      </div>
+                    </motion.div>
                   </div>
                 </motion.div>
-                </div>
-              </motion.div>
+              </Link>
             )
           })}
         </motion.div>
