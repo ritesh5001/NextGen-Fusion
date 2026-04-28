@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express'
 import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
+import { processOnce } from './cron'
 
 const router = Router()
 
@@ -105,6 +106,13 @@ router.post('/campaigns/:id/status', requireAuth, async (req, res) => {
     const { data, error } = await sb
       .from('campaigns').update(update).eq('id', req.params.id).select().single()
     if (error) { res.status(500).json({ error: error.message }); return }
+    if (status === 'active') {
+      try {
+        await processOnce()
+      } catch {
+        // Ignore cron errors here; campaign still activated.
+      }
+    }
     res.json({ data })
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Internal error' })
@@ -187,11 +195,16 @@ router.post('/campaigns/:id/recipients', requireAuth, async (req, res) => {
       .order('next_send_at', { ascending: false, nullsFirst: false })
       .limit(1)
 
-    const intervalMs = Math.max(1, campaign.send_interval_seconds || 60) * 1000
-    const baseTimeMs = Math.max(
-      Date.now(),
-      lastQueued?.[0]?.next_send_at ? new Date(lastQueued[0].next_send_at).getTime() + intervalMs : 0
-    )
+    const intervalSeconds = campaign.status === 'active'
+      ? 0
+      : Math.max(1, campaign.send_interval_seconds || 60)
+    const intervalMs = intervalSeconds * 1000
+    const baseTimeMs = campaign.status === 'active'
+      ? Date.now()
+      : Math.max(
+        Date.now(),
+        lastQueued?.[0]?.next_send_at ? new Date(lastQueued[0].next_send_at).getTime() + intervalMs : 0
+      )
 
     const rows = contactIds.map((cid: string, i: number) => ({
       campaign_id: campaignId,
@@ -204,6 +217,13 @@ router.post('/campaigns/:id/recipients', requireAuth, async (req, res) => {
       .from('campaign_recipients')
       .upsert(rows, { onConflict: 'campaign_id,contact_id', ignoreDuplicates: true })
     if (insErr) { res.status(500).json({ error: insErr.message }); return }
+    if (campaign.status === 'active') {
+      try {
+        await processOnce()
+      } catch {
+        // Ignore cron errors here; recipients are queued for cron.
+      }
+    }
     res.json({ ok: true, added: rows.length })
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Internal error' })

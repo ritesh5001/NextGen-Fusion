@@ -23,7 +23,7 @@ function isAuthorized(req: Request): boolean {
   return req.query.secret === secret
 }
 
-async function processOnce() {
+export async function processOnce() {
   const sb = getSupabaseAdmin()
   const nowIso = new Date().toISOString()
 
