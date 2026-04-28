@@ -174,7 +174,7 @@ router.post('/campaigns/:id/recipients', requireAuth, async (req, res) => {
     if (Array.isArray(body?.contact_ids)) {
       contactIds = body.contact_ids.filter((x: unknown) => typeof x === 'string')
     } else if (body?.all === true || body?.filter) {
-      let q = sb.from('contacts').select('id').eq('unsubscribed', false).limit(50000)
+      let q = sb.from('contacts').select('id').eq('unsubscribed', false).limit(200000)
       if (body?.filter?.company) q = q.ilike('company', `%${body.filter.company}%`)
       if (body?.filter?.industry) q = q.ilike('industry', `%${body.filter.industry}%`)
       const { data, error } = await q
