@@ -38,20 +38,34 @@ async function proxyRequest(req: Request, method: string, path: string) {
   })
 }
 
-type RouteContext = { params: { path: string[] } }
-
-export async function GET(req: Request, context: RouteContext) {
-  return proxyRequest(req, 'GET', context.params.path.join('/'))
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ path: string[] }> }
+) {
+  const { path } = await params
+  return proxyRequest(req, 'GET', path.join('/'))
 }
 
-export async function POST(req: Request, context: RouteContext) {
-  return proxyRequest(req, 'POST', context.params.path.join('/'))
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ path: string[] }> }
+) {
+  const { path } = await params
+  return proxyRequest(req, 'POST', path.join('/'))
 }
 
-export async function PATCH(req: Request, context: RouteContext) {
-  return proxyRequest(req, 'PATCH', context.params.path.join('/'))
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ path: string[] }> }
+) {
+  const { path } = await params
+  return proxyRequest(req, 'PATCH', path.join('/'))
 }
 
-export async function DELETE(req: Request, context: RouteContext) {
-  return proxyRequest(req, 'DELETE', context.params.path.join('/'))
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ path: string[] }> }
+) {
+  const { path } = await params
+  return proxyRequest(req, 'DELETE', path.join('/'))
 }
