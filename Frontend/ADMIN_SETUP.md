@@ -12,6 +12,7 @@ email campaigns via Resend, backed by Supabase.
 - **Recipient picker** — add selected contacts, all contacts, or by filter.
 - **Live send log** + per-recipient status (next send time, follow-up count, errors).
 - **Cron endpoint** at `/api/cron/process-campaigns` for VPS cron.
+- **Built-in queue worker** in the backend process for automatic sending even without system cron.
 
 ## 1. Supabase setup
 
@@ -98,6 +99,18 @@ Authorization: Bearer $CRON_SECRET
 It picks up to 50 due recipients per call, sends them, schedules their
 follow-up (or marks them completed), and auto-completes campaigns when
 nothing is left. **Call it every minute** from your VPS.
+
+If you do not want to manage external cron, the backend also starts an
+internal worker by default:
+
+```
+CAMPAIGN_PROCESSOR_ENABLED=true
+CAMPAIGN_PROCESSOR_INTERVAL_MS=30000
+```
+
+That worker calls the same queue processor on a timer with overlap
+protection. External cron is still fine, but not required for a single
+backend instance.
 
 ### Linux crontab (every minute)
 
