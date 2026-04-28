@@ -11,6 +11,11 @@ const ALLOWED_FIELDS = [
   'email', 'name', 'company', 'phone', 'website', 'industry', 'notes', 'custom_fields', 'unsubscribed',
 ] as const
 
+function isMissingTableError(error: { code?: string; message?: string } | null | undefined): boolean {
+  if (!error) return false
+  return error.code === '42P01' || /schema cache|could not find the table/i.test(error.message || '')
+}
+
 function pickContact(body: any): Record<string, unknown> {
   const out: Record<string, unknown> = {}
   for (const f of ALLOWED_FIELDS) if (f in body) out[f] = body[f]
@@ -37,7 +42,18 @@ router.get('/contacts', requireAuth, async (req, res) => {
     }
 
     const { data, error, count } = await query
-    if (error) { res.status(500).json({ error: error.message }); return }
+    if (error) {
+      if (isMissingTableError(error)) {
+        res.json({
+          data: [],
+          count: 0,
+          setupRequired: true,
+          message: 'Contacts storage is not provisioned yet. Apply Frontend/supabase/schema.sql to your Supabase project.',
+        })
+        return
+      }
+      res.status(500).json({ error: error.message }); return
+    }
     res.json({ data, count: count || 0 })
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Internal error' })

@@ -22,15 +22,23 @@ export default function ContactsPage() {
   const [q, setQ] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [setupWarning, setSetupWarning] = useState<string | null>(null)
 
   async function load(query = q) {
     setLoading(true)
     setError(null)
+    setSetupWarning(null)
     try {
       const res = await fetch(
         `/api/admin/contacts?limit=200&q=${encodeURIComponent(query)}`
       )
       const json = await res.json()
+      if (json?.setupRequired) {
+        setItems([])
+        setCount(0)
+        setSetupWarning(json?.message || 'Contacts storage is not provisioned yet.')
+        return
+      }
       if (!res.ok) throw new Error(json?.error || 'Failed to load')
       setItems(json.data || [])
       setCount(json.count || 0)
@@ -80,6 +88,12 @@ export default function ContactsPage() {
             </div>
           }
         />
+
+        {setupWarning && (
+          <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            {setupWarning}
+          </div>
+        )}
 
         <form
           onSubmit={(e) => {
