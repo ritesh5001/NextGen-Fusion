@@ -4,12 +4,10 @@ import "./globals.css";
 import "../styles/fonts.css";
 import "../styles/optimized-icons.css";
 import ConsoleEasterEgg from "@/components/console-easter-egg";
-import FloatingWhatsApp from "@/components/floating-whatsapp";
 import ErrorBoundary from "@/components/error-boundary";
 import "@/lib/error-handler";
 import LenisProvider from "@/components/lenis-provider";
-import IntegratedNavbar from "@/components/integrated-navbar";
-import Footer from "@/components/footer";
+import LayoutChrome from "@/components/layout-chrome";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.nextgenfusion.in"),
@@ -266,10 +264,7 @@ export default function RootLayout({
         <ErrorBoundary>
           <LenisProvider>
             <ConsoleEasterEgg />
-            <IntegratedNavbar />
-            {children}
-            <FloatingWhatsApp phoneNumber="917348228167" message="Hi! I came across NextGen Fusion and I'm interested in discussing a project. Could we schedule a quick call?" />
-            <Footer />
+            <LayoutChrome>{children}</LayoutChrome>
           </LenisProvider>
         </ErrorBoundary>
       </body>
