@@ -80,6 +80,26 @@ async function fetchAllCampaignRecipientIds(
   return ids
 }
 
+async function fetchAllCampaignLogs(
+  sb: ReturnType<typeof getSupabaseAdmin>,
+  campaignId: string
+) {
+  const rows: any[] = []
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    const { data, error } = await sb
+      .from('email_logs')
+      .select('*')
+      .eq('campaign_id', campaignId)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + PAGE_SIZE - 1)
+    if (error) throw error
+    const chunk = data || []
+    rows.push(...chunk)
+    if (chunk.length < PAGE_SIZE) break
+  }
+  return rows
+}
+
 // GET /api/admin/campaigns
 router.get('/campaigns', requireAuth, async (_req, res) => {
   try {
@@ -222,13 +242,7 @@ router.post('/campaigns/:id/status', requireAuth, async (req, res) => {
 router.get('/campaigns/:id/logs', requireAuth, async (req, res) => {
   try {
     const sb = getSupabaseAdmin()
-    const { data, error } = await sb
-      .from('email_logs')
-      .select('*')
-      .eq('campaign_id', req.params.id)
-      .order('created_at', { ascending: false })
-      .limit(500)
-    if (error) { res.status(500).json({ error: error.message }); return }
+    const data = await fetchAllCampaignLogs(sb, req.params.id)
     res.json({ data })
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Internal error' })
