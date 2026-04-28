@@ -42,11 +42,44 @@ export async function processOnce() {
     (r) => r.campaigns?.status === 'active' && r.contacts && !r.contacts.unsubscribed
   )
 
+  const startOfDay = new Date()
+  startOfDay.setUTCHours(0, 0, 0, 0)
+  const endOfDay = new Date(startOfDay)
+  endOfDay.setUTCDate(endOfDay.getUTCDate() + 1)
+
+  const campaignIds = Array.from(new Set(work.map((r) => r.campaign_id)))
+  const remainingByCampaign = new Map<string, number | null>()
+
+  for (const cid of campaignIds) {
+    const campaign = work.find((r) => r.campaign_id === cid)?.campaigns
+    const limit = campaign?.daily_send_limit ?? null
+    if (!limit || limit <= 0) {
+      remainingByCampaign.set(cid, null)
+      continue
+    }
+
+    const { count, error } = await sb
+      .from('email_logs')
+      .select('id', { count: 'exact', head: true })
+      .eq('campaign_id', cid)
+      .eq('status', 'sent')
+      .gte('created_at', startOfDay.toISOString())
+      .lt('created_at', endOfDay.toISOString())
+
+    if (error) throw new Error(error.message)
+    remainingByCampaign.set(cid, Math.max(0, limit - (count ?? 0)))
+  }
+
   let sent = 0
   let failed = 0
-  const skipped = rows.length - work.length
+  let skipped = rows.length - work.length
 
   for (const r of work) {
+    const remaining = remainingByCampaign.get(r.campaign_id)
+    if (remaining === 0) {
+      skipped++
+      continue
+    }
     const campaign = r.campaigns!
     const contact = r.contacts!
     const isFollowup = r.status === 'followup_pending'
@@ -81,6 +114,9 @@ export async function processOnce() {
     }
 
     sent++
+    if (remaining != null) {
+      remainingByCampaign.set(r.campaign_id, Math.max(0, remaining - 1))
+    }
     const newFollowupCount = isFollowup ? r.followup_count + 1 : 0
     const sentAtIso = new Date().toISOString()
     const willFollowUp =
@@ -115,7 +151,6 @@ export async function processOnce() {
     }
   }
 
-  const campaignIds = Array.from(new Set(work.map((r) => r.campaign_id)))
   for (const cid of campaignIds) {
     const { count } = await sb
       .from('campaign_recipients')

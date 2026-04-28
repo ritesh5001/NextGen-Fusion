@@ -8,7 +8,7 @@ const router = Router()
 const CAMPAIGN_FIELDS = [
   'name', 'description', 'status', 'from_name', 'from_email', 'reply_to',
   'subject', 'body_html', 'followup_enabled', 'followup_days', 'followup_subject',
-  'followup_body_html', 'max_followups', 'send_interval_seconds',
+  'followup_body_html', 'max_followups', 'send_interval_seconds', 'daily_send_limit',
 ] as const
 
 function pickCampaign(body: any): Record<string, unknown> {
@@ -46,6 +46,9 @@ router.post('/campaigns', requireAuth, async (req, res) => {
     if (payload.followup_days == null) payload.followup_days = 3
     if (payload.max_followups == null) payload.max_followups = 1
     if (payload.followup_enabled == null) payload.followup_enabled = true
+    if (typeof payload.daily_send_limit === 'number' && payload.daily_send_limit <= 0) {
+      payload.daily_send_limit = null
+    }
     payload.status = 'draft'
     const { data, error } = await sb.from('campaigns').insert(payload).select().single()
     if (error) { res.status(500).json({ error: error.message }); return }
@@ -72,6 +75,9 @@ router.patch('/campaigns/:id', requireAuth, async (req, res) => {
   try {
     const sb = getSupabaseAdmin()
     const payload = pickCampaign(req.body)
+    if (typeof payload.daily_send_limit === 'number' && payload.daily_send_limit <= 0) {
+      payload.daily_send_limit = null
+    }
     const { data, error } = await sb
       .from('campaigns').update(payload).eq('id', req.params.id).select().single()
     if (error) { res.status(500).json({ error: error.message }); return }

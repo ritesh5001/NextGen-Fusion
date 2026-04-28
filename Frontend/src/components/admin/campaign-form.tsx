@@ -18,6 +18,7 @@ export type CampaignFormValue = {
   followup_body_html: string
   max_followups: number
   send_interval_seconds: number
+  daily_send_limit: number
 }
 
 const DEFAULT_BODY = `<p>Hi {{first_name}},</p>
@@ -51,6 +52,7 @@ export function CampaignForm({ initial }: { initial?: Partial<CampaignFormValue>
     followup_body_html: initial?.followup_body_html || DEFAULT_FOLLOWUP,
     max_followups: initial?.max_followups ?? 1,
     send_interval_seconds: initial?.send_interval_seconds ?? 60,
+    daily_send_limit: initial?.daily_send_limit ?? 0,
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -165,6 +167,20 @@ export function CampaignForm({ initial }: { initial?: Partial<CampaignFormValue>
               onChange={(e) => update('followup_days', Number(e.target.value))}
               className={inputClass}
             />
+          </Field>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="Daily send limit (0 = no limit)">
+            <input
+              type="number"
+              min={0}
+              value={value.daily_send_limit}
+              onChange={(e) => update('daily_send_limit', Number(e.target.value))}
+              className={inputClass}
+            />
+            <p className="text-xs text-slate-500 mt-1">
+              Sets the maximum number of emails this campaign can send per day.
+            </p>
           </Field>
         </div>
         <div className="grid grid-cols-2 gap-4">

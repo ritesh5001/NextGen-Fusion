@@ -48,6 +48,7 @@ export type Campaign = {
   followup_body_html: string | null
   max_followups: number
   send_interval_seconds: number
+  daily_send_limit: number | null
   started_at: string | null
   completed_at: string | null
   created_at: string

@@ -53,6 +53,7 @@ create table if not exists campaigns (
 
   -- Pacing
   send_interval_seconds int default 60, -- spacing between recipients
+  daily_send_limit int,
 
   started_at timestamptz,
   completed_at timestamptz,
