@@ -1,28 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getSupabaseAdmin, type Campaign, type Contact } from '@/lib/admin/supabase'
-import { sendCampaignEmail } from '@/lib/admin/email'
+import { Router, Request } from 'express'
+import { getSupabaseAdmin, type Campaign, type Contact } from '../lib/supabase'
+import { sendCampaignEmail } from '../lib/email'
 
-export const dynamic = 'force-dynamic'
-export const maxDuration = 60
-
-/**
- * Cron processor.
- *
- * Call this every minute from your VPS:
- *   curl -X POST -H "Authorization: Bearer $CRON_SECRET" \
- *     https://YOUR_HOST/api/cron/process-campaigns
- *
- * It:
- *   1. Finds recipients whose next_send_at is due, status in (pending, followup_pending),
- *      and whose campaign is `active`.
- *   2. Sends them via Resend (initial or follow-up).
- *   3. Schedules the next follow-up if applicable, or marks the recipient completed.
- *   4. Marks a campaign `completed` once every recipient has been resolved.
- *
- * Caps at MAX_PER_RUN sends per invocation to stay within Resend rate limits and
- * Next.js function timeouts. Call frequently (every minute) to drain the queue.
- */
-
+const router = Router()
 const MAX_PER_RUN = 50
 
 type RecipientRow = {
@@ -35,14 +15,12 @@ type RecipientRow = {
   campaigns: Campaign | null
 }
 
-function isAuthorized(req: NextRequest): boolean {
+function isAuthorized(req: Request): boolean {
   const secret = process.env.CRON_SECRET
   if (!secret) return false
-  const auth = req.headers.get('authorization') || ''
+  const auth = req.headers.authorization || ''
   if (auth === `Bearer ${secret}`) return true
-  // Fallback: ?secret=... query param (for cron services that can't set headers)
-  const qs = new URL(req.url).searchParams.get('secret')
-  return qs === secret
+  return req.query.secret === secret
 }
 
 async function processOnce() {
@@ -51,9 +29,7 @@ async function processOnce() {
 
   const { data: due, error } = await sb
     .from('campaign_recipients')
-    .select(
-      'id, campaign_id, contact_id, status, followup_count, contacts(*), campaigns(*)'
-    )
+    .select('id, campaign_id, contact_id, status, followup_count, contacts(*), campaigns(*)')
     .lte('next_send_at', nowIso)
     .in('status', ['pending', 'followup_pending'])
     .order('next_send_at', { ascending: true })
@@ -62,23 +38,19 @@ async function processOnce() {
   if (error) throw new Error(error.message)
   const rows = (due as unknown as RecipientRow[]) || []
 
-  // Filter to active campaigns + valid contact + not unsubscribed
   const work = rows.filter(
-    (r) =>
-      r.campaigns?.status === 'active' &&
-      r.contacts &&
-      !r.contacts.unsubscribed
+    (r) => r.campaigns?.status === 'active' && r.contacts && !r.contacts.unsubscribed
   )
 
   let sent = 0
   let failed = 0
-  let skipped = rows.length - work.length
+  const skipped = rows.length - work.length
 
   for (const r of work) {
     const campaign = r.campaigns!
     const contact = r.contacts!
     const isFollowup = r.status === 'followup_pending'
-    const followupNumber = r.followup_count + (isFollowup ? 1 : 0) // 0 for initial
+    const followupNumber = r.followup_count + (isFollowup ? 1 : 0)
     const emailType = isFollowup ? `followup_${followupNumber}` : 'initial'
 
     const result = await sendCampaignEmail({
@@ -87,7 +59,6 @@ async function processOnce() {
       type: isFollowup ? (`followup_${followupNumber}` as const) : 'initial',
     })
 
-    // Log the attempt
     await sb.from('email_logs').insert({
       campaign_id: campaign.id,
       contact_id: contact.id,
@@ -112,8 +83,6 @@ async function processOnce() {
     sent++
     const newFollowupCount = isFollowup ? r.followup_count + 1 : 0
     const sentAtIso = new Date().toISOString()
-
-    // Decide next state
     const willFollowUp =
       campaign.followup_enabled && newFollowupCount < (campaign.max_followups ?? 0)
 
@@ -146,7 +115,6 @@ async function processOnce() {
     }
   }
 
-  // Auto-complete campaigns that have nothing left to do
   const campaignIds = Array.from(new Set(work.map((r) => r.campaign_id)))
   for (const cid of campaignIds) {
     const { count } = await sb
@@ -166,22 +134,20 @@ async function processOnce() {
   return { processed: rows.length, sent, failed, skipped }
 }
 
-export async function POST(req: NextRequest) {
+async function handleCron(req: Request, res: any) {
   if (!isAuthorized(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    res.status(401).json({ error: 'Unauthorized' })
+    return
   }
   try {
     const result = await processOnce()
-    return NextResponse.json({ ok: true, ...result })
+    res.json({ ok: true, ...result })
   } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : 'Cron error' },
-      { status: 500 }
-    )
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Cron error' })
   }
 }
 
-export async function GET(req: NextRequest) {
-  // Allow GET too — many cron services prefer it
-  return POST(req)
-}
+router.post('/process-campaigns', handleCron)
+router.get('/process-campaigns', handleCron)
+
+export default router

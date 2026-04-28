@@ -19,20 +19,12 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const normalizedPath = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/'
   const isAdminLogin = normalizedPath === '/admin/login'
-  const isAdminApiLogin = normalizedPath === '/api/admin/login'
 
-  // Only guard /admin pages and /api/admin/* (but not the login endpoint)
-  const isAdminPage = normalizedPath.startsWith('/admin') && !isAdminLogin
-  const isAdminApi = normalizedPath.startsWith('/api/admin') && !isAdminApiLogin
-
-  if (!isAdminPage && !isAdminApi) return NextResponse.next()
+  // Only guard /admin/* pages (not /admin/login itself)
+  if (!normalizedPath.startsWith('/admin') || isAdminLogin) return NextResponse.next()
 
   const token = req.cookies.get(COOKIE_NAME)?.value
   if (await isValid(token)) return NextResponse.next()
-
-  if (isAdminApi) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
 
   const url = req.nextUrl.clone()
   url.pathname = '/admin/login'
@@ -41,5 +33,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/admin/:path*'],
 }

@@ -11,9 +11,6 @@ function getResend(): Resend {
   return resendClient
 }
 
-/**
- * Replace {{name}}, {{email}}, {{company}} … tokens with contact fields.
- */
 export function renderTemplate(template: string, contact: Contact): string {
   if (!template) return ''
   const map: Record<string, string> = {
@@ -25,21 +22,14 @@ export function renderTemplate(template: string, contact: Contact): string {
     website: contact.website || '',
     industry: contact.industry || '',
   }
-  // Merge custom_fields (lower priority — only if not already defined)
   if (contact.custom_fields && typeof contact.custom_fields === 'object') {
     for (const [k, v] of Object.entries(contact.custom_fields)) {
       if (!(k in map) && v != null) map[k] = String(v)
     }
   }
-  return template.replace(/\{\{\s*([\w.-]+)\s*\}\}/g, (_, key) => {
-    return map[key] ?? ''
-  })
+  return template.replace(/\{\{\s*([\w.-]+)\s*\}\}/g, (_, key) => map[key] ?? '')
 }
 
-/**
- * Default professional HTML wrapper. Used when a campaign body is plain
- * (no <html> tag) to give it consistent styling.
- */
 export function wrapHtmlEmail(innerHtml: string, opts?: { unsubscribeUrl?: string }) {
   if (innerHtml.trim().toLowerCase().startsWith('<!doctype') || innerHtml.includes('<html')) {
     return innerHtml
@@ -106,7 +96,7 @@ export async function sendCampaignEmail({ campaign, contact, type }: SendArgs): 
       to: contact.email,
       subject,
       html: body,
-      replyTo: replyTo,
+      replyTo,
     })
     if (res.error) {
       return { ok: false, error: res.error.message || 'Resend error', subject }
