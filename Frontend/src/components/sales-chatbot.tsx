@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Bot, Send, X, CalendarDays, PhoneCall } from "lucide-react"
+import { Sparkles, Send, X, CalendarDays, PhoneCall } from "lucide-react"
 import { openBookingModal } from "./booking-modal"
 
 type ChatMessage = {
@@ -83,7 +83,7 @@ export default function SalesChatbot() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.96 }}
       >
-        <Bot className="h-7 w-7" />
+        <Sparkles className="h-7 w-7" />
       </motion.button>
 
       <AnimatePresence>

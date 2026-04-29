@@ -35,7 +35,7 @@ export default function FloatingWhatsApp({
 
   return (
     <motion.div
-      className="fixed bottom-6 right-6 z-50 hidden md:block"
+      className="fixed bottom-6 left-6 z-50 hidden md:block"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{
