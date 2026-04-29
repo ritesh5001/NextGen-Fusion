@@ -1,7 +1,7 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Loader2, Bot, IndianRupee, CalendarClock, Layers3, Rocket } from "lucide-react"
+import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Loader2, IndianRupee, CalendarClock, Layers3, Rocket } from "lucide-react"
 import { useState, type ReactNode } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import { apiService, ProjectEstimatorData, ProjectEstimatorResponse } from "@/lib/api"
@@ -164,12 +164,12 @@ export default function ProjectEstimatorSection() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(240,180,41,0.16),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(15,23,42,0.08),_transparent_28%)]" />
       <div className="relative mx-auto max-w-7xl">
         <motion.div className="max-w-3xl" variants={itemVariants}>
-          <BadgeSubtitle className="border-[#d6c8a4] bg-white/70 text-[#61553a]">AI Project Estimator</BadgeSubtitle>
+          <BadgeSubtitle className="border-[#d6c8a4] bg-white/70 text-[#61553a]">Project Estimator</BadgeSubtitle>
           <h2 className="mt-5 text-3xl font-semibold tracking-tight text-[#151515] sm:text-4xl md:text-5xl">
-            Let Grok scope the build before your prospect even books the call.
+            Give visitors a serious project estimate before they even book the call.
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-7 text-[#5a5a5a] sm:text-lg">
-            Visitors answer a serious project brief, then get an AI-generated price range, delivery window, and scope summary tailored to what they actually want built.
+            Visitors answer a serious project brief, then get a tailored price range, delivery window, and scope summary based on what they actually want built.
           </p>
         </motion.div>
 
@@ -189,7 +189,7 @@ export default function ProjectEstimatorSection() {
             </div>
 
             <div className="mt-8 space-y-4">
-              <Benefit icon={<IndianRupee className="h-4 w-4" />} title="Commercially grounded estimates" text="The AI is anchored with real delivery logic so numbers stay believable." />
+              <Benefit icon={<IndianRupee className="h-4 w-4" />} title="Commercially grounded estimates" text="The estimator is anchored with real delivery logic so numbers stay believable." />
               <Benefit icon={<Layers3 className="h-4 w-4" />} title="Scope discovery built in" text="It asks enough about pages, integrations, content, and features to feel serious." />
               <Benefit icon={<CalendarClock className="h-4 w-4" />} title="Timeline-aware pricing" text="Urgent delivery requests naturally come back with higher estimates." />
               <Benefit icon={<Rocket className="h-4 w-4" />} title="Positioning asset" text="This becomes a standout homepage feature, not just another contact form." />
@@ -318,7 +318,7 @@ export default function ProjectEstimatorSection() {
                         />
                       </div>
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-[#3e3a33]">Anything else the AI should consider?</label>
+                        <label className="mb-2 block text-sm font-medium text-[#3e3a33]">Anything else we should consider?</label>
                         <textarea
                           value={form.notes}
                           onChange={(e) => update("notes", e.target.value)}
@@ -334,10 +334,10 @@ export default function ProjectEstimatorSection() {
                 {step === 4 && result && (
                   <motion.div key="step-4" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <StepHeading title="Your AI estimate" subtitle="A first-pass scope and budget range generated from your brief." />
+                      <StepHeading title="Your project estimate" subtitle="A first-pass scope and budget range generated from your brief." />
                       <div className="inline-flex items-center gap-2 rounded-full border border-[#d8d0bc] bg-[#faf7f1] px-3 py-1 text-xs font-medium text-[#5f553d]">
-                        <Bot className="h-3.5 w-3.5" />
-                        {result.provider === "grok" ? `Powered by Grok${result.model ? ` · ${result.model}` : ""}` : "Fallback pricing logic"}
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Project scope generated
                       </div>
                     </div>
 
@@ -384,7 +384,7 @@ export default function ProjectEstimatorSection() {
 
               <div className="mt-8 flex flex-col gap-3 border-t border-[#ede7d8] pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-sm text-[#6b6558]">
-                  {step < 4 ? "Shape the brief, then let the AI return a pricing window." : "Use this estimate as the opener for a discovery call or proposal."}
+                  {step < 4 ? "Shape the brief, then get a pricing window." : "Use this estimate as the opener for a discovery call or proposal."}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {step > 1 && step < 4 && (
