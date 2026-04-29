@@ -15,6 +15,7 @@ type Booking = {
   status: string
   timeline: string | null
   budget: string | null
+  slot_label: string | null
   created_at: string
 }
 
@@ -85,13 +86,14 @@ export default function BookingRequestsPage() {
                   <th className="px-4 py-2 font-medium">Request</th>
                   <th className="px-4 py-2 font-medium">Budget</th>
                   <th className="px-4 py-2 font-medium">Timeline</th>
+                  <th className="px-4 py-2 font-medium">Booked slot</th>
                   <th className="px-4 py-2 font-medium">Created</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {items.length === 0 && !loading && (
                   <tr>
-                    <td colSpan={5} className="px-4 py-12 text-center text-slate-500">
+                    <td colSpan={6} className="px-4 py-12 text-center text-slate-500">
                       <CalendarDays className="mx-auto mb-3 h-8 w-8 text-slate-300" />
                       No booking requests yet.
                     </td>
@@ -107,6 +109,7 @@ export default function BookingRequestsPage() {
                     <td className="px-4 py-2 text-slate-700 capitalize">{item.request_type}</td>
                     <td className="px-4 py-2 text-slate-700">{item.budget || '—'}</td>
                     <td className="px-4 py-2 text-slate-700">{item.timeline || '—'}</td>
+                    <td className="px-4 py-2 text-slate-700">{item.slot_label || '—'}</td>
                     <td className="px-4 py-2 text-slate-500">{new Date(item.created_at).toLocaleString()}</td>
                   </tr>
                 ))}

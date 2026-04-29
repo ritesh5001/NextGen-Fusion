@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
+import { sendBookingConfirmedEmail } from '../lib/booking-email'
 
 const router = Router()
 
@@ -32,6 +33,46 @@ function buildFallbackReply(message: string) {
     capturedRequirements: message,
     summary: 'Visitor started a conversation and is looking for project guidance.',
   }
+}
+
+const BOOKING_TIMEZONE = 'Asia/Kolkata'
+const SLOT_DURATION_MINUTES = 30
+const BUSINESS_START_HOUR = 11
+const BUSINESS_END_HOUR = 19
+
+function formatSlotLabel(date: Date, timezone: string): string {
+  return new Intl.DateTimeFormat('en-IN', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: timezone,
+  }).format(date)
+}
+
+function buildUtcDateFromLocal(dateStr: string, hour: number, minute: number): Date {
+  const [year, month, day] = dateStr.split('-').map(Number)
+  const utc = Date.UTC(year, month - 1, day, hour - 5, minute - 30)
+  return new Date(utc)
+}
+
+function getBookableSlots(dateStr: string): Array<{ startsAt: string; endsAt: string; label: string }> {
+  const dayCheck = new Date(`${dateStr}T00:00:00+05:30`)
+  if (dayCheck.getUTCDay() === 0) return []
+
+  const slots: Array<{ startsAt: string; endsAt: string; label: string }> = []
+  const now = Date.now()
+  for (let hour = BUSINESS_START_HOUR; hour < BUSINESS_END_HOUR; hour++) {
+    for (const minute of [0, 30]) {
+      const start = buildUtcDateFromLocal(dateStr, hour, minute)
+      const end = new Date(start.getTime() + SLOT_DURATION_MINUTES * 60 * 1000)
+      if (start.getTime() <= now + 15 * 60 * 1000) continue
+      slots.push({
+        startsAt: start.toISOString(),
+        endsAt: end.toISOString(),
+        label: formatSlotLabel(start, BOOKING_TIMEZONE),
+      })
+    }
+  }
+  return slots
 }
 
 async function generateAssistantReply(args: {
@@ -215,29 +256,102 @@ router.post('/chatbot/message', async (req, res) => {
   }
 })
 
+router.get('/bookings/availability', async (req, res) => {
+  try {
+    const sb = getSupabaseAdmin()
+    const date = trimString(req.query.date, 20)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      res.status(400).json({ error: 'date must be YYYY-MM-DD' })
+      return
+    }
+
+    const allSlots = getBookableSlots(date)
+    const dayStart = allSlots[0]?.startsAt
+    const dayEnd = allSlots[allSlots.length - 1]?.endsAt
+    if (!dayStart || !dayEnd) {
+      res.json({ data: [] })
+      return
+    }
+
+    const { data: existing, error } = await sb
+      .from('booking_requests')
+      .select('scheduled_at')
+      .eq('request_type', 'meeting')
+      .in('status', ['scheduled', 'contacted'])
+      .gte('scheduled_at', dayStart)
+      .lt('scheduled_at', dayEnd)
+
+    if (error) {
+      if (isMissingTableError(error)) {
+        res.status(503).json({ error: 'Booking storage is not provisioned yet. Apply the latest Supabase schema first.' })
+        return
+      }
+      res.status(500).json({ error: error.message })
+      return
+    }
+
+    const booked = new Set((existing || []).map((row: any) => row.scheduled_at).filter(Boolean))
+    const available = allSlots.filter((slot) => !booked.has(slot.startsAt))
+    res.json({ data: available })
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Availability lookup failed' })
+  }
+})
+
 router.post('/bookings/request', async (req, res) => {
   try {
     const sb = getSupabaseAdmin()
+    const requestType = trimString(req.body?.requestType, 40) === 'callback' ? 'callback' : 'meeting'
+    const scheduledAt = trimString(req.body?.scheduledAt, 80) || null
+    const endsAt = trimString(req.body?.endsAt, 80) || null
+    const timezone = trimString(req.body?.timezone, 80) || BOOKING_TIMEZONE
+    const slotLabel = trimString(req.body?.slotLabel, 180) || null
     const payload = {
       conversation_id: trimString(req.body?.conversationId, 80) || null,
       name: trimString(req.body?.name, 120),
       email: trimString(req.body?.email, 180).toLowerCase(),
       phone: trimString(req.body?.phone, 60) || null,
       company_name: trimString(req.body?.companyName, 180) || null,
-      request_type: trimString(req.body?.requestType, 40) === 'callback' ? 'callback' : 'meeting',
+      request_type: requestType,
       project_summary: trimString(req.body?.projectSummary, 2000) || null,
       budget: trimString(req.body?.budget, 200) || null,
       timeline: trimString(req.body?.timeline, 200) || null,
       preferred_contact_time: trimString(req.body?.preferredContactTime, 200) || null,
-      booking_url: process.env.CAL_BOOKING_URL || process.env.BOOKING_URL || null,
-      status: trimString(req.body?.requestType, 40) === 'callback' ? 'callback_requested' : 'new',
+      timezone,
+      scheduled_at: requestType === 'meeting' ? scheduledAt : null,
+      ends_at: requestType === 'meeting' ? endsAt : null,
+      slot_label: requestType === 'meeting' ? slotLabel : null,
+      status: requestType === 'callback' ? 'callback_requested' : 'scheduled',
       source: 'website',
       ai_context: trimString(req.body?.aiContext, 4000) || null,
+      email_notification_sent_at: null,
     }
 
     if (!payload.name || !payload.email) {
       res.status(400).json({ error: 'name and email are required' })
       return
+    }
+    if (requestType === 'meeting' && (!scheduledAt || !endsAt || !slotLabel)) {
+      res.status(400).json({ error: 'scheduledAt, endsAt, and slotLabel are required for meeting bookings' })
+      return
+    }
+
+    if (requestType === 'meeting') {
+      const { data: clash, error: clashError } = await sb
+        .from('booking_requests')
+        .select('id')
+        .eq('request_type', 'meeting')
+        .eq('scheduled_at', scheduledAt)
+        .in('status', ['scheduled', 'contacted'])
+        .maybeSingle()
+      if (clashError) {
+        res.status(500).json({ error: clashError.message })
+        return
+      }
+      if (clash) {
+        res.status(409).json({ error: 'This slot was just booked. Please choose another time.' })
+        return
+      }
     }
 
     const { data, error } = await sb
@@ -252,6 +366,28 @@ router.post('/bookings/request', async (req, res) => {
       }
       res.status(500).json({ error: error.message })
       return
+    }
+
+    if (requestType === 'meeting') {
+      try {
+        await sendBookingConfirmedEmail({
+          name: payload.name,
+          email: payload.email,
+          phone: payload.phone,
+          companyName: payload.company_name,
+          projectSummary: payload.project_summary,
+          budget: payload.budget,
+          timeline: payload.timeline,
+          slotLabel: payload.slot_label || '',
+          timezone: payload.timezone || BOOKING_TIMEZONE,
+        })
+        await sb
+          .from('booking_requests')
+          .update({ email_notification_sent_at: new Date().toISOString() })
+          .eq('id', data.id)
+      } catch (err) {
+        console.error('[bookings] notification email failed:', err instanceof Error ? err.message : err)
+      }
     }
 
     if (payload.conversation_id) {

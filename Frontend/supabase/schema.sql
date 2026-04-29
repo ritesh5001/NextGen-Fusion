@@ -145,7 +145,11 @@ create table if not exists booking_requests (
   budget text,
   timeline text,
   preferred_contact_time text,
-  booking_url text,
+  timezone text default 'Asia/Kolkata',
+  scheduled_at timestamptz,
+  ends_at timestamptz,
+  slot_label text,
+  email_notification_sent_at timestamptz,
   status text not null default 'new', -- new | scheduled | callback_requested | contacted | closed
   source text not null default 'website',
   ai_context text,

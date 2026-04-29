@@ -120,7 +120,11 @@ export type BookingRequest = {
   budget: string | null
   timeline: string | null
   preferred_contact_time: string | null
-  booking_url: string | null
+  timezone: string | null
+  scheduled_at: string | null
+  ends_at: string | null
+  slot_label: string | null
+  email_notification_sent_at: string | null
   status: 'new' | 'scheduled' | 'callback_requested' | 'contacted' | 'closed'
   source: string
   ai_context: string | null

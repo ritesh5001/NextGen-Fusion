@@ -18,7 +18,11 @@ type Booking = {
   budget: string | null
   timeline: string | null
   preferred_contact_time: string | null
-  booking_url: string | null
+  timezone: string | null
+  scheduled_at: string | null
+  ends_at: string | null
+  slot_label: string | null
+  email_notification_sent_at: string | null
   status: string
   source: string
   ai_context: string | null
@@ -69,12 +73,15 @@ export default function BookingRequestDetailPage() {
                 <Meta label="Request type" value={item.request_type} />
                 <Meta label="Company" value={item.company_name || '—'} />
                 <Meta label="Phone" value={item.phone || '—'} />
-                <Meta label="Budget" value={item.budget || '—'} />
-                <Meta label="Timeline" value={item.timeline || '—'} />
-                <Meta label="Preferred contact time" value={item.preferred_contact_time || '—'} />
-                <Meta label="Status" value={item.status} />
-                <Meta label="Created" value={new Date(item.created_at).toLocaleString()} />
-              </div>
+                  <Meta label="Budget" value={item.budget || '—'} />
+                  <Meta label="Timeline" value={item.timeline || '—'} />
+                  <Meta label="Preferred contact time" value={item.preferred_contact_time || '—'} />
+                  <Meta label="Booked slot" value={item.slot_label || '—'} />
+                  <Meta label="Timezone" value={item.timezone || '—'} />
+                  <Meta label="Notification email" value={item.email_notification_sent_at ? 'Sent' : 'Not sent'} />
+                  <Meta label="Status" value={item.status} />
+                  <Meta label="Created" value={new Date(item.created_at).toLocaleString()} />
+                </div>
             </div>
 
             {item.project_summary && (
@@ -83,13 +90,8 @@ export default function BookingRequestDetailPage() {
             {item.ai_context && (
               <Section title="Assistant context" value={item.ai_context} />
             )}
-            {item.booking_url && (
-              <div className="rounded-2xl border border-slate-200 bg-white p-6">
-                <div className="text-sm font-medium text-slate-900">Booking link</div>
-                <a href={item.booking_url} target="_blank" rel="noreferrer" className="mt-2 inline-block text-sm text-slate-700 underline">
-                  {item.booking_url}
-                </a>
-              </div>
+            {item.scheduled_at && (
+              <Section title="Scheduled for" value={new Date(item.scheduled_at).toLocaleString()} />
             )}
           </div>
         )}

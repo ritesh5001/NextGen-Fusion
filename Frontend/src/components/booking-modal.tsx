@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { X, CalendarDays, PhoneCall, ArrowRight, CheckCircle2 } from "lucide-react"
+import { X, CalendarDays, PhoneCall, ArrowRight, CheckCircle2, Loader2 } from "lucide-react"
 
 type BookingState = {
   open: boolean
@@ -18,7 +18,11 @@ type BookingState = {
   requestType?: "meeting" | "callback"
 }
 
-const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL || "https://cal.com/your-handle/intro-call"
+type BookingSlot = {
+  startsAt: string
+  endsAt: string
+  label: string
+}
 
 export function openBookingModal(detail: Partial<BookingState> = {}) {
   if (typeof window === "undefined") return
@@ -27,10 +31,12 @@ export function openBookingModal(detail: Partial<BookingState> = {}) {
 
 export default function BookingModal() {
   const [open, setOpen] = useState(false)
-  const [step, setStep] = useState<"form" | "schedule" | "success">("form")
+  const [step, setStep] = useState<"form" | "success">("form")
   const [loading, setLoading] = useState(false)
+  const [slotsLoading, setSlotsLoading] = useState(false)
   const [error, setError] = useState("")
   const [bookingResponse, setBookingResponse] = useState<any>(null)
+  const [slots, setSlots] = useState<BookingSlot[]>([])
   const [form, setForm] = useState({
     conversationId: "",
     requestType: "meeting" as "meeting" | "callback",
@@ -43,6 +49,11 @@ export default function BookingModal() {
     timeline: "",
     preferredContactTime: "",
     aiContext: "",
+    selectedDate: "",
+    scheduledAt: "",
+    endsAt: "",
+    slotLabel: "",
+    timezone: "Asia/Kolkata",
   })
 
   useEffect(() => {
@@ -71,18 +82,62 @@ export default function BookingModal() {
     return () => window.removeEventListener("open-booking-modal", onOpen as EventListener)
   }, [])
 
-  const iframeUrl = useMemo(() => {
-    const params = new URLSearchParams()
-    if (form.name) params.set("name", form.name)
-    if (form.email) params.set("email", form.email)
-    if (form.companyName) params.set("company", form.companyName)
-    const query = params.toString()
-    return query ? `${bookingUrl}?${query}` : bookingUrl
-  }, [form.name, form.email, form.companyName])
+  const dateOptions = useMemo(() => {
+    const out: Array<{ value: string; label: string }> = []
+    const now = new Date()
+    for (let i = 0; i < 10; i++) {
+      const d = new Date(now)
+      d.setDate(now.getDate() + i)
+      const weekday = d.getDay()
+      if (weekday === 0) continue
+      const value = d.toISOString().slice(0, 10)
+      const label = new Intl.DateTimeFormat("en-IN", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+      }).format(d)
+      out.push({ value, label })
+    }
+    return out
+  }, [])
+
+  useEffect(() => {
+    if (!open || form.requestType !== "meeting") return
+    if (!form.selectedDate) {
+      const firstDate = dateOptions[0]?.value || ""
+      if (firstDate) setForm((prev) => ({ ...prev, selectedDate: firstDate }))
+      return
+    }
+
+    let ignore = false
+    setSlotsLoading(true)
+    setError("")
+    ;(async () => {
+      try {
+        const res = await fetch(`/api/bookings/availability?date=${encodeURIComponent(form.selectedDate)}`)
+        const json = await res.json()
+        if (!res.ok) throw new Error(json?.error || "Failed to load slots")
+        if (ignore) return
+        setSlots(json.data || [])
+      } catch (err) {
+        if (ignore) return
+        setError(err instanceof Error ? err.message : "Failed to load slots")
+        setSlots([])
+      } finally {
+        if (!ignore) setSlotsLoading(false)
+      }
+    })()
+
+    return () => { ignore = true }
+  }, [open, form.requestType, form.selectedDate, dateOptions])
 
   async function submitBookingRequest(e: React.FormEvent) {
     e.preventDefault()
     if (!form.name || !form.email) return
+    if (form.requestType === "meeting" && (!form.scheduledAt || !form.endsAt || !form.slotLabel)) {
+      setError("Please select an available slot.")
+      return
+    }
     setLoading(true)
     setError("")
     try {
@@ -94,7 +149,7 @@ export default function BookingModal() {
       const json = await res.json()
       if (!res.ok) throw new Error(json?.error || "Failed to save booking request")
       setBookingResponse(json.data)
-      setStep(form.requestType === "meeting" ? "schedule" : "success")
+      setStep("success")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save booking request")
     } finally {
@@ -136,7 +191,7 @@ export default function BookingModal() {
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-white/72">
                   {form.requestType === "meeting"
-                    ? "First capture the project brief, then finish scheduling inside the embedded booking flow."
+                    ? "Choose a real time slot directly on your website. Confirmed bookings are saved to your database immediately."
                     : "This request lands in your admin panel immediately with the context from the chat or booking trigger."}
                 </p>
               </div>
@@ -175,23 +230,63 @@ export default function BookingModal() {
                         <input value={form.preferredContactTime} onChange={(e) => setForm((p) => ({ ...p, preferredContactTime: e.target.value }))} placeholder="Today after 7 PM / Tomorrow morning" className={inputClass} />
                       )}
                     </Field>
+                    {form.requestType === "meeting" && (
+                      <>
+                        <Field label="Select a date">
+                          <div className="flex flex-wrap gap-2">
+                            {dateOptions.map((option) => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => setForm((p) => ({ ...p, selectedDate: option.value, scheduledAt: "", endsAt: "", slotLabel: "" }))}
+                                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                                  form.selectedDate === option.value
+                                    ? "border-[#111318] bg-[#111318] text-white"
+                                    : "border-[#ddd4c0] bg-white text-[#2a2926] hover:border-[#b9aa82] hover:bg-[#faf7f1]"
+                                }`}
+                              >
+                                {option.label}
+                              </button>
+                            ))}
+                          </div>
+                        </Field>
+                        <Field label="Available slots">
+                          {slotsLoading ? (
+                            <div className="flex items-center gap-2 rounded-2xl border border-[#e1d9c8] bg-[#fbfaf7] px-4 py-3 text-sm text-[#605948]">
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              Loading slots…
+                            </div>
+                          ) : slots.length === 0 ? (
+                            <div className="rounded-2xl border border-[#e1d9c8] bg-[#fbfaf7] px-4 py-3 text-sm text-[#605948]">
+                              No slots available on this date.
+                            </div>
+                          ) : (
+                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                              {slots.map((slot) => (
+                                <button
+                                  key={slot.startsAt}
+                                  type="button"
+                                  onClick={() => setForm((p) => ({ ...p, scheduledAt: slot.startsAt, endsAt: slot.endsAt, slotLabel: slot.label }))}
+                                  className={`rounded-2xl border px-4 py-3 text-left text-sm font-medium transition ${
+                                    form.scheduledAt === slot.startsAt
+                                      ? "border-[#111318] bg-[#111318] text-white"
+                                      : "border-[#e1d9c8] bg-[#fbfaf7] text-[#1f1f1f] hover:border-[#b9aa82]"
+                                  }`}
+                                >
+                                  {slot.label}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </Field>
+                      </>
+                    )}
                     {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
                     <button type="submit" disabled={loading} className={primaryButtonClass}>
-                      {loading ? "Saving..." : form.requestType === "meeting" ? "Continue to booking" : "Request callback"}
+                      {loading ? "Saving..." : form.requestType === "meeting" ? "Confirm booking" : "Request callback"}
                       <ArrowRight className="h-4 w-4" />
                     </button>
                   </form>
-                )}
-
-                {step === "schedule" && (
-                  <div className="p-3 md:p-5">
-                    <div className="mb-3 rounded-2xl border border-[#e8e0cf] bg-[#faf7f0] px-4 py-3 text-sm text-[#5f5848]">
-                      Your request is saved in the admin panel. Finish scheduling below.
-                    </div>
-                    <div className="h-[72vh] overflow-hidden rounded-3xl border border-[#e8dfcf] bg-[#faf7f0]">
-                      <iframe title="Booking" src={iframeUrl} className="h-full w-full border-0" />
-                    </div>
-                  </div>
                 )}
 
                 {step === "success" && (
@@ -199,12 +294,19 @@ export default function BookingModal() {
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
                       <CheckCircle2 className="h-8 w-8" />
                     </div>
-                    <h4 className="mt-5 text-2xl font-semibold text-[#171717]">Callback request saved.</h4>
+                    <h4 className="mt-5 text-2xl font-semibold text-[#171717]">
+                      {form.requestType === "meeting" ? "Booking confirmed." : "Callback request saved."}
+                    </h4>
                     <p className="mt-3 max-w-md text-sm leading-7 text-[#666050]">
-                      Your request is now in the admin panel. The team can follow up using the details you submitted.
+                      {form.requestType === "meeting"
+                        ? "The meeting is now saved in your database and the internal notification email has been triggered."
+                        : "Your request is now in the admin panel. The team can follow up using the details you submitted."}
                     </p>
                     {bookingResponse?.email && (
                       <p className="mt-3 text-sm font-medium text-[#171717]">{bookingResponse.email}</p>
+                    )}
+                    {bookingResponse?.slot_label && (
+                      <p className="mt-2 text-sm text-[#605948]">{bookingResponse.slot_label}</p>
                     )}
                   </div>
                 )}
