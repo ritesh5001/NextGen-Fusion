@@ -233,7 +233,7 @@ export default function BookingModal() {
                     </div>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <Field label="Budget">
-                        <input value={form.budget} onChange={(e) => setForm((p) => ({ ...p, budget: e.target.value }))} placeholder="e.g. 1.5L to 3L" className={inputClass} />
+                        <input value={form.budget} onChange={(e) => setForm((p) => ({ ...p, budget: e.target.value }))} placeholder="e.g. $100 to $500" className={inputClass} />
                       </Field>
                       <Field label="Timeline">
                         <input value={form.timeline} onChange={(e) => setForm((p) => ({ ...p, timeline: e.target.value }))} placeholder="e.g. 6 weeks" className={inputClass} />

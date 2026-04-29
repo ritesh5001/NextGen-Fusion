@@ -338,7 +338,7 @@ export const seoServiceData: ServicePageData = {
 export const ppcServiceData: ServicePageData = {
   badge: "PPC Services",
   heroTitle: "PPC Services That Maximize Return on Every",
-  heroTitleHighlight: "Rupee and Dollar Spent on Paid Advertising",
+  heroTitleHighlight: "Dollar Spent on Paid Advertising",
   heroDescription:
     "We run high-intent, ROI-focused paid campaigns across Google and Meta that bring qualified traffic, lower your cost per acquisition, and generate measurable business results from day one.",
   aboutIcon: 'megaphone',
@@ -377,7 +377,7 @@ export const ppcServiceData: ServicePageData = {
   ],
   benefits: [
     { icon: 'zap', title: "Immediate Traffic", text: "PPC delivers qualified visitors from day one — no waiting for organic growth." },
-    { icon: 'bar-chart-3', title: "Full ROAS Visibility", text: "Every rupee tracked from ad click to conversion with clear attribution." },
+    { icon: 'bar-chart-3', title: "Full ROAS Visibility", text: "Every dollar tracked from ad click to conversion with clear attribution." },
     { icon: 'trending-up', title: "Lower CPA Over Time", text: "Continuous optimization drives cost per acquisition down month over month." },
     { icon: 'search', title: "Competitive Intelligence", text: "Campaign data reveals what messaging and offers resonate best with your market." },
   ],
@@ -392,13 +392,13 @@ export const ppcServiceData: ServicePageData = {
     { quote: "Consistent, transparent reporting and real results. This is what PPC should look like.", author: "Marketing Head, B2B Company" },
   ],
   faqs: [
-    { question: "What budget do I need to start PPC?", answer: "For meaningful data and optimization cycles, we recommend a minimum monthly ad spend of ₹30,000–₹50,000 (or $500–$1,000) alongside our management fee." },
+    { question: "What budget do I need to start PPC?", answer: "For meaningful data and optimization cycles, we recommend a minimum monthly ad spend of around $500-$1,000 alongside our management fee." },
     { question: "How long before I see PPC results?", answer: "You will see traffic from day one. Optimization cycles that improve CPA typically take 4–8 weeks of data collection." },
     { question: "Do you manage both Google and Meta Ads?", answer: "Yes. We offer combined or individual platform management depending on your strategy and budget." },
     { question: "Do you create ad creatives?", answer: "Yes. Ad copy, headlines, and creative briefs are included. High-production video or photography requires separate scope." },
     { question: "What does PPC management include monthly?", answer: "Bid management, negative keyword maintenance, creative testing, audience optimization, and a full performance report every month." },
   ],
-  ctaTitle: "Ready to Make Every Advertising Rupee Count?",
+  ctaTitle: "Ready to Make Every Advertising Dollar Count?",
   ctaDescription: "Let's build a PPC strategy that targets the right buyers, converts efficiently, and gives you complete visibility into your ad ROI.",
 }
 
