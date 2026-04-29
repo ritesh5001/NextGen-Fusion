@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation"
 import IntegratedNavbar from "@/components/integrated-navbar"
 import FloatingWhatsApp from "@/components/floating-whatsapp"
 import Footer from "@/components/footer"
+import BookingModal from "@/components/booking-modal"
+import SalesChatbot from "@/components/sales-chatbot"
 
 export default function LayoutChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -15,6 +17,8 @@ export default function LayoutChrome({ children }: { children: React.ReactNode }
     <>
       <IntegratedNavbar />
       {children}
+      <BookingModal />
+      <SalesChatbot />
       <FloatingWhatsApp
         phoneNumber="917348228167"
         message="Hi! I came across NextGen Fusion and I'm interested in discussing a project. Could we schedule a quick call?"

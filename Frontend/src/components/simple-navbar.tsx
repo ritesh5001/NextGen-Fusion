@@ -7,6 +7,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
 import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone } from "lucide-react"
+import { openBookingModal } from "@/components/booking-modal"
 
 const menuItems = [
   { name: "About", href: "about", isPage: false },
@@ -141,7 +142,7 @@ export default function SimpleNavbar() {
           >
             <Button
               className="bg-transparent text-white hover:bg-gray-800 transition-all duration-300 font-semibold text-xs sm:text-sm"
-              onClick={() => window.open('https://calendar.app.google/gHQsqDPtkg2MFs519', '_blank')}
+              onClick={() => openBookingModal({ requestType: 'meeting' })}
             >
               Book a Call
             </Button>
@@ -281,7 +282,7 @@ export default function SimpleNavbar() {
               {/* CTA Button */}
               <Button
                 className="bg-black text-white hover:bg-gray-800 transition-all duration-300 font-semibold text-xs px-3 py-2 rounded-full"
-                onClick={() => window.open('https://calendar.app.google/gHQsqDPtkg2MFs519', '_blank')}
+                onClick={() => openBookingModal({ requestType: 'meeting' })}
               >
                 Book
               </Button>

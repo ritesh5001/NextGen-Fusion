@@ -2,6 +2,7 @@
 
 import { motion, type Variants } from "framer-motion"
 import Image from "next/image"
+import { openBookingModal } from "@/components/booking-modal"
 
 // Types
 type AnimationVariants = Record<string, Variants>
@@ -284,14 +285,15 @@ const HeroContent = () => {
         className="flex justify-center"
         variants={animationVariants.subtitle}
       >
-        <motion.a
-          href="#contact"
+        <motion.button
+          type="button"
+          onClick={() => openBookingModal({ requestType: "meeting" })}
           className="px-8 py-3.5 bg-black text-white font-medium rounded-lg hover:bg-gray-900 transition-colors text-base sm:text-lg"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
           Book a Call
-        </motion.a>
+        </motion.button>
       </motion.div>
     </motion.div>
   )

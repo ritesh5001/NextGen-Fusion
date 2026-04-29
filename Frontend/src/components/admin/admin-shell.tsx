@@ -2,10 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator } from 'lucide-react'
+import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays } from 'lucide-react'
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/admin/booking-requests', label: 'Bookings', icon: CalendarDays },
+  { href: '/admin/chatbot-conversations', label: 'Chatbot', icon: MessageSquare },
   { href: '/admin/project-estimator-submissions', label: 'Estimator Leads', icon: Calculator },
   { href: '/admin/contact-forms', label: 'Form Submissions', icon: FileText },
   { href: '/admin/leads', label: 'B2B Leads', icon: Building2 },

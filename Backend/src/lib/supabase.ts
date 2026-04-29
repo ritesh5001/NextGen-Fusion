@@ -80,6 +80,54 @@ export type ProjectEstimatorSubmission = {
   updated_at: string
 }
 
+export type ChatbotConversation = {
+  id: string
+  name: string | null
+  email: string | null
+  phone: string | null
+  company_name: string | null
+  status: 'active' | 'qualified' | 'booked' | 'closed'
+  source: string
+  last_user_message: string | null
+  last_assistant_message: string | null
+  captured_budget: string | null
+  captured_timeline: string | null
+  captured_requirements: string | null
+  booking_interest: boolean
+  ai_summary: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type ChatbotMessage = {
+  id: string
+  conversation_id: string
+  role: 'user' | 'assistant' | 'system'
+  content: string
+  metadata: Record<string, unknown>
+  created_at: string
+}
+
+export type BookingRequest = {
+  id: string
+  conversation_id: string | null
+  name: string
+  email: string
+  phone: string | null
+  company_name: string | null
+  request_type: 'meeting' | 'callback'
+  project_summary: string | null
+  budget: string | null
+  timeline: string | null
+  preferred_contact_time: string | null
+  booking_url: string | null
+  status: 'new' | 'scheduled' | 'callback_requested' | 'contacted' | 'closed'
+  source: string
+  ai_context: string | null
+  created_at: string
+  updated_at: string
+}
+
 export type CampaignStatus = 'draft' | 'active' | 'paused' | 'completed'
 
 export type Campaign = {

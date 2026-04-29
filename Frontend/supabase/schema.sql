@@ -94,6 +94,70 @@ create index if not exists project_estimator_submissions_company_idx on project_
 create index if not exists project_estimator_submissions_project_type_idx on project_estimator_submissions (project_type);
 
 -- =========================
+-- Website sales assistant conversations
+-- =========================
+create table if not exists chatbot_conversations (
+  id uuid primary key default gen_random_uuid(),
+  name text,
+  email text,
+  phone text,
+  company_name text,
+  status text not null default 'active', -- active | qualified | booked | closed
+  source text not null default 'website_chat',
+  last_user_message text,
+  last_assistant_message text,
+  captured_budget text,
+  captured_timeline text,
+  captured_requirements text,
+  booking_interest boolean not null default false,
+  ai_summary text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists chatbot_conversations_created_at_idx on chatbot_conversations (created_at desc);
+create index if not exists chatbot_conversations_email_idx on chatbot_conversations (email);
+create index if not exists chatbot_conversations_status_idx on chatbot_conversations (status);
+
+create table if not exists chatbot_messages (
+  id uuid primary key default gen_random_uuid(),
+  conversation_id uuid not null references chatbot_conversations(id) on delete cascade,
+  role text not null, -- user | assistant | system
+  content text not null,
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create index if not exists chatbot_messages_conversation_idx on chatbot_messages (conversation_id, created_at asc);
+
+-- =========================
+-- Booking requests from website
+-- =========================
+create table if not exists booking_requests (
+  id uuid primary key default gen_random_uuid(),
+  conversation_id uuid references chatbot_conversations(id) on delete set null,
+  name text not null,
+  email text not null,
+  phone text,
+  company_name text,
+  request_type text not null default 'meeting', -- meeting | callback
+  project_summary text,
+  budget text,
+  timeline text,
+  preferred_contact_time text,
+  booking_url text,
+  status text not null default 'new', -- new | scheduled | callback_requested | contacted | closed
+  source text not null default 'website',
+  ai_context text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists booking_requests_created_at_idx on booking_requests (created_at desc);
+create index if not exists booking_requests_email_idx on booking_requests (email);
+create index if not exists booking_requests_status_idx on booking_requests (status);
+
+-- =========================
 -- Campaigns
 -- =========================
 create table if not exists campaigns (
@@ -198,6 +262,14 @@ create trigger trg_contact_forms_updated_at before update on contact_forms
 
 drop trigger if exists trg_project_estimator_submissions_updated_at on project_estimator_submissions;
 create trigger trg_project_estimator_submissions_updated_at before update on project_estimator_submissions
+  for each row execute function set_updated_at();
+
+drop trigger if exists trg_chatbot_conversations_updated_at on chatbot_conversations;
+create trigger trg_chatbot_conversations_updated_at before update on chatbot_conversations
+  for each row execute function set_updated_at();
+
+drop trigger if exists trg_booking_requests_updated_at on booking_requests;
+create trigger trg_booking_requests_updated_at before update on booking_requests
   for each row execute function set_updated_at();
 
 drop trigger if exists trg_campaigns_updated_at on campaigns;

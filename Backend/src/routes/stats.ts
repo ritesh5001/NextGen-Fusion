@@ -14,7 +14,7 @@ router.get('/stats', requireAuth, async (_req, res) => {
       }
       return result.count || 0
     }
-    const [contacts, campaigns, activeCampaigns, queued, sent, formSubmissions, repliedForms, estimatorSubmissions] = await Promise.all([
+    const [contacts, campaigns, activeCampaigns, queued, sent, formSubmissions, repliedForms, estimatorSubmissions, chatbotConversations, bookingRequests] = await Promise.all([
       safeCount(sb.from('contacts').select('id', { count: 'exact', head: true })),
       safeCount(sb.from('campaigns').select('id', { count: 'exact', head: true })),
       safeCount(sb.from('campaigns').select('id', { count: 'exact', head: true }).eq('status', 'active')),
@@ -23,6 +23,8 @@ router.get('/stats', requireAuth, async (_req, res) => {
       safeCount(sb.from('contact_forms').select('id', { count: 'exact', head: true })),
       safeCount(sb.from('contact_forms').select('id', { count: 'exact', head: true }).eq('status', 'replied')),
       safeCount(sb.from('project_estimator_submissions').select('id', { count: 'exact', head: true })),
+      safeCount(sb.from('chatbot_conversations').select('id', { count: 'exact', head: true })),
+      safeCount(sb.from('booking_requests').select('id', { count: 'exact', head: true })),
     ])
     res.json({
       data: {
@@ -34,6 +36,8 @@ router.get('/stats', requireAuth, async (_req, res) => {
         formSubmissions,
         repliedForms,
         estimatorSubmissions,
+        chatbotConversations,
+        bookingRequests,
       }
     })
   } catch (err) {

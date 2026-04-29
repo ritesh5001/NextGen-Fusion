@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { AdminShell, PageHeader } from '@/components/admin/admin-shell'
 import { serverFetch } from '@/lib/server-fetch'
-import { Users, Send, CheckCircle2, Clock, FileText, MailCheck, Calculator } from 'lucide-react'
+import { Users, Send, CheckCircle2, Clock, FileText, MailCheck, Calculator, CalendarDays, MessageSquare } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,7 +14,7 @@ async function getStats() {
   } catch (err) {
     return {
       contacts: 0, campaigns: 0, activeCampaigns: 0, queued: 0, sent: 0,
-      formSubmissions: 0, repliedForms: 0, estimatorSubmissions: 0,
+      formSubmissions: 0, repliedForms: 0, estimatorSubmissions: 0, chatbotConversations: 0, bookingRequests: 0,
       error: err instanceof Error ? err.message : 'Failed to load stats',
     }
   }
@@ -24,6 +24,8 @@ export default async function AdminDashboard() {
   const stats = await getStats()
   const cards = [
     { label: 'Contacts', value: stats.contacts, icon: Users, href: '/admin/contacts' },
+    { label: 'Bookings', value: stats.bookingRequests, icon: CalendarDays, href: '/admin/booking-requests' },
+    { label: 'Chatbot chats', value: stats.chatbotConversations, icon: MessageSquare, href: '/admin/chatbot-conversations' },
     { label: 'Estimator leads', value: stats.estimatorSubmissions, icon: Calculator, href: '/admin/project-estimator-submissions' },
     { label: 'Form submissions', value: stats.formSubmissions, icon: FileText, href: '/admin/contact-forms' },
     { label: 'Replied forms', value: stats.repliedForms, icon: MailCheck, href: '/admin/contact-forms?status=replied' },
@@ -72,6 +74,24 @@ export default async function AdminDashboard() {
             <div className="text-base font-medium">Manage contacts</div>
             <p className="text-sm text-slate-500 mt-1">
               Bulk upload via CSV, edit, search, and clean up your main contacts database.
+            </p>
+          </Link>
+          <Link
+            href="/admin/booking-requests"
+            className="bg-white border border-slate-200 rounded-xl p-6 hover:border-slate-300 transition"
+          >
+            <div className="text-base font-medium">Review booking requests</div>
+            <p className="text-sm text-slate-500 mt-1">
+              See discovery-call bookings and callback requests captured from the website and chatbot.
+            </p>
+          </Link>
+          <Link
+            href="/admin/chatbot-conversations"
+            className="bg-white border border-slate-200 rounded-xl p-6 hover:border-slate-300 transition"
+          >
+            <div className="text-base font-medium">Read chatbot conversations</div>
+            <p className="text-sm text-slate-500 mt-1">
+              Review every saved assistant reply, qualification detail, and booking intent from live chats.
             </p>
           </Link>
           <Link
