@@ -147,8 +147,11 @@ router.post('/chatbot/message', async (req, res) => {
       return
     }
 
-    let activeConversationId = conversationId
-    if (!activeConversationId) {
+    let activeConversationId = conversationId || crypto.randomUUID()
+    let historyRows: Array<{ role: string; content: string }> = []
+    let canPersist = true
+
+    if (!conversationId) {
       const { data, error } = await sb
         .from('chatbot_conversations')
         .insert({
@@ -162,30 +165,48 @@ router.post('/chatbot/message', async (req, res) => {
         .select('id')
         .single()
       if (error) {
-        if (isMissingTableError(error)) {
-          res.status(503).json({ error: 'Chat storage is not provisioned yet. Apply the latest Supabase schema first.' })
+        if (!isMissingTableError(error)) {
+          res.status(500).json({ error: error.message })
           return
         }
-        res.status(500).json({ error: error.message })
-        return
+        canPersist = false
+      } else if (data?.id) {
+        activeConversationId = data.id
       }
-      activeConversationId = data.id
     }
 
-    const { error: userMsgError } = await sb.from('chatbot_messages').insert({
-      conversation_id: activeConversationId,
-      role: 'user',
-      content: message,
-    })
-    if (userMsgError) { res.status(500).json({ error: userMsgError.message }); return }
+    if (canPersist) {
+      const { error: userMsgError } = await sb.from('chatbot_messages').insert({
+        conversation_id: activeConversationId,
+        role: 'user',
+        content: message,
+      })
+      if (userMsgError) {
+        if (!isMissingTableError(userMsgError)) {
+          res.status(500).json({ error: userMsgError.message })
+          return
+        }
+        canPersist = false
+      }
+    }
 
-    const { data: historyRows, error: historyError } = await sb
-      .from('chatbot_messages')
-      .select('role, content')
-      .eq('conversation_id', activeConversationId)
-      .order('created_at', { ascending: true })
-      .limit(20)
-    if (historyError) { res.status(500).json({ error: historyError.message }); return }
+    if (canPersist) {
+      const { data: rows, error: historyError } = await sb
+        .from('chatbot_messages')
+        .select('role, content')
+        .eq('conversation_id', activeConversationId)
+        .order('created_at', { ascending: true })
+        .limit(20)
+      if (historyError) {
+        if (!isMissingTableError(historyError)) {
+          res.status(500).json({ error: historyError.message })
+          return
+        }
+        canPersist = false
+      } else {
+        historyRows = rows || []
+      }
+    }
 
     let assistant
     try {
@@ -206,38 +227,53 @@ router.post('/chatbot/message', async (req, res) => {
     const capturedRequirements = trimString(assistant.capturedRequirements, 2000) || null
     const summary = trimString(assistant.summary, 1000) || null
 
-    const { error: assistantMsgError } = await sb.from('chatbot_messages').insert({
-      conversation_id: activeConversationId,
-      role: 'assistant',
-      content: reply,
-      metadata: {
-        leadStage,
-        shouldBookCall,
-        capturedBudget,
-        capturedTimeline,
-        capturedRequirements,
-      },
-    })
-    if (assistantMsgError) { res.status(500).json({ error: assistantMsgError.message }); return }
-
-    const { error: updateError } = await sb
-      .from('chatbot_conversations')
-      .update({
-        name: lead.name || undefined,
-        email: lead.email || undefined,
-        phone: lead.phone || undefined,
-        company_name: lead.companyName || undefined,
-        status: leadStage === 'booked' ? 'booked' : leadStage === 'qualified' ? 'qualified' : 'active',
-        last_user_message: message,
-        last_assistant_message: reply,
-        captured_budget: capturedBudget,
-        captured_timeline: capturedTimeline,
-        captured_requirements: capturedRequirements,
-        booking_interest: shouldBookCall,
-        ai_summary: summary,
+    if (canPersist) {
+      const { error: assistantMsgError } = await sb.from('chatbot_messages').insert({
+        conversation_id: activeConversationId,
+        role: 'assistant',
+        content: reply,
+        metadata: {
+          leadStage,
+          shouldBookCall,
+          capturedBudget,
+          capturedTimeline,
+          capturedRequirements,
+        },
       })
-      .eq('id', activeConversationId)
-    if (updateError) { res.status(500).json({ error: updateError.message }); return }
+      if (assistantMsgError) {
+        if (!isMissingTableError(assistantMsgError)) {
+          res.status(500).json({ error: assistantMsgError.message })
+          return
+        }
+        canPersist = false
+      }
+    }
+
+    if (canPersist) {
+      const { error: updateError } = await sb
+        .from('chatbot_conversations')
+        .update({
+          name: lead.name || undefined,
+          email: lead.email || undefined,
+          phone: lead.phone || undefined,
+          company_name: lead.companyName || undefined,
+          status: leadStage === 'booked' ? 'booked' : leadStage === 'qualified' ? 'qualified' : 'active',
+          last_user_message: message,
+          last_assistant_message: reply,
+          captured_budget: capturedBudget,
+          captured_timeline: capturedTimeline,
+          captured_requirements: capturedRequirements,
+          booking_interest: shouldBookCall,
+          ai_summary: summary,
+        })
+        .eq('id', activeConversationId)
+      if (updateError) {
+        if (!isMissingTableError(updateError)) {
+          res.status(500).json({ error: updateError.message })
+          return
+        }
+      }
+    }
 
     res.json({
       data: {
