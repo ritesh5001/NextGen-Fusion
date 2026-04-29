@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { X, CalendarDays, PhoneCall, ArrowRight, CheckCircle2, Loader2 } from "lucide-react"
+import { API_BASE_URL } from "@/lib/api"
 
 type BookingState = {
   open: boolean
@@ -114,7 +115,7 @@ export default function BookingModal() {
     setError("")
     ;(async () => {
       try {
-        const res = await fetch(`/api/bookings/availability?date=${encodeURIComponent(form.selectedDate)}`)
+        const res = await fetch(`${API_BASE_URL}/bookings/availability?date=${encodeURIComponent(form.selectedDate)}`)
         const json = await res.json()
         if (!res.ok) throw new Error(json?.error || "Failed to load slots")
         if (ignore) return
@@ -141,7 +142,7 @@ export default function BookingModal() {
     setLoading(true)
     setError("")
     try {
-      const res = await fetch("/api/bookings/request", {
+      const res = await fetch(`${API_BASE_URL}/bookings/request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
