@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
         destination: `${BACKEND_URL}/api/admin/:path*`,
       },
       {
+        source: '/api/contact-forms',
+        destination: `${BACKEND_URL}/api/contact-forms`,
+      },
+      {
+        source: '/api/project-estimator',
+        destination: `${BACKEND_URL}/api/project-estimator`,
+      },
+      {
         source: '/api/cron/:path*',
         destination: `${BACKEND_URL}/api/cron/:path*`,
       },

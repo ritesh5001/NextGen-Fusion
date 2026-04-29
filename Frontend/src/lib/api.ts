@@ -95,16 +95,42 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_
     information_source: string
   }
   
-  export interface ContactFormResponse {
-    id: number
-    name: string
+export interface ContactFormResponse {
+  id: number
+  name: string
     email: string
     phone: string
     message: string
     information_source: string
     created_at: string
-    updated_at: string
-  }
+  updated_at: string
+}
+
+export interface ProjectEstimatorData {
+  projectType: 'landing-page' | 'portfolio' | 'ecommerce' | 'saas' | 'custom'
+  features: string[]
+  timeline: 'asap' | '1-month' | '3-months' | 'flexible'
+  pageCount: '1-5' | '6-15' | '16-30' | '30+'
+  designLevel: 'clean' | 'premium' | 'conversion-focused'
+  contentReadiness: 'ready' | 'partial' | 'need-help'
+  maintenance: 'none' | 'basic' | 'growth'
+  integrations: string[]
+  goals: string
+  notes: string
+}
+
+export interface ProjectEstimatorResponse {
+  summary: string
+  estimated_cost_inr: { min: number; max: number }
+  estimated_timeline_weeks: { min: number; max: number }
+  confidence: 'low' | 'medium' | 'high'
+  highlighted_features: string[]
+  scope_breakdown: string[]
+  assumptions: string[]
+  next_step: string
+  provider: 'grok' | 'fallback'
+  model: string | null
+}
   
   export interface ApiResponse<T> {
     data: T
@@ -472,6 +498,28 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_
       return result.data
     } catch (error) {
       console.error('Failed to submit contact form:', error)
+      throw error
+    }
+  }
+
+  async estimateProject(formData: ProjectEstimatorData): Promise<ProjectEstimatorResponse> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/project-estimator`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json().catch(() => ({}))
+      if (!response.ok) {
+        throw new Error(result?.error || `Project estimation failed: ${response.status}`)
+      }
+
+      return result.data as ProjectEstimatorResponse
+    } catch (error) {
+      console.error('Failed to estimate project:', error)
       throw error
     }
   }

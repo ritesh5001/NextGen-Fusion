@@ -11,6 +11,7 @@ import BannerSection from "@/components/banner-section"
 import PortfolioSection from "@/components/portfolio-section"
 import FAQSection from "@/components/faq-section"
 import ContactSection from "@/components/contact-section"
+import ProjectEstimatorSection from "@/components/project-estimator-section"
 
 type HomeClientProps = {
   portfolios: Portfolio[]
@@ -38,6 +39,7 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
       <div id="faq">
         <FAQSection />
       </div>
+      <ProjectEstimatorSection />
       <div id="contact">
         <ContactSection />
       </div>
