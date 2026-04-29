@@ -272,7 +272,7 @@ export default function SimpleNavbar() {
                   WebkitBackdropFilter: "blur(20px)", /* Ditingkatkan dari 10px ke 20px */
                   border: "1px solid rgba(255, 255, 255, 0.4)", /* Border lebih terang */
                 }}
-                onClick={() => window.open('https://wa.me/6281234567890', '_blank')}
+                onClick={() => window.open('tel:+917348228167', '_self')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
