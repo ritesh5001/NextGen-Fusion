@@ -94,6 +94,10 @@ const integrationOptions = [
 type EstimatorForm = ProjectEstimatorData
 
 const initialForm: EstimatorForm = {
+  name: "",
+  email: "",
+  phone: "",
+  companyName: "",
   projectType: "landing-page",
   features: [],
   timeline: "3-months",
@@ -128,7 +132,7 @@ export default function ProjectEstimatorSection() {
 
   const isStepOneValid = !!form.projectType && !!form.timeline && !!form.pageCount
   const isStepTwoValid = !!form.designLevel && !!form.contentReadiness && !!form.maintenance
-  const isStepThreeValid = form.goals.trim().length >= 12
+  const isStepThreeValid = form.name.trim().length >= 2 && form.email.trim().length >= 5 && form.goals.trim().length >= 12
 
   async function handleEstimate() {
     if (!isStepOneValid || !isStepTwoValid || !isStepThreeValid) return
@@ -304,9 +308,50 @@ export default function ProjectEstimatorSection() {
 
                 {step === 3 && (
                   <motion.div key="step-3" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
-                    <StepHeading title="Project intent" subtitle="Give the estimator the business context it needs to justify the number." />
+                    <StepHeading title="Project intent" subtitle="Give the estimator the business context and contact details needed to save the request properly." />
 
                     <div className="mt-6 space-y-5">
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                          <label className="mb-2 block text-sm font-medium text-[#3e3a33]">Your name</label>
+                          <input
+                            value={form.name}
+                            onChange={(e) => update("name", e.target.value)}
+                            placeholder="Ritesh Kumar"
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-sm font-medium text-[#3e3a33]">Work email</label>
+                          <input
+                            type="email"
+                            value={form.email}
+                            onChange={(e) => update("email", e.target.value)}
+                            placeholder="you@company.com"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                          <label className="mb-2 block text-sm font-medium text-[#3e3a33]">Phone number</label>
+                          <input
+                            value={form.phone}
+                            onChange={(e) => update("phone", e.target.value)}
+                            placeholder="+91 98765 43210"
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-sm font-medium text-[#3e3a33]">Company name</label>
+                          <input
+                            value={form.companyName}
+                            onChange={(e) => update("companyName", e.target.value)}
+                            placeholder="NextGen Fusion"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
                       <div>
                         <label className="mb-2 block text-sm font-medium text-[#3e3a33]">What is the main goal of this project?</label>
                         <textarea
@@ -546,6 +591,9 @@ function formatINR(value: number) {
 }
 
 const selectClass =
+  "w-full rounded-2xl border border-[#e1d9c8] bg-[#fbfaf7] px-4 py-3 text-sm text-[#1f1f1f] outline-none transition focus:border-[#111318] focus:ring-2 focus:ring-[#111318]/10"
+
+const inputClass =
   "w-full rounded-2xl border border-[#e1d9c8] bg-[#fbfaf7] px-4 py-3 text-sm text-[#1f1f1f] outline-none transition focus:border-[#111318] focus:ring-2 focus:ring-[#111318]/10"
 
 const textareaClass =

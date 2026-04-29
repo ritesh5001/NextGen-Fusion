@@ -1,4 +1,6 @@
 import { Router } from 'express'
+import { requireAuth } from '../middleware/auth'
+import { getSupabaseAdmin } from '../lib/supabase'
 
 const router = Router()
 
@@ -17,6 +19,10 @@ type ContentReadiness = typeof CONTENT_READINESS[number]
 type MaintenanceLevel = typeof MAINTENANCE_LEVELS[number]
 
 type EstimatorInput = {
+  name: string
+  email: string
+  phone: string
+  companyName: string
   projectType: ProjectType
   features: string[]
   timeline: Timeline
@@ -77,6 +83,10 @@ function sanitizeInput(body: any): EstimatorInput | null {
   }
 
   return {
+    name: typeof body.name === 'string' ? body.name.trim().slice(0, 120) : '',
+    email: typeof body.email === 'string' ? body.email.trim().toLowerCase().slice(0, 180) : '',
+    phone: typeof body.phone === 'string' ? body.phone.trim().slice(0, 60) : '',
+    companyName: typeof body.companyName === 'string' ? body.companyName.trim().slice(0, 180) : '',
     projectType: projectType as ProjectType,
     features: uniqueList(Array.isArray(body.features) ? body.features : []),
     timeline: timeline as Timeline,
@@ -88,6 +98,11 @@ function sanitizeInput(body: any): EstimatorInput | null {
     goals: typeof body.goals === 'string' ? body.goals.trim().slice(0, 1000) : '',
     notes: typeof body.notes === 'string' ? body.notes.trim().slice(0, 1500) : '',
   }
+}
+
+function isMissingTableError(error: { code?: string; message?: string } | null | undefined): boolean {
+  if (!error) return false
+  return error.code === '42P01' || /schema cache|could not find the table/i.test(error.message || '')
 }
 
 function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
@@ -247,6 +262,8 @@ async function generateWithGrok(input: EstimatorInput, baseline: EstimateResult)
 
   const model = process.env.XAI_MODEL || 'grok-4-1-fast-non-reasoning'
   const prompt = {
+    name: input.name,
+    companyName: input.companyName,
     projectType: input.projectType,
     features: input.features,
     timeline: input.timeline,
@@ -345,20 +362,123 @@ router.post('/project-estimator', async (req, res) => {
       res.status(400).json({ error: 'Invalid estimator payload' })
       return
     }
+    if (!input.name || !input.email || input.goals.trim().length < 12) {
+      res.status(400).json({ error: 'name, email, and a valid project goal are required' })
+      return
+    }
 
     const baseline = buildHeuristicEstimate(input)
+    let estimate = baseline
 
     try {
-      const aiEstimate = await generateWithGrok(input, baseline)
-      res.json({ data: aiEstimate })
-      return
+      estimate = await generateWithGrok(input, baseline)
     } catch (err) {
       console.error('[project-estimator] Grok estimate failed, using fallback:', err instanceof Error ? err.message : err)
     }
 
-    res.json({ data: baseline })
+    const sb = getSupabaseAdmin()
+    const { data, error } = await sb
+      .from('project_estimator_submissions')
+      .insert({
+        name: input.name,
+        email: input.email,
+        phone: input.phone || null,
+        company_name: input.companyName || null,
+        project_type: input.projectType,
+        features: input.features,
+        timeline: input.timeline,
+        page_count: input.pageCount,
+        design_level: input.designLevel,
+        content_readiness: input.contentReadiness,
+        maintenance: input.maintenance,
+        integrations: input.integrations,
+        goals: input.goals,
+        notes: input.notes || null,
+        estimate_summary: estimate.summary,
+        estimated_cost_min: estimate.estimated_cost_inr.min,
+        estimated_cost_max: estimate.estimated_cost_inr.max,
+        estimated_timeline_min_weeks: estimate.estimated_timeline_weeks.min,
+        estimated_timeline_max_weeks: estimate.estimated_timeline_weeks.max,
+        confidence: estimate.confidence,
+        highlighted_features: estimate.highlighted_features,
+        scope_breakdown: estimate.scope_breakdown,
+        assumptions: estimate.assumptions,
+        next_step: estimate.next_step,
+        estimate_provider: estimate.provider,
+        estimate_model: estimate.model,
+      })
+      .select('id')
+      .single()
+
+    if (error) {
+      if (isMissingTableError(error)) {
+        res.status(503).json({ error: 'Estimator storage is not provisioned yet. Apply the latest Supabase schema first.' })
+        return
+      }
+      res.status(500).json({ error: error.message })
+      return
+    }
+
+    res.json({ data: { ...estimate, submission_id: data?.id || null } })
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Estimator failed' })
+  }
+})
+
+router.get('/admin/project-estimator-submissions', requireAuth, async (req, res) => {
+  try {
+    const sb = getSupabaseAdmin()
+    const search = (req.query.q as string | undefined)?.trim() || ''
+    const limit = Math.min(Number(req.query.limit || 100), 500)
+    const offset = Number(req.query.offset || 0)
+
+    let query = sb
+      .from('project_estimator_submissions')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (search) {
+      const safe = search.replace(/[%,]/g, '')
+      query = query.or(`name.ilike.%${safe}%,email.ilike.%${safe}%,company_name.ilike.%${safe}%,project_type.ilike.%${safe}%,goals.ilike.%${safe}%`)
+    }
+
+    const { data, error, count } = await query
+    if (error) {
+      if (isMissingTableError(error)) {
+        res.json({
+          data: [],
+          count: 0,
+          setupRequired: true,
+          message: 'Estimator submissions storage is not provisioned yet. Apply the latest Supabase schema to your project.',
+        })
+        return
+      }
+      res.status(500).json({ error: error.message })
+      return
+    }
+
+    res.json({ data, count: count || 0 })
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Internal error' })
+  }
+})
+
+router.get('/admin/project-estimator-submissions/:id', requireAuth, async (req, res) => {
+  try {
+    const sb = getSupabaseAdmin()
+    const { data, error } = await sb
+      .from('project_estimator_submissions')
+      .select('*')
+      .eq('id', req.params.id)
+      .single()
+    if (error) {
+      res.status(404).json({ error: error.message })
+      return
+    }
+    res.json({ data })
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Internal error' })
   }
 })
 

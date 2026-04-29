@@ -48,6 +48,38 @@ export type ContactFormSubmission = {
   updated_at: string
 }
 
+export type ProjectEstimatorSubmission = {
+  id: string
+  name: string
+  email: string
+  phone: string | null
+  company_name: string | null
+  project_type: string
+  features: string[]
+  timeline: string
+  page_count: string
+  design_level: string
+  content_readiness: string
+  maintenance: string
+  integrations: string[]
+  goals: string
+  notes: string | null
+  estimate_summary: string
+  estimated_cost_min: number
+  estimated_cost_max: number
+  estimated_timeline_min_weeks: number
+  estimated_timeline_max_weeks: number
+  confidence: 'low' | 'medium' | 'high'
+  highlighted_features: string[]
+  scope_breakdown: string[]
+  assumptions: string[]
+  next_step: string
+  estimate_provider: 'grok' | 'fallback'
+  estimate_model: string | null
+  created_at: string
+  updated_at: string
+}
+
 export type CampaignStatus = 'draft' | 'active' | 'paused' | 'completed'
 
 export type Campaign = {

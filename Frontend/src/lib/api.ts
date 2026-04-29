@@ -107,6 +107,10 @@ export interface ContactFormResponse {
 }
 
 export interface ProjectEstimatorData {
+  name: string
+  email: string
+  phone: string
+  companyName: string
   projectType: 'landing-page' | 'portfolio' | 'ecommerce' | 'saas' | 'custom'
   features: string[]
   timeline: 'asap' | '1-month' | '3-months' | 'flexible'
@@ -120,6 +124,7 @@ export interface ProjectEstimatorData {
 }
 
 export interface ProjectEstimatorResponse {
+  submission_id?: string | null
   summary: string
   estimated_cost_inr: { min: number; max: number }
   estimated_timeline_weeks: { min: number; max: number }

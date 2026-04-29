@@ -54,6 +54,46 @@ create index if not exists contact_forms_email_idx on contact_forms (email);
 create index if not exists contact_forms_status_idx on contact_forms (status);
 
 -- =========================
+-- Project estimator submissions
+-- =========================
+create table if not exists project_estimator_submissions (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  phone text,
+  company_name text,
+  project_type text not null,
+  features jsonb not null default '[]'::jsonb,
+  timeline text not null,
+  page_count text not null,
+  design_level text not null,
+  content_readiness text not null,
+  maintenance text not null,
+  integrations jsonb not null default '[]'::jsonb,
+  goals text not null,
+  notes text,
+  estimate_summary text not null,
+  estimated_cost_min int not null,
+  estimated_cost_max int not null,
+  estimated_timeline_min_weeks int not null,
+  estimated_timeline_max_weeks int not null,
+  confidence text not null,
+  highlighted_features jsonb not null default '[]'::jsonb,
+  scope_breakdown jsonb not null default '[]'::jsonb,
+  assumptions jsonb not null default '[]'::jsonb,
+  next_step text not null,
+  estimate_provider text not null default 'fallback',
+  estimate_model text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists project_estimator_submissions_created_at_idx on project_estimator_submissions (created_at desc);
+create index if not exists project_estimator_submissions_email_idx on project_estimator_submissions (email);
+create index if not exists project_estimator_submissions_company_idx on project_estimator_submissions (company_name);
+create index if not exists project_estimator_submissions_project_type_idx on project_estimator_submissions (project_type);
+
+-- =========================
 -- Campaigns
 -- =========================
 create table if not exists campaigns (
@@ -154,6 +194,10 @@ create trigger trg_contacts_updated_at before update on contacts
 
 drop trigger if exists trg_contact_forms_updated_at on contact_forms;
 create trigger trg_contact_forms_updated_at before update on contact_forms
+  for each row execute function set_updated_at();
+
+drop trigger if exists trg_project_estimator_submissions_updated_at on project_estimator_submissions;
+create trigger trg_project_estimator_submissions_updated_at before update on project_estimator_submissions
   for each row execute function set_updated_at();
 
 drop trigger if exists trg_campaigns_updated_at on campaigns;
