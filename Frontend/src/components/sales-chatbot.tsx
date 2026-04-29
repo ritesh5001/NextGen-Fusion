@@ -93,7 +93,7 @@ export default function SalesChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.98 }}
             transition={{ duration: 0.18 }}
-            className="fixed bottom-24 right-4 z-[75] w-[calc(100vw-2rem)] max-w-[390px] overflow-hidden rounded-[28px] border border-white/10 bg-[#f8f5ee] shadow-[0_30px_90px_rgba(0,0,0,0.25)] md:bottom-8"
+            className="fixed bottom-24 right-4 z-[75] flex h-[min(76vh,720px)] w-[calc(100vw-2rem)] max-w-[390px] flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#f8f5ee] shadow-[0_30px_90px_rgba(0,0,0,0.25)] md:bottom-8"
           >
             <div className="bg-[#121419] px-5 py-4 text-white">
               <div className="flex items-center justify-between">
@@ -107,7 +107,7 @@ export default function SalesChatbot() {
               </div>
             </div>
 
-            <div className="max-h-[72vh] overflow-y-auto px-4 py-4">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 [scrollbar-gutter:stable]">
               <div className="mb-4 grid grid-cols-2 gap-2">
                 <input value={lead.name} onChange={(e) => setLead((p) => ({ ...p, name: e.target.value }))} placeholder="Name" className={smallInputClass} />
                 <input value={lead.email} onChange={(e) => setLead((p) => ({ ...p, email: e.target.value }))} placeholder="Email" className={smallInputClass} />
