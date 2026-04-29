@@ -83,6 +83,22 @@ export default function BookingModal() {
     return () => window.removeEventListener("open-booking-modal", onOpen as EventListener)
   }, [])
 
+  useEffect(() => {
+    if (typeof document === "undefined") return
+    const previousOverflow = document.body.style.overflow
+    const previousTouchAction = document.body.style.touchAction
+
+    if (open) {
+      document.body.style.overflow = "hidden"
+      document.body.style.touchAction = "none"
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.body.style.touchAction = previousTouchAction
+    }
+  }, [open])
+
   const dateOptions = useMemo(() => {
     const out: Array<{ value: string; label: string }> = []
     const now = new Date()
@@ -214,7 +230,7 @@ export default function BookingModal() {
               <div className="min-h-0 bg-white">
                 {step === "form" && (
                   <form onSubmit={submitBookingRequest} className="flex h-full min-h-0 flex-col">
-                    <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 pb-5 pt-4 sm:px-6 sm:pb-6 sm:pt-5 md:px-8 md:pb-8 md:pt-6">
+                    <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 pb-5 pt-4 [scrollbar-gutter:stable] sm:px-6 sm:pb-6 sm:pt-5 md:px-8 md:pb-8 md:pt-6">
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <Field label="Name">
                         <input value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={inputClass} required />
