@@ -1,7 +1,7 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Loader2, IndianRupee, CalendarClock, Layers3, Rocket } from "lucide-react"
+import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Loader2, DollarSign, CalendarClock, Layers3, Rocket } from "lucide-react"
 import { useState, type ReactNode } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import { apiService, ProjectEstimatorData, ProjectEstimatorResponse } from "@/lib/api"
@@ -193,7 +193,7 @@ export default function ProjectEstimatorSection() {
             </div>
 
             <div className="mt-8 space-y-4">
-              <Benefit icon={<IndianRupee className="h-4 w-4" />} title="Commercially grounded estimates" text="The estimator is anchored with real delivery logic so numbers stay believable." />
+              <Benefit icon={<DollarSign className="h-4 w-4" />} title="Commercially grounded estimates" text="The estimator is anchored with fixed pricing bands so the answers stay consistent." />
               <Benefit icon={<Layers3 className="h-4 w-4" />} title="Scope discovery built in" text="It asks enough about pages, integrations, content, and features to feel serious." />
               <Benefit icon={<CalendarClock className="h-4 w-4" />} title="Timeline-aware pricing" text="Urgent delivery requests naturally come back with higher estimates." />
               <Benefit icon={<Rocket className="h-4 w-4" />} title="Positioning asset" text="This becomes a standout homepage feature, not just another contact form." />
@@ -389,7 +389,7 @@ export default function ProjectEstimatorSection() {
                     <div className="mt-6 rounded-[28px] bg-[#111318] p-6 text-white">
                       <p className="text-xs uppercase tracking-[0.22em] text-[#f0d79b]">Estimated investment</p>
                       <div className="mt-3 text-3xl font-semibold sm:text-4xl">
-                        {formatINR(result.estimated_cost_inr.min)} to {formatINR(result.estimated_cost_inr.max)}
+                        {formatUSD(result.estimated_cost_inr.min)} to {formatUSD(result.estimated_cost_inr.max)}
                       </div>
                       <p className="mt-4 max-w-2xl text-sm leading-7 text-white/75">{result.summary}</p>
 
@@ -582,10 +582,10 @@ function ListCard({ title, items }: { title: string; items: string[] }) {
   )
 }
 
-function formatINR(value: number) {
-  return new Intl.NumberFormat("en-IN", {
+function formatUSD(value: number) {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "INR",
+    currency: "USD",
     maximumFractionDigits: 0,
   }).format(value)
 }

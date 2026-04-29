@@ -112,7 +112,7 @@ export default function ProjectEstimatorSubmissionDetailPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-6">
                 <div className="text-xs uppercase tracking-[0.18em] text-slate-500">Estimate</div>
                 <div className="mt-3 text-3xl font-semibold text-slate-900">
-                  {formatINR(item.estimated_cost_min)} - {formatINR(item.estimated_cost_max)}
+                  {formatUSD(item.estimated_cost_min)} - {formatUSD(item.estimated_cost_max)}
                 </div>
                 <div className="mt-2 text-sm text-slate-500">
                   {item.estimated_timeline_min_weeks}-{item.estimated_timeline_max_weeks} weeks · {item.confidence} confidence
@@ -167,10 +167,10 @@ function CardList({ title, items, emptyLabel }: { title: string; items: string[]
   )
 }
 
-function formatINR(value: number) {
-  return new Intl.NumberFormat('en-IN', {
+function formatUSD(value: number) {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'INR',
+    currency: 'USD',
     maximumFractionDigits: 0,
   }).format(value)
 }

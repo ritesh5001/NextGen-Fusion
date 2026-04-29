@@ -50,8 +50,8 @@ type EstimateResult = {
 
 function clampRange(min: number, max: number) {
   return {
-    min: Math.max(15000, Math.round(min / 1000) * 1000),
-    max: Math.max(Math.round(max / 1000) * 1000, Math.round(min / 1000) * 1000),
+    min: Math.max(100, Math.round(min / 10) * 10),
+    max: Math.min(2000, Math.max(Math.round(max / 10) * 10, Math.round(min / 10) * 10)),
   }
 }
 
@@ -107,25 +107,25 @@ function isMissingTableError(error: { code?: string; message?: string } | null |
 
 function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
   const baseByType: Record<ProjectType, { min: number; max: number; weeks: [number, number] }> = {
-    'landing-page': { min: 25000, max: 60000, weeks: [1, 3] },
-    portfolio: { min: 40000, max: 90000, weeks: [2, 4] },
-    ecommerce: { min: 140000, max: 320000, weeks: [5, 10] },
-    saas: { min: 280000, max: 850000, weeks: [8, 20] },
-    custom: { min: 180000, max: 650000, weeks: [6, 16] },
+    'landing-page': { min: 100, max: 180, weeks: [1, 2] },
+    portfolio: { min: 100, max: 200, weeks: [1, 3] },
+    ecommerce: { min: 100, max: 200, weeks: [2, 5] },
+    saas: { min: 300, max: 1400, weeks: [4, 10] },
+    custom: { min: 100, max: 2000, weeks: [2, 12] },
   }
 
   const featureCost: Record<string, number> = {
-    payment: 45000,
-    auth: 25000,
-    dashboard: 60000,
-    blog: 18000,
-    booking: 30000,
-    cms: 25000,
-    crm: 30000,
-    analytics: 20000,
-    multi_language: 22000,
-    seo_setup: 18000,
-    whatsapp: 10000,
+    payment: 20,
+    auth: 30,
+    dashboard: 150,
+    blog: 20,
+    booking: 40,
+    cms: 20,
+    crm: 50,
+    analytics: 20,
+    multi_language: 30,
+    seo_setup: 100,
+    whatsapp: 10,
   }
 
   const featureWeeks: Record<string, number> = {
@@ -144,9 +144,9 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
 
   const pageCost: Record<PageCount, number> = {
     '1-5': 0,
-    '6-15': 25000,
-    '16-30': 60000,
-    '30+': 120000,
+    '6-15': 40,
+    '16-30': 90,
+    '30+': 180,
   }
 
   const pageWeeks: Record<PageCount, number> = {
@@ -164,8 +164,8 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
 
   const contentCost: Record<ContentReadiness, number> = {
     ready: 0,
-    partial: 12000,
-    'need-help': 30000,
+    partial: 20,
+    'need-help': 60,
   }
 
   const contentWeeks: Record<ContentReadiness, number> = {
@@ -176,8 +176,8 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
 
   const maintenanceCost: Record<MaintenanceLevel, number> = {
     none: 0,
-    basic: 12000,
-    growth: 30000,
+    basic: 20,
+    growth: 60,
   }
 
   const maintenanceWeeks: Record<MaintenanceLevel, number> = {
@@ -187,10 +187,10 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
   }
 
   const urgencyMultiplier: Record<Timeline, number> = {
-    asap: 1.25,
-    '1-month': 1.12,
+    asap: 1.12,
+    '1-month': 1.05,
     '3-months': 1,
-    flexible: 0.95,
+    flexible: 0.98,
   }
 
   const confidence: EstimateResult['confidence'] =
@@ -201,9 +201,9 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
         : 'high'
 
   const base = baseByType[input.projectType]
-  const featuresCost = input.features.reduce((sum, feature) => sum + (featureCost[feature] || 12000), 0)
+  const featuresCost = input.features.reduce((sum, feature) => sum + (featureCost[feature] || 20), 0)
   const featuresWeeks = input.features.reduce((sum, feature) => sum + (featureWeeks[feature] || 1), 0)
-  const integrationsCost = input.integrations.length * 18000
+  const integrationsCost = input.integrations.length * 25
   const integrationsWeeks = input.integrations.length
 
   let min = base.min + pageCost[input.pageCount] + featuresCost + integrationsCost + contentCost[input.contentReadiness] + maintenanceCost[input.maintenance]
@@ -233,7 +233,7 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
   const assumptions = [
     input.contentReadiness === 'ready' ? 'Content and brand assets are ready to use.' : 'Content/design iteration will affect final scope.',
     input.timeline === 'asap' ? 'Fast-track delivery requires tighter feedback cycles and priority allocation.' : 'Standard delivery rhythm with normal revision cycles.',
-    input.projectType === 'saas' || input.projectType === 'custom' ? 'Advanced product logic may need a discovery sprint before final pricing.' : 'Estimate assumes standard agency delivery without unusual compliance constraints.',
+    input.projectType === 'saas' || input.projectType === 'custom' ? 'Complex custom logic can push the quote toward the upper side of the range.' : 'Estimate assumes standard delivery without unusual compliance or enterprise constraints.',
   ]
 
   return {
@@ -244,7 +244,7 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
     highlighted_features: highlights.slice(0, 5),
     scope_breakdown: scope,
     assumptions,
-    next_step: 'Book a discovery call to convert this into a fixed proposal with exact deliverables and milestones.',
+    next_step: 'Book a discovery call to lock the exact scope, confirm deliverables, and turn this range into a final quote.',
     provider: 'fallback',
     model: null,
   }
@@ -291,14 +291,14 @@ async function generateWithGrok(input: EstimatorInput, baseline: EstimateResult)
         {
           role: 'system',
           content:
-            'You are a senior web agency solutions architect for NextGen Fusion. Return only valid JSON. Quote only in INR. Keep estimates commercially realistic for an Indian digital agency. Do not include markdown fences. Stay reasonably close to the provided baseline estimate unless the user inputs clearly justify a change.',
+            'You are a senior web agency solutions architect for NextGen Fusion. Return only valid JSON. Quote only in USD. Stay close to these pricing rules unless the input clearly justifies the upper end: WordPress or Shopify websites around $100-$200, SEO around $100, and custom-coded websites from about $100 up to $2,000. Do not include markdown fences. Stay reasonably close to the provided baseline estimate.',
         },
         {
           role: 'user',
           content:
             `Generate a structured project estimate for this website/app brief.\n` +
             `Return JSON with exactly these keys: summary, estimated_cost_inr, estimated_timeline_weeks, confidence, highlighted_features, scope_breakdown, assumptions, next_step.\n` +
-            `estimated_cost_inr must be {"min": number, "max": number}.\n` +
+            `estimated_cost_inr must still use that key name for compatibility, but the numbers inside it must be USD amounts.\n` +
             `estimated_timeline_weeks must be {"min": number, "max": number}.\n` +
             `confidence must be one of low, medium, high.\n` +
             `highlighted_features, scope_breakdown, assumptions must each be arrays of short strings.\n` +

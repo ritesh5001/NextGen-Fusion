@@ -143,7 +143,7 @@ export default function FAQSection() {
     {
       question: "How much do your services cost?",
       answer:
-        "Our pricing varies based on project scope and requirements. We provide custom quotes after understanding your specific needs.",
+        "Typical website builds are often around $100-$200 for standard WordPress or Shopify scope, SEO usually starts around $100, and custom-coded websites can range from about $100 up to $2,000 depending on scope.",
     },
     {
       question: "What if I'm not satisfied with the results?",

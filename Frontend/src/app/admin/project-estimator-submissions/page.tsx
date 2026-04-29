@@ -136,7 +136,7 @@ export default function ProjectEstimatorSubmissionsPage() {
                       <div className="text-xs text-slate-400">{item.company_name || item.phone || '—'}</div>
                     </td>
                     <td className="px-4 py-2 text-slate-700 capitalize">{item.project_type.replace(/-/g, ' ')}</td>
-                    <td className="px-4 py-2 text-slate-700">{formatINR(item.estimated_cost_min)} - {formatINR(item.estimated_cost_max)}</td>
+                    <td className="px-4 py-2 text-slate-700">{formatUSD(item.estimated_cost_min)} - {formatUSD(item.estimated_cost_max)}</td>
                     <td className="px-4 py-2 text-slate-700">{item.estimated_timeline_min_weeks}-{item.estimated_timeline_max_weeks} weeks</td>
                     <td className="px-4 py-2">
                       <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -159,10 +159,10 @@ export default function ProjectEstimatorSubmissionsPage() {
   )
 }
 
-function formatINR(value: number) {
-  return new Intl.NumberFormat('en-IN', {
+function formatUSD(value: number) {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'INR',
+    currency: 'USD',
     maximumFractionDigits: 0,
   }).format(value)
 }
