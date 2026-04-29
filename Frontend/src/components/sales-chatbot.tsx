@@ -26,7 +26,7 @@ export default function SalesChatbot() {
     {
       role: "assistant",
       content:
-        "Tell me what you want to build and I’ll help with price range, timeline, scope, and the fastest next step.",
+        "Ask about website cost, WordPress or eCommerce timelines, tech stack, process, SEO, apps, or your exact project scope.",
     },
   ])
   const [latestAssistantContext, setLatestAssistantContext] = useState({
@@ -188,7 +188,7 @@ export default function SalesChatbot() {
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about pricing, timeline, tech stack, or process"
+                  placeholder="Example: how long does a WooCommerce site take?"
                   rows={2}
                   className="min-h-[52px] flex-1 resize-none rounded-2xl border border-[#e1d9c8] bg-[#fbfaf7] px-4 py-3 text-sm text-[#1f1f1f] outline-none transition focus:border-[#111318] focus:ring-2 focus:ring-[#111318]/10"
                 />

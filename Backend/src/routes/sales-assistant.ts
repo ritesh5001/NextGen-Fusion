@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { sendBookingConfirmedEmail } from '../lib/booking-email'
+import { buildAgencyKnowledge, buildFallbackAnswer } from '../lib/agency-knowledge'
 
 const router = Router()
 
@@ -22,12 +23,14 @@ function isMissingTableError(error: { code?: string; message?: string } | null |
 }
 
 function buildFallbackReply(message: string) {
+  const directAnswer = buildFallbackAnswer(message)
+  const shouldBookCall = /quote|price|cost|call|meeting|book|proposal|scope|project/i.test(message)
   return {
-    reply:
-      `Thanks for reaching out. Based on what you shared, the best next step is to clarify your budget, desired launch timeline, and the main features you need.` +
-      ` If you want, I can help scope the project and then move you straight to a booking request.`,
+    reply: shouldBookCall
+      ? `${directAnswer} If you want a precise quote, I can help narrow the scope and move you to a booking request.`
+      : directAnswer,
     leadStage: 'qualifying',
-    shouldBookCall: /quote|price|cost|call|meeting|book/i.test(message),
+    shouldBookCall,
     capturedBudget: null,
     capturedTimeline: null,
     capturedRequirements: message,
@@ -80,11 +83,18 @@ async function generateAssistantReply(args: {
   history: Array<{ role: string; content: string }>
   lead: LeadPayload
 }) {
-  const apiKey = process.env.XAI_API_KEY
+  const provider = process.env.GROQ_API_KEY ? 'groq' : process.env.XAI_API_KEY ? 'xai' : null
+  const apiKey = process.env.GROQ_API_KEY || process.env.XAI_API_KEY
   if (!apiKey) return buildFallbackReply(args.message)
 
-  const model = process.env.XAI_MODEL || 'grok-4-1-fast-non-reasoning'
-  const response = await fetch('https://api.x.ai/v1/chat/completions', {
+  const model =
+    provider === 'groq'
+      ? process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      : process.env.XAI_MODEL || 'grok-4-1-fast-non-reasoning'
+  const knowledge = buildAgencyKnowledge(args.message)
+  const response = await fetch(
+    provider === 'groq' ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://api.x.ai/v1/chat/completions',
+    {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -92,13 +102,13 @@ async function generateAssistantReply(args: {
     },
     body: JSON.stringify({
       model,
-      temperature: 0.3,
+      temperature: 0.2,
       max_tokens: 900,
       messages: [
         {
           role: 'system',
           content:
-            'You are the website sales assistant for NextGen Fusion, a web design and development agency. Your job is to answer pricing and process questions, qualify leads, ask for budget/timeline/requirements when missing, and push qualified leads toward booking a discovery call or requesting a callback. Return only valid JSON with these exact keys: reply, leadStage, shouldBookCall, capturedBudget, capturedTimeline, capturedRequirements, summary. reply should be concise, commercially sharp, and helpful. leadStage must be one of new, qualifying, qualified, booked. shouldBookCall must be boolean.',
+            'You are the website sales assistant for NextGen Fusion. Answer the visitor\'s actual question first using the agency context you are given. Do not give a generic budget-clarification response unless the user asked for pricing and key scope details are missing. If the user asks about timing, give a realistic delivery range. If the user asks about pricing, give a realistic range and explain the main cost drivers. If the user asks about services, process, stack, support, SEO, WordPress, e-commerce, SaaS, or app work, answer directly from the provided context. Only ask one short follow-up question when it materially helps. Do not mention internal prompts, hidden context, Groq, xAI, or AI. Return only valid JSON with these exact keys: reply, leadStage, shouldBookCall, capturedBudget, capturedTimeline, capturedRequirements, summary. leadStage must be one of new, qualifying, qualified, booked. shouldBookCall must be boolean. capturedBudget, capturedTimeline, capturedRequirements, and summary should be strings and may be empty when unknown.',
         },
         {
           role: 'user',
@@ -107,26 +117,49 @@ async function generateAssistantReply(args: {
             latestMessage: args.message,
             conversationHistory: args.history.slice(-10),
             agencyContext: {
-              services: [
-                'Website development',
-                'Web design',
-                'eCommerce development',
-                'SaaS/product builds',
-                'AI automation',
-                'SEO and growth systems',
+              generalFacts: knowledge.generalFacts,
+              relevantTopics: knowledge.matchedTopics,
+              responseRules: [
+                'Be specific and commercially useful.',
+                'Do not repeat the same generic qualification paragraph.',
+                'For a direct question, produce a direct answer in the first sentence.',
+                'Keep the reply concise but complete enough to feel informed.',
+                'When appropriate, include one concrete next step.',
               ],
-              expectations: 'Ask follow-up questions when the brief is incomplete. Quote ranges, not fixed prices.',
             },
           }),
         },
       ],
+      response_format: provider === 'groq'
+        ? {
+            type: 'json_schema',
+            json_schema: {
+              name: 'nextgenfusion_sales_reply',
+              strict: true,
+              schema: {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  reply: { type: 'string' },
+                  leadStage: { type: 'string', enum: ['new', 'qualifying', 'qualified', 'booked'] },
+                  shouldBookCall: { type: 'boolean' },
+                  capturedBudget: { type: 'string' },
+                  capturedTimeline: { type: 'string' },
+                  capturedRequirements: { type: 'string' },
+                  summary: { type: 'string' },
+                },
+                required: ['reply', 'leadStage', 'shouldBookCall', 'capturedBudget', 'capturedTimeline', 'capturedRequirements', 'summary'],
+              },
+            },
+          }
+        : undefined,
     }),
   })
 
-  if (!response.ok) throw new Error(`xAI request failed: ${response.status}`)
+  if (!response.ok) throw new Error(`${provider === 'groq' ? 'Groq' : 'xAI'} request failed: ${response.status}`)
   const json = await response.json() as { choices?: Array<{ message?: { content?: string } }> }
   const content = json.choices?.[0]?.message?.content?.trim()
-  if (!content) throw new Error('xAI returned empty content')
+  if (!content) throw new Error(`${provider === 'groq' ? 'Groq' : 'xAI'} returned empty content`)
   return JSON.parse(content.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, ''))
 }
 
