@@ -162,7 +162,7 @@ export default function BookingModal() {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[80] flex items-end justify-center bg-black/55 px-4 py-4 md:items-center"
+          className="fixed inset-0 z-[80] flex items-end justify-center bg-black/55 p-0 sm:px-4 sm:py-4 md:items-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -172,34 +172,49 @@ export default function BookingModal() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="relative w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/10 bg-[#f7f4ec] shadow-[0_35px_120px_rgba(0,0,0,0.28)]"
+            className="relative flex h-[100dvh] w-full flex-col overflow-hidden rounded-none border-0 bg-[#f7f4ec] shadow-[0_35px_120px_rgba(0,0,0,0.28)] sm:h-[min(92dvh,900px)] sm:max-w-5xl sm:rounded-[28px] sm:border sm:border-white/10"
           >
             <button
               onClick={() => setOpen(false)}
-              className="absolute right-4 top-4 z-10 rounded-full border border-[#d9d0bc] bg-white p-2 text-[#282620] transition hover:bg-[#f4efe5]"
+              className="absolute right-4 top-4 z-20 rounded-full border border-[#d9d0bc] bg-white/95 p-2 text-[#282620] transition hover:bg-[#f4efe5]"
             >
               <X className="h-4 w-4" />
             </button>
 
-            <div className="grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr]">
-              <div className="border-b border-[#e6dfcf] bg-[#121419] p-7 text-white lg:border-b-0 lg:border-r">
+            <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[0.88fr_1.12fr]">
+              <div className="border-b border-[#e6dfcf] bg-[#121419] px-5 pb-6 pt-14 text-white sm:px-7 sm:pb-7 sm:pt-16 lg:border-b-0 lg:border-r lg:px-8 lg:pb-8 lg:pt-16">
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.22em] text-[#f2d799]">
                   {form.requestType === "meeting" ? <CalendarDays className="h-3.5 w-3.5" /> : <PhoneCall className="h-3.5 w-3.5" />}
                   {form.requestType === "meeting" ? "Book Discovery Call" : "Request Callback"}
                 </div>
-                <h3 className="mt-5 text-3xl font-semibold tracking-tight">
+                <h3 className="mt-4 max-w-[14ch] text-2xl font-semibold tracking-tight sm:mt-5 sm:text-3xl">
                   {form.requestType === "meeting" ? "Schedule without leaving the website." : "Leave the details and get a callback."}
                 </h3>
-                <p className="mt-4 text-sm leading-7 text-white/72">
+                <p className="mt-3 max-w-xl text-sm leading-6 text-white/72 sm:mt-4 sm:text-[15px] sm:leading-7">
                   {form.requestType === "meeting"
                     ? "Choose a real time slot directly on your website. Confirmed bookings are saved to your database immediately."
                     : "This request lands in your admin panel immediately with the context from the chat or booking trigger."}
                 </p>
+                <div className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                  <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/45">Flow</div>
+                    <div className="mt-1 text-sm text-white">Pick a slot, confirm details, get booked instantly.</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/45">Response</div>
+                    <div className="mt-1 text-sm text-white">Direct follow-up from your team with full project context.</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/45">Coverage</div>
+                    <div className="mt-1 text-sm text-white">Works cleanly across phone, tablet, and desktop.</div>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-white">
+              <div className="min-h-0 bg-white">
                 {step === "form" && (
-                  <form onSubmit={submitBookingRequest} className="space-y-4 p-6 md:p-8">
+                  <form onSubmit={submitBookingRequest} className="flex h-full min-h-0 flex-col">
+                    <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 pb-5 pt-4 sm:px-6 sm:pb-6 sm:pt-5 md:px-8 md:pb-8 md:pt-6">
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <Field label="Name">
                         <input value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={inputClass} required />
@@ -234,13 +249,13 @@ export default function BookingModal() {
                     {form.requestType === "meeting" && (
                       <>
                         <Field label="Select a date">
-                          <div className="flex flex-wrap gap-2">
+                          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
                             {dateOptions.map((option) => (
                               <button
                                 key={option.value}
                                 type="button"
                                 onClick={() => setForm((p) => ({ ...p, selectedDate: option.value, scheduledAt: "", endsAt: "", slotLabel: "" }))}
-                                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                                className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium whitespace-nowrap transition ${
                                   form.selectedDate === option.value
                                     ? "border-[#111318] bg-[#111318] text-white"
                                     : "border-[#ddd4c0] bg-white text-[#2a2926] hover:border-[#b9aa82] hover:bg-[#faf7f1]"
@@ -262,13 +277,13 @@ export default function BookingModal() {
                               No slots available on this date.
                             </div>
                           ) : (
-                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                            <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                               {slots.map((slot) => (
                                 <button
                                   key={slot.startsAt}
                                   type="button"
                                   onClick={() => setForm((p) => ({ ...p, scheduledAt: slot.startsAt, endsAt: slot.endsAt, slotLabel: slot.label }))}
-                                  className={`rounded-2xl border px-4 py-3 text-left text-sm font-medium transition ${
+                                  className={`min-h-12 rounded-2xl border px-4 py-3 text-left text-sm leading-5 font-medium transition ${
                                     form.scheduledAt === slot.startsAt
                                       ? "border-[#111318] bg-[#111318] text-white"
                                       : "border-[#e1d9c8] bg-[#fbfaf7] text-[#1f1f1f] hover:border-[#b9aa82]"
@@ -283,10 +298,13 @@ export default function BookingModal() {
                       </>
                     )}
                     {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
-                    <button type="submit" disabled={loading} className={primaryButtonClass}>
+                    </div>
+                    <div className="border-t border-[#ebe3d2] bg-white/96 px-4 py-4 backdrop-blur sm:px-6 md:px-8">
+                      <button type="submit" disabled={loading} className={primaryButtonClass}>
                       {loading ? "Saving..." : form.requestType === "meeting" ? "Confirm booking" : "Request callback"}
                       <ArrowRight className="h-4 w-4" />
                     </button>
+                    </div>
                   </form>
                 )}
 
