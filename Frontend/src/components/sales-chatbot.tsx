@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Sparkles, Send, X, CalendarDays, PhoneCall } from "lucide-react"
 import { openBookingModal } from "./booking-modal"
@@ -75,6 +75,31 @@ export default function SalesChatbot() {
     }
   }
 
+  useEffect(() => {
+    if (typeof document === "undefined") return
+
+    const bodyStyle = document.body.style
+    const htmlStyle = document.documentElement.style
+    const previousBodyOverflow = bodyStyle.overflow
+    const previousBodyTouchAction = bodyStyle.touchAction
+    const previousHtmlOverflow = htmlStyle.overflow
+    const previousHtmlTouchAction = htmlStyle.touchAction
+
+    if (open) {
+      bodyStyle.overflow = "hidden"
+      bodyStyle.touchAction = "none"
+      htmlStyle.overflow = "hidden"
+      htmlStyle.touchAction = "none"
+    }
+
+    return () => {
+      bodyStyle.overflow = previousBodyOverflow
+      bodyStyle.touchAction = previousBodyTouchAction
+      htmlStyle.overflow = previousHtmlOverflow
+      htmlStyle.touchAction = previousHtmlTouchAction
+    }
+  }, [open])
+
   return (
     <>
       <motion.button
@@ -107,7 +132,7 @@ export default function SalesChatbot() {
               </div>
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 [scrollbar-gutter:stable]">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain touch-pan-y px-4 py-4 [scrollbar-gutter:stable]">
               <div className="mb-4 grid grid-cols-2 gap-2">
                 <input value={lead.name} onChange={(e) => setLead((p) => ({ ...p, name: e.target.value }))} placeholder="Name" className={smallInputClass} />
                 <input value={lead.email} onChange={(e) => setLead((p) => ({ ...p, email: e.target.value }))} placeholder="Email" className={smallInputClass} />
