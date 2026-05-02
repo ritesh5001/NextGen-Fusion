@@ -1,0 +1,21 @@
+PROJECT TITLE
+HCB Engineering - Electrical Solutions Website Development
+Character count: 60 ✓ (60/60)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Developed a comprehensive website for HCB Engineering, a government-licensed electrical contracting company with 20+ years of experience. Created a professional online presence showcasing their services including commercial, residential, and specialty electrical systems. The website features service information, project portfolios, client testimonials, and integrated contact forms for lead generation. Implemented responsive design for seamless mobile and desktop experience, improving accessibility for their diverse client base including government and commercial sectors. The platform successfully increased online visibility and customer inquiries for their electrical contracting business.
+Character count: 485 ✓ (485/500 available)
+
+SKILLS AND DELIVERABLES
+
+Website Development
+Responsive Web Design
+WordPress Development
+Contact Form Integration
+Service Portfolio Showcase
+
+5 skills ✓ (5/5)

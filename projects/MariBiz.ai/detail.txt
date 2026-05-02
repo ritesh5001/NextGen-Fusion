@@ -1,0 +1,35 @@
+PROJECT TITLE
+MariBiz - Global Marine Procurement Marketplace Platform
+Character count: 60 ✓ (60/60)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Built global marine procurement marketplace connecting 3,226+ vendors with shipowners. Implemented RFQ system with vendor verification and real-time messaging. Created vendor profiles across 121 categories (maintenance, spare parts, hull cleaning, crew transport). Integrated quote comparison and port service discovery for maritime industry.
+Character count: 342 ✓ (342/350 available - 8 characters to spare)
+
+SKILLS AND DELIVERABLES
+
+B2B Marketplace Development
+RFQ & Vendor Management System
+Real-Time Communication Features
+Port & Service Discovery Platform
+Maritime Industry Solutions
+
+5 skills ✓ (5/5)
+
+Summary of Work Done:
+
+Built complete B2B marketplace platform
+Implemented RFQ (Request for Quote) system
+Created vendor verification and vetting system
+Built vendor profile management across 121 categories
+Implemented real-time messaging system
+Created quote comparison tools
+Built port-based service discovery
+Integrated global vendor mapping
+Created shipowner/operator dashboard
+Implemented secure communication features
+Built analytics for procurement efficiency

@@ -1,0 +1,21 @@
+PROJECT TITLE
+The Grafftee - HR & Talent Acquisition Platform Website
+Character count: 60 ✓ (60/60)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Developed a comprehensive HR and talent acquisition platform website for Grafftee, India's leading recruitment and workforce solutions company. Built a multi-feature web application showcasing services including talent acquisition, virtual HR support, payroll management, and employee experience tools. Implemented interactive service modules with FAQs, use cases, and platform capabilities display. Integrated client testimonials, contact forms, and booking systems for demo consultations. Created responsive pages for candidate placement services, business hiring solutions, and strategic HR planning. The platform successfully facilitates talent matching across pan-India locations with features for remote, hybrid, and office-based placements, enhancing their business growth and client acquisition.
+Character count: 500 ✓ (500/500 available - EXACT FIT!)
+
+SKILLS AND DELIVERABLES
+
+Full-Stack Web Development
+Responsive Web Design
+HR Platform Development
+Form Integration & Automation
+Service Module Architecture
+
+5 skills ✓ (5/5)

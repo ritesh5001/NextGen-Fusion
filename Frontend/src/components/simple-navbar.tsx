@@ -12,8 +12,8 @@ import { openBookingModal } from "@/components/booking-modal"
 const menuItems = [
   { name: "About", href: "about", isPage: false },
   { name: "Services", href: "services", isPage: false },
+  { name: "Work", href: "/work", isPage: true },
   { name: "Portfolio", href: "portfolio", isPage: false },
-  { name: "Showcase", href: "/showcase", isPage: true },
   { name: "Blog", href: "/blog", isPage: true },
   { name: "Contact", href: "contact", isPage: false }
 ]
@@ -194,6 +194,7 @@ export default function SimpleNavbar() {
                         >
                           {item.name === "About" && <User className="w-5 h-5" />}
                           {item.name === "Services" && <Wrench className="w-5 h-5" />}
+                          {item.name === "Work" && <Briefcase className="w-5 h-5" />}
                           {item.name === "Portfolio" && <Briefcase className="w-5 h-5" />}
                           {item.name === "Showcase" && <BookOpen className="w-5 h-5" />}
                           {item.name === "Blog" && <BookOpen className="w-5 h-5" />}
@@ -210,6 +211,7 @@ export default function SimpleNavbar() {
                         >
                           {item.name === "About" && <User className="w-5 h-5" />}
                           {item.name === "Services" && <Wrench className="w-5 h-5" />}
+                          {item.name === "Work" && <Briefcase className="w-5 h-5" />}
                           {item.name === "Portfolio" && <Briefcase className="w-5 h-5" />}
                           {item.name === "Showcase" && <BookOpen className="w-5 h-5" />}
                           {item.name === "Blog" && <BookOpen className="w-5 h-5" />}

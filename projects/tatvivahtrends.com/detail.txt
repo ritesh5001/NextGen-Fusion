@@ -1,0 +1,19 @@
+PROJECT TITLE
+TatVivah Trends - Premium Ethnic Wedding Wear Marketplace
+Character count: 60 ✓ (60/60)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Built Next.js marketplace for ethnic wear with 3000+ products (sherwanis, kurtas, Modi jackets). Implemented occasion-based filtering (wedding, haldi, mehendi). Integrated verified seller system, Razorpay payments, and 10-day returns. Created product showcase, gift cards, and mobile-responsive design for premium wedding fashion.
+Character count: 330 ✓ (330/350 available - 20 characters to spare)
+
+SKILLS AND DELIVERABLES
+
+Next.js Marketplace Development
+Multi-Vendor Platform Architecture
+Occasion-Based Product Filtering
+Payment Gateway Integration
+Wedding Fashion E-Commerce

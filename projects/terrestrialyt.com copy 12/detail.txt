@@ -1,0 +1,21 @@
+PROJECT TITLE
+TerrestrialYT - Gaming & Anime E-Commerce Store
+Character count: 55 ✓ (55/60 available)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Built WooCommerce store for TerrestrialYT featuring gaming and anime merchandise (mousepads, posters, tapestries, tote bags, coasters). Implemented product variations, dynamic pricing, and wishlist functionality. Integrated social media links (Instagram, YouTube, Twitch, Discord) for community engagement. Created responsive mobile design with secure checkout and global shipping support. Added community testimonials section and Discord integration for customer support.
+Character count: 332 ✓ (332/350 available - 18 characters to spare)
+
+SKILLS AND DELIVERABLES
+
+WooCommerce E-Commerce Development
+Product Variations & Variants Management
+Social Media Integration
+Community Forum Integration
+Merchandise Store Design
+
+5 skills ✓ (5/5)

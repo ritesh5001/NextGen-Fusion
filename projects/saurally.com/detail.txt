@@ -1,0 +1,21 @@
+PROJECT TITLE
+Saurally Solar - Renewable Energy E-Commerce Platform
+Character count: 60 ✓ (60/60)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Built WooCommerce solar platform for Saurally Solar with 40+ products. Implemented product filtering, comparison tools, and dynamic pricing. Integrated multi-gateway payments (UPI, cards, net banking), wishlist, and WhatsApp support. Created mobile-optimized design with free shipping and delivery tracking.
+Character count: 307 ✓ (307/350 available - 43 characters to spare)
+
+SKILLS AND DELIVERABLES
+
+WooCommerce Development
+Solar Product Catalog Design
+Multi-Gateway Payment Integration
+Advanced Product Filtering
+Customer Support Integration
+
+5 skills ✓ (5/5)

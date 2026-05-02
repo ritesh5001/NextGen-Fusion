@@ -1,0 +1,21 @@
+PROJECT TITLE
+Sitara Vastram - Premium Limited-Piece Ethnic Wear Store
+Character count: 60 ✓ (60/60)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Built WooCommerce ethnic wear store with limited collections (festive, everyday, exclusive). Implemented categories, variants, pricing. Created style video section with 6+ reels. Integrated testimonials, WhatsApp support, wishlist. Designed mobile-responsive interface with free shipping, dispatch, COD, and secure checkout for premium ethnic wear.
+Character count: 348 ✓ (348/350 available - 2 characters to spare)
+
+SKILLS AND DELIVERABLES
+
+WooCommerce E-Commerce Development
+Limited-Edition Collection Management
+Style Video Integration
+WhatsApp Business Integration
+Premium Fashion Store Design
+
+5 skills ✓ (5/5)

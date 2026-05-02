@@ -1,0 +1,23 @@
+Perfect! Here's the formatted content for ClickNGreet:
+
+PROJECT TITLE
+ClickNGreet - Personalized Gift Shop & Marketplace
+Character count: 54 ✓ (54/60 available)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Built WooCommerce gift store with 20+ categories (frames, mugs, T-shirts, resin art). Implemented variants, pricing, filtering, occasion shopping. Created category showcases and displays. Integrated testimonials, WhatsApp support, bulk orders. Designed mobile interface with fast delivery, checkout, and pan-India shipping for personalized gifts.
+Character count: 346 ✓ (346/350 available - 4 characters to spare)
+
+SKILLS AND DELIVERABLES
+
+WooCommerce E-Commerce Development
+Multi-Category Gift Marketplace
+Occasion-Based Product Filtering
+Bulk Order Management System
+Personalized Product Showcase
+
+5 skills ✓ (5/5)

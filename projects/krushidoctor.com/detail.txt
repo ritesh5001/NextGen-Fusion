@@ -1,0 +1,21 @@
+PROJECT TITLE
+Krushi Doctor - Agri Guidance & Farming Platform
+Character count: 48 ✓ (48/60 available)
+
+YOUR ROLE
+Full-Stack Developer
+Character count: 20 ✓ (20/90 available)
+
+PROJECT DESCRIPTION
+Built WooCommerce agricultural platform with 100+ products (crop schedules, sticky traps). Implemented crop PDF guides with WhatsApp support. Created categories (insecticides, fertilizers, equipment). Integrated farmer testimonials and blog. Designed mobile interface with 24/7 support, free shipping, easy returns for 1.2 lakh+ farmers.
+Character count: 337 ✓ (337/350 available - 13 characters to spare)
+
+SKILLS AND DELIVERABLES
+
+WooCommerce Agricultural Platform Development
+Crop Schedule & Digital Guidance System
+Multi-Category Agricultural Products Management
+WhatsApp Integration & Support System
+Farmer Community & Testimonial Platform
+
+5 skills ✓ (5/5)
