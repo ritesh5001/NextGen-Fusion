@@ -25,6 +25,8 @@ type BookingSlot = {
   label: string
 }
 
+const LENIS_SCROLL_LOCK_EVENT = "lenis-scroll-lock"
+
 export function openBookingModal(detail: Partial<BookingState> = {}) {
   if (typeof window === "undefined") return
   window.dispatchEvent(new CustomEvent("open-booking-modal", { detail }))
@@ -85,25 +87,39 @@ export default function BookingModal() {
 
   useEffect(() => {
     if (typeof document === "undefined") return
+    if (!open) return
+
+    const scrollY = window.scrollY
     const bodyStyle = document.body.style
     const htmlStyle = document.documentElement.style
     const previousBodyOverflow = bodyStyle.overflow
-    const previousBodyTouchAction = bodyStyle.touchAction
+    const previousBodyOverscrollBehavior = bodyStyle.overscrollBehavior
+    const previousBodyPosition = bodyStyle.position
+    const previousBodyTop = bodyStyle.top
+    const previousBodyWidth = bodyStyle.width
     const previousHtmlOverflow = htmlStyle.overflow
-    const previousHtmlTouchAction = htmlStyle.touchAction
+    const previousHtmlOverscrollBehavior = htmlStyle.overscrollBehavior
 
-    if (open) {
-      bodyStyle.overflow = "hidden"
-      bodyStyle.touchAction = "none"
-      htmlStyle.overflow = "hidden"
-      htmlStyle.touchAction = "none"
-    }
+    window.dispatchEvent(new CustomEvent(LENIS_SCROLL_LOCK_EVENT, { detail: { locked: true } }))
+
+    bodyStyle.overflow = "hidden"
+    bodyStyle.overscrollBehavior = "none"
+    bodyStyle.position = "fixed"
+    bodyStyle.top = `-${scrollY}px`
+    bodyStyle.width = "100%"
+    htmlStyle.overflow = "hidden"
+    htmlStyle.overscrollBehavior = "none"
 
     return () => {
+      window.dispatchEvent(new CustomEvent(LENIS_SCROLL_LOCK_EVENT, { detail: { locked: false } }))
       bodyStyle.overflow = previousBodyOverflow
-      bodyStyle.touchAction = previousBodyTouchAction
+      bodyStyle.overscrollBehavior = previousBodyOverscrollBehavior
+      bodyStyle.position = previousBodyPosition
+      bodyStyle.top = previousBodyTop
+      bodyStyle.width = previousBodyWidth
       htmlStyle.overflow = previousHtmlOverflow
-      htmlStyle.touchAction = previousHtmlTouchAction
+      htmlStyle.overscrollBehavior = previousHtmlOverscrollBehavior
+      window.scrollTo(0, scrollY)
     }
   }, [open])
 
@@ -197,9 +213,13 @@ export default function BookingModal() {
             exit={{ opacity: 0, y: 24, scale: 0.98 }}
             transition={{ duration: 0.2 }}
             className="relative flex h-[100dvh] w-full flex-col overflow-hidden rounded-none border-0 bg-[#f7f4ec] shadow-[0_35px_120px_rgba(0,0,0,0.28)] sm:h-[min(92dvh,900px)] sm:max-w-5xl sm:rounded-[28px] sm:border sm:border-white/10"
+            data-lenis-prevent
+            data-lenis-prevent-wheel
+            data-lenis-prevent-touch
           >
             <button
               onClick={() => setOpen(false)}
+              aria-label="Close booking modal"
               className="absolute right-4 top-4 z-20 rounded-full border border-[#d9d0bc] bg-white/95 p-2 text-[#282620] transition hover:bg-[#f4efe5]"
             >
               <X className="h-4 w-4" />
@@ -235,7 +255,7 @@ export default function BookingModal() {
                 </div>
               </div>
 
-              <div className="min-h-0 bg-white">
+              <div className="flex min-h-0 flex-col overflow-hidden bg-white">
                 {step === "form" && (
                   <form onSubmit={submitBookingRequest} className="flex h-full min-h-0 flex-col">
                     <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain touch-pan-y px-4 pb-5 pt-4 [scrollbar-gutter:stable] sm:px-6 sm:pb-6 sm:pt-5 md:px-8 md:pb-8 md:pt-6">
