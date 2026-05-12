@@ -4,8 +4,6 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
-import IntegratedNavbar from "@/components/integrated-navbar"
-import Footer from "@/components/footer"
 import { apiService, BlogPost } from "@/lib/api"
 import { motion } from "framer-motion"
 import { normalizeImagePath } from "@/lib/utils"
@@ -60,7 +58,6 @@ export default function BlogPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
-        <IntegratedNavbar />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
@@ -73,8 +70,6 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <IntegratedNavbar />
-      
       <main className="pt-32 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Section */}

@@ -17,8 +17,6 @@ import {
 } from "lucide-react"
 
 import BadgeSubtitle from "@/components/badge-subtitle"
-import IntegratedNavbar from "@/components/integrated-navbar"
-import Footer from "@/components/footer"
 
 const painPoints = [
   "Outdated websites that look untrustworthy and reduce conversion rates.",
@@ -145,8 +143,6 @@ const sectionVariants = {
 export default function WebsiteDevelopmentServicePage() {
   return (
     <div className="min-h-screen bg-white">
-      <IntegratedNavbar />
-
       <main className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-24">
           <motion.section
@@ -407,7 +403,6 @@ export default function WebsiteDevelopmentServicePage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   )
 }

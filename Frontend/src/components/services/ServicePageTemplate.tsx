@@ -26,8 +26,6 @@ import {
 } from "lucide-react"
 
 import BadgeSubtitle from "@/components/badge-subtitle"
-import IntegratedNavbar from "@/components/integrated-navbar"
-import Footer from "@/components/footer"
 
 export interface ServiceBenefit {
   icon: ServiceIconName
@@ -108,8 +106,6 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
 
   return (
     <div className="min-h-screen bg-white">
-      <IntegratedNavbar />
-
       <main className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-24">
 
@@ -343,7 +339,6 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
         </div>
       </main>
 
-      <Footer />
     </div>
   )
 }

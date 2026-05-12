@@ -1,7 +1,5 @@
 import { ArrowLeft, ExternalLink, Calendar, Clock } from "lucide-react"
 import Image from "next/image"
-import IntegratedNavbar from "@/components/integrated-navbar"
-import Footer from "@/components/footer"
 import { apiService } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import Link from "next/link"
@@ -38,7 +36,6 @@ export default async function ShowcaseDetailPage(props: Props) {
 	if (!showcaseItem) {
 		return (
 			<div className="min-h-screen bg-white">
-				<IntegratedNavbar />
 				<div className="flex items-center justify-center min-h-[60vh]">
 					<div className="text-center">
 						<h3 className="text-xl font-semibold text-gray-900 mb-2">Error</h3>
@@ -46,14 +43,12 @@ export default async function ShowcaseDetailPage(props: Props) {
 						<Link href="/showcase" className="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 inline-block">Back to Showcase</Link>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		)
 	}
 
 	return (
 		<div className="min-h-screen bg-white">
-			<IntegratedNavbar />
 			<main className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
 				<div className="max-w-6xl mx-auto">
 					<div className="mb-8">
@@ -155,7 +150,6 @@ export default async function ShowcaseDetailPage(props: Props) {
 					</div>
 				</div>
 			</main>
-			<Footer />
 		</div>
 	)
 }

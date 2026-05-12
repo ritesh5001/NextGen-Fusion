@@ -13,8 +13,6 @@ import {
   ArrowRight,
   MessageSquare,
 } from "lucide-react";
-import IntegratedNavbar from "@/components/integrated-navbar";
-import Footer from "@/components/footer";
 import ScrollToTop from "@/components/scroll-to-top";
 import { staticProjects, getProjectBySlug } from "@/lib/static-projects";
 
@@ -74,8 +72,6 @@ export default async function WorkDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      <IntegratedNavbar />
-
       {/* ── PAGE HEADER ── */}
       <header className="bg-white pt-20 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-10">
@@ -573,7 +569,6 @@ export default async function WorkDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      <Footer />
       <ScrollToTop />
     </div>
   );

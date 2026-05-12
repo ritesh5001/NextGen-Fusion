@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import IntegratedNavbar from "@/components/integrated-navbar"
-import Footer from "@/components/footer"
 import { apiService, Portfolio } from "@/lib/api"
 import { motion } from "framer-motion"
 import { normalizeImagePath } from "@/lib/utils"
@@ -35,7 +33,6 @@ export default function PortfolioPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
-        <IntegratedNavbar />
         <div className="pt-32 pb-16">
           <div className="max-w-7xl mx-auto px-6">
             <div className="animate-pulse">
@@ -58,9 +55,6 @@ export default function PortfolioPage() {
 
   return (
     <div className="min-h-screen bg-white">
-
-      <IntegratedNavbar />
-      
       {/* Main Content */}
       <main className="pt-20 relative">
         <div className="max-w-7xl mx-auto px-6 py-12">
