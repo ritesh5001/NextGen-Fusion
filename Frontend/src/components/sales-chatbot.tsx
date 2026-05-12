@@ -10,6 +10,8 @@ type ChatMessage = {
   content: string
 }
 
+const LENIS_SCROLL_LOCK_EVENT = "lenis-scroll-lock"
+
 export default function SalesChatbot() {
   const [open, setOpen] = useState(false)
   const [conversationId, setConversationId] = useState("")
@@ -77,26 +79,39 @@ export default function SalesChatbot() {
 
   useEffect(() => {
     if (typeof document === "undefined") return
+    if (!open) return
 
+    const scrollY = window.scrollY
     const bodyStyle = document.body.style
     const htmlStyle = document.documentElement.style
     const previousBodyOverflow = bodyStyle.overflow
-    const previousBodyTouchAction = bodyStyle.touchAction
+    const previousBodyOverscrollBehavior = bodyStyle.overscrollBehavior
+    const previousBodyPosition = bodyStyle.position
+    const previousBodyTop = bodyStyle.top
+    const previousBodyWidth = bodyStyle.width
     const previousHtmlOverflow = htmlStyle.overflow
-    const previousHtmlTouchAction = htmlStyle.touchAction
+    const previousHtmlOverscrollBehavior = htmlStyle.overscrollBehavior
 
-    if (open) {
-      bodyStyle.overflow = "hidden"
-      bodyStyle.touchAction = "none"
-      htmlStyle.overflow = "hidden"
-      htmlStyle.touchAction = "none"
-    }
+    window.dispatchEvent(new CustomEvent(LENIS_SCROLL_LOCK_EVENT, { detail: { locked: true } }))
+
+    bodyStyle.overflow = "hidden"
+    bodyStyle.overscrollBehavior = "none"
+    bodyStyle.position = "fixed"
+    bodyStyle.top = `-${scrollY}px`
+    bodyStyle.width = "100%"
+    htmlStyle.overflow = "hidden"
+    htmlStyle.overscrollBehavior = "none"
 
     return () => {
+      window.dispatchEvent(new CustomEvent(LENIS_SCROLL_LOCK_EVENT, { detail: { locked: false } }))
       bodyStyle.overflow = previousBodyOverflow
-      bodyStyle.touchAction = previousBodyTouchAction
+      bodyStyle.overscrollBehavior = previousBodyOverscrollBehavior
+      bodyStyle.position = previousBodyPosition
+      bodyStyle.top = previousBodyTop
+      bodyStyle.width = previousBodyWidth
       htmlStyle.overflow = previousHtmlOverflow
-      htmlStyle.touchAction = previousHtmlTouchAction
+      htmlStyle.overscrollBehavior = previousHtmlOverscrollBehavior
+      window.scrollTo(0, scrollY)
     }
   }, [open])
 
@@ -104,6 +119,7 @@ export default function SalesChatbot() {
     <>
       <motion.button
         onClick={() => setOpen(true)}
+        aria-label="Open sales assistant"
         className="fixed bottom-24 right-5 z-[70] flex h-16 w-16 items-center justify-center rounded-full bg-[#111318] text-white shadow-[0_18px_48px_rgba(0,0,0,0.28)] transition hover:bg-[#1a1d24] md:bottom-8"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.96 }}
@@ -119,6 +135,9 @@ export default function SalesChatbot() {
             exit={{ opacity: 0, y: 18, scale: 0.98 }}
             transition={{ duration: 0.18 }}
             className="fixed bottom-24 right-4 z-[75] flex h-[min(76vh,720px)] w-[calc(100vw-2rem)] max-w-[390px] flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#f8f5ee] shadow-[0_30px_90px_rgba(0,0,0,0.25)] md:bottom-8"
+            data-lenis-prevent
+            data-lenis-prevent-wheel
+            data-lenis-prevent-touch
           >
             <div className="bg-[#121419] px-5 py-4 text-white">
               <div className="flex items-center justify-between">
@@ -126,7 +145,11 @@ export default function SalesChatbot() {
                   <div className="text-sm uppercase tracking-[0.18em] text-[#f0d79b]">Sales Assistant</div>
                   <div className="mt-1 text-lg font-semibold">Ask about cost, timeline, or process.</div>
                 </div>
-                <button onClick={() => setOpen(false)} className="rounded-full border border-white/10 bg-white/5 p-2">
+                <button
+                  onClick={() => setOpen(false)}
+                  aria-label="Close sales assistant"
+                  className="rounded-full border border-white/10 bg-white/5 p-2"
+                >
                   <X className="h-4 w-4" />
                 </button>
               </div>
