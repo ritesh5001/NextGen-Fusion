@@ -1,8 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 # Sitemap
-Sitemap: https://www.nextgenfusion.in/sitemap.xml
+Sitemap: https://nextgenfusion.in/sitemap.xml
 
 # Allow specific file types
 Allow: *.css
@@ -15,16 +17,11 @@ Allow: *.svg
 Allow: *.ico
 Allow: *.webp
 
-# Disallow admin or sensitive directories (if any)
-# Disallow: /admin/
-# Disallow: /private/
-
-# Crawl-delay for respectful crawling (optional)
-Crawl-delay: 1
-
 # Popular search engines
 User-agent: Googlebot
 Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 User-agent: Googlebot-Image
 Allow: /

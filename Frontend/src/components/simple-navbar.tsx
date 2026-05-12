@@ -6,16 +6,23 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
-import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone } from "lucide-react"
+import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/components/booking-modal"
 
-const menuItems = [
-  { name: "About", href: "about", isPage: false },
-  { name: "Services", href: "services", isPage: false },
-  { name: "Work", href: "/work", isPage: true },
-  { name: "Portfolio", href: "portfolio", isPage: false },
-  { name: "Blog", href: "/blog", isPage: true },
-  { name: "Contact", href: "contact", isPage: false }
+type MenuItem = {
+  name: string
+  href: string
+  isPage: boolean
+  Icon: LucideIcon
+}
+
+const menuItems: MenuItem[] = [
+  { name: "Home", href: "/", isPage: true, Icon: Home },
+  { name: "Services", href: "services", isPage: false, Icon: Wrench },
+  { name: "Blogs", href: "/blog", isPage: true, Icon: BookOpen },
+  { name: "About", href: "about", isPage: false, Icon: User },
+  { name: "Contact", href: "contact", isPage: false, Icon: MessageCircle },
+  { name: "Projects", href: "/work", isPage: true, Icon: Briefcase },
 ]
 
 export default function SimpleNavbar() {
@@ -53,8 +60,10 @@ export default function SimpleNavbar() {
     }
   }
 
-  const handleNavItemClick = (item: { href: string; isPage: boolean }) => {
-    if (item.isPage) {
+  const handleNavItemClick = (item: MenuItem) => {
+    if (item.href === "/") {
+      handleLogoClick()
+    } else if (item.isPage) {
       // Navigate to separate page
       router.push(item.href)
     } else if (isHomePage) {
@@ -192,13 +201,7 @@ export default function SimpleNavbar() {
                           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer text-gray-800"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
-                          {item.name === "About" && <User className="w-5 h-5" />}
-                          {item.name === "Services" && <Wrench className="w-5 h-5" />}
-                          {item.name === "Work" && <Briefcase className="w-5 h-5" />}
-                          {item.name === "Portfolio" && <Briefcase className="w-5 h-5" />}
-                          {item.name === "Showcase" && <BookOpen className="w-5 h-5" />}
-                          {item.name === "Blog" && <BookOpen className="w-5 h-5" />}
-                          {item.name === "Contact" && <MessageCircle className="w-5 h-5" />}
+                          <item.Icon className="w-5 h-5" />
                           <span className="font-medium">{item.name}</span>
                         </ScrollLink>
                       ) : (
@@ -209,13 +212,7 @@ export default function SimpleNavbar() {
                           }}
                           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
                         >
-                          {item.name === "About" && <User className="w-5 h-5" />}
-                          {item.name === "Services" && <Wrench className="w-5 h-5" />}
-                          {item.name === "Work" && <Briefcase className="w-5 h-5" />}
-                          {item.name === "Portfolio" && <Briefcase className="w-5 h-5" />}
-                          {item.name === "Showcase" && <BookOpen className="w-5 h-5" />}
-                          {item.name === "Blog" && <BookOpen className="w-5 h-5" />}
-                          {item.name === "Contact" && <MessageCircle className="w-5 h-5" />}
+                          <item.Icon className="w-5 h-5" />
                           <span className="font-medium">{item.name}</span>
                         </button>
                       )}

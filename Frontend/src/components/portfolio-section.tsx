@@ -299,6 +299,10 @@ export default function PortfolioSection({
                         <p className="text-white/80 text-xs sm:text-sm leading-relaxed line-clamp-2">
                           {project.description}
                         </p>
+                        <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-gray-900 shadow-sm">
+                          Read More
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
                       </div>
                     </motion.div>
                   </motion.div>

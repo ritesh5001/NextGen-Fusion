@@ -9,14 +9,58 @@ import "@/lib/error-handler";
 import LenisProvider from "@/components/lenis-provider";
 import LayoutChrome from "@/components/layout-chrome";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: "NextGen Fusion",
+      url: siteUrl,
+      logo: `${siteUrl}/images/livtechlogo.svg`,
+      sameAs: ["https://www.nextgenfusion.in"],
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+91-7348228167",
+          contactType: "sales",
+          areaServed: "IN",
+          availableLanguage: ["English", "Hindi"],
+        },
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "NextGen Fusion",
+      publisher: { "@id": `${siteUrl}/#organization` },
+    },
+    {
+      "@type": "SiteNavigationElement",
+      name: ["Home", "Services", "Blogs", "About", "Contact", "Projects"],
+      url: [
+        `${siteUrl}/`,
+        `${siteUrl}/#services`,
+        `${siteUrl}/blog`,
+        `${siteUrl}/#about`,
+        `${siteUrl}/#contact`,
+        `${siteUrl}/work`,
+      ],
+    },
+  ],
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.nextgenfusion.in"),
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "NextGen Fusion - Web Development & Design Agency",
+    default: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
     template: "%s | NextGen Fusion",
   },
   description:
-    "We create stunning, high-performance websites that don't ghost you after launch. Your success is our priority, from concept to launch and beyond.",
+    "NextGen Fusion builds high-performance websites, SEO campaigns, mobile apps, software, and digital products for businesses that need measurable growth.",
   keywords: [
     "web development",
     "web design",
@@ -30,6 +74,10 @@ export const metadata: Metadata = {
   creator: "NextGen Fusion",
   publisher: "NextGen Fusion",
   category: "technology",
+  applicationName: "NextGen Fusion",
+  alternates: {
+    canonical: "/",
+  },
 
   icons: {
     icon: [
@@ -96,11 +144,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.nextgenfusion.in",
+    url: siteUrl,
     siteName: "NextGen Fusion",
-    title: "NextGen Fusion - Web Development & Design Agency",
+    title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
     description:
-      "We create stunning, high-performance websites that don't ghost you after launch. Your success is our priority, from concept to launch and beyond.",
+      "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: [
       {
         url: "/metaicon.svg",
@@ -114,9 +162,9 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "NextGen Fusion - Web Development & Design Agency",
+    title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
     description:
-      "We create stunning, high-performance websites that don't ghost you after launch. Your success is our priority, from concept to launch and beyond.",
+      "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: ["/metaicon.svg"],
     creator: "@nextgenfusion",
   },
@@ -161,9 +209,6 @@ export default function RootLayout({
       style={{ fontFamily: "Trap, sans-serif" }}
     >
       <head>
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.nextgenfusion.in" />
-
         {/* Meta tags tambahan untuk compatibility */}
         <meta
           name="format-detection"
@@ -258,6 +303,10 @@ export default function RootLayout({
 
         {/* Manifest */}
         <link rel="manifest" href="/favicon/manifest.json" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
 
       </head>
       <body className="min-h-screen bg-white md:pb-0 pb-24">

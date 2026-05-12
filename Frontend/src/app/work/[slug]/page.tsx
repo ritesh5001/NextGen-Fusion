@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
@@ -21,17 +22,36 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in";
+
 export async function generateStaticParams() {
   return staticProjects.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return {};
   return {
     title: `${project.title} — Case Study | NextGen Fusion`,
     description: project.shortDescription,
+    alternates: {
+      canonical: `${siteUrl}/work/${project.slug}`,
+    },
+    openGraph: {
+      title: `${project.title} Case Study | NextGen Fusion`,
+      description: project.shortDescription,
+      url: `${siteUrl}/work/${project.slug}`,
+      siteName: "NextGen Fusion",
+      type: "article",
+      images: [project.coverImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} Case Study | NextGen Fusion`,
+      description: project.shortDescription,
+      images: [project.coverImage],
+    },
   };
 }
 

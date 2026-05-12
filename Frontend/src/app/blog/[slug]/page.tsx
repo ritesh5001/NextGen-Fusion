@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import Image from "next/image"
+import type { Metadata } from "next"
 import ShareButton from "@/components/blog/share-button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
@@ -24,6 +25,40 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 // Mengubah ke SSR mode
 export const dynamicParams = true  // Mengizinkan parameter dinamis untuk SSR
 export const dynamic = 'force-dynamic'  // Menggunakan SSR
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const posts = await apiService.getBlogPosts()
+  const blogPost = posts.find((p: any) => p?.is_active && p.slug === slug)
+
+  if (!blogPost) return {}
+
+  return {
+    title: blogPost.title,
+    description: blogPost.excerpt,
+    alternates: {
+      canonical: `${siteUrl}/blog/${blogPost.slug}`,
+    },
+    openGraph: {
+      title: `${blogPost.title} | NextGen Fusion`,
+      description: blogPost.excerpt,
+      url: `${siteUrl}/blog/${blogPost.slug}`,
+      siteName: "NextGen Fusion",
+      type: "article",
+      publishedTime: blogPost.published_at,
+      authors: [blogPost.author],
+      images: blogPost.cover_image ? [normalizeImagePath(blogPost.cover_image)] : ["/metaicon.svg"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${blogPost.title} | NextGen Fusion`,
+      description: blogPost.excerpt,
+      images: blogPost.cover_image ? [normalizeImagePath(blogPost.cover_image)] : ["/metaicon.svg"],
+    },
+  }
+}
   
   export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params

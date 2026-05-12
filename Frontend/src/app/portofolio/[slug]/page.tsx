@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -16,6 +17,41 @@ export const dynamic = 'force-dynamic'
 interface PageProps {
   params: Promise<{ slug: string }>
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params
+  const portfolios = await apiService.getPortfolios()
+  const portfolio = portfolios.find((p) => p?.is_active && p.slug === slug)
+
+  if (!portfolio) return {}
+
+  const description =
+    portfolio.background || portfolio.goal || `Read the ${portfolio.title} project case study by NextGen Fusion.`
+
+  return {
+    title: `${portfolio.title} Project`,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/portofolio/${portfolio.slug}`,
+    },
+    openGraph: {
+      title: `${portfolio.title} Project | NextGen Fusion`,
+      description,
+      url: `${siteUrl}/portofolio/${portfolio.slug}`,
+      siteName: "NextGen Fusion",
+      type: "article",
+      images: portfolio.cover_image ? [normalizeImagePath(portfolio.cover_image)] : ["/metaicon.svg"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${portfolio.title} Project | NextGen Fusion`,
+      description,
+      images: portfolio.cover_image ? [normalizeImagePath(portfolio.cover_image)] : ["/metaicon.svg"],
+    },
+  }
 }
 
 export default async function PortfolioDetailPage({ params }: PageProps) {

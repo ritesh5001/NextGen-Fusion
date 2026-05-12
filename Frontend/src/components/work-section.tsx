@@ -104,6 +104,10 @@ export default function WorkSection() {
                   <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
                     {project.shortDescription}
                   </p>
+                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-purple-600 group-hover:text-purple-700">
+                    Read More
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
                   <div className="flex flex-wrap gap-1.5 mt-3">
                     {project.tags.slice(0, 3).map((tag) => (
                       <span
@@ -152,6 +156,10 @@ export default function WorkSection() {
                 <h4 className="text-sm font-semibold text-gray-800 group-hover:text-purple-600 transition-colors line-clamp-1">
                   {project.title}
                 </h4>
+                <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-purple-600 group-hover:text-purple-700">
+                  Read More
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </span>
               </Link>
             </motion.div>
           ))}

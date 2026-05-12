@@ -124,6 +124,10 @@ export default function WorkPage() {
                     <p className="text-gray-600 text-sm leading-relaxed">
                       {project.shortDescription}
                     </p>
+                    <span className="inline-flex items-center gap-2 pt-2 text-sm font-semibold text-purple-600 group-hover:text-purple-700">
+                      Read More
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
                     <div className="flex flex-wrap gap-2 pt-1">
                       {project.tags.slice(0, 3).map((tag) => (
                         <span
@@ -207,6 +211,10 @@ export default function WorkPage() {
                       <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
                         {project.shortDescription}
                       </p>
+                      <span className="inline-flex items-center gap-1.5 pt-2 text-xs font-semibold text-purple-600 group-hover:text-purple-700">
+                        Read More
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </span>
                     </div>
                   </Link>
                 </motion.div>

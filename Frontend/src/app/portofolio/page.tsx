@@ -154,12 +154,21 @@ export default function PortfolioPage() {
                   </p>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {portfolio.category && (
                       <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium hover:bg-purple-100 hover:text-purple-700 transition-colors cursor-default">
                         {portfolio.category}
                       </span>
                     )}
+                    <Link
+                      href={`/portofolio/${portfolio.slug}`}
+                      className="ml-auto inline-flex items-center gap-1.5 text-sm font-semibold text-purple-600 hover:text-purple-700"
+                    >
+                      Read More
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
                   </div>
                 </div>
               </div>
