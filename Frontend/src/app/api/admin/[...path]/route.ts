@@ -15,6 +15,7 @@ async function proxyRequest(req: Request, method: string, path: string) {
   const cookie = req.headers.get('cookie')
   if (cookie) headers.set('cookie', cookie)
 
+
   const body = method === 'GET' || method === 'HEAD' ? undefined : await req.arrayBuffer()
 
   const upstream = await fetch(backendUrl, {
