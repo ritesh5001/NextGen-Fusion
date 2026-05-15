@@ -143,8 +143,9 @@ const teamMembersData: Record<string, any> = {
   }
 }
 
-export default function TeamMemberPage({ params }: { params: { slug: string } }) {
-  const member = teamMembersData[params.slug]
+export default async function TeamMemberPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params
+  const member = teamMembersData[resolvedParams.slug]
 
   if (!member) {
     return (
