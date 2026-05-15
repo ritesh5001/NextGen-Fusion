@@ -108,7 +108,7 @@ export default function SimpleNavbar() {
               onClick={handleLogoClick}
               className="cursor-pointer"
             >
-              <Image src="/images/livtechlogo.svg" alt="Logo" width={120} height={32} className="h-8 w-auto" />
+              <Image src="/images/site-logo.png" alt="Logo" width={120} height={32} className="h-8 w-auto" />
             </div>
 
             {/* Desktop Navigation */}
@@ -244,7 +244,7 @@ export default function SimpleNavbar() {
               onClick={handleLogoClick}
               className="cursor-pointer"
             >
-              <Image src="/images/livtechlogo.svg" alt="Logo" width={80} height={20} className="h-5 w-auto" />
+              <Image src="/images/site-logo.png" alt="Logo" width={80} height={20} className="h-5 w-auto" />
             </div>
 
             {/* Tombol Hamburger di kanan logo */}

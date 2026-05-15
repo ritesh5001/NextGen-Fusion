@@ -230,7 +230,7 @@ export default function ComparisonSection() {
                       transition={{ duration: 0.2 }}
                     >
                       <Image 
-                        src="/images/logos.svg" 
+                        src="/images/site-logo.png" 
                         alt="NextGen Fusion" 
                         width={24}
                         height={24}
@@ -306,7 +306,7 @@ export default function ComparisonSection() {
                       transition={{ duration: 0.2 }}
                     >
                       <Image 
-                        src="/images/logos.svg" 
+                        src="/images/site-logo.png" 
                         alt="NextGen Fusion" 
                         width={20}
                         height={20}
