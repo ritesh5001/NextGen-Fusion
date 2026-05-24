@@ -13,6 +13,9 @@ import leadsRoutes from './routes/leads'
 import projectEstimatorRoutes from './routes/project-estimator'
 import salesAssistantRoutes from './routes/sales-assistant'
 import statsRoutes from './routes/stats'
+import agencyAuthRoutes from './routes/agency-auth'
+import agencyMembersRoutes from './routes/agency-members'
+import agencyProjectsRoutes from './routes/agency-projects'
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -58,6 +61,9 @@ app.use('/api', contactFormRoutes)
 app.use('/api', projectEstimatorRoutes)
 app.use('/api', salesAssistantRoutes)
 app.use('/api/cron', cronRoutes)
+app.use('/api/agency', agencyAuthRoutes)
+app.use('/api/agency', agencyMembersRoutes)
+app.use('/api/agency', agencyProjectsRoutes)
 
 app.get('/health', (_req, res) => res.json({ ok: true }))
 

@@ -17,7 +17,11 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   }
   try {
     const { payload } = await jwtVerify(token, getSecret())
-    if (payload.role !== 'admin') throw new Error('Not admin')
+    if (payload.role !== 'admin' && payload.role !== 'member') throw new Error('Unauthorized')
+    if (payload.role === 'member') {
+      req.member_id = payload.sub as string
+      req.member_role = payload.member_role as 'partner' | 'admin_partner' | undefined
+    }
     next()
   } catch {
     res.status(401).json({ error: 'Unauthorized' })

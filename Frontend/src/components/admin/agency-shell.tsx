@@ -2,27 +2,21 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays, Briefcase } from 'lucide-react'
+import { LayoutDashboard, FolderKanban, Users, LogOut, ArrowLeft } from 'lucide-react'
 
 const NAV = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/admin/booking-requests', label: 'Bookings', icon: CalendarDays },
-  { href: '/admin/chatbot-conversations', label: 'Chatbot', icon: MessageSquare },
-  { href: '/admin/project-estimator-submissions', label: 'Estimator Leads', icon: Calculator },
-  { href: '/admin/contact-forms', label: 'Form Submissions', icon: FileText },
-  { href: '/admin/leads', label: 'B2B Leads', icon: Building2 },
-  { href: '/admin/contacts', label: 'Email Contacts', icon: Users },
-  { href: '/admin/campaigns', label: 'Campaigns', icon: Send },
-  { href: '/admin/agency', label: 'Agency CRM', icon: Briefcase },
+  { href: '/admin/agency', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/admin/agency/projects', label: 'Projects', icon: FolderKanban },
+  { href: '/admin/agency/members', label: 'Team', icon: Users },
 ]
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+export function AgencyShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
 
   async function logout() {
-    await fetch('/api/admin/logout', { method: 'POST' })
-    router.replace('/admin/login')
+    await fetch('/api/agency/logout', { method: 'POST' })
+    router.replace('/admin/agency/login')
     router.refresh()
   }
 
@@ -31,7 +25,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <aside className="w-60 shrink-0 border-r border-slate-200 bg-white flex flex-col">
         <div className="px-5 py-5 border-b border-slate-200">
           <div className="text-sm font-semibold tracking-tight">NextGen Fusion</div>
-          <div className="text-xs text-slate-500 mt-0.5">Email Campaign Admin</div>
+          <div className="text-xs text-slate-500 mt-0.5">Agency CRM</div>
         </div>
         <nav className="flex-1 px-2 py-3 space-y-0.5">
           {NAV.map((item) => {
@@ -56,7 +50,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             )
           })}
         </nav>
-        <div className="px-2 py-3 border-t border-slate-200">
+        <div className="px-2 py-3 border-t border-slate-200 space-y-0.5">
+          <Link
+            href="/admin"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-slate-500 hover:bg-slate-100 transition"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Admin Panel
+          </Link>
           <button
             onClick={logout}
             className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-slate-700 hover:bg-slate-100 transition"

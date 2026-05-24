@@ -9,7 +9,7 @@ async function isValid(token: string | undefined): Promise<boolean> {
   if (!secret) return false
   try {
     const { payload } = await jwtVerify(token, new TextEncoder().encode(secret))
-    return payload.role === 'admin'
+    return payload.role === 'admin' || payload.role === 'member'
   } catch {
     return false
   }
@@ -18,16 +18,20 @@ async function isValid(token: string | undefined): Promise<boolean> {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const normalizedPath = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/'
-  const isAdminLogin = normalizedPath === '/admin/login'
+  const isLoginPage =
+    normalizedPath === '/admin/login' || normalizedPath === '/admin/agency/login'
 
-  // Only guard /admin/* pages (not /admin/login itself)
-  if (!normalizedPath.startsWith('/admin') || isAdminLogin) return NextResponse.next()
+  // Only guard /admin/* pages (not login pages themselves)
+  if (!normalizedPath.startsWith('/admin') || isLoginPage) return NextResponse.next()
 
   const token = req.cookies.get(COOKIE_NAME)?.value
   if (await isValid(token)) return NextResponse.next()
 
   const url = req.nextUrl.clone()
-  url.pathname = '/admin/login'
+  // Redirect agency paths to agency login, others to admin login
+  url.pathname = normalizedPath.startsWith('/admin/agency')
+    ? '/admin/agency/login'
+    : '/admin/login'
   url.searchParams.set('redirect', pathname)
   return NextResponse.redirect(url)
 }
