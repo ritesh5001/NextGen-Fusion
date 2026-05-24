@@ -3,11 +3,20 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { AgencyShell, PageHeader } from '@/components/admin/agency-shell'
-import { Plus, UserX } from 'lucide-react'
+import { Plus, UserX, Users } from 'lucide-react'
 
 const AVATAR_COLORS = [
   '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
   '#EC4899', '#14B8A6', '#F97316', '#6366F1', '#84CC16',
+]
+
+const AGENCY_PARTNERS = [
+  { name: 'Ritesh Giri', role: 'Full Stack Developer', color: '#3B82F6' },
+  { name: 'Nitesh', role: 'Project Manager', color: '#10B981' },
+  { name: 'Nikhilesh', role: 'Shopify Website Developer', color: '#8B5CF6' },
+  { name: 'Vinay', role: 'Graphics & UI/UX Designer', color: '#EC4899' },
+  { name: 'Rahul', role: 'Sales Manager', color: '#F59E0B' },
+  { name: 'Ajay', role: 'Advertising / Marketing Strategist', color: '#EF4444' },
 ]
 
 interface Member {
@@ -71,11 +80,39 @@ export default function MembersPage() {
         ) : (
           <>
             {active.length === 0 && !loading && (
-              <div className="py-16 text-center">
-                <UserX className="h-8 w-8 text-slate-300 mx-auto mb-2" />
-                <p className="text-sm text-slate-400">No team members yet.</p>
-                <Link href="/admin/agency/members/new" className="text-sm text-slate-600 underline mt-1 inline-block">
-                  Add the first member
+              <div className="mb-6 rounded-xl border border-blue-200 bg-blue-50 p-6">
+                <div className="flex items-start gap-3 mb-4">
+                  <Users className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="text-sm font-semibold text-blue-900">Set up your agency team</h3>
+                    <p className="text-sm text-blue-700 mt-0.5">
+                      Add your 6 partners below so they can log in and be assigned to projects.
+                      Each person needs a name, work email, and initial password.
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+                  {AGENCY_PARTNERS.map((p) => (
+                    <div key={p.name} className="flex items-center gap-3 bg-white rounded-lg border border-blue-100 p-3">
+                      <div
+                        className="h-8 w-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+                        style={{ backgroundColor: p.color }}
+                      >
+                        {p.name.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2)}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-sm font-medium text-slate-800">{p.name}</div>
+                        <div className="text-xs text-slate-500 truncate">{p.role}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <Link
+                  href="/admin/agency/members/new"
+                  className="inline-flex items-center gap-2 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add First Member
                 </Link>
               </div>
             )}

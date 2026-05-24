@@ -5,6 +5,15 @@ import { useRouter } from 'next/navigation'
 import { AgencyShell, PageHeader } from '@/components/admin/agency-shell'
 import Link from 'next/link'
 
+const QUICK_FILL = [
+  { name: 'Ritesh Giri', role: 'partner', color: '#3B82F6', label: 'Full Stack Developer' },
+  { name: 'Nitesh', role: 'partner', color: '#10B981', label: 'Project Manager' },
+  { name: 'Nikhilesh', role: 'partner', color: '#8B5CF6', label: 'Shopify Website Developer' },
+  { name: 'Vinay', role: 'partner', color: '#EC4899', label: 'Graphics & UI/UX Designer' },
+  { name: 'Rahul', role: 'partner', color: '#F59E0B', label: 'Sales Manager' },
+  { name: 'Ajay', role: 'partner', color: '#EF4444', label: 'Advertising / Marketing Strategist' },
+]
+
 const AVATAR_COLORS = [
   { label: 'Blue', value: '#3B82F6' },
   { label: 'Green', value: '#10B981' },
@@ -68,6 +77,30 @@ export default function NewMemberPage() {
             {error}
           </div>
         )}
+
+        {/* Quick-fill from known partners */}
+        <div className="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Quick fill — Agency Partners</p>
+          <div className="flex flex-wrap gap-2">
+            {QUICK_FILL.map((p) => (
+              <button
+                key={p.name}
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, name: p.name, role: p.role, avatar_color: p.color }))}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-slate-400 transition text-sm"
+              >
+                <div
+                  className="h-5 w-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold"
+                  style={{ backgroundColor: p.color }}
+                >
+                  {p.name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2)}
+                </div>
+                <span className="text-slate-700">{p.name}</span>
+                <span className="text-slate-400 text-xs">· {p.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="rounded-xl border border-slate-200 bg-white p-5 space-y-4">

@@ -31,34 +31,50 @@ const teamMembers = [
   {
     id: "ritesh-giri",
     name: "Ritesh Giri",
-    role: "Founder & Full Stack Developer",
+    role: "Full Stack Developer",
     image: "/member/ritesh-giri.png",
-    bio: "Visionary leader with 5+ years of full-stack development expertise. Passionate about building scalable web solutions.",
+    bio: "Expert full-stack developer building scalable web applications. Leads technical architecture and delivers end-to-end digital solutions for clients.",
     color: "from-blue-500 to-blue-600"
   },
   {
-    id: "sajal-singh",
-    name: "Sajal Singh",
-    role: "Co-Founder & Full Stack Developer",
-    image: "/member/sajal-singh.jpeg",
-    bio: "Tech innovator with deep expertise in modern frameworks and social media integration. 4+ years in development.",
-    color: "from-purple-500 to-purple-600"
+    id: "nitesh",
+    name: "Nitesh",
+    role: "Project Manager",
+    image: "/placeholder-user.jpg",
+    bio: "Keeps every project on track from kickoff to delivery. Ensures clear communication, on-time execution, and exceptional client experience.",
+    color: "from-emerald-500 to-emerald-600"
   },
   {
-    id: "mohammad-iqbal",
-    name: "Mohammad Iqbal",
-    role: "Full Stack & Android Developer",
-    image: "/member/mohammad-iqbal.png",
-    bio: "Versatile developer specializing in cross-platform development. 3+ years building robust mobile and web applications.",
-    color: "from-green-500 to-green-600"
+    id: "nikhilesh",
+    name: "Nikhilesh",
+    role: "Shopify Website Developer",
+    image: "/placeholder-user.jpg",
+    bio: "Specialist in building high-converting Shopify stores. From custom themes to app integrations — delivering e-commerce experiences that sell.",
+    color: "from-violet-500 to-violet-600"
   },
   {
-    id: "vivek-gautam",
-    name: "Vivek Gautam",
-    role: "SEO & Social Media Marketing",
-    image: "/member/vivek-gautam.jpeg",
-    bio: "Digital marketing strategist with proven track record in SEO optimization and social media growth. 4+ years experience.",
-    color: "from-orange-500 to-orange-600"
+    id: "vinay",
+    name: "Vinay",
+    role: "Graphics & UI/UX Designer",
+    image: "/placeholder-user.jpg",
+    bio: "Creates stunning visuals and intuitive interfaces. Translates brand identity into design systems that look great and feel effortless to use.",
+    color: "from-pink-500 to-pink-600"
+  },
+  {
+    id: "rahul",
+    name: "Rahul",
+    role: "Sales Manager",
+    image: "/placeholder-user.jpg",
+    bio: "Drives client acquisition and builds lasting business relationships. Connects the right solutions to the right clients — growing the agency pipeline.",
+    color: "from-amber-500 to-amber-600"
+  },
+  {
+    id: "ajay",
+    name: "Ajay",
+    role: "Advertising & Marketing Strategist",
+    image: "/placeholder-user.jpg",
+    bio: "Crafts data-driven ad campaigns and marketing strategies that generate real ROI. Expert in paid media, brand positioning, and audience targeting.",
+    color: "from-red-500 to-red-600"
   }
 ]
 
@@ -99,7 +115,7 @@ export default function TeamPage() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member) => (
               <motion.div 
                 key={member.id}
