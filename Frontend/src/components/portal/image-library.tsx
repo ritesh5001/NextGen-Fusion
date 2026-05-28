@@ -17,6 +17,29 @@ function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
+// Parses a response safely. If the server returns HTML (e.g. the image API
+// isn't deployed/reachable yet), surface a clear message instead of the
+// cryptic "Unexpected token '<'" JSON error.
+async function readJson(res: Response): Promise<{ data?: ClientImage[]; error?: string }> {
+  const text = await res.text()
+  let json: { data?: ClientImage[]; error?: string } | null = null
+  try {
+    json = text ? JSON.parse(text) : null
+  } catch {
+    json = null
+  }
+  if (!res.ok) {
+    throw new Error(
+      json?.error ||
+        (res.status === 404 || res.status === 502 || res.status === 503
+          ? 'Image service is not available yet. Please try again later.'
+          : `Request failed (${res.status})`),
+    )
+  }
+  if (!json) throw new Error('Image service is not available yet. Please try again later.')
+  return json
+}
+
 export function useImageLibrary() {
   const [images, setImages] = useState<ClientImage[]>([])
   const [loading, setLoading] = useState(true)
@@ -28,8 +51,7 @@ export function useImageLibrary() {
     setError('')
     try {
       const res = await fetch('/api/client/images')
-      const json = await res.json()
-      if (!res.ok) throw new Error(json?.error || 'Failed to load images')
+      const json = await readJson(res)
       setImages(json.data || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load images')
@@ -51,8 +73,7 @@ export function useImageLibrary() {
       const fd = new FormData()
       list.forEach((f) => fd.append('files', f))
       const res = await fetch('/api/client/images', { method: 'POST', body: fd })
-      const json = await res.json()
-      if (!res.ok) throw new Error(json?.error || 'Upload failed')
+      const json = await readJson(res)
       const created: ClientImage[] = json.data || []
       setImages((prev) => [...created, ...prev])
       return created
