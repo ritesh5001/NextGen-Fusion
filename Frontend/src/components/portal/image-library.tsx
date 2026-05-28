@@ -230,6 +230,13 @@ function draggedImageUrl(dt: DataTransfer): string | null {
   return null
 }
 
+function imageFilesFromClipboard(items: DataTransferItemList | undefined | null): File[] {
+  return Array.from(items || [])
+    .filter((it) => it.kind === 'file' && it.type.startsWith('image/'))
+    .map((it) => it.getAsFile())
+    .filter((f): f is File => !!f)
+}
+
 async function fetchUrlAsImageFile(url: string): Promise<File | null> {
   try {
     const res = await fetch(url, { mode: 'cors' })
@@ -247,7 +254,7 @@ async function fetchUrlAsImageFile(url: string): Promise<File | null> {
 function Dropzone({
   uploading,
   onFiles,
-  hint = 'Drag & drop images here, or',
+  hint = 'Drag & drop or paste images here, or',
 }: {
   uploading: boolean
   onFiles: (files: File[]) => void
@@ -256,6 +263,22 @@ function Dropzone({
   const [over, setOver] = useState(false)
   const [dropError, setDropError] = useState('')
   const [fetching, setFetching] = useState(false)
+
+  // Paste support: lets users copy an image (e.g. right-click → Copy image in
+  // WhatsApp Web) and press Cmd/Ctrl+V to upload it — no download needed. This
+  // works where drag can't, because copying decodes the image to the clipboard.
+  useEffect(() => {
+    function onPaste(e: ClipboardEvent) {
+      const files = imageFilesFromClipboard(e.clipboardData?.items)
+      if (files.length) {
+        e.preventDefault()
+        setDropError('')
+        onFiles(files)
+      }
+    }
+    window.addEventListener('paste', onPaste)
+    return () => window.removeEventListener('paste', onPaste)
+  }, [onFiles])
 
   return (
     <div
@@ -296,14 +319,14 @@ function Dropzone({
               if (file) onFiles([file])
               else
                 setDropError(
-                  "Couldn't load that image directly. Download it first, then drag the file or use Choose images.",
+                  "Couldn't load that image directly. Tip: right-click it → Copy image, then press ⌘V / Ctrl+V here.",
                 )
             })
             .finally(() => setFetching(false))
           return
         }
         setDropError(
-          "That can't be dropped here. Download the image first, then drag the file or use Choose images.",
+          'This image is protected by the source site (e.g. WhatsApp Web) and can\'t be dragged in. Right-click it → Copy image, then press ⌘V / Ctrl+V here.',
         )
       }}
       className={
