@@ -28,10 +28,11 @@ export type UploadedImage = {
 // Compress on the way in: cap the long edge and let Cloudinary pick quality/format.
 const INCOMING_TRANSFORM = { width: 1600, crop: 'limit', quality: 'auto:good', fetch_format: 'auto' }
 
-// Delivery transform guarantees a compressed (~100-200 KB for typical photos) URL.
-// Concrete jpg (not f_auto) + a ".jpg" extension so WooCommerce/Shopify CSV
-// importers recognize it as an image and actually download it.
-const DELIVERY_TRANSFORM = { width: 1600, crop: 'limit', quality: 'auto' }
+// Delivery transform: a SINGLE comma-free param + a ".jpg" extension.
+// Width/crop is intentionally omitted because the incoming transform already
+// caps the stored image to 1600px — and WooCommerce's CSV "Images" column
+// splits on commas, so the URL must not contain any (e.g. "c_limit,w_1600").
+const DELIVERY_TRANSFORM = { quality: 'auto' }
 
 export function uploadImageBuffer(
   buffer: Buffer,

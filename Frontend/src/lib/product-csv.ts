@@ -44,15 +44,25 @@ function variantsOf(product: Product): ProductVariant[] {
   return product.variants.length > 0 ? product.variants : [{ option_values: {} }]
 }
 
-// WooCommerce/Shopify importers detect images by file extension. Older Cloudinary
-// URLs were stored without one, so append ".jpg" to extensionless Cloudinary
-// delivery URLs at export time (no-op for URLs that already have an extension).
+// Make Cloudinary URLs safe for CSV import. Two problems with older saved URLs:
+//  1. WooCommerce's "Images" column splits on commas, and Cloudinary transform
+//     segments use commas (e.g. "c_limit,q_auto,w_1600") — which shatters the URL.
+//  2. Importers detect images by file extension; transform-less URLs lacked one.
+// Fix: drop comma-bearing transform segment(s) and ensure a ".jpg" extension.
+// The stored asset is already resized/compressed on upload, so delivering it
+// without the transform keeps it importable and ~100-200 KB. No-op for
+// non-Cloudinary URLs and for already-clean URLs.
 export function normalizeImageUrl(url: string): string {
   if (!url) return url
-  if (!/res\.cloudinary\.com\/.+\/image\/upload\//.test(url)) return url
-  const last = url.split('?')[0].split('/').pop() || ''
-  if (/\.[a-z0-9]{2,4}$/i.test(last)) return url
-  return `${url}.jpg`
+  const m = url.match(/^(https?:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.*)$/i)
+  if (!m) return url
+  const prefix = m[1]
+  const segments = m[2].split('/')
+  while (segments.length > 1 && segments[0].includes(',')) segments.shift()
+  let rest = segments.join('/')
+  const last = rest.split('?')[0].split('/').pop() || ''
+  if (!/\.[a-z0-9]{2,4}$/i.test(last)) rest = `${rest}.jpg`
+  return prefix + rest
 }
 
 export function toShopifyCsv(products: Product[]): string {
