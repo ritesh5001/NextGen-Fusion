@@ -44,6 +44,17 @@ function variantsOf(product: Product): ProductVariant[] {
   return product.variants.length > 0 ? product.variants : [{ option_values: {} }]
 }
 
+// WooCommerce/Shopify importers detect images by file extension. Older Cloudinary
+// URLs were stored without one, so append ".jpg" to extensionless Cloudinary
+// delivery URLs at export time (no-op for URLs that already have an extension).
+export function normalizeImageUrl(url: string): string {
+  if (!url) return url
+  if (!/res\.cloudinary\.com\/.+\/image\/upload\//.test(url)) return url
+  const last = url.split('?')[0].split('/').pop() || ''
+  if (/\.[a-z0-9]{2,4}$/i.test(last)) return url
+  return `${url}.jpg`
+}
+
 export function toShopifyCsv(products: Product[]): string {
   const rows: Record<string, string>[] = []
 
@@ -88,7 +99,7 @@ export function toShopifyCsv(products: Product[]): string {
         'Variant Compare At Price': compareAt,
         'Variant Requires Shipping': 'TRUE',
         'Variant Taxable': 'TRUE',
-        'Image Src': variant.image_url || (isFirst ? product.images[0] ?? '' : ''),
+        'Image Src': normalizeImageUrl(variant.image_url || (isFirst ? product.images[0] ?? '' : '')),
         Status: product.published ? 'active' : 'draft',
       }
       rows.push(row)
@@ -154,7 +165,7 @@ export function toWooCommerceCsv(products: Product[]): string {
       parent['Description'] = product.description ?? ''
       parent['Categories'] = product.category ?? ''
       parent['Tags'] = product.tags ?? ''
-      parent['Images'] = product.images.join(', ')
+      parent['Images'] = product.images.map(normalizeImageUrl).join(', ')
       options.forEach((opt, i) => {
         parent[`Attribute ${i + 1} name`] = opt.name
         parent[`Attribute ${i + 1} value(s)`] = opt.values.join(', ')
@@ -175,7 +186,7 @@ export function toWooCommerceCsv(products: Product[]): string {
         row['Sale price'] = variant.sale_price ?? ''
         row['Weight (kg)'] = variant.weight ?? ''
         row['Stock'] = variant.stock ?? ''
-        row['Images'] = variant.image_url ?? ''
+        row['Images'] = variant.image_url ? normalizeImageUrl(variant.image_url) : ''
         row['Parent'] = parentSku
         options.forEach((opt, i) => {
           row[`Attribute ${i + 1} name`] = opt.name
@@ -201,7 +212,9 @@ export function toWooCommerceCsv(products: Product[]): string {
       row['Tags'] = product.tags ?? ''
       row['Weight (kg)'] = variant?.weight ?? ''
       row['Stock'] = variant?.stock ?? ''
-      row['Images'] = (variant?.image_url ? [variant.image_url, ...product.images] : product.images).join(', ')
+      row['Images'] = (variant?.image_url ? [variant.image_url, ...product.images] : product.images)
+        .map(normalizeImageUrl)
+        .join(', ')
       rows.push(row)
     }
   }

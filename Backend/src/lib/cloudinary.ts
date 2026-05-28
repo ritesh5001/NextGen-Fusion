@@ -29,7 +29,9 @@ export type UploadedImage = {
 const INCOMING_TRANSFORM = { width: 1600, crop: 'limit', quality: 'auto:good', fetch_format: 'auto' }
 
 // Delivery transform guarantees a compressed (~100-200 KB for typical photos) URL.
-const DELIVERY_TRANSFORM = { width: 1600, crop: 'limit', quality: 'auto', fetch_format: 'auto' }
+// Concrete jpg (not f_auto) + a ".jpg" extension so WooCommerce/Shopify CSV
+// importers recognize it as an image and actually download it.
+const DELIVERY_TRANSFORM = { width: 1600, crop: 'limit', quality: 'auto' }
 
 export function uploadImageBuffer(
   buffer: Buffer,
@@ -64,7 +66,7 @@ export function uploadImageBuffer(
 }
 
 export function buildDeliveryUrl(publicId: string): string {
-  return getCloudinary().url(publicId, { secure: true, transformation: [DELIVERY_TRANSFORM] })
+  return getCloudinary().url(publicId, { secure: true, format: 'jpg', transformation: [DELIVERY_TRANSFORM] })
 }
 
 export async function destroyImage(publicId: string): Promise<void> {
