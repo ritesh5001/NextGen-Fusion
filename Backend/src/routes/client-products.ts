@@ -84,6 +84,63 @@ router.post('/products', requireClient, async (req, res) => {
   }
 })
 
+// Per-client reuse suggestions derived from the client's saved products.
+// NOTE: must be declared before "/products/:id" so it isn't matched as an id.
+router.get('/products/suggestions', requireClient, async (req, res) => {
+  try {
+    if (!req.client_id) {
+      res.status(401).json({ error: 'Unauthorized' })
+      return
+    }
+    const supabase = getSupabaseAdmin()
+    const { data, error } = await supabase
+      .from('client_products')
+      .select('category, options')
+      .eq('client_id', req.client_id)
+
+    if (error) throw error
+
+    const rows = (data as Array<{ category: unknown; options: unknown }>) ?? []
+
+    const categoryMap = new Map<string, string>() // lowercase -> original casing
+    const optionMap = new Map<string, { name: string; values: Set<string> }>()
+
+    for (const row of rows) {
+      if (typeof row.category === 'string') {
+        const c = row.category.trim()
+        if (c && !categoryMap.has(c.toLowerCase())) categoryMap.set(c.toLowerCase(), c)
+      }
+      if (Array.isArray(row.options)) {
+        for (const opt of row.options) {
+          if (!opt || typeof opt !== 'object') continue
+          const name = typeof (opt as { name?: unknown }).name === 'string' ? (opt as { name: string }).name.trim() : ''
+          if (!name) continue
+          const key = name.toLowerCase()
+          if (!optionMap.has(key)) optionMap.set(key, { name, values: new Set<string>() })
+          const bucket = optionMap.get(key)!
+          const values = (opt as { values?: unknown }).values
+          if (Array.isArray(values)) {
+            for (const v of values) {
+              if (typeof v === 'string' && v.trim() && bucket.values.size < 50) bucket.values.add(v.trim())
+            }
+          }
+        }
+      }
+    }
+
+    const categories = Array.from(categoryMap.values()).sort((a, b) => a.localeCompare(b)).slice(0, 100)
+    const optionPresets = Array.from(optionMap.values())
+      .map((o) => ({ name: o.name, values: Array.from(o.values) }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+
+    res.json({ data: { categories, optionPresets } })
+  } catch (error) {
+    logRouteError('client-products:suggestions', error)
+    // Suggestions are non-critical — degrade to empty rather than erroring the form.
+    res.json({ data: { categories: [], optionPresets: [] } })
+  }
+})
+
 router.get('/products/:id', requireClient, async (req, res) => {
   try {
     if (!req.client_id) {

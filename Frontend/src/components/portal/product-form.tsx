@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Plus, Trash2, RefreshCw, Sparkles, Loader2 } from 'lucide-react'
 import type { Product, ProductOption, ProductVariant } from '@/lib/product-csv'
 import { GalleryPicker, VariantImageButton } from './image-library'
@@ -102,9 +102,34 @@ export function ProductForm({
   const [bulkValue, setBulkValue] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
   const [aiNote, setAiNote] = useState('')
+  const [categorySuggestions, setCategorySuggestions] = useState<string[]>([])
+  const [optionPresets, setOptionPresets] = useState<Array<{ name: string; values: string[] }>>([])
+
+  useEffect(() => {
+    let active = true
+    fetch('/api/client/products/suggestions')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (!active || !json?.data) return
+        setCategorySuggestions(json.data.categories || [])
+        setOptionPresets(json.data.optionPresets || [])
+      })
+      .catch(() => {})
+    return () => {
+      active = false
+    }
+  }, [])
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setState((s) => ({ ...s, [key]: value }))
+  }
+
+  function applyOptionPreset(preset: { name: string; values: string[] }) {
+    setState((s) => {
+      if (s.options.length >= 3) return s
+      if (s.options.some((o) => o.name.trim().toLowerCase() === preset.name.toLowerCase())) return s
+      return { ...s, options: [...s.options, { name: preset.name, valuesText: preset.values.join(', ') }] }
+    })
   }
 
   async function handleAiAutofill() {
@@ -299,7 +324,18 @@ export function ProductForm({
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
-          <input className={inputCls} value={state.category} onChange={(e) => set('category', e.target.value)} />
+          <input
+            className={inputCls}
+            value={state.category}
+            onChange={(e) => set('category', e.target.value)}
+            list="ngf-category-list"
+            placeholder={categorySuggestions.length ? 'Type or pick a saved category' : ''}
+          />
+          <datalist id="ngf-category-list">
+            {categorySuggestions.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Tags (comma separated)</label>
@@ -339,6 +375,33 @@ export function ProductForm({
           </button>
         </div>
 
+        {optionPresets.length > 0 && state.options.length < 3 && (
+          <div className="mb-3 flex flex-wrap items-center gap-2">
+            <span className="text-xs text-slate-500">Reuse:</span>
+            {optionPresets
+              .filter((p) => !state.options.some((o) => o.name.trim().toLowerCase() === p.name.toLowerCase()))
+              .map((p) => (
+                <button
+                  key={p.name}
+                  type="button"
+                  onClick={() => applyOptionPreset(p)}
+                  className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50"
+                  title={`Add ${p.name}: ${p.values.join(', ')}`}
+                >
+                  <Plus className="h-3 w-3" />
+                  {p.name}
+                  {p.values.length > 0 && <span className="text-slate-400">({p.values.slice(0, 4).join(', ')}{p.values.length > 4 ? '…' : ''})</span>}
+                </button>
+              ))}
+          </div>
+        )}
+
+        <datalist id="ngf-option-name-list">
+          {optionPresets.map((p) => (
+            <option key={p.name} value={p.name} />
+          ))}
+        </datalist>
+
         <div className="space-y-2">
           {state.options.map((opt, i) => (
             <div key={i} className="flex gap-2 items-center">
@@ -347,6 +410,7 @@ export function ProductForm({
                 placeholder="Option name"
                 value={opt.name}
                 onChange={(e) => updateOption(i, { name: e.target.value })}
+                list="ngf-option-name-list"
               />
               <input
                 className={inputCls}
