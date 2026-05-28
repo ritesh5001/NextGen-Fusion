@@ -198,6 +198,21 @@ export async function updateFallbackClientUser(
   return publicClientUser(data.client_users[index])
 }
 
+export async function deleteFallbackClientUser(id: string): Promise<boolean> {
+  if (isMongoConfigured()) {
+    const db = await getMongoDb()
+    const result = await db.collection<ClientUser>('client_users').deleteOne({ id })
+    return result.deletedCount > 0
+  }
+
+  const data = await readFileData()
+  const next = data.client_users.filter((item) => item.id !== id)
+  if (next.length === data.client_users.length) return false
+  data.client_users = next
+  await writeFileData(data)
+  return true
+}
+
 export async function listFallbackAgencyMembers(): Promise<Array<Omit<AgencyMember, 'password_hash'>>> {
   if (isMongoConfigured()) {
     const db = await getMongoDb()

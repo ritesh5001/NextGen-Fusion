@@ -4,6 +4,7 @@ import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import {
   createFallbackClientUser,
+  deleteFallbackClientUser,
   isMissingSupabaseTable,
   listFallbackClientUsers,
   updateFallbackClientUser,
@@ -161,8 +162,8 @@ router.delete('/client-users/:id', requireInternalAuth, async (req, res) => {
 
     if (error) {
       if (isMissingSupabaseTable(error)) {
-        const data = await updateFallbackClientUser(req.params.id, { is_active: false })
-        if (!data) {
+        const deleted = await deleteFallbackClientUser(req.params.id)
+        if (!deleted) {
           res.status(404).json({ error: 'Client not found' })
           return
         }
