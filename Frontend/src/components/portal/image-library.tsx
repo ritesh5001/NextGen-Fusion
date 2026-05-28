@@ -31,13 +31,62 @@ async function readJson(res: Response): Promise<{ data?: ClientImage[]; error?: 
   if (!res.ok) {
     throw new Error(
       json?.error ||
-        (res.status === 404 || res.status === 502 || res.status === 503
-          ? 'Image service is not available yet. Please try again later.'
-          : `Request failed (${res.status})`),
+        (res.status === 413
+          ? 'That image is too large. Please try a smaller photo.'
+          : res.status === 404 || res.status === 502 || res.status === 503
+            ? 'Image service is not available yet. Please try again later.'
+            : `Request failed (${res.status})`),
     )
   }
   if (!json) throw new Error('Image service is not available yet. Please try again later.')
   return json
+}
+
+// Resize + re-encode an image in the browser before upload so big camera/phone
+// photos don't exceed the host's request-size limit (which caused HTTP 413).
+// Caps the long edge to 1600px and exports JPEG ~0.82. Falls back to the
+// original file if anything can't be decoded (e.g. HEIC in some browsers).
+const MAX_DIMENSION = 1600
+const JPEG_QUALITY = 0.82
+
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = src
+  })
+}
+
+async function compressImage(file: File): Promise<File> {
+  if (!file.type.startsWith('image/')) return file
+  const objectUrl = URL.createObjectURL(file)
+  try {
+    const img = await loadImage(objectUrl)
+    let { width, height } = img
+    if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+      const scale = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height)
+      width = Math.round(width * scale)
+      height = Math.round(height * scale)
+    }
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return file
+    ctx.drawImage(img, 0, 0, width, height)
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, 'image/jpeg', JPEG_QUALITY),
+    )
+    if (!blob) return file
+    const name = file.name.replace(/\.[^.]+$/, '') + '.jpg'
+    const out = new File([blob], name, { type: 'image/jpeg' })
+    return out.size < file.size ? out : file
+  } catch {
+    return file
+  } finally {
+    URL.revokeObjectURL(objectUrl)
+  }
 }
 
 export function useImageLibrary() {
@@ -69,20 +118,27 @@ export function useImageLibrary() {
     if (!list.length) return []
     setUploading(true)
     setError('')
+    const created: ClientImage[] = []
     try {
-      const fd = new FormData()
-      list.forEach((f) => fd.append('files', f))
-      const res = await fetch('/api/client/images', { method: 'POST', body: fd })
-      const json = await readJson(res)
-      const created: ClientImage[] = json.data || []
-      setImages((prev) => [...created, ...prev])
-      return created
+      // One request per file (after compression) so a batch of large photos
+      // never exceeds the host's request-size limit.
+      for (const file of list) {
+        const compressed = await compressImage(file)
+        const fd = new FormData()
+        fd.append('files', compressed)
+        const res = await fetch('/api/client/images', { method: 'POST', body: fd })
+        const json = await readJson(res)
+        const items: ClientImage[] = json.data || []
+        created.push(...items)
+        // Show each upload as soon as it lands.
+        setImages((prev) => [...items, ...prev])
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload failed')
-      return []
     } finally {
       setUploading(false)
     }
+    return created
   }, [])
 
   const remove = useCallback(async (id: string) => {
