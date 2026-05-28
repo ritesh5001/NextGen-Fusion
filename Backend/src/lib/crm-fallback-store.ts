@@ -49,16 +49,35 @@ export type AgencyProject = {
   project_assignments: unknown[]
 }
 
+export type ClientProduct = {
+  id: string
+  client_id: string
+  title: string
+  description: string | null
+  vendor: string | null
+  product_type: string | null
+  category: string | null
+  tags: string | null
+  published: boolean
+  options: unknown[]
+  variants: unknown[]
+  images: string[]
+  created_at: string
+  updated_at: string
+}
+
 type FallbackData = {
   client_users: ClientUser[]
   agency_members: AgencyMember[]
   agency_projects: AgencyProject[]
+  client_products: ClientProduct[]
 }
 
 const emptyData = (): FallbackData => ({
   client_users: [],
   agency_members: [],
   agency_projects: [],
+  client_products: [],
 })
 
 let mongoClientPromise: Promise<MongoClient> | null = null
@@ -329,4 +348,115 @@ export async function createFallbackAgencyProject(
   data.agency_projects.unshift(project)
   await writeFileData(data)
   return project
+}
+
+export async function listFallbackClientProducts(clientId: string): Promise<ClientProduct[]> {
+  if (isMongoConfigured()) {
+    const db = await getMongoDb()
+    return db
+      .collection<ClientProduct>('client_products')
+      .find({ client_id: clientId })
+      .sort({ created_at: -1 })
+      .toArray()
+  }
+
+  const data = await readFileData()
+  return data.client_products
+    .filter((product) => product.client_id === clientId)
+    .sort((a, b) => b.created_at.localeCompare(a.created_at))
+}
+
+export async function findFallbackClientProduct(clientId: string, id: string): Promise<ClientProduct | null> {
+  if (isMongoConfigured()) {
+    const db = await getMongoDb()
+    return db.collection<ClientProduct>('client_products').findOne({ id, client_id: clientId })
+  }
+
+  const data = await readFileData()
+  return data.client_products.find((product) => product.id === id && product.client_id === clientId) ?? null
+}
+
+export async function createFallbackClientProduct(
+  clientId: string,
+  input: Partial<Omit<ClientProduct, 'id' | 'client_id' | 'created_at' | 'updated_at'>>,
+): Promise<ClientProduct> {
+  const now = new Date().toISOString()
+  const product: ClientProduct = {
+    id: randomUUID(),
+    client_id: clientId,
+    title: String(input.title || ''),
+    description: typeof input.description === 'string' ? input.description : null,
+    vendor: typeof input.vendor === 'string' ? input.vendor : null,
+    product_type: typeof input.product_type === 'string' ? input.product_type : null,
+    category: typeof input.category === 'string' ? input.category : null,
+    tags: typeof input.tags === 'string' ? input.tags : null,
+    published: typeof input.published === 'boolean' ? input.published : true,
+    options: Array.isArray(input.options) ? input.options : [],
+    variants: Array.isArray(input.variants) ? input.variants : [],
+    images: Array.isArray(input.images) ? input.images.filter((item): item is string => typeof item === 'string') : [],
+    created_at: now,
+    updated_at: now,
+  }
+
+  if (isMongoConfigured()) {
+    const db = await getMongoDb()
+    await db.collection<ClientProduct>('client_products').insertOne(product)
+    return product
+  }
+
+  const data = await readFileData()
+  data.client_products.unshift(product)
+  await writeFileData(data)
+  return product
+}
+
+export async function updateFallbackClientProduct(
+  clientId: string,
+  id: string,
+  updates: Partial<Omit<ClientProduct, 'id' | 'client_id' | 'created_at'>>,
+): Promise<ClientProduct | null> {
+  const normalized: Partial<ClientProduct> = { updated_at: new Date().toISOString() }
+  if (updates.title !== undefined) normalized.title = String(updates.title)
+  if (updates.description !== undefined) normalized.description = typeof updates.description === 'string' ? updates.description : null
+  if (updates.vendor !== undefined) normalized.vendor = typeof updates.vendor === 'string' ? updates.vendor : null
+  if (updates.product_type !== undefined) normalized.product_type = typeof updates.product_type === 'string' ? updates.product_type : null
+  if (updates.category !== undefined) normalized.category = typeof updates.category === 'string' ? updates.category : null
+  if (updates.tags !== undefined) normalized.tags = typeof updates.tags === 'string' ? updates.tags : null
+  if (updates.published !== undefined) normalized.published = Boolean(updates.published)
+  if (updates.options !== undefined) normalized.options = Array.isArray(updates.options) ? updates.options : []
+  if (updates.variants !== undefined) normalized.variants = Array.isArray(updates.variants) ? updates.variants : []
+  if (updates.images !== undefined) {
+    normalized.images = Array.isArray(updates.images)
+      ? updates.images.filter((item): item is string => typeof item === 'string')
+      : []
+  }
+
+  if (isMongoConfigured()) {
+    const db = await getMongoDb()
+    return db
+      .collection<ClientProduct>('client_products')
+      .findOneAndUpdate({ id, client_id: clientId }, { $set: normalized }, { returnDocument: 'after' })
+  }
+
+  const data = await readFileData()
+  const index = data.client_products.findIndex((product) => product.id === id && product.client_id === clientId)
+  if (index === -1) return null
+  data.client_products[index] = { ...data.client_products[index], ...normalized }
+  await writeFileData(data)
+  return data.client_products[index]
+}
+
+export async function deleteFallbackClientProduct(clientId: string, id: string): Promise<boolean> {
+  if (isMongoConfigured()) {
+    const db = await getMongoDb()
+    const result = await db.collection<ClientProduct>('client_products').deleteOne({ id, client_id: clientId })
+    return result.deletedCount > 0
+  }
+
+  const data = await readFileData()
+  const next = data.client_products.filter((product) => product.id !== id || product.client_id !== clientId)
+  if (next.length === data.client_products.length) return false
+  data.client_products = next
+  await writeFileData(data)
+  return true
 }

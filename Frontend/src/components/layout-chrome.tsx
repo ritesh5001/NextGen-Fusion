@@ -10,8 +10,9 @@ import SalesChatbot from "@/components/sales-chatbot"
 export default function LayoutChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isAdmin = pathname.startsWith("/admin")
+  const isPortal = pathname.startsWith("/portal")
 
-  if (isAdmin) return <>{children}</>
+  if (isAdmin || isPortal) return <>{children}</>
 
   return (
     <>
