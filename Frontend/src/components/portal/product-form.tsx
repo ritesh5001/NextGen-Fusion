@@ -19,6 +19,17 @@ type FormState = {
   variants: ProductVariant[]
 }
 
+type BulkVariantField = 'sku' | 'price' | 'sale_price' | 'stock' | 'weight' | 'image_url'
+
+const BULK_VARIANT_FIELDS: Array<{ value: BulkVariantField; label: string; placeholder: string }> = [
+  { value: 'price', label: 'Price', placeholder: '1299' },
+  { value: 'sale_price', label: 'Sale price', placeholder: '999' },
+  { value: 'stock', label: 'Stock', placeholder: '50' },
+  { value: 'weight', label: 'Weight', placeholder: '0.5' },
+  { value: 'image_url', label: 'Image URL', placeholder: 'https://.../image.jpg' },
+  { value: 'sku', label: 'SKU', placeholder: 'SKU-001' },
+]
+
 function toDraft(product?: Product): FormState {
   if (!product) {
     return {
@@ -87,6 +98,8 @@ export function ProductForm({
   const [state, setState] = useState<FormState>(() => toDraft(initial))
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [bulkField, setBulkField] = useState<BulkVariantField>('price')
+  const [bulkValue, setBulkValue] = useState('')
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setState((s) => ({ ...s, [key]: value }))
@@ -127,6 +140,14 @@ export function ProductForm({
     set(
       'variants',
       state.variants.map((v, i) => (i === index ? { ...v, ...patch } : v)),
+    )
+  }
+
+  function applyBulkVariantValue() {
+    if (!state.variants.length) return
+    set(
+      'variants',
+      state.variants.map((variant) => ({ ...variant, [bulkField]: bulkValue })),
     )
   }
 
@@ -331,8 +352,42 @@ export function ProductForm({
         )}
 
         {state.variants.length > 0 && (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="space-y-4">
+            <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 lg:flex-row lg:items-end">
+              <div className="lg:w-52">
+                <label className="block text-xs font-medium text-slate-500 mb-1">Apply same value to</label>
+                <select
+                  value={bulkField}
+                  onChange={(e) => setBulkField(e.target.value as BulkVariantField)}
+                  className={inputCls}
+                >
+                  {BULK_VARIANT_FIELDS.map((field) => (
+                    <option key={field.value} value={field.value}>
+                      {field.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-slate-500 mb-1">Value</label>
+                <input
+                  className={inputCls}
+                  value={bulkValue}
+                  onChange={(e) => setBulkValue(e.target.value)}
+                  placeholder={BULK_VARIANT_FIELDS.find((field) => field.value === bulkField)?.placeholder}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={applyBulkVariantValue}
+                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+              >
+                Apply to all {state.variants.length}
+              </button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-slate-500 border-b border-slate-200">
                   {optionNames.map((n) => (
@@ -401,7 +456,8 @@ export function ProductForm({
                   </tr>
                 ))}
               </tbody>
-            </table>
+              </table>
+            </div>
           </div>
         )}
       </div>
