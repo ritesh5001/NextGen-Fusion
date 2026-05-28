@@ -542,3 +542,21 @@ create index if not exists client_products_client_idx on client_products (client
 drop trigger if exists trg_client_products_updated_at on client_products;
 create trigger trg_client_products_updated_at before update on client_products
   for each row execute function set_updated_at();
+
+-- =========================
+-- Client uploaded images (Cloudinary); auto-deleted after a retention window
+-- =========================
+create table if not exists client_images (
+  id uuid primary key default gen_random_uuid(),
+  client_id uuid not null references client_users(id) on delete cascade,
+  public_id text not null,
+  format text,
+  bytes integer,
+  width integer,
+  height integer,
+  original_filename text,
+  created_at timestamptz default now()
+);
+
+create index if not exists client_images_client_idx on client_images (client_id);
+create index if not exists client_images_created_idx on client_images (created_at);

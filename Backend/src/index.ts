@@ -18,7 +18,9 @@ import agencyMembersRoutes from './routes/agency-members'
 import agencyProjectsRoutes from './routes/agency-projects'
 import clientAuthRoutes from './routes/client-auth'
 import clientProductRoutes from './routes/client-products'
+import clientImageRoutes from './routes/client-images'
 import clientUsersRoutes from './routes/client-users'
+import { startImageCleanupWorker } from './lib/image-cleanup'
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -69,6 +71,7 @@ app.use('/api/agency', agencyMembersRoutes)
 app.use('/api/agency', agencyProjectsRoutes)
 app.use('/api/client', clientAuthRoutes)
 app.use('/api/client', clientProductRoutes)
+app.use('/api/client', clientImageRoutes)
 app.use('/api/admin', clientUsersRoutes)
 app.use('/api/agency', clientUsersRoutes)
 
@@ -93,4 +96,5 @@ app.use((error: unknown, _req: Request, res: Response, next: NextFunction) => {
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`)
   startCampaignProcessor()
+  startImageCleanupWorker()
 })

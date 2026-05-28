@@ -1,6 +1,7 @@
 import { Router, Request } from 'express'
 import { getSupabaseAdmin, type Campaign, type Contact } from '../lib/supabase'
 import { sendCampaignEmail } from '../lib/email'
+import { cleanupExpiredImages } from '../lib/image-cleanup'
 
 const router = Router()
 const MAX_PER_RUN = 50
@@ -184,5 +185,21 @@ async function handleCron(req: Request, res: any) {
 
 router.post('/process-campaigns', handleCron)
 router.get('/process-campaigns', handleCron)
+
+async function handleImageCleanup(req: Request, res: any) {
+  if (!isAuthorized(req)) {
+    res.status(401).json({ error: 'Unauthorized' })
+    return
+  }
+  try {
+    const result = await cleanupExpiredImages()
+    res.json({ ok: true, ...result })
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Cron error' })
+  }
+}
+
+router.post('/cleanup-client-images', handleImageCleanup)
+router.get('/cleanup-client-images', handleImageCleanup)
 
 export default router

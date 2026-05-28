@@ -2,13 +2,11 @@
 
 import { Portfolio } from "@/lib/api"
 import HeroSection from "@/components/hero-section"
-import HeroMarqueeSection from "@/components/hero-marquee-section"
 import AboutUsSection from "@/components/about-us-section"
 import ComparisonSection from "@/components/comparison-section"
 import ServicesSection from "@/components/services-section"
 import StackMarqueeSection from "@/components/stack-marquee-section"
 import BannerSection from "@/components/banner-section"
-import PortfolioSection from "@/components/portfolio-section"
 import FAQSection from "@/components/faq-section"
 import ContactSection from "@/components/contact-section"
 import ProjectEstimatorSection from "@/components/project-estimator-section"
@@ -24,16 +22,17 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
       <div id="hero">
         <HeroSection />
       </div>
-      <HeroMarqueeSection initialPortfolios={portfolios} />
+      {/* Hero marquee removed per request */}
       <ComparisonSection />
       <div id="services">
         <ServicesSection />
       </div>
-      <div id="portfolio">
-        <PortfolioSection portfolios={portfolios} />
-      </div>
+      {/* Portfolio section removed per request */}
       <div id="work">
         <WorkSection />
+      </div>
+      <div id="project-estimator">
+        <ProjectEstimatorSection />
       </div>
       <BannerSection />
       <div id="about">

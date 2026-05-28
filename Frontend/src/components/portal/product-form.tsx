@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Plus, Trash2, RefreshCw } from 'lucide-react'
 import type { Product, ProductOption, ProductVariant } from '@/lib/product-csv'
+import { GalleryPicker, VariantImageButton } from './image-library'
 
 type OptionDraft = { name: string; valuesText: string }
 
@@ -14,19 +15,18 @@ type FormState = {
   category: string
   tags: string
   published: boolean
-  imagesText: string
+  images: string[]
   options: OptionDraft[]
   variants: ProductVariant[]
 }
 
-type BulkVariantField = 'sku' | 'price' | 'sale_price' | 'stock' | 'weight' | 'image_url'
+type BulkVariantField = 'sku' | 'price' | 'sale_price' | 'stock' | 'weight'
 
 const BULK_VARIANT_FIELDS: Array<{ value: BulkVariantField; label: string; placeholder: string }> = [
   { value: 'price', label: 'Price', placeholder: '1299' },
   { value: 'sale_price', label: 'Sale price', placeholder: '999' },
   { value: 'stock', label: 'Stock', placeholder: '50' },
   { value: 'weight', label: 'Weight', placeholder: '0.5' },
-  { value: 'image_url', label: 'Image URL', placeholder: 'https://.../image.jpg' },
   { value: 'sku', label: 'SKU', placeholder: 'SKU-001' },
 ]
 
@@ -40,7 +40,7 @@ function toDraft(product?: Product): FormState {
       category: '',
       tags: '',
       published: true,
-      imagesText: '',
+      images: [],
       options: [],
       variants: [],
     }
@@ -53,7 +53,7 @@ function toDraft(product?: Product): FormState {
     category: product.category ?? '',
     tags: product.tags ?? '',
     published: product.published,
-    imagesText: (product.images ?? []).join('\n'),
+    images: product.images ?? [],
     options: (product.options ?? []).map((o) => ({ name: o.name, valuesText: o.values.join(', ') })),
     variants: product.variants ?? [],
   }
@@ -165,11 +165,6 @@ export function ProductForm({
       .filter((o) => o.name && o.values.length)
       .slice(0, 3)
 
-    const images = state.imagesText
-      .split(/[\n,]/)
-      .map((s) => s.trim())
-      .filter(Boolean)
-
     const payload = {
       title: state.title.trim(),
       description: state.description,
@@ -180,7 +175,7 @@ export function ProductForm({
       published: state.published,
       options,
       variants: state.variants,
-      images,
+      images: state.images,
     }
 
     try {
@@ -255,15 +250,7 @@ export function ProductForm({
           <input className={inputCls} value={state.tags} onChange={(e) => set('tags', e.target.value)} />
         </div>
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-slate-700 mb-1">
-            Gallery image URLs (one per line)
-          </label>
-          <textarea
-            className={inputCls + ' min-h-20'}
-            value={state.imagesText}
-            onChange={(e) => set('imagesText', e.target.value)}
-            placeholder="https://…/image-1.jpg"
-          />
+          <GalleryPicker value={state.images} onChange={(urls) => set('images', urls)} />
         </div>
         <div className="md:col-span-2 flex items-center gap-2">
           <input
@@ -400,7 +387,7 @@ export function ProductForm({
                   <th className="py-2 pr-3 font-medium">Sale price</th>
                   <th className="py-2 pr-3 font-medium">Stock</th>
                   <th className="py-2 pr-3 font-medium">Weight</th>
-                  <th className="py-2 pr-3 font-medium">Image URL</th>
+                  <th className="py-2 pr-3 font-medium">Image</th>
                 </tr>
               </thead>
               <tbody>
@@ -447,10 +434,9 @@ export function ProductForm({
                       />
                     </td>
                     <td className="py-1.5 pr-3">
-                      <input
-                        className={inputCls + ' min-w-40'}
-                        value={v.image_url ?? ''}
-                        onChange={(e) => updateVariant(i, { image_url: e.target.value })}
+                      <VariantImageButton
+                        value={v.image_url}
+                        onChange={(url) => updateVariant(i, { image_url: url })}
                       />
                     </td>
                   </tr>

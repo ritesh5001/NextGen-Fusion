@@ -2,9 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Package, LogOut } from 'lucide-react'
+import { Package, Images, LogOut } from 'lucide-react'
 
-const NAV = [{ href: '/portal', label: 'My Products', icon: Package, exact: true }]
+const NAV = [
+  { href: '/portal', label: 'My Products', icon: Package, exact: true },
+  { href: '/portal/images', label: 'My Images', icon: Images, exact: true },
+]
 
 export function PortalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
