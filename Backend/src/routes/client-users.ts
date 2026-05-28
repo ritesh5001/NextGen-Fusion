@@ -2,6 +2,12 @@ import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
+import {
+  createFallbackClientUser,
+  isMissingSupabaseTable,
+  listFallbackClientUsers,
+  updateFallbackClientUser,
+} from '../lib/crm-fallback-store'
 import { requireInternalAuth } from '../middleware/auth'
 
 const router = Router()
@@ -14,7 +20,13 @@ router.get('/client-users', requireInternalAuth, async (_req, res) => {
       .select('id, name, company, email, is_active, created_at, updated_at')
       .order('created_at', { ascending: false })
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        res.json({ data: await listFallbackClientUsers() })
+        return
+      }
+      throw error
+    }
     res.json({ data })
   } catch (error) {
     logRouteError('client-users:list', error)
@@ -43,6 +55,16 @@ router.post('/client-users', requireInternalAuth, async (req, res) => {
       .single()
 
     if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const data = await createFallbackClientUser({
+          name,
+          company: company || null,
+          email,
+          password_hash,
+        })
+        res.status(201).json({ data })
+        return
+      }
       if (error.code === '23505') {
         res.status(409).json({ error: 'A client with this email already exists' })
         return
@@ -51,6 +73,10 @@ router.post('/client-users', requireInternalAuth, async (req, res) => {
     }
     res.status(201).json({ data })
   } catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'DUPLICATE_EMAIL') {
+      res.status(409).json({ error: 'A client with this email already exists' })
+      return
+    }
     logRouteError('client-users:create', error)
     res.status(500).json({ error: 'Failed to create client', details: getErrorMessage(error) })
   }
@@ -73,7 +99,18 @@ router.patch('/client-users/:id', requireInternalAuth, async (req, res) => {
       .select('id, name, company, email, is_active, updated_at')
       .single()
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const data = await updateFallbackClientUser(req.params.id, updates)
+        if (!data) {
+          res.status(404).json({ error: 'Client not found' })
+          return
+        }
+        res.json({ data })
+        return
+      }
+      throw error
+    }
     res.json({ data })
   } catch (error) {
     logRouteError('client-users:update', error)
@@ -95,7 +132,18 @@ router.patch('/client-users/:id/password', requireInternalAuth, async (req, res)
       .update({ password_hash })
       .eq('id', req.params.id)
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const data = await updateFallbackClientUser(req.params.id, { password_hash })
+        if (!data) {
+          res.status(404).json({ error: 'Client not found' })
+          return
+        }
+        res.json({ ok: true })
+        return
+      }
+      throw error
+    }
     res.json({ ok: true })
   } catch (error) {
     logRouteError('client-users:password', error)
@@ -111,7 +159,18 @@ router.delete('/client-users/:id', requireInternalAuth, async (req, res) => {
       .update({ is_active: false })
       .eq('id', req.params.id)
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const data = await updateFallbackClientUser(req.params.id, { is_active: false })
+        if (!data) {
+          res.status(404).json({ error: 'Client not found' })
+          return
+        }
+        res.json({ ok: true })
+        return
+      }
+      throw error
+    }
     res.json({ ok: true })
   } catch (error) {
     logRouteError('client-users:deactivate', error)

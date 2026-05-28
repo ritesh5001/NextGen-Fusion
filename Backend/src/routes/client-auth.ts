@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { SignJWT } from 'jose'
 import bcrypt from 'bcryptjs'
+import { findFallbackClientByEmail, isMissingSupabaseTable } from '../lib/crm-fallback-store'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { COOKIE_NAME } from '../middleware/auth'
 
@@ -29,12 +30,16 @@ router.post('/login', async (req, res) => {
       .eq('email', email.toLowerCase().trim())
       .single()
 
-    if (error || !client || !client.is_active) {
+    const resolvedClient = error && isMissingSupabaseTable(error)
+      ? await findFallbackClientByEmail(email)
+      : client
+
+    if ((error && !isMissingSupabaseTable(error)) || !resolvedClient || !resolvedClient.is_active) {
       res.status(401).json({ error: 'Invalid email or password' })
       return
     }
 
-    const valid = await bcrypt.compare(password, client.password_hash)
+    const valid = await bcrypt.compare(password, resolvedClient.password_hash)
     if (!valid) {
       res.status(401).json({ error: 'Invalid email or password' })
       return
@@ -42,11 +47,11 @@ router.post('/login', async (req, res) => {
 
     const token = await new SignJWT({
       role: 'client',
-      name: client.name,
-      email: client.email,
+      name: resolvedClient.name,
+      email: resolvedClient.email,
     })
       .setProtectedHeader({ alg: 'HS256' })
-      .setSubject(client.id)
+      .setSubject(resolvedClient.id)
       .setIssuedAt()
       .setExpirationTime('7d')
       .sign(getSecret())
@@ -59,7 +64,7 @@ router.post('/login', async (req, res) => {
       path: '/',
     })
 
-    res.json({ ok: true, name: client.name, email: client.email })
+    res.json({ ok: true, name: resolvedClient.name, email: resolvedClient.email })
   } catch {
     res.status(500).json({ error: 'Internal server error' })
   }

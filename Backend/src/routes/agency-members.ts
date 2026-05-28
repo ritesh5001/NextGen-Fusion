@@ -2,6 +2,12 @@ import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
+import {
+  createFallbackAgencyMember,
+  isMissingSupabaseTable,
+  listFallbackAgencyMembers,
+  updateFallbackAgencyMember,
+} from '../lib/crm-fallback-store'
 import { requireAuth } from '../middleware/auth'
 
 const router = Router()
@@ -14,7 +20,13 @@ router.get('/members', requireAuth, async (_req, res) => {
       .select('id, name, email, role, avatar_color, is_active, created_at, updated_at')
       .order('created_at', { ascending: true })
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        res.json({ data: await listFallbackAgencyMembers() })
+        return
+      }
+      throw error
+    }
     res.json({ data })
   } catch (error) {
     logRouteError('agency-members:list', error)
@@ -43,6 +55,17 @@ router.post('/members', requireAuth, async (req, res) => {
       .single()
 
     if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const data = await createFallbackAgencyMember({
+          name,
+          email,
+          password_hash,
+          role,
+          avatar_color,
+        })
+        res.status(201).json({ data })
+        return
+      }
       if (error.code === '23505') {
         res.status(409).json({ error: 'A member with this email already exists' })
         return
@@ -51,6 +74,10 @@ router.post('/members', requireAuth, async (req, res) => {
     }
     res.status(201).json({ data })
   } catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'DUPLICATE_EMAIL') {
+      res.status(409).json({ error: 'A member with this email already exists' })
+      return
+    }
     logRouteError('agency-members:create', error)
     res.status(500).json({ error: 'Failed to create member', details: getErrorMessage(error) })
   }
@@ -70,6 +97,17 @@ router.get('/members/:id', requireAuth, async (req, res) => {
         .select('id', { count: 'exact', head: true })
         .eq('member_id', req.params.id),
     ])
+
+    if (memberRes.error && isMissingSupabaseTable(memberRes.error)) {
+      const members = await listFallbackAgencyMembers()
+      const member = members.find((item) => item.id === req.params.id)
+      if (!member) {
+        res.status(404).json({ error: 'Member not found' })
+        return
+      }
+      res.json({ data: { ...member, active_project_count: 0 } })
+      return
+    }
 
     if (memberRes.error || !memberRes.data) {
       res.status(404).json({ error: 'Member not found' })
@@ -101,7 +139,18 @@ router.patch('/members/:id', requireAuth, async (req, res) => {
       .select('id, name, email, role, avatar_color, is_active, updated_at')
       .single()
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const data = await updateFallbackAgencyMember(req.params.id, updates)
+        if (!data) {
+          res.status(404).json({ error: 'Member not found' })
+          return
+        }
+        res.json({ data })
+        return
+      }
+      throw error
+    }
     res.json({ data })
   } catch (error) {
     logRouteError('agency-members:update', error)
@@ -123,7 +172,18 @@ router.patch('/members/:id/password', requireAuth, async (req, res) => {
       .update({ password_hash })
       .eq('id', req.params.id)
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const data = await updateFallbackAgencyMember(req.params.id, { password_hash })
+        if (!data) {
+          res.status(404).json({ error: 'Member not found' })
+          return
+        }
+        res.json({ ok: true })
+        return
+      }
+      throw error
+    }
     res.json({ ok: true })
   } catch (error) {
     logRouteError('agency-members:password', error)
@@ -139,7 +199,18 @@ router.delete('/members/:id', requireAuth, async (req, res) => {
       .update({ is_active: false })
       .eq('id', req.params.id)
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const data = await updateFallbackAgencyMember(req.params.id, { is_active: false })
+        if (!data) {
+          res.status(404).json({ error: 'Member not found' })
+          return
+        }
+        res.json({ ok: true })
+        return
+      }
+      throw error
+    }
     res.json({ ok: true })
   } catch (error) {
     logRouteError('agency-members:deactivate', error)

@@ -1,4 +1,9 @@
 import { Router } from 'express'
+import {
+  createFallbackAgencyProject,
+  listFallbackAgencyProjects,
+  isMissingSupabaseTable,
+} from '../lib/crm-fallback-store'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { requireAuth } from '../middleware/auth'
@@ -30,7 +35,13 @@ router.get('/projects', requireAuth, async (req, res) => {
     }
 
     const { data, error } = await query
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        res.json({ data: await listFallbackAgencyProjects() })
+        return
+      }
+      throw error
+    }
 
     let result = data ?? []
     if (member_id) {
@@ -78,7 +89,31 @@ router.post('/projects', requireAuth, async (req, res) => {
       .select()
       .single()
 
-    if (error) throw error
+    if (error) {
+      if (isMissingSupabaseTable(error)) {
+        const project = await createFallbackAgencyProject({
+          title,
+          client_name,
+          client_email: client_email || null,
+          client_phone: client_phone || null,
+          client_company: client_company || null,
+          client_website: client_website || null,
+          status,
+          priority,
+          project_type: project_type || null,
+          start_date: start_date || null,
+          deadline: deadline || null,
+          delivered_date: null,
+          budget: budget || null,
+          currency,
+          description: description || null,
+          notes: notes || null,
+        })
+        res.status(201).json({ data: project })
+        return
+      }
+      throw error
+    }
 
     if (Array.isArray(member_ids) && member_ids.length > 0) {
       const assignments = member_ids.map((mid: string) => ({
