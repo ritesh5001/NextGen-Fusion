@@ -35,7 +35,7 @@ export default function AgencyClientsPage() {
     try {
       const res = await fetch('/api/agency/client-users')
       const json = await res.json()
-      if (!res.ok) throw new Error(json?.error || 'Failed to load clients')
+      if (!res.ok) throw new Error(json?.details || json?.error || 'Failed to load clients')
       setItems(json.data || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load clients')
@@ -59,7 +59,7 @@ export default function AgencyClientsPage() {
         body: JSON.stringify({ name, company, email, password }),
       })
       const json = await res.json()
-      if (!res.ok) throw new Error(json?.error || 'Failed to create client')
+      if (!res.ok) throw new Error(json?.details || json?.error || 'Failed to create client')
       setName('')
       setCompany('')
       setEmail('')

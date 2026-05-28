@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { requireAuth } from '../middleware/auth'
 
@@ -46,8 +47,9 @@ router.get('/projects', requireAuth, async (req, res) => {
     }
 
     res.json({ data: result })
-  } catch {
-    res.status(500).json({ error: 'Failed to fetch projects' })
+  } catch (error) {
+    logRouteError('agency-projects:list', error)
+    res.status(500).json({ error: 'Failed to fetch projects', details: getErrorMessage(error) })
   }
 })
 
@@ -95,8 +97,9 @@ router.post('/projects', requireAuth, async (req, res) => {
     })
 
     res.status(201).json({ data: project })
-  } catch {
-    res.status(500).json({ error: 'Failed to create project' })
+  } catch (error) {
+    logRouteError('agency-projects:create', error)
+    res.status(500).json({ error: 'Failed to create project', details: getErrorMessage(error) })
   }
 })
 
@@ -122,8 +125,9 @@ router.get('/projects/:id', requireAuth, async (req, res) => {
       return
     }
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to fetch project' })
+  } catch (error) {
+    logRouteError('agency-projects:detail', error)
+    res.status(500).json({ error: 'Failed to fetch project', details: getErrorMessage(error) })
   }
 })
 
@@ -150,8 +154,9 @@ router.patch('/projects/:id', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to update project' })
+  } catch (error) {
+    logRouteError('agency-projects:update', error)
+    res.status(500).json({ error: 'Failed to update project', details: getErrorMessage(error) })
   }
 })
 
@@ -166,8 +171,9 @@ router.delete('/projects/:id', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.json({ ok: true })
-  } catch {
-    res.status(500).json({ error: 'Failed to delete project' })
+  } catch (error) {
+    logRouteError('agency-projects:delete', error)
+    res.status(500).json({ error: 'Failed to delete project', details: getErrorMessage(error) })
   }
 })
 
@@ -215,8 +221,9 @@ router.patch('/projects/:id/status', requireAuth, async (req, res) => {
     })
 
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to update status' })
+  } catch (error) {
+    logRouteError('agency-projects:status', error)
+    res.status(500).json({ error: 'Failed to update status', details: getErrorMessage(error) })
   }
 })
 
@@ -237,8 +244,9 @@ router.post('/projects/:id/assignments', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.status(201).json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to assign member' })
+  } catch (error) {
+    logRouteError('agency-projects:assign', error)
+    res.status(500).json({ error: 'Failed to assign member', details: getErrorMessage(error) })
   }
 })
 
@@ -253,8 +261,9 @@ router.delete('/projects/:id/assignments/:member_id', requireAuth, async (req, r
 
     if (error) throw error
     res.json({ ok: true })
-  } catch {
-    res.status(500).json({ error: 'Failed to remove assignment' })
+  } catch (error) {
+    logRouteError('agency-projects:unassign', error)
+    res.status(500).json({ error: 'Failed to remove assignment', details: getErrorMessage(error) })
   }
 })
 
@@ -275,8 +284,9 @@ router.post('/projects/:id/references', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.status(201).json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to add reference' })
+  } catch (error) {
+    logRouteError('agency-projects:add-reference', error)
+    res.status(500).json({ error: 'Failed to add reference', details: getErrorMessage(error) })
   }
 })
 
@@ -291,8 +301,9 @@ router.delete('/projects/:id/references/:ref_id', requireAuth, async (req, res) 
 
     if (error) throw error
     res.json({ ok: true })
-  } catch {
-    res.status(500).json({ error: 'Failed to delete reference' })
+  } catch (error) {
+    logRouteError('agency-projects:delete-reference', error)
+    res.status(500).json({ error: 'Failed to delete reference', details: getErrorMessage(error) })
   }
 })
 
@@ -313,8 +324,9 @@ router.post('/projects/:id/milestones', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.status(201).json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to add milestone' })
+  } catch (error) {
+    logRouteError('agency-projects:add-milestone', error)
+    res.status(500).json({ error: 'Failed to add milestone', details: getErrorMessage(error) })
   }
 })
 
@@ -351,8 +363,9 @@ router.patch('/projects/:id/milestones/:mid', requireAuth, async (req, res) => {
     }
 
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to update milestone' })
+  } catch (error) {
+    logRouteError('agency-projects:update-milestone', error)
+    res.status(500).json({ error: 'Failed to update milestone', details: getErrorMessage(error) })
   }
 })
 
@@ -367,8 +380,9 @@ router.delete('/projects/:id/milestones/:mid', requireAuth, async (req, res) => 
 
     if (error) throw error
     res.json({ ok: true })
-  } catch {
-    res.status(500).json({ error: 'Failed to delete milestone' })
+  } catch (error) {
+    logRouteError('agency-projects:delete-milestone', error)
+    res.status(500).json({ error: 'Failed to delete milestone', details: getErrorMessage(error) })
   }
 })
 
@@ -384,8 +398,9 @@ router.get('/projects/:id/updates', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to fetch updates' })
+  } catch (error) {
+    logRouteError('agency-projects:list-updates', error)
+    res.status(500).json({ error: 'Failed to fetch updates', details: getErrorMessage(error) })
   }
 })
 
@@ -410,8 +425,9 @@ router.post('/projects/:id/updates', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.status(201).json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to add update' })
+  } catch (error) {
+    logRouteError('agency-projects:add-update', error)
+    res.status(500).json({ error: 'Failed to add update', details: getErrorMessage(error) })
   }
 })
 

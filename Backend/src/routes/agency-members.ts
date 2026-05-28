@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { getSupabaseAdmin } from '../lib/supabase'
+import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { requireAuth } from '../middleware/auth'
 
 const router = Router()
@@ -15,8 +16,9 @@ router.get('/members', requireAuth, async (_req, res) => {
 
     if (error) throw error
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to fetch members' })
+  } catch (error) {
+    logRouteError('agency-members:list', error)
+    res.status(500).json({ error: 'Failed to fetch members', details: getErrorMessage(error) })
   }
 })
 
@@ -48,8 +50,9 @@ router.post('/members', requireAuth, async (req, res) => {
       throw error
     }
     res.status(201).json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to create member' })
+  } catch (error) {
+    logRouteError('agency-members:create', error)
+    res.status(500).json({ error: 'Failed to create member', details: getErrorMessage(error) })
   }
 })
 
@@ -74,8 +77,9 @@ router.get('/members/:id', requireAuth, async (req, res) => {
     }
 
     res.json({ data: { ...memberRes.data, active_project_count: countRes.count ?? 0 } })
-  } catch {
-    res.status(500).json({ error: 'Failed to fetch member' })
+  } catch (error) {
+    logRouteError('agency-members:detail', error)
+    res.status(500).json({ error: 'Failed to fetch member', details: getErrorMessage(error) })
   }
 })
 
@@ -99,8 +103,9 @@ router.patch('/members/:id', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to update member' })
+  } catch (error) {
+    logRouteError('agency-members:update', error)
+    res.status(500).json({ error: 'Failed to update member', details: getErrorMessage(error) })
   }
 })
 
@@ -120,8 +125,9 @@ router.patch('/members/:id/password', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.json({ ok: true })
-  } catch {
-    res.status(500).json({ error: 'Failed to update password' })
+  } catch (error) {
+    logRouteError('agency-members:password', error)
+    res.status(500).json({ error: 'Failed to update password', details: getErrorMessage(error) })
   }
 })
 
@@ -135,8 +141,9 @@ router.delete('/members/:id', requireAuth, async (req, res) => {
 
     if (error) throw error
     res.json({ ok: true })
-  } catch {
-    res.status(500).json({ error: 'Failed to deactivate member' })
+  } catch (error) {
+    logRouteError('agency-members:deactivate', error)
+    res.status(500).json({ error: 'Failed to deactivate member', details: getErrorMessage(error) })
   }
 })
 

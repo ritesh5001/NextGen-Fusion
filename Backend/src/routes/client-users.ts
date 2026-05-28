@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { getSupabaseAdmin } from '../lib/supabase'
+import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { requireInternalAuth } from '../middleware/auth'
 
 const router = Router()
@@ -15,8 +16,9 @@ router.get('/client-users', requireInternalAuth, async (_req, res) => {
 
     if (error) throw error
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to fetch clients' })
+  } catch (error) {
+    logRouteError('client-users:list', error)
+    res.status(500).json({ error: 'Failed to fetch clients', details: getErrorMessage(error) })
   }
 })
 
@@ -48,8 +50,9 @@ router.post('/client-users', requireInternalAuth, async (req, res) => {
       throw error
     }
     res.status(201).json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to create client' })
+  } catch (error) {
+    logRouteError('client-users:create', error)
+    res.status(500).json({ error: 'Failed to create client', details: getErrorMessage(error) })
   }
 })
 
@@ -72,8 +75,9 @@ router.patch('/client-users/:id', requireInternalAuth, async (req, res) => {
 
     if (error) throw error
     res.json({ data })
-  } catch {
-    res.status(500).json({ error: 'Failed to update client' })
+  } catch (error) {
+    logRouteError('client-users:update', error)
+    res.status(500).json({ error: 'Failed to update client', details: getErrorMessage(error) })
   }
 })
 
@@ -93,8 +97,9 @@ router.patch('/client-users/:id/password', requireInternalAuth, async (req, res)
 
     if (error) throw error
     res.json({ ok: true })
-  } catch {
-    res.status(500).json({ error: 'Failed to update password' })
+  } catch (error) {
+    logRouteError('client-users:password', error)
+    res.status(500).json({ error: 'Failed to update password', details: getErrorMessage(error) })
   }
 })
 
@@ -108,8 +113,9 @@ router.delete('/client-users/:id', requireInternalAuth, async (req, res) => {
 
     if (error) throw error
     res.json({ ok: true })
-  } catch {
-    res.status(500).json({ error: 'Failed to deactivate client' })
+  } catch (error) {
+    logRouteError('client-users:deactivate', error)
+    res.status(500).json({ error: 'Failed to deactivate client', details: getErrorMessage(error) })
   }
 })
 
