@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Trash2, RefreshCw } from 'lucide-react'
+import { Plus, Trash2, RefreshCw, Sparkles, Loader2 } from 'lucide-react'
 import type { Product, ProductOption, ProductVariant } from '@/lib/product-csv'
 import { GalleryPicker, VariantImageButton } from './image-library'
 
@@ -100,9 +100,49 @@ export function ProductForm({
   const [error, setError] = useState('')
   const [bulkField, setBulkField] = useState<BulkVariantField>('price')
   const [bulkValue, setBulkValue] = useState('')
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiNote, setAiNote] = useState('')
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setState((s) => ({ ...s, [key]: value }))
+  }
+
+  async function handleAiAutofill() {
+    const cover = state.images[0]
+    if (!cover) {
+      setAiNote('Add a product image first, then let AI read it.')
+      return
+    }
+    setAiLoading(true)
+    setAiNote('')
+    try {
+      const res = await fetch('/api/client/ai/product-copy', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ imageUrl: cover }),
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json?.error || 'Could not generate copy')
+      const { title, description } = json.data ?? {}
+      let filled = false
+      setState((s) => {
+        const next = { ...s }
+        if (!s.title.trim() && title) {
+          next.title = title
+          filled = true
+        }
+        if (!s.description.trim() && description) {
+          next.description = description
+          filled = true
+        }
+        return next
+      })
+      setAiNote(filled ? '' : 'Title and description are already filled — clear a field to let AI rewrite it.')
+    } catch (err) {
+      setAiNote(err instanceof Error ? err.message : 'Could not generate copy')
+    } finally {
+      setAiLoading(false)
+    }
   }
 
   function addOption() {
@@ -217,6 +257,22 @@ export function ProductForm({
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="md:col-span-2 flex flex-col gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-sm text-slate-600">
+            <span className="font-medium text-slate-800">Don&apos;t know what to write?</span> Let AI read your image
+            and fill the title &amp; description.
+          </div>
+          <button
+            type="button"
+            onClick={handleAiAutofill}
+            disabled={!state.images.length || aiLoading}
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {aiLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+            {aiLoading ? 'Reading image…' : 'Auto-fill from image (AI)'}
+          </button>
+        </div>
+        {aiNote && <p className="md:col-span-2 -mt-2 text-xs text-slate-500">{aiNote}</p>}
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-slate-700 mb-1">Title *</label>
           <input className={inputCls} value={state.title} onChange={(e) => set('title', e.target.value)} required />
