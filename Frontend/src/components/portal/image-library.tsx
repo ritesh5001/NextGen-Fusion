@@ -118,26 +118,38 @@ export function useImageLibrary() {
     if (!list.length) return []
     setUploading(true)
     setError('')
+
     const created: ClientImage[] = []
-    try {
-      // One request per file (after compression) so a batch of large photos
-      // never exceeds the host's request-size limit.
-      for (const file of list) {
-        const compressed = await compressImage(file)
-        const fd = new FormData()
-        fd.append('files', compressed)
-        const res = await fetch('/api/client/images', { method: 'POST', body: fd })
-        const json = await readJson(res)
-        const items: ClientImage[] = json.data || []
-        created.push(...items)
-        // Show each upload as soon as it lands.
-        setImages((prev) => [...items, ...prev])
+    let firstError: string | null = null
+    // Each file is its own small request (after compression) so a batch never
+    // exceeds the host's request-size limit. We run a few in parallel so
+    // uploading many images at once is fast.
+    const CONCURRENCY = 10
+    let cursor = 0
+
+    async function worker() {
+      while (cursor < list.length) {
+        const file = list[cursor++]
+        try {
+          const compressed = await compressImage(file)
+          const fd = new FormData()
+          fd.append('files', compressed)
+          const res = await fetch('/api/client/images', { method: 'POST', body: fd })
+          const json = await readJson(res)
+          const items: ClientImage[] = json.data || []
+          created.push(...items)
+          // Show each upload as soon as it lands.
+          setImages((prev) => [...items, ...prev])
+        } catch (err) {
+          if (!firstError) firstError = err instanceof Error ? err.message : 'Upload failed'
+        }
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed')
-    } finally {
-      setUploading(false)
     }
+
+    await Promise.all(Array.from({ length: Math.min(CONCURRENCY, list.length) }, worker))
+
+    if (firstError) setError(firstError)
+    setUploading(false)
     return created
   }, [])
 
@@ -203,6 +215,35 @@ function imageFilesFrom(dt: DataTransfer): File[] {
     .filter((f): f is File => !!f)
 }
 
+// When dragging an image FROM another web page (Google Images, a website, etc.)
+// the browser hands over a URL instead of a file. Read it synchronously from
+// the drop event (dataTransfer is only valid during the event).
+function draggedImageUrl(dt: DataTransfer): string | null {
+  const uri = dt.getData('text/uri-list') || dt.getData('text/plain')
+  if (uri) {
+    const first = uri.split('\n').map((s) => s.trim()).find((s) => /^https?:\/\//i.test(s))
+    if (first) return first
+  }
+  const html = dt.getData('text/html')
+  const m = html && html.match(/<img[^>]+src=["']([^"']+)["']/i)
+  if (m && /^https?:\/\//i.test(m[1])) return m[1]
+  return null
+}
+
+async function fetchUrlAsImageFile(url: string): Promise<File | null> {
+  try {
+    const res = await fetch(url, { mode: 'cors' })
+    if (!res.ok) return null
+    const blob = await res.blob()
+    if (!blob.type.startsWith('image/')) return null
+    const base = (url.split('?')[0].split('/').pop() || 'image') || 'image'
+    const name = /\.[a-z0-9]{2,4}$/i.test(base) ? base : `${base}.jpg`
+    return new File([blob], name, { type: blob.type })
+  } catch {
+    return null
+  }
+}
+
 function Dropzone({
   uploading,
   onFiles,
@@ -213,6 +254,8 @@ function Dropzone({
   hint?: string
 }) {
   const [over, setOver] = useState(false)
+  const [dropError, setDropError] = useState('')
+  const [fetching, setFetching] = useState(false)
 
   return (
     <div
@@ -237,8 +280,31 @@ function Dropzone({
         e.preventDefault()
         e.stopPropagation()
         setOver(false)
+        setDropError('')
+        // Read everything synchronously — dataTransfer is only valid in-event.
         const files = imageFilesFrom(e.dataTransfer)
-        if (files.length) onFiles(files)
+        if (files.length) {
+          onFiles(files)
+          return
+        }
+        // Dragged from another web page (Google Images, a site, etc.) → URL.
+        const url = draggedImageUrl(e.dataTransfer)
+        if (url) {
+          setFetching(true)
+          fetchUrlAsImageFile(url)
+            .then((file) => {
+              if (file) onFiles([file])
+              else
+                setDropError(
+                  "Couldn't load that image directly. Download it first, then drag the file or use Choose images.",
+                )
+            })
+            .finally(() => setFetching(false))
+          return
+        }
+        setDropError(
+          "That can't be dropped here. Download the image first, then drag the file or use Choose images.",
+        )
       }}
       className={
         'flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-7 text-center transition ' +
@@ -246,8 +312,11 @@ function Dropzone({
       }
     >
       <ImagePlus className={'h-7 w-7 ' + (over ? 'text-slate-700' : 'text-slate-300')} />
-      <p className="text-sm text-slate-500">{over ? 'Drop to upload' : hint}</p>
+      <p className="text-sm text-slate-500">
+        {over ? 'Drop to upload' : fetching ? 'Fetching image…' : hint}
+      </p>
       <UploadButton uploading={uploading} onFiles={(fl) => onFiles(Array.from(fl))} label="Choose images" />
+      {dropError && <p className="text-xs text-amber-700">{dropError}</p>}
     </div>
   )
 }
@@ -340,7 +409,7 @@ export function ImagePickerModal({
           </button>
         </div>
 
-        <div className="space-y-4 overflow-y-auto px-5 py-4">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain px-5 py-4">
           <ExpiryNotice />
           <Dropzone
             uploading={uploading}
