@@ -1,0 +1,133 @@
+import { Router } from 'express'
+import { getSupabaseAdmin } from '../lib/supabase'
+import { requireClient } from '../middleware/auth'
+
+const router = Router()
+
+const PRODUCT_COLUMNS =
+  'id, title, description, vendor, product_type, category, tags, published, options, variants, images, created_at, updated_at'
+
+type ProductPayload = {
+  title?: unknown
+  description?: unknown
+  vendor?: unknown
+  product_type?: unknown
+  category?: unknown
+  tags?: unknown
+  published?: unknown
+  options?: unknown
+  variants?: unknown
+  images?: unknown
+}
+
+function buildUpdates(body: ProductPayload): Record<string, unknown> {
+  const updates: Record<string, unknown> = {}
+  if (body.title !== undefined) updates.title = body.title
+  if (body.description !== undefined) updates.description = body.description
+  if (body.vendor !== undefined) updates.vendor = body.vendor
+  if (body.product_type !== undefined) updates.product_type = body.product_type
+  if (body.category !== undefined) updates.category = body.category
+  if (body.tags !== undefined) updates.tags = body.tags
+  if (body.published !== undefined) updates.published = body.published
+  if (body.options !== undefined) updates.options = body.options
+  if (body.variants !== undefined) updates.variants = body.variants
+  if (body.images !== undefined) updates.images = body.images
+  return updates
+}
+
+router.get('/products', requireClient, async (req, res) => {
+  try {
+    const supabase = getSupabaseAdmin()
+    const { data, error } = await supabase
+      .from('client_products')
+      .select(PRODUCT_COLUMNS)
+      .eq('client_id', req.client_id)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    res.json({ data })
+  } catch {
+    res.status(500).json({ error: 'Failed to fetch products' })
+  }
+})
+
+router.post('/products', requireClient, async (req, res) => {
+  try {
+    const body = req.body as ProductPayload
+    if (!body.title || typeof body.title !== 'string') {
+      res.status(400).json({ error: 'title is required' })
+      return
+    }
+
+    const supabase = getSupabaseAdmin()
+    const { data, error } = await supabase
+      .from('client_products')
+      .insert({ ...buildUpdates(body), client_id: req.client_id })
+      .select(PRODUCT_COLUMNS)
+      .single()
+
+    if (error) throw error
+    res.status(201).json({ data })
+  } catch {
+    res.status(500).json({ error: 'Failed to create product' })
+  }
+})
+
+router.get('/products/:id', requireClient, async (req, res) => {
+  try {
+    const supabase = getSupabaseAdmin()
+    const { data, error } = await supabase
+      .from('client_products')
+      .select(PRODUCT_COLUMNS)
+      .eq('id', req.params.id)
+      .eq('client_id', req.client_id)
+      .single()
+
+    if (error || !data) {
+      res.status(404).json({ error: 'Product not found' })
+      return
+    }
+    res.json({ data })
+  } catch {
+    res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
+router.patch('/products/:id', requireClient, async (req, res) => {
+  try {
+    const supabase = getSupabaseAdmin()
+    const { data, error } = await supabase
+      .from('client_products')
+      .update(buildUpdates(req.body as ProductPayload))
+      .eq('id', req.params.id)
+      .eq('client_id', req.client_id)
+      .select(PRODUCT_COLUMNS)
+      .single()
+
+    if (error || !data) {
+      res.status(404).json({ error: 'Product not found' })
+      return
+    }
+    res.json({ data })
+  } catch {
+    res.status(500).json({ error: 'Failed to update product' })
+  }
+})
+
+router.delete('/products/:id', requireClient, async (req, res) => {
+  try {
+    const supabase = getSupabaseAdmin()
+    const { error } = await supabase
+      .from('client_products')
+      .delete()
+      .eq('id', req.params.id)
+      .eq('client_id', req.client_id)
+
+    if (error) throw error
+    res.json({ ok: true })
+  } catch {
+    res.status(500).json({ error: 'Failed to delete product' })
+  }
+})
+
+export default router

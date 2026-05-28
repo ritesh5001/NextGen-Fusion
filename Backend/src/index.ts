@@ -16,6 +16,9 @@ import statsRoutes from './routes/stats'
 import agencyAuthRoutes from './routes/agency-auth'
 import agencyMembersRoutes from './routes/agency-members'
 import agencyProjectsRoutes from './routes/agency-projects'
+import clientAuthRoutes from './routes/client-auth'
+import clientProductRoutes from './routes/client-products'
+import clientUsersRoutes from './routes/client-users'
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -64,6 +67,9 @@ app.use('/api/cron', cronRoutes)
 app.use('/api/agency', agencyAuthRoutes)
 app.use('/api/agency', agencyMembersRoutes)
 app.use('/api/agency', agencyProjectsRoutes)
+app.use('/api/client', clientAuthRoutes)
+app.use('/api/client', clientProductRoutes)
+app.use('/api/admin', clientUsersRoutes)
 
 app.get('/health', (_req, res) => res.json({ ok: true }))
 

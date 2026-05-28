@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
-import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, type LucideIcon } from "lucide-react"
+import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/components/booking-modal"
 
 type MenuItem = {
@@ -138,6 +138,24 @@ export default function SimpleNavbar() {
             </nav>
           </motion.div>
 
+          {/* Client Login */}
+          <motion.button
+            onClick={() => router.push('/portal/login')}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full text-black font-semibold text-xs sm:text-sm hover:bg-white/40 transition-colors"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.4)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: "1px solid rgba(128, 128, 128, 0.2)",
+            }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.1, delay: 0.07 }}
+          >
+            <LogIn className="w-4 h-4" />
+            Client Login
+          </motion.button>
+
           {/* CTA Button */}
           <motion.div
             className="px-4 py-2 rounded-full"
@@ -218,6 +236,16 @@ export default function SimpleNavbar() {
                       )}
                     </div>
                   ))}
+                  <button
+                    onClick={() => {
+                      router.push('/portal/login')
+                      setIsMobileMenuOpen(false)
+                    }}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
+                  >
+                    <LogIn className="w-5 h-5" />
+                    <span className="font-medium">Client Login</span>
+                  </button>
                 </nav>
               </div>
             </motion.div>

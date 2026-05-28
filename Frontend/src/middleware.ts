@@ -3,32 +3,43 @@ import { jwtVerify } from 'jose'
 
 const COOKIE_NAME = 'ngf_admin_session'
 
-async function isValid(token: string | undefined): Promise<boolean> {
-  if (!token) return false
+async function getRole(token: string | undefined): Promise<string | null> {
+  if (!token) return null
   const secret = process.env.ADMIN_SESSION_SECRET
-  if (!secret) return false
+  if (!secret) return null
   try {
     const { payload } = await jwtVerify(token, new TextEncoder().encode(secret))
-    return payload.role === 'admin' || payload.role === 'member'
+    return typeof payload.role === 'string' ? payload.role : null
   } catch {
-    return false
+    return null
   }
 }
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const normalizedPath = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/'
+  const token = req.cookies.get(COOKIE_NAME)?.value
+
+  // ----- Client portal -----
+  if (normalizedPath === '/portal' || normalizedPath.startsWith('/portal/')) {
+    if (normalizedPath === '/portal/login') return NextResponse.next()
+    const role = await getRole(token)
+    if (role === 'client') return NextResponse.next()
+    const url = req.nextUrl.clone()
+    url.pathname = '/portal/login'
+    url.searchParams.set('redirect', pathname)
+    return NextResponse.redirect(url)
+  }
+
+  // ----- Admin / Agency -----
   const isLoginPage =
     normalizedPath === '/admin/login' || normalizedPath === '/admin/agency/login'
-
-  // Only guard /admin/* pages (not login pages themselves)
   if (!normalizedPath.startsWith('/admin') || isLoginPage) return NextResponse.next()
 
-  const token = req.cookies.get(COOKIE_NAME)?.value
-  if (await isValid(token)) return NextResponse.next()
+  const role = await getRole(token)
+  if (role === 'admin' || role === 'member') return NextResponse.next()
 
   const url = req.nextUrl.clone()
-  // Redirect agency paths to agency login, others to admin login
   url.pathname = normalizedPath.startsWith('/admin/agency')
     ? '/admin/agency/login'
     : '/admin/login'
@@ -37,5 +48,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/portal/:path*'],
 }

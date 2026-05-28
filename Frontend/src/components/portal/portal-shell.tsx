@@ -2,28 +2,17 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays, Briefcase, Package } from 'lucide-react'
+import { Package, LogOut } from 'lucide-react'
 
-const NAV = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/admin/booking-requests', label: 'Bookings', icon: CalendarDays },
-  { href: '/admin/chatbot-conversations', label: 'Chatbot', icon: MessageSquare },
-  { href: '/admin/project-estimator-submissions', label: 'Estimator Leads', icon: Calculator },
-  { href: '/admin/contact-forms', label: 'Form Submissions', icon: FileText },
-  { href: '/admin/leads', label: 'B2B Leads', icon: Building2 },
-  { href: '/admin/contacts', label: 'Email Contacts', icon: Users },
-  { href: '/admin/campaigns', label: 'Campaigns', icon: Send },
-  { href: '/admin/agency', label: 'Agency CRM', icon: Briefcase },
-  { href: '/admin/clients', label: 'Clients', icon: Package },
-]
+const NAV = [{ href: '/portal', label: 'My Products', icon: Package, exact: true }]
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+export function PortalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
 
   async function logout() {
-    await fetch('/api/admin/logout', { method: 'POST' })
-    router.replace('/admin/login')
+    await fetch('/api/client/logout', { method: 'POST' })
+    router.replace('/portal/login')
     router.refresh()
   }
 
@@ -32,7 +21,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <aside className="w-60 shrink-0 border-r border-slate-200 bg-white flex flex-col">
         <div className="px-5 py-5 border-b border-slate-200">
           <div className="text-sm font-semibold tracking-tight">NextGen Fusion</div>
-          <div className="text-xs text-slate-500 mt-0.5">Email Campaign Admin</div>
+          <div className="text-xs text-slate-500 mt-0.5">Client Portal</div>
         </div>
         <nav className="flex-1 px-2 py-3 space-y-0.5">
           {NAV.map((item) => {
@@ -46,9 +35,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 href={item.href}
                 className={
                   'flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition ' +
-                  (active
-                    ? 'bg-slate-900 text-white'
-                    : 'text-slate-700 hover:bg-slate-100')
+                  (active ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100')
                 }
               >
                 <Icon className="h-4 w-4" />
@@ -67,7 +54,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </button>
         </div>
       </aside>
-      <main className="flex-1 min-w-0">{children}</main>
+      <main className="flex-1 min-w-0 bg-slate-50">{children}</main>
     </div>
   )
 }
