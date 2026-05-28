@@ -136,6 +136,66 @@ function UploadButton({
   )
 }
 
+function imageFilesFrom(dt: DataTransfer): File[] {
+  if (dt.files && dt.files.length) {
+    return Array.from(dt.files).filter((f) => f.type.startsWith('image/'))
+  }
+  // Fallback for some browsers that only expose items during drop.
+  return Array.from(dt.items || [])
+    .filter((it) => it.kind === 'file' && it.type.startsWith('image/'))
+    .map((it) => it.getAsFile())
+    .filter((f): f is File => !!f)
+}
+
+function Dropzone({
+  uploading,
+  onFiles,
+  hint = 'Drag & drop images here, or',
+}: {
+  uploading: boolean
+  onFiles: (files: File[]) => void
+  hint?: string
+}) {
+  const [over, setOver] = useState(false)
+
+  return (
+    <div
+      onDragEnter={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setOver(true)
+      }}
+      onDragOver={(e) => {
+        // Required so the browser allows the drop (esp. Chrome/Safari on macOS).
+        e.preventDefault()
+        e.stopPropagation()
+        e.dataTransfer.dropEffect = 'copy'
+        if (!over) setOver(true)
+      }}
+      onDragLeave={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setOver(false)
+      }}
+      onDrop={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setOver(false)
+        const files = imageFilesFrom(e.dataTransfer)
+        if (files.length) onFiles(files)
+      }}
+      className={
+        'flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-7 text-center transition ' +
+        (over ? 'border-slate-900 bg-slate-100' : 'border-slate-300 bg-white')
+      }
+    >
+      <ImagePlus className={'h-7 w-7 ' + (over ? 'text-slate-700' : 'text-slate-300')} />
+      <p className="text-sm text-slate-500">{over ? 'Drop to upload' : hint}</p>
+      <UploadButton uploading={uploading} onFiles={(fl) => onFiles(Array.from(fl))} label="Choose images" />
+    </div>
+  )
+}
+
 // Manage mode — for the "My Images" page.
 export function ImageManager() {
   const { images, loading, uploading, error, upload, remove } = useImageLibrary()
@@ -143,8 +203,8 @@ export function ImageManager() {
   return (
     <div className="space-y-5">
       <ExpiryNotice />
-      <div className="flex items-center justify-between">
-        <UploadButton uploading={uploading} onFiles={(f) => upload(f)} />
+      <Dropzone uploading={uploading} onFiles={(f) => upload(f)} />
+      <div className="flex justify-end">
         <span className="text-xs text-slate-400">{images.length} image{images.length === 1 ? '' : 's'}</span>
       </div>
 
@@ -226,16 +286,15 @@ export function ImagePickerModal({
 
         <div className="space-y-4 overflow-y-auto px-5 py-4">
           <ExpiryNotice />
-          <div className="flex items-center justify-between">
-            <UploadButton
-              uploading={uploading}
-              label="Upload new"
-              onFiles={async (f) => {
-                const created = await upload(f)
-                if (!multiple && created[0]) onConfirm([created[0].url])
-                else if (created.length) setSelected((prev) => [...prev, ...created.map((c) => c.url)])
-              }}
-            />
+          <Dropzone
+            uploading={uploading}
+            onFiles={async (f) => {
+              const created = await upload(f)
+              if (!multiple && created[0]) onConfirm([created[0].url])
+              else if (created.length) setSelected((prev) => [...prev, ...created.map((c) => c.url)])
+            }}
+          />
+          <div className="flex justify-end">
             <span className="text-xs text-slate-400">Click an image to {multiple ? 'select' : 'choose'}</span>
           </div>
 
