@@ -20,6 +20,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
     if (payload.role !== 'admin' && payload.role !== 'member' && payload.role !== 'client') {
       throw new Error('Unauthorized')
     }
+    req.auth_role = payload.role
     if (payload.role === 'member') {
       req.member_id = payload.sub as string
       req.member_role = payload.member_role as 'partner' | 'admin_partner' | undefined
@@ -31,6 +32,16 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   } catch {
     res.status(401).json({ error: 'Unauthorized' })
   }
+}
+
+export async function requireInternalAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
+  await requireAuth(req, res, () => {
+    if (req.auth_role === 'client') {
+      res.status(403).json({ error: 'Forbidden' })
+      return
+    }
+    next()
+  })
 }
 
 export async function requireClient(req: Request, res: Response, next: NextFunction): Promise<void> {

@@ -70,6 +70,7 @@ app.use('/api/agency', agencyProjectsRoutes)
 app.use('/api/client', clientAuthRoutes)
 app.use('/api/client', clientProductRoutes)
 app.use('/api/admin', clientUsersRoutes)
+app.use('/api/agency', clientUsersRoutes)
 
 app.get('/health', (_req, res) => res.json({ ok: true }))
 

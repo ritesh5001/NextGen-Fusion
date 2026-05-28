@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { getSupabaseAdmin } from '../lib/supabase'
-import { requireAuth } from '../middleware/auth'
+import { requireInternalAuth } from '../middleware/auth'
 
 const router = Router()
 
-router.get('/client-users', requireAuth, async (_req, res) => {
+router.get('/client-users', requireInternalAuth, async (_req, res) => {
   try {
     const supabase = getSupabaseAdmin()
     const { data, error } = await supabase
@@ -20,7 +20,7 @@ router.get('/client-users', requireAuth, async (_req, res) => {
   }
 })
 
-router.post('/client-users', requireAuth, async (req, res) => {
+router.post('/client-users', requireInternalAuth, async (req, res) => {
   try {
     const { name, company, email, password } = req.body
     if (!name || !email || !password) {
@@ -53,7 +53,7 @@ router.post('/client-users', requireAuth, async (req, res) => {
   }
 })
 
-router.patch('/client-users/:id', requireAuth, async (req, res) => {
+router.patch('/client-users/:id', requireInternalAuth, async (req, res) => {
   try {
     const { name, company, email, is_active } = req.body
     const updates: Record<string, unknown> = {}
@@ -77,7 +77,7 @@ router.patch('/client-users/:id', requireAuth, async (req, res) => {
   }
 })
 
-router.patch('/client-users/:id/password', requireAuth, async (req, res) => {
+router.patch('/client-users/:id/password', requireInternalAuth, async (req, res) => {
   try {
     const { password } = req.body
     if (!password || password.length < 8) {
@@ -98,7 +98,7 @@ router.patch('/client-users/:id/password', requireAuth, async (req, res) => {
   }
 })
 
-router.delete('/client-users/:id', requireAuth, async (req, res) => {
+router.delete('/client-users/:id', requireInternalAuth, async (req, res) => {
   try {
     const supabase = getSupabaseAdmin()
     const { error } = await supabase
