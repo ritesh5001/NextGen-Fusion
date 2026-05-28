@@ -1,12 +1,4 @@
 import { Router } from 'express'
-import {
-  createFallbackClientProduct,
-  deleteFallbackClientProduct,
-  findFallbackClientProduct,
-  isMissingSupabaseTable,
-  listFallbackClientProducts,
-  updateFallbackClientProduct,
-} from '../lib/crm-fallback-store'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { requireClient } from '../middleware/auth'
@@ -57,13 +49,7 @@ router.get('/products', requireClient, async (req, res) => {
       .eq('client_id', req.client_id)
       .order('created_at', { ascending: false })
 
-    if (error) {
-      if (isMissingSupabaseTable(error)) {
-        res.json({ data: await listFallbackClientProducts(req.client_id) })
-        return
-      }
-      throw error
-    }
+    if (error) throw error
     res.json({ data })
   } catch (error) {
     logRouteError('client-products:list', error)
@@ -90,14 +76,7 @@ router.post('/products', requireClient, async (req, res) => {
       .select(PRODUCT_COLUMNS)
       .single()
 
-    if (error) {
-      if (isMissingSupabaseTable(error)) {
-        const data = await createFallbackClientProduct(req.client_id, buildUpdates(body))
-        res.status(201).json({ data })
-        return
-      }
-      throw error
-    }
+    if (error) throw error
     res.status(201).json({ data })
   } catch (error) {
     logRouteError('client-products:create', error)
@@ -118,16 +97,6 @@ router.get('/products/:id', requireClient, async (req, res) => {
       .eq('id', req.params.id)
       .eq('client_id', req.client_id)
       .single()
-
-    if (error && isMissingSupabaseTable(error)) {
-      const data = await findFallbackClientProduct(req.client_id, req.params.id)
-      if (!data) {
-        res.status(404).json({ error: 'Product not found' })
-        return
-      }
-      res.json({ data })
-      return
-    }
 
     if (error || !data) {
       res.status(404).json({ error: 'Product not found' })
@@ -155,16 +124,6 @@ router.patch('/products/:id', requireClient, async (req, res) => {
       .select(PRODUCT_COLUMNS)
       .single()
 
-    if (error && isMissingSupabaseTable(error)) {
-      const data = await updateFallbackClientProduct(req.client_id, req.params.id, buildUpdates(req.body as ProductPayload))
-      if (!data) {
-        res.status(404).json({ error: 'Product not found' })
-        return
-      }
-      res.json({ data })
-      return
-    }
-
     if (error || !data) {
       res.status(404).json({ error: 'Product not found' })
       return
@@ -189,18 +148,7 @@ router.delete('/products/:id', requireClient, async (req, res) => {
       .eq('id', req.params.id)
       .eq('client_id', req.client_id)
 
-    if (error) {
-      if (isMissingSupabaseTable(error)) {
-        const deleted = await deleteFallbackClientProduct(req.client_id, req.params.id)
-        if (!deleted) {
-          res.status(404).json({ error: 'Product not found' })
-          return
-        }
-        res.json({ ok: true })
-        return
-      }
-      throw error
-    }
+    if (error) throw error
     res.json({ ok: true })
   } catch (error) {
     logRouteError('client-products:delete', error)
