@@ -422,17 +422,22 @@ export function ImagePickerModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div
-        className="flex max-h-[85vh] w-full max-w-3xl flex-col rounded-2xl bg-white shadow-xl"
+        className="flex max-h-[calc(100vh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-slate-200 px-5 py-4">
           <h3 className="text-base font-semibold">Choose {multiple ? 'images' : 'an image'}</h3>
           <button type="button" onClick={onClose} className="p-1 text-slate-400 hover:text-slate-900">
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain px-5 py-4">
+        <div
+          className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain px-5 py-4"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           <ExpiryNotice />
           <Dropzone
             uploading={uploading}
@@ -496,7 +501,7 @@ export function ImagePickerModal({
         </div>
 
         {multiple && (
-          <div className="flex items-center justify-between border-t border-slate-200 px-5 py-4">
+          <div className="flex shrink-0 items-center justify-between border-t border-slate-200 px-5 py-4">
             <span className="text-sm text-slate-500">{selected.length} selected</span>
             <div className="flex gap-2">
               <button
