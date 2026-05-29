@@ -560,3 +560,11 @@ create table if not exists client_images (
 
 create index if not exists client_images_client_idx on client_images (client_id);
 create index if not exists client_images_created_idx on client_images (created_at);
+
+-- Client portal account phone (editable on the client profile).
+alter table client_users add column if not exists phone text;
+
+-- Link an agency project to a portal client account so the client can see it.
+alter table agency_projects
+  add column if not exists client_id uuid references client_users(id) on delete set null;
+create index if not exists agency_projects_client_id_idx on agency_projects (client_id);

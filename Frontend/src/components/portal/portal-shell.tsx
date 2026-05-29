@@ -2,16 +2,38 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Package, Images, LogOut } from 'lucide-react'
+import { useEffect } from 'react'
+import { LayoutDashboard, Package, Images, User, LogOut } from 'lucide-react'
 
 const NAV = [
-  { href: '/portal', label: 'My Products', icon: Package, exact: true },
+  { href: '/portal', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/portal/products', label: 'My Products', icon: Package, exact: false },
   { href: '/portal/images', label: 'My Images', icon: Images, exact: true },
+  { href: '/portal/profile', label: 'Profile', icon: User, exact: true },
 ]
 
 export function PortalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
+
+  // First-login nudge: if the admin created the account without a name, send the
+  // client to their profile to complete it before using the portal.
+  useEffect(() => {
+    if (pathname === '/portal/profile') return
+    let active = true
+    fetch('/api/client/profile')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        if (!active || !json?.data) return
+        if (!(typeof json.data.name === 'string' && json.data.name.trim())) {
+          router.replace('/portal/profile?complete=1')
+        }
+      })
+      .catch(() => {})
+    return () => {
+      active = false
+    }
+  }, [pathname, router])
 
   async function logout() {
     await fetch('/api/client/logout', { method: 'POST' })

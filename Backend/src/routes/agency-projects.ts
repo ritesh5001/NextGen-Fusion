@@ -14,7 +14,7 @@ router.get('/projects', requireAuth, async (req, res) => {
     let query = supabase
       .from('agency_projects')
       .select(`
-        id, title, client_name, client_company, status, priority, project_type,
+        id, title, client_name, client_company, client_id, status, priority, project_type,
         start_date, deadline, delivered_date, budget, currency, created_at, updated_at,
         project_assignments (
           role,
@@ -58,6 +58,7 @@ router.post('/projects', requireAuth, async (req, res) => {
   try {
     const {
       title, client_name, client_email, client_phone, client_company, client_website,
+      client_id,
       status = 'kickoff', priority = 'medium', project_type,
       start_date, deadline, budget, currency = 'INR',
       description, notes, member_ids = [],
@@ -73,6 +74,7 @@ router.post('/projects', requireAuth, async (req, res) => {
       .from('agency_projects')
       .insert({
         title, client_name, client_email, client_phone, client_company, client_website,
+        client_id: client_id || null,
         status, priority, project_type, start_date, deadline, budget, currency, description, notes,
       })
       .select()
@@ -136,7 +138,7 @@ router.patch('/projects/:id', requireAuth, async (req, res) => {
   try {
     const allowed = [
       'title', 'client_name', 'client_email', 'client_phone', 'client_company',
-      'client_website', 'priority', 'project_type', 'start_date', 'deadline',
+      'client_website', 'client_id', 'priority', 'project_type', 'start_date', 'deadline',
       'delivered_date', 'budget', 'currency', 'description', 'notes',
     ]
     const updates: Record<string, unknown> = {}

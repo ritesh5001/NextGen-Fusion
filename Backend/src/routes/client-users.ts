@@ -11,7 +11,7 @@ router.get('/client-users', requireInternalAuth, async (_req, res) => {
     const supabase = getSupabaseAdmin()
     const { data, error } = await supabase
       .from('client_users')
-      .select('id, name, company, email, is_active, created_at, updated_at')
+      .select('id, name, company, email, phone, is_active, created_at, updated_at')
       .order('created_at', { ascending: false })
 
     if (error) throw error
@@ -24,9 +24,11 @@ router.get('/client-users', requireInternalAuth, async (_req, res) => {
 
 router.post('/client-users', requireInternalAuth, async (req, res) => {
   try {
-    const { name, company, email, password } = req.body
-    if (!name || !email || !password) {
-      res.status(400).json({ error: 'name, email, and password are required' })
+    const { name, company, email, password, phone } = req.body
+    // Name is optional — if the admin doesn't set one, the client is prompted
+    // to complete their profile on first login.
+    if (!email || !password) {
+      res.status(400).json({ error: 'email and password are required' })
       return
     }
     if (password.length < 8) {
@@ -38,8 +40,14 @@ router.post('/client-users', requireInternalAuth, async (req, res) => {
     const supabase = getSupabaseAdmin()
     const { data, error } = await supabase
       .from('client_users')
-      .insert({ name, company: company || null, email: email.toLowerCase().trim(), password_hash })
-      .select('id, name, company, email, is_active, created_at')
+      .insert({
+        name: typeof name === 'string' ? name.trim() : '',
+        company: company || null,
+        phone: phone || null,
+        email: email.toLowerCase().trim(),
+        password_hash,
+      })
+      .select('id, name, company, email, phone, is_active, created_at')
       .single()
 
     if (error) {
@@ -58,10 +66,11 @@ router.post('/client-users', requireInternalAuth, async (req, res) => {
 
 router.patch('/client-users/:id', requireInternalAuth, async (req, res) => {
   try {
-    const { name, company, email, is_active } = req.body
+    const { name, company, email, phone, is_active } = req.body
     const updates: Record<string, unknown> = {}
     if (name !== undefined) updates.name = name
     if (company !== undefined) updates.company = company
+    if (phone !== undefined) updates.phone = phone
     if (email !== undefined) updates.email = email.toLowerCase().trim()
     if (is_active !== undefined) updates.is_active = is_active
 
@@ -70,7 +79,7 @@ router.patch('/client-users/:id', requireInternalAuth, async (req, res) => {
       .from('client_users')
       .update(updates)
       .eq('id', req.params.id)
-      .select('id, name, company, email, is_active, updated_at')
+      .select('id, name, company, email, phone, is_active, updated_at')
       .single()
 
     if (error) throw error

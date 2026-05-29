@@ -20,6 +20,8 @@ import clientAuthRoutes from './routes/client-auth'
 import clientProductRoutes from './routes/client-products'
 import clientImageRoutes from './routes/client-images'
 import clientAiRoutes from './routes/client-ai'
+import clientProjectRoutes from './routes/client-projects'
+import clientProfileRoutes from './routes/client-profile'
 import clientUsersRoutes from './routes/client-users'
 import { startImageCleanupWorker } from './lib/image-cleanup'
 
@@ -74,6 +76,8 @@ app.use('/api/client', clientAuthRoutes)
 app.use('/api/client', clientProductRoutes)
 app.use('/api/client', clientImageRoutes)
 app.use('/api/client', clientAiRoutes)
+app.use('/api/client', clientProjectRoutes)
+app.use('/api/client', clientProfileRoutes)
 app.use('/api/admin', clientUsersRoutes)
 app.use('/api/agency', clientUsersRoutes)
 

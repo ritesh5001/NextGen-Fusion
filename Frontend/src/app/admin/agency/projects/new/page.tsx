@@ -19,6 +19,14 @@ interface Member {
   is_active: boolean
 }
 
+interface ClientAccount {
+  id: string
+  name: string | null
+  email: string
+  company: string | null
+  is_active: boolean
+}
+
 function initials(name: string) {
   return name.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2)
 }
@@ -44,6 +52,10 @@ export default function NewProjectPage() {
     notes: '',
   })
   const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set())
+  const [clients, setClients] = useState<ClientAccount[]>([])
+  // '' = no account, a client id = existing account, '__new__' = create one
+  const [clientChoice, setClientChoice] = useState('')
+  const [newClient, setNewClient] = useState({ name: '', email: '', password: '' })
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -52,6 +64,26 @@ export default function NewProjectPage() {
       .then((r) => r.json())
       .then((json) => setMembers((json.data ?? []).filter((m: Member) => m.is_active)))
   }, [])
+
+  useEffect(() => {
+    fetch('/api/agency/client-users')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => setClients((json?.data ?? []).filter((c: ClientAccount) => c.is_active !== false)))
+      .catch(() => {})
+  }, [])
+
+  function onClientChoiceChange(value: string) {
+    setClientChoice(value)
+    const existing = clients.find((c) => c.id === value)
+    if (existing) {
+      setForm((f) => ({
+        ...f,
+        client_name: existing.name || f.client_name,
+        client_email: existing.email || f.client_email,
+        client_company: existing.company || f.client_company,
+      }))
+    }
+  }
 
   function set(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }))
@@ -71,8 +103,45 @@ export default function NewProjectPage() {
     setSaving(true)
     setError('')
     try {
+      // Resolve the linked client portal account (create one if requested).
+      let client_id: string | undefined
+      if (clientChoice === '__new__') {
+        if (!newClient.email.trim() || newClient.password.length < 8) {
+          setError('To create a client account, enter a login email and a password of at least 8 characters.')
+          setSaving(false)
+          return
+        }
+        const cRes = await fetch('/api/agency/client-users', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            name: newClient.name,
+            email: newClient.email,
+            password: newClient.password,
+            company: form.client_company || undefined,
+          }),
+        })
+        const cJson = await cRes.json()
+        if (!cRes.ok) {
+          setError(cJson.error || 'Failed to create the client account')
+          setSaving(false)
+          return
+        }
+        client_id = cJson.data.id
+      } else if (clientChoice) {
+        client_id = clientChoice
+      }
+
+      const linkedName =
+        clientChoice === '__new__'
+          ? newClient.name.trim() || newClient.email.trim()
+          : clients.find((c) => c.id === clientChoice)?.name || ''
+      const client_name = form.client_name.trim() || linkedName || 'Client'
+
       const body = {
         ...form,
+        client_name,
+        client_id,
         budget: form.budget ? parseFloat(form.budget) : undefined,
         start_date: form.start_date || undefined,
         deadline: form.deadline || undefined,
@@ -173,15 +242,76 @@ export default function NewProjectPage() {
           {/* Client Info */}
           <div className="rounded-xl border border-slate-200 bg-white p-5 space-y-4">
             <h2 className="text-sm font-semibold text-slate-900">Client Information</h2>
+
+            {/* Portal account link */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Client portal account</label>
+              <select
+                value={clientChoice}
+                onChange={(e) => onClientChoiceChange(e.target.value)}
+                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+              >
+                <option value="">— No portal account —</option>
+                {clients.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {(c.name && c.name.trim()) || c.email} ({c.email})
+                  </option>
+                ))}
+                <option value="__new__">+ Create new client account…</option>
+              </select>
+              <p className="text-xs text-slate-500 mt-1">
+                Link this project to a client login so they can track it from their dashboard.
+              </p>
+            </div>
+
+            {clientChoice === '__new__' && (
+              <div className="grid grid-cols-2 gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <div className="col-span-2 text-xs font-medium text-slate-600">New client login</div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Name (optional)</label>
+                  <input
+                    value={newClient.name}
+                    onChange={(e) => setNewClient((c) => ({ ...c, name: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Login email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    value={newClient.email}
+                    onChange={(e) => setNewClient((c) => ({ ...c, email: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+                    placeholder="client@example.com"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Temporary password <span className="text-red-500">*</span> <span className="text-slate-400">(min 8 chars)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={newClient.password}
+                    onChange={(e) => setNewClient((c) => ({ ...c, password: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+                    placeholder="Share this with the client"
+                  />
+                </div>
+                <p className="col-span-2 text-xs text-slate-500">
+                  Leave the name blank and the client will be asked to add it the first time they log in.
+                </p>
+              </div>
+            )}
+
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Client Name <span className="text-red-500">*</span>
-                </label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Client Name</label>
                 <input
                   value={form.client_name}
                   onChange={(e) => set('client_name', e.target.value)}
-                  required
                   className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10"
                   placeholder="John Doe"
                 />
