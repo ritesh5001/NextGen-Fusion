@@ -29,8 +29,15 @@ const app = express()
 const PORT = process.env.PORT || 4000
 const requestBodyLimit = process.env.REQUEST_BODY_LIMIT || '2mb'
 
+function normalizeOriginValue(value: string): string {
+  return value
+    .trim()
+    .replace(/^ALLOWED_ORIGINS\s*=\s*/i, '')
+}
+
 const defaultOrigins = [
   'http://localhost:3000',
+  'http://localhost:8081',
   'https://nextgenfusion.in',
   'https://www.nextgenfusion.in',
 ]
@@ -38,7 +45,7 @@ const allowedOrigins = Array.from(
   new Set(
     (process.env.ALLOWED_ORIGINS || '')
       .split(',')
-      .map(s => s.trim())
+      .map(normalizeOriginValue)
       .filter(Boolean)
       .concat(defaultOrigins),
   ),
