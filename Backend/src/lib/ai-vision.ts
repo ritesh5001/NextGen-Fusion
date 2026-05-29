@@ -17,6 +17,7 @@ const SYSTEM_PROMPT =
 
 export async function generateProductCopyFromImage(
   imageUrl: string,
+  hint?: string,
 ): Promise<{ title: string; description: string }> {
   const provider = process.env.GROQ_API_KEY ? 'groq' : process.env.XAI_API_KEY ? 'xai' : null
   const apiKey = process.env.GROQ_API_KEY || process.env.XAI_API_KEY
@@ -47,7 +48,12 @@ export async function generateProductCopyFromImage(
           {
             role: 'user',
             content: [
-              { type: 'text', text: 'Generate a product title and description for this image.' },
+              {
+                type: 'text',
+                text: hint && hint.trim()
+                  ? `Generate a product title and description for this image. The seller added this detail to help you understand it — treat it as accurate and use it, especially if the photo is unclear: "${hint.trim()}"`
+                  : 'Generate a product title and description for this image.',
+              },
               { type: 'image_url', image_url: { url: imageUrl } },
             ],
           },

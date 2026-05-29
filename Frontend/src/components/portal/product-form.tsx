@@ -102,6 +102,7 @@ export function ProductForm({
   const [bulkValue, setBulkValue] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
   const [aiNote, setAiNote] = useState('')
+  const [aiHint, setAiHint] = useState('')
   const [categorySuggestions, setCategorySuggestions] = useState<string[]>([])
   const [optionPresets, setOptionPresets] = useState<Array<{ name: string; values: string[] }>>([])
 
@@ -144,7 +145,7 @@ export function ProductForm({
       const res = await fetch('/api/client/ai/product-copy', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ imageUrl: cover }),
+        body: JSON.stringify({ imageUrl: cover, hint: aiHint.trim() || undefined }),
       })
       const json = await res.json()
       if (!res.ok) throw new Error(json?.error || 'Could not generate copy')
@@ -164,7 +165,8 @@ export function ProductForm({
       })
       setAiNote(filled ? '' : 'Title and description are already filled — clear a field to let AI rewrite it.')
     } catch (err) {
-      setAiNote(err instanceof Error ? err.message : 'Could not generate copy')
+      const base = err instanceof Error ? err.message : 'Could not generate copy'
+      setAiNote(aiHint.trim() ? base : `${base} The image may be unclear — add a hint below and try again.`)
     } finally {
       setAiLoading(false)
     }
@@ -282,20 +284,31 @@ export function ProductForm({
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="md:col-span-2 flex flex-col gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="md:col-span-2 space-y-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
           <div className="text-sm text-slate-600">
             <span className="font-medium text-slate-800">Don&apos;t know what to write?</span> Let AI read your image
             and fill the title &amp; description.
           </div>
-          <button
-            type="button"
-            onClick={handleAiAutofill}
-            disabled={!state.images.length || aiLoading}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {aiLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-            {aiLoading ? 'Reading image…' : 'Auto-fill from image (AI)'}
-          </button>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <input
+              className={inputCls + ' flex-1'}
+              value={aiHint}
+              onChange={(e) => setAiHint(e.target.value)}
+              placeholder="Optional hint to help the AI (e.g. brass Shiva trishul, 12 inch, for temple)"
+            />
+            <button
+              type="button"
+              onClick={handleAiAutofill}
+              disabled={!state.images.length || aiLoading}
+              className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {aiLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+              {aiLoading ? 'Reading image…' : 'Auto-fill from image (AI)'}
+            </button>
+          </div>
+          <p className="text-xs text-slate-400">
+            A hint is optional but helps a lot when the photo is unclear or shows multiple items.
+          </p>
         </div>
         {aiNote && <p className="md:col-span-2 -mt-2 text-xs text-slate-500">{aiNote}</p>}
         <div className="md:col-span-2">
