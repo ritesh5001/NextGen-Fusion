@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { SignJWT } from 'jose'
-import { COOKIE_NAME } from '../middleware/auth'
+import { COOKIE_NAME, requireAuth } from '../middleware/auth'
 
 const router = Router()
 const COOKIE_MAX_AGE_SEC = 60 * 60 * 24 * 7 // 7 days
@@ -37,10 +37,17 @@ router.post('/login', async (req, res) => {
       path: '/',
       maxAge: COOKIE_MAX_AGE_SEC * 1000,
     })
-    res.json({ ok: true })
+    // Also return the token in the body so non-browser clients (the mobile app)
+    // can store it and send it as `Authorization: Bearer <token>`.
+    res.json({ ok: true, token })
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Login failed' })
   }
+})
+
+// Lightweight token/session check for the app to validate a stored token.
+router.get('/me', requireAuth, (req, res) => {
+  res.json({ ok: true, role: req.auth_role ?? 'admin' })
 })
 
 router.post('/logout', (_req, res) => {

@@ -9,8 +9,18 @@ function getSecret(): Uint8Array {
   return new TextEncoder().encode(secret)
 }
 
+// Session token from the signed cookie (website) OR an Authorization: Bearer
+// header (mobile app / API clients). Both carry the same ADMIN_SESSION_SECRET JWT.
+function getToken(req: Request): string | undefined {
+  const cookieToken = req.cookies?.[COOKIE_NAME]
+  if (cookieToken) return cookieToken
+  const auth = req.headers.authorization
+  if (auth && auth.startsWith('Bearer ')) return auth.slice(7).trim()
+  return undefined
+}
+
 export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const token = req.cookies?.[COOKIE_NAME]
+  const token = getToken(req)
   if (!token) {
     res.status(401).json({ error: 'Unauthorized' })
     return
@@ -45,7 +55,7 @@ export async function requireInternalAuth(req: Request, res: Response, next: Nex
 }
 
 export async function requireClient(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const token = req.cookies?.[COOKIE_NAME]
+  const token = getToken(req)
   if (!token) {
     res.status(401).json({ error: 'Unauthorized' })
     return
