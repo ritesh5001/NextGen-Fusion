@@ -34,16 +34,16 @@ const INCOMING_TRANSFORM = { width: 1600, crop: 'limit', quality: 'auto:good', f
 // splits on commas, so the URL must not contain any (e.g. "c_limit,w_1600").
 const DELIVERY_TRANSFORM = { quality: 'auto' }
 
-export function uploadImageBuffer(
+export function uploadImageBufferToFolder(
   buffer: Buffer,
-  clientId: string,
+  folder: string,
   filename?: string,
 ): Promise<UploadedImage> {
   const cld = getCloudinary()
   return new Promise((resolve, reject) => {
     const stream = cld.uploader.upload_stream(
       {
-        folder: `ngf/clients/${clientId}`,
+        folder,
         resource_type: 'image',
         transformation: [INCOMING_TRANSFORM],
       },
@@ -66,8 +66,27 @@ export function uploadImageBuffer(
   })
 }
 
+export function uploadImageBuffer(
+  buffer: Buffer,
+  clientId: string,
+  filename?: string,
+): Promise<UploadedImage> {
+  return uploadImageBufferToFolder(buffer, `ngf/clients/${clientId}`, filename)
+}
+
 export function buildDeliveryUrl(publicId: string): string {
   return getCloudinary().url(publicId, { secure: true, format: 'jpg', transformation: [DELIVERY_TRANSFORM] })
+}
+
+// Crop a stored banner to the requested display ratio on delivery. "1:1" is an
+// effective no-op for a square source; "16:9" / "7:3" trim a 3:2 source down,
+// using gravity:auto so the salient subject stays in frame.
+export function buildBannerUrl(publicId: string, ratio: string): string {
+  return getCloudinary().url(publicId, {
+    secure: true,
+    format: 'jpg',
+    transformation: [{ aspect_ratio: ratio, crop: 'fill', gravity: 'auto', quality: 'auto' }],
+  })
 }
 
 export async function destroyImage(publicId: string): Promise<void> {
