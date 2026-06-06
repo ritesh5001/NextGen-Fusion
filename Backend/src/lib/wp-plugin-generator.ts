@@ -128,6 +128,136 @@ const PALETTE_SCHEMA: JsonSchema = {
 }
 
 // ---------------------------------------------------------------------------
+// Brief parsing — free-text blob -> structured form fields
+// ---------------------------------------------------------------------------
+
+export type ParsedBrief = {
+  businessName: string
+  cssPrefix: string
+  pluginSlug: string
+  websiteUrl: string
+  logoUrl: string
+  tagline: string
+  description: string
+  contactEmail: string
+  whatsapp: string
+  country: string
+  targetAudience: string
+  social: { instagram: string; linkedin: string; twitter: string; youtube: string; facebook: string }
+  pageContent: { home: string; about: string; services: string; contact: string }
+  policy: {
+    refundDays: string
+    physicalProducts: boolean
+    paymentGateways: string
+    recurringBilling: boolean
+    specialLegal: string
+  }
+  extraPages: string
+}
+
+const PARSE_SCHEMA: JsonSchema = {
+  type: 'object',
+  properties: {
+    businessName: { type: 'string' },
+    cssPrefix: { type: 'string' },
+    pluginSlug: { type: 'string' },
+    websiteUrl: { type: 'string' },
+    logoUrl: { type: 'string' },
+    tagline: { type: 'string' },
+    description: { type: 'string' },
+    contactEmail: { type: 'string' },
+    whatsapp: { type: 'string' },
+    country: { type: 'string' },
+    targetAudience: { type: 'string' },
+    social: {
+      type: 'object',
+      properties: {
+        instagram: { type: 'string' },
+        linkedin: { type: 'string' },
+        twitter: { type: 'string' },
+        youtube: { type: 'string' },
+        facebook: { type: 'string' },
+      },
+      required: ['instagram', 'linkedin', 'twitter', 'youtube', 'facebook'],
+      additionalProperties: false,
+    },
+    pageContent: {
+      type: 'object',
+      properties: {
+        home: { type: 'string' },
+        about: { type: 'string' },
+        services: { type: 'string' },
+        contact: { type: 'string' },
+      },
+      required: ['home', 'about', 'services', 'contact'],
+      additionalProperties: false,
+    },
+    policy: {
+      type: 'object',
+      properties: {
+        refundDays: { type: 'string' },
+        physicalProducts: { type: 'boolean' },
+        paymentGateways: { type: 'string' },
+        recurringBilling: { type: 'boolean' },
+        specialLegal: { type: 'string' },
+      },
+      required: ['refundDays', 'physicalProducts', 'paymentGateways', 'recurringBilling', 'specialLegal'],
+      additionalProperties: false,
+    },
+    extraPages: { type: 'string' },
+  },
+  required: [
+    'businessName',
+    'cssPrefix',
+    'pluginSlug',
+    'websiteUrl',
+    'logoUrl',
+    'tagline',
+    'description',
+    'contactEmail',
+    'whatsapp',
+    'country',
+    'targetAudience',
+    'social',
+    'pageContent',
+    'policy',
+    'extraPages',
+  ],
+  additionalProperties: false,
+}
+
+const PARSE_SYSTEM = `You are a data-extraction assistant for a WordPress plugin generator.
+You receive a free-form text brief about a business (it may be messy, pasted from notes, emails, or
+a chat) and you map it onto a fixed set of form fields. Rules:
+- Extract ONLY what the text states or strongly implies. NEVER invent businesses, URLs, emails, or
+  numbers that are not present.
+- For any field with no information in the text, return an empty string "" (or false for booleans).
+- Do not fill cssPrefix or pluginSlug unless the text explicitly gives them — leave them "" so they
+  can be auto-derived from the business name later.
+- whatsapp: digits only including country code, no "+", spaces, or dashes (e.g. "919876543210").
+- contactEmail: a single email address only.
+- websiteUrl: bare domain or full URL exactly as given.
+- logoUrl: only an https image URL if one is explicitly present; otherwise "".
+- social.*: the full profile URL or handle as given; "" if absent.
+- pageContent.home/about/services/contact: copy the relevant descriptive content from the brief,
+  lightly cleaned but NOT rewritten or expanded — that happens later.
+- policy.physicalProducts: true if the business ships/sells physical goods. policy.recurringBilling:
+  true if there are subscriptions or recurring charges. Infer conservatively; default false.
+- policy.refundDays: just the number of days if stated (e.g. "7"), else "".
+- extraPages: any additional pages requested beyond the standard set, as free text.
+Return ONLY the JSON object.`
+
+export async function parseBrief(text: string): Promise<ParsedBrief> {
+  const { data } = await generateStructured<ParsedBrief>({
+    system: PARSE_SYSTEM,
+    prompt: `Extract the structured fields from this brief:\n\n${text}`,
+    schema: PARSE_SCHEMA,
+    maxTokens: 4000,
+  })
+  return data
+}
+
+// ---------------------------------------------------------------------------
 // Palette extraction (vision)
 // ---------------------------------------------------------------------------
 

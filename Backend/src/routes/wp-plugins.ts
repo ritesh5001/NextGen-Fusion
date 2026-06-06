@@ -5,6 +5,7 @@ import { getSupabaseAdmin } from '../lib/supabase'
 import {
   extractPalette,
   generatePluginFiles,
+  parseBrief,
   type PluginInputs,
 } from '../lib/wp-plugin-generator'
 import { buildZip } from '../lib/wp-plugin-zip'
@@ -173,6 +174,33 @@ router.post('/wp-plugins/generate', requireInternalAuth, async (req, res) => {
   } catch (error) {
     logRouteError('wp-plugins:generate', error)
     res.status(502).json({ error: 'Could not start generation', details: getErrorMessage(error) })
+  }
+})
+
+// POST /api/admin/wp-plugins/parse — turns a free-text brief into structured
+// form fields so the user can paste everything at once instead of field-by-field.
+router.post('/wp-plugins/parse', requireInternalAuth, async (req, res) => {
+  try {
+    const body = req.body as Record<string, unknown> | undefined
+    const text = body && typeof body.text === 'string' ? body.text.trim() : ''
+    if (!text) {
+      res.status(400).json({ error: 'Paste some text to parse' })
+      return
+    }
+    if (text.length > 20000) {
+      res.status(400).json({ error: 'Text is too long — keep it under 20,000 characters' })
+      return
+    }
+    if (!process.env.ANTHROPIC_API_KEY) {
+      res.status(503).json({ error: 'Anthropic is not configured' })
+      return
+    }
+
+    const data = await parseBrief(text)
+    res.json({ data })
+  } catch (error) {
+    logRouteError('wp-plugins:parse', error)
+    res.status(502).json({ error: 'Could not parse the text', details: getErrorMessage(error) })
   }
 })
 
