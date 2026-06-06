@@ -23,6 +23,7 @@ import clientAiRoutes from './routes/client-ai'
 import clientProjectRoutes from './routes/client-projects'
 import clientProfileRoutes from './routes/client-profile'
 import clientUsersRoutes from './routes/client-users'
+import wpPluginsRoutes from './routes/wp-plugins'
 import { startImageCleanupWorker } from './lib/image-cleanup'
 
 const app = express()
@@ -72,6 +73,7 @@ app.use('/api/admin', statsRoutes)
 app.use('/api/admin', campaignRoutes)
 app.use('/api/admin', contactRoutes)
 app.use('/api/admin', leadsRoutes)
+app.use('/api/admin', wpPluginsRoutes)
 app.use('/api', contactFormRoutes)
 app.use('/api', projectEstimatorRoutes)
 app.use('/api', salesAssistantRoutes)

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays, Briefcase, Package } from 'lucide-react'
+import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays, Briefcase, Package, Boxes } from 'lucide-react'
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -15,6 +15,7 @@ const NAV = [
   { href: '/admin/campaigns', label: 'Campaigns', icon: Send },
   { href: '/admin/agency', label: 'Agency CRM', icon: Briefcase },
   { href: '/admin/clients', label: 'Clients', icon: Package },
+  { href: '/admin/wp-plugins', label: 'WP Plugins', icon: Boxes },
 ]
 
 export function AdminShell({ children }: { children: React.ReactNode }) {

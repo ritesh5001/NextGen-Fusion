@@ -568,3 +568,29 @@ alter table client_users add column if not exists phone text;
 alter table agency_projects
   add column if not exists client_id uuid references client_users(id) on delete set null;
 create index if not exists agency_projects_client_id_idx on agency_projects (client_id);
+
+-- =====================================================================
+-- WordPress plugin generator
+-- AI-generated, downloadable WordPress plugins (Pages + Header/Footer).
+-- Zip files live in a PRIVATE Storage bucket named "wp-plugins"
+-- (objects: "<generation_id>/<slug>-pages.zip", "<generation_id>/<slug>-hf.zip").
+-- =====================================================================
+create table if not exists wp_plugin_generations (
+  id uuid primary key default gen_random_uuid(),
+  status text not null default 'pending'
+    check (status in ('pending', 'running', 'done', 'error')),
+  business_name text,
+  plugin_slug text,
+  inputs jsonb not null default '{}'::jsonb,
+  palette jsonb,
+  error text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists wp_plugin_generations_created_idx
+  on wp_plugin_generations (created_at desc);
+
+drop trigger if exists trg_wp_plugin_generations_updated_at on wp_plugin_generations;
+create trigger trg_wp_plugin_generations_updated_at before update on wp_plugin_generations
+  for each row execute function set_updated_at();
