@@ -31,6 +31,7 @@ export type GeminiInputImage = { data: string; mimeType: string }
 export async function generateGeminiImage(opts: {
   prompt: string
   aspectRatio: string
+  model?: string
   productImages: GeminiInputImage[]
 }): Promise<Buffer> {
   const ai = getGenAI()
@@ -41,7 +42,7 @@ export async function generateGeminiImage(opts: {
   }
 
   const res = await ai.models.generateContent({
-    model: getGeminiImageModel(),
+    model: opts.model || getGeminiImageModel(),
     contents: [{ role: 'user', parts }],
     config: {
       responseModalities: [Modality.IMAGE],

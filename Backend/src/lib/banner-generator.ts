@@ -17,11 +17,20 @@ export type BannerMode = 'auto' | 'guided'
 export type BannerRatio = '16:9' | '7:3' | '1:1'
 export type BannerProvider = 'openai' | 'fal' | 'gemini'
 
+// Curated image models per provider — the first entry is the default. This is
+// the single source of truth the route validates against and the form mirrors.
+export const PROVIDER_MODELS: Record<BannerProvider, string[]> = {
+  openai: ['gpt-image-1', 'gpt-image-1-mini'],
+  fal: ['fal-ai/nano-banana', 'fal-ai/flux/dev', 'fal-ai/flux/schnell'],
+  gemini: ['gemini-2.5-flash-image', 'gemini-2.5-flash-image-preview'],
+}
+
 export type BannerInputs = {
   bannerType: BannerType
   mode: BannerMode
   ratio: BannerRatio
   provider: BannerProvider
+  model: string
   quality: ImageQuality
   brandName: string
   websiteUrl?: string
@@ -153,6 +162,7 @@ export async function generateBanner(
   if (inputs.provider === 'fal') {
     buffer = await generateFalImage({
       prompt,
+      model: inputs.model,
       aspectRatio: aspectFor(inputs.ratio),
       productImageUrls: urls,
     })
@@ -160,6 +170,7 @@ export async function generateBanner(
     const productImages = urls.length ? await Promise.all(urls.map(fetchImageBase64)) : []
     buffer = await generateGeminiImage({
       prompt,
+      model: inputs.model,
       aspectRatio: aspectFor(inputs.ratio),
       productImages,
     })
@@ -169,6 +180,7 @@ export async function generateBanner(
       : undefined
     buffer = await generateBannerImage({
       prompt,
+      model: inputs.model,
       size: RATIO_TO_SIZE[inputs.ratio],
       quality: inputs.quality,
       inputImages,

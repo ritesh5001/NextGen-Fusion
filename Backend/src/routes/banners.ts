@@ -6,6 +6,7 @@ import { getSupabaseAdmin } from '../lib/supabase'
 import { buildBannerUrl, buildDeliveryUrl, uploadImageBufferToFolder } from '../lib/cloudinary'
 import {
   generateBanner,
+  PROVIDER_MODELS,
   type BannerInputs,
   type BannerProvider,
   type BannerRatio,
@@ -36,7 +37,7 @@ const PROVIDER_ENV: Record<BannerProvider, string> = {
 }
 
 const ROW_COLUMNS =
-  'id, status, provider, banner_type, mode, ratio, quality, image_url, error, created_at'
+  'id, status, provider, model, banner_type, mode, ratio, quality, image_url, error, created_at'
 
 function str(v: unknown): string | undefined {
   return typeof v === 'string' && v.trim() ? v.trim() : undefined
@@ -57,6 +58,9 @@ function normalizeInputs(body: unknown): BannerInputs | { error: string } {
   const provider = PROVIDERS.includes(b.provider as BannerProvider)
     ? (b.provider as BannerProvider)
     : 'openai'
+  const allowedModels = PROVIDER_MODELS[provider]
+  const model =
+    typeof b.model === 'string' && allowedModels.includes(b.model) ? b.model : allowedModels[0]
   const quality = QUALITIES.includes(b.quality as ImageQuality)
     ? (b.quality as ImageQuality)
     : 'high'
@@ -70,6 +74,7 @@ function normalizeInputs(body: unknown): BannerInputs | { error: string } {
     mode,
     ratio,
     provider,
+    model,
     quality,
     brandName,
     websiteUrl: str(b.websiteUrl),
@@ -158,6 +163,7 @@ router.post('/banners/generate', requireInternalAuth, async (req, res) => {
       .insert({
         status: 'pending',
         provider: inputs.provider,
+        model: inputs.model,
         banner_type: inputs.bannerType,
         mode: inputs.mode,
         ratio: inputs.ratio,

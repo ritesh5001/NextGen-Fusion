@@ -37,10 +37,11 @@ export async function generateBannerImage(opts: {
   prompt: string
   size: ImageSize
   quality: ImageQuality
+  model?: string
   inputImages?: InputImage[]
 }): Promise<Buffer> {
   const client = getOpenAI()
-  const model = getOpenAIImageModel()
+  const model = opts.model || getOpenAIImageModel()
 
   const result =
     opts.inputImages && opts.inputImages.length

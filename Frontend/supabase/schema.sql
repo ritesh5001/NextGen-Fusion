@@ -607,6 +607,7 @@ create table if not exists banner_generations (
   status text not null default 'pending'
     check (status in ('pending', 'running', 'done', 'error')),
   provider text,                    -- 'openai' | 'fal' | 'gemini'
+  model text,                       -- selected image model id
   banner_type text,                 -- 'ecommerce' | 'service'
   mode text,                        -- 'auto' | 'guided'
   ratio text,                       -- '16:9' | '7:3' | '1:1'
@@ -622,6 +623,7 @@ create table if not exists banner_generations (
 );
 
 alter table banner_generations add column if not exists provider text;
+alter table banner_generations add column if not exists model text;
 
 create index if not exists banner_generations_created_idx
   on banner_generations (created_at desc);

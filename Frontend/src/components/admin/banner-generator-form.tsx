@@ -13,6 +13,7 @@ type Generation = {
   id: string
   status: 'pending' | 'running' | 'done' | 'error'
   provider: BannerProvider | null
+  model: string | null
   banner_type: BannerType | null
   mode: BannerMode | null
   ratio: BannerRatio | null
@@ -29,6 +30,7 @@ type FormValue = {
   mode: BannerMode
   ratio: BannerRatio
   provider: BannerProvider
+  model: string
   quality: BannerQuality
   brandName: string
   websiteUrl: string
@@ -46,6 +48,7 @@ const EMPTY: FormValue = {
   mode: 'auto',
   ratio: '16:9',
   provider: 'openai',
+  model: 'gpt-image-1',
   quality: 'high',
   brandName: '',
   websiteUrl: '',
@@ -65,10 +68,28 @@ const RATIOS: { value: BannerRatio; label: string; hint: string; box: string }[]
 ]
 const QUALITIES: BannerQuality[] = ['low', 'medium', 'high']
 const PROVIDERS: { value: BannerProvider; label: string; hint: string }[] = [
-  { value: 'openai', label: 'OpenAI', hint: 'gpt-image-1' },
-  { value: 'fal', label: 'fal.ai', hint: 'Nano Banana' },
-  { value: 'gemini', label: 'Gemini', hint: 'gemini-2.5-flash-image' },
+  { value: 'openai', label: 'OpenAI', hint: 'gpt-image' },
+  { value: 'fal', label: 'fal.ai', hint: 'Nano Banana / FLUX' },
+  { value: 'gemini', label: 'Gemini', hint: 'flash-image' },
 ]
+
+// Curated image models per provider — the first entry is the default. Mirrors
+// PROVIDER_MODELS on the backend, which validates the chosen id.
+const PROVIDER_MODELS: Record<BannerProvider, { value: string; label: string; hint?: string }[]> = {
+  openai: [
+    { value: 'gpt-image-1', label: 'gpt-image-1', hint: 'best quality' },
+    { value: 'gpt-image-1-mini', label: 'gpt-image-1-mini', hint: 'faster / cheaper' },
+  ],
+  fal: [
+    { value: 'fal-ai/nano-banana', label: 'Nano Banana', hint: 'best for product compositing' },
+    { value: 'fal-ai/flux/dev', label: 'FLUX.1 [dev]', hint: 'graphics & text banners' },
+    { value: 'fal-ai/flux/schnell', label: 'FLUX.1 [schnell]', hint: 'fast draft' },
+  ],
+  gemini: [
+    { value: 'gemini-2.5-flash-image', label: 'Gemini 2.5 Flash Image', hint: 'Nano Banana' },
+    { value: 'gemini-2.5-flash-image-preview', label: 'Gemini 2.5 Flash Image (preview)' },
+  ],
+}
 
 const inputCls =
   'mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-slate-500 focus:outline-none'
@@ -152,6 +173,11 @@ export function BannerGeneratorForm() {
 
   const set = <K extends keyof FormValue>(k: K, v: FormValue[K]) => setValue((p) => ({ ...p, [k]: v }))
 
+  // Switching provider resets the model to that provider's default so we never
+  // submit a model id that doesn't belong to the selected provider.
+  const selectProvider = (provider: BannerProvider) =>
+    setValue((p) => ({ ...p, provider, model: PROVIDER_MODELS[provider][0].value }))
+
   const loadHistory = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/banners')
@@ -231,6 +257,7 @@ export function BannerGeneratorForm() {
         id: json.id,
         status: 'pending',
         provider: value.provider,
+        model: value.model,
         banner_type: value.bannerType,
         mode: value.mode,
         ratio: value.ratio,
@@ -330,7 +357,7 @@ export function BannerGeneratorForm() {
                 <button
                   key={p.value}
                   type="button"
-                  onClick={() => set('provider', p.value)}
+                  onClick={() => selectProvider(p.value)}
                   className={`rounded-lg border px-4 py-3 text-left transition-colors ${
                     value.provider === p.value
                       ? 'border-slate-900 bg-slate-50'
@@ -343,6 +370,22 @@ export function BannerGeneratorForm() {
               ))}
             </div>
           </div>
+
+          <label className="block max-w-xs">
+            <span className={labelCls}>Model</span>
+            <select
+              value={value.model}
+              onChange={(e) => set('model', e.target.value)}
+              className={inputCls}
+            >
+              {PROVIDER_MODELS[value.provider].map((m) => (
+                <option key={m.value} value={m.value}>
+                  {m.label}
+                  {m.hint ? ` — ${m.hint}` : ''}
+                </option>
+              ))}
+            </select>
+          </label>
 
           {value.provider === 'openai' && (
             <label className="block max-w-xs">
