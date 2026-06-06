@@ -238,6 +238,11 @@ a chat) and you map it onto a fixed set of form fields. Rules:
 - Extract ONLY what the text states or strongly implies. NEVER invent businesses, URLs, emails, or
   numbers that are not present.
 - For any field with no information in the text, return an empty string "" (or false for booleans).
+- tagline: EXCEPTION to the no-invent rule — always WRITE a tagline. If the brief contains an
+  explicit slogan/tagline, polish it; otherwise CRAFT a short, original brand tagline (3 to 7 words)
+  from what the business does, its audience, and tone. It must be one clean marketing line — never a
+  fragment, never stitched together from unrelated phrases (e.g. do NOT produce "Wear Confidence.
+  Shipping Policy"), and must not contain page names, policy words, or punctuation runs.
 - Do not fill cssPrefix or pluginSlug unless the text explicitly gives them — leave them "" so they
   can be auto-derived from the business name later.
 - whatsapp: digits only including country code, no "+", spaces, or dashes (e.g. "919876543210").

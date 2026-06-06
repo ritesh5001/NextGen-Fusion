@@ -55,6 +55,14 @@ export async function POST(
   return proxyRequest(req, 'POST', path.join('/'))
 }
 
+export async function PUT(
+  req: Request,
+  { params }: { params: Promise<{ path: string[] }> }
+) {
+  const { path } = await params
+  return proxyRequest(req, 'PUT', path.join('/'))
+}
+
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ path: string[] }> }
