@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Boxes, Download, Loader2, Sparkles } from 'lucide-react'
 import { ClientBrandPicker } from './client-brand-picker'
+import { AiProviderSelect, type AiProvider } from './ai-provider-select'
 import type { BrandProfile } from '@/lib/brand-profile'
 
 type Palette = {
@@ -163,6 +164,7 @@ export function WpPluginForm() {
   const [current, setCurrent] = useState<Generation | null>(null)
   const [history, setHistory] = useState<Generation[]>([])
   const [brief, setBrief] = useState('')
+  const [provider, setProvider] = useState<AiProvider>('claude')
   const [parsing, setParsing] = useState(false)
   const [parseError, setParseError] = useState<string | null>(null)
   const [parsedNote, setParsedNote] = useState<string | null>(null)
@@ -201,7 +203,7 @@ export function WpPluginForm() {
       const res = await fetch('/api/admin/wp-plugins/parse', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: brief }),
+        body: JSON.stringify({ text: brief, aiProvider: provider }),
       })
       const json = await res.json()
       if (!res.ok) throw new Error(json?.error || 'Could not parse the text')
@@ -261,7 +263,7 @@ export function WpPluginForm() {
       const res = await fetch('/api/admin/wp-plugins/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(value),
+        body: JSON.stringify({ ...value, aiProvider: provider }),
       })
       const json = await res.json()
       if (!res.ok) throw new Error(json?.error || 'Could not start generation')
@@ -337,15 +339,19 @@ export function WpPluginForm() {
         {parsedNote && (
           <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{parsedNote}</div>
         )}
-        <button
-          type="button"
-          onClick={parseAndFill}
-          disabled={parsing || !brief.trim()}
-          className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white text-slate-800 px-4 py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
-        >
-          {parsing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-          {parsing ? 'Parsing…' : 'Parse & fill fields'}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={parseAndFill}
+            disabled={parsing || !brief.trim()}
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white text-slate-800 px-4 py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
+          >
+            {parsing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+            {parsing ? 'Parsing…' : 'Parse & fill fields'}
+          </button>
+          <AiProviderSelect value={provider} onChange={setProvider} disabled={parsing || submitting} />
+        </div>
+        <p className="text-xs text-slate-500">Used for both parsing and plugin generation.</p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4">

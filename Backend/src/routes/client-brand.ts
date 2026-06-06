@@ -5,6 +5,7 @@ import { requireInternalAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { buildDeliveryUrl, uploadImageBufferToFolder } from '../lib/cloudinary'
 import { parseBrief } from '../lib/wp-plugin-generator'
+import { isAiProviderConfigured, providerLabel, resolveProvider } from '../lib/anthropic'
 
 const router = Router()
 
@@ -68,11 +69,12 @@ router.post('/clients/:id/brand/parse', requireInternalAuth, async (req, res) =>
       res.status(400).json({ error: 'Text is too long — keep it under 20,000 characters' })
       return
     }
-    if (!process.env.ANTHROPIC_API_KEY) {
-      res.status(503).json({ error: 'Anthropic is not configured' })
+    const provider = resolveProvider(req.body?.provider)
+    if (!isAiProviderConfigured(provider)) {
+      res.status(503).json({ error: `${providerLabel(provider)} is not configured` })
       return
     }
-    const data = await parseBrief(text)
+    const data = await parseBrief(text, provider)
     res.json({ data })
   } catch (error) {
     logRouteError('client-brand:parse', error)

@@ -1,10 +1,35 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { generateStructuredGroq } from './groq'
 
 export class AnthropicNotConfiguredError extends Error {
   constructor() {
     super('Anthropic is not configured')
     this.name = 'AnthropicNotConfiguredError'
   }
+}
+
+// Which LLM backend handles a structured-generation call. Selected per request
+// from the admin UI; Claude (Anthropic) is the default everywhere.
+export type AiProvider = 'claude' | 'groq'
+
+// Normalised token usage shared across providers (Groq has no prompt caching, so
+// cache_read_input_tokens is always 0 there).
+export type AiUsage = {
+  input_tokens: number
+  output_tokens: number
+  cache_read_input_tokens: number
+}
+
+export function resolveProvider(value: unknown): AiProvider {
+  return value === 'groq' ? 'groq' : 'claude'
+}
+
+export function providerLabel(provider: AiProvider): string {
+  return provider === 'groq' ? 'Groq' : 'Anthropic'
+}
+
+export function isAiProviderConfigured(provider: AiProvider): boolean {
+  return provider === 'groq' ? !!process.env.GROQ_API_KEY : !!process.env.ANTHROPIC_API_KEY
 }
 
 let cached: Anthropic | null = null
@@ -43,7 +68,11 @@ export async function generateStructured<T>(opts: {
   prompt: UserContent
   schema: JsonSchema
   maxTokens?: number
-}): Promise<{ data: T; usage: Anthropic.Usage }> {
+  provider?: AiProvider
+}): Promise<{ data: T; usage: AiUsage }> {
+  if (opts.provider === 'groq') {
+    return generateStructuredGroq<T>(opts)
+  }
   const client = getAnthropic()
   const content: Anthropic.ContentBlockParam[] =
     typeof opts.prompt === 'string'
@@ -84,5 +113,12 @@ export async function generateStructured<T>(opts: {
     throw new Error('Anthropic returned invalid JSON for the requested schema')
   }
 
-  return { data, usage: message.usage }
+  return {
+    data,
+    usage: {
+      input_tokens: message.usage.input_tokens ?? 0,
+      output_tokens: message.usage.output_tokens ?? 0,
+      cache_read_input_tokens: message.usage.cache_read_input_tokens ?? 0,
+    },
+  }
 }

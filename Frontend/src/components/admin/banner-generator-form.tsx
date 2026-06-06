@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Download, ImagePlus, Loader2, Sparkles, X } from 'lucide-react'
 import { ClientBrandPicker } from './client-brand-picker'
+import { AiProviderSelect, type AiProvider } from './ai-provider-select'
 import type { BrandProfile } from '@/lib/brand-profile'
 
 type BannerType = 'ecommerce' | 'service'
@@ -43,6 +44,7 @@ type FormValue = {
   cta: string
   background: string
   colors: string
+  aiProvider: AiProvider
 }
 
 const EMPTY: FormValue = {
@@ -61,6 +63,7 @@ const EMPTY: FormValue = {
   cta: '',
   background: '',
   colors: '',
+  aiProvider: 'claude',
 }
 
 const RATIOS: { value: BannerRatio; label: string; hint: string; box: string }[] = [
@@ -405,6 +408,19 @@ export function BannerGeneratorForm() {
               ))}
             </select>
           </label>
+
+          <div>
+            <span className={labelCls}>Prompt AI</span>
+            <p className="mt-1 text-xs text-slate-500">
+              The model that turns your brief into the image prompt.
+            </p>
+            <AiProviderSelect
+              value={value.aiProvider}
+              onChange={(p) => set('aiProvider', p)}
+              label=""
+              className="mt-2"
+            />
+          </div>
 
           {value.provider === 'openai' && (
             <label className="block max-w-xs">

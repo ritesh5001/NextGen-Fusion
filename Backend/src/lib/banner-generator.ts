@@ -1,4 +1,4 @@
-import { generateStructured, type JsonSchema } from './anthropic'
+import { generateStructured, type AiProvider, type JsonSchema } from './anthropic'
 import {
   generateBannerImage,
   type ImageQuality,
@@ -42,6 +42,7 @@ export type BannerInputs = {
   background?: string // guided mode — desired background / scene style
   colors?: string // guided mode — brand colors
   productImageUrls: string[]
+  aiProvider?: AiProvider // which LLM crafts the image prompt (defaults to Claude)
 }
 
 // gpt-image-1 only renders these native sizes. Wide ratios are generated as the
@@ -120,6 +121,7 @@ export async function craftBannerPrompt(inputs: BannerInputs): Promise<string> {
     prompt: `Write the image prompt for this banner:\n\n${lines.join('\n')}`,
     schema: PROMPT_SCHEMA,
     maxTokens: 2000,
+    provider: inputs.aiProvider,
   })
   return data.prompt.trim()
 }

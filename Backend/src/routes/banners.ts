@@ -13,6 +13,7 @@ import {
   type BannerType,
 } from '../lib/banner-generator'
 import type { ImageQuality } from '../lib/openai'
+import { isAiProviderConfigured, providerLabel, resolveProvider } from '../lib/anthropic'
 
 const router = Router()
 
@@ -86,6 +87,7 @@ function normalizeInputs(body: unknown): BannerInputs | { error: string } {
     background: str(b.background),
     colors: str(b.colors),
     productImageUrls,
+    aiProvider: resolveProvider(b.aiProvider),
   }
 }
 
@@ -152,8 +154,9 @@ router.post('/banners/generate', requireInternalAuth, async (req, res) => {
       res.status(503).json({ error: `${inputs.provider} is not configured (missing ${providerEnv})` })
       return
     }
-    if (!process.env.ANTHROPIC_API_KEY) {
-      res.status(503).json({ error: 'Anthropic is not configured (needed to craft the prompt)' })
+    const aiProvider = inputs.aiProvider ?? 'claude'
+    if (!isAiProviderConfigured(aiProvider)) {
+      res.status(503).json({ error: `${providerLabel(aiProvider)} is not configured (needed to craft the prompt)` })
       return
     }
 

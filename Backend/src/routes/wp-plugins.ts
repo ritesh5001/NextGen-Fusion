@@ -8,6 +8,7 @@ import {
   parseBrief,
   type PluginInputs,
 } from '../lib/wp-plugin-generator'
+import { isAiProviderConfigured, providerLabel, resolveProvider } from '../lib/anthropic'
 import { buildZip } from '../lib/wp-plugin-zip'
 
 const router = Router()
@@ -98,6 +99,7 @@ function normalizeInputs(body: unknown): PluginInputs | { error: string } {
       specialLegal: str(policy.specialLegal),
     },
     extraPages: str(b.extraPages),
+    aiProvider: resolveProvider(b.aiProvider ?? b.provider),
   }
 }
 
@@ -148,8 +150,8 @@ router.post('/wp-plugins/generate', requireInternalAuth, async (req, res) => {
       res.status(400).json({ error: inputs.error })
       return
     }
-    if (!process.env.ANTHROPIC_API_KEY) {
-      res.status(503).json({ error: 'Anthropic is not configured' })
+    if (!isAiProviderConfigured(inputs.aiProvider ?? 'claude')) {
+      res.status(503).json({ error: `${providerLabel(inputs.aiProvider ?? 'claude')} is not configured` })
       return
     }
 
@@ -191,12 +193,13 @@ router.post('/wp-plugins/parse', requireInternalAuth, async (req, res) => {
       res.status(400).json({ error: 'Text is too long — keep it under 20,000 characters' })
       return
     }
-    if (!process.env.ANTHROPIC_API_KEY) {
-      res.status(503).json({ error: 'Anthropic is not configured' })
+    const provider = resolveProvider(body?.aiProvider ?? body?.provider)
+    if (!isAiProviderConfigured(provider)) {
+      res.status(503).json({ error: `${providerLabel(provider)} is not configured` })
       return
     }
 
-    const data = await parseBrief(text)
+    const data = await parseBrief(text, provider)
     res.json({ data })
   } catch (error) {
     logRouteError('wp-plugins:parse', error)

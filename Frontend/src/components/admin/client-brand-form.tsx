@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ImagePlus, Loader2, Save, Sparkles, X } from 'lucide-react'
 import { BrandProfile, EMPTY_BRAND, hydrateBrand, mergeParsed } from '@/lib/brand-profile'
+import { AiProviderSelect, type AiProvider } from './ai-provider-select'
 
 const inputCls =
   'mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-slate-500 focus:outline-none'
@@ -44,6 +45,7 @@ export function ClientBrandForm({ clientId }: { clientId: string }) {
   const [error, setError] = useState<string | null>(null)
 
   const [brief, setBrief] = useState('')
+  const [provider, setProvider] = useState<AiProvider>('claude')
   const [parsing, setParsing] = useState(false)
   const [parsedNote, setParsedNote] = useState<string | null>(null)
   const [uploadingLogo, setUploadingLogo] = useState(false)
@@ -82,7 +84,7 @@ export function ClientBrandForm({ clientId }: { clientId: string }) {
       const res = await fetch(`/api/admin/clients/${clientId}/brand/parse`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: brief }),
+        body: JSON.stringify({ text: brief, provider }),
       })
       const json = await res.json()
       if (!res.ok) throw new Error(json?.error || 'Could not parse the text')
@@ -186,15 +188,18 @@ export function ClientBrandForm({ clientId }: { clientId: string }) {
         {parsedNote && (
           <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{parsedNote}</div>
         )}
-        <button
-          type="button"
-          onClick={parseAndFill}
-          disabled={parsing || !brief.trim()}
-          className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white text-slate-800 px-4 py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
-        >
-          {parsing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-          {parsing ? 'Parsing…' : 'Parse & fill fields'}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={parseAndFill}
+            disabled={parsing || !brief.trim()}
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white text-slate-800 px-4 py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
+          >
+            {parsing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+            {parsing ? 'Parsing…' : 'Parse & fill fields'}
+          </button>
+          <AiProviderSelect value={provider} onChange={setProvider} disabled={parsing} />
+        </div>
       </div>
 
       <Section title="Brand & website">

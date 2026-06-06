@@ -1,5 +1,10 @@
 import type Anthropic from '@anthropic-ai/sdk'
-import { generateStructured, type JsonSchema } from './anthropic'
+import {
+  generateStructured,
+  type AiProvider,
+  type AiUsage,
+  type JsonSchema,
+} from './anthropic'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -44,6 +49,7 @@ export type PluginInputs = {
   pageContent?: PageContent
   policy?: PolicyParams
   extraPages?: string // free-text description of any extra pages
+  aiProvider?: AiProvider // which LLM generates the plugin (defaults to Claude)
 }
 
 export type Palette = {
@@ -247,12 +253,13 @@ a chat) and you map it onto a fixed set of form fields. Rules:
 - extraPages: any additional pages requested beyond the standard set, as free text.
 Return ONLY the JSON object.`
 
-export async function parseBrief(text: string): Promise<ParsedBrief> {
+export async function parseBrief(text: string, provider?: AiProvider): Promise<ParsedBrief> {
   const { data } = await generateStructured<ParsedBrief>({
     system: PARSE_SYSTEM,
     prompt: `Extract the structured fields from this brief:\n\n${text}`,
     schema: PARSE_SCHEMA,
     maxTokens: 4000,
+    provider,
   })
   return data
 }
@@ -270,7 +277,7 @@ const PALETTE_SYSTEM =
   'present in the logo. Return all hex values uppercase (e.g. "#1A2B3C"). "palette" must list ' +
   'every distinct color you found.'
 
-export async function extractPalette(logoUrl: string): Promise<Palette> {
+export async function extractPalette(logoUrl: string, provider?: AiProvider): Promise<Palette> {
   const content: Anthropic.ContentBlockParam[] = [
     { type: 'image', source: { type: 'url', url: logoUrl } },
     {
@@ -287,6 +294,7 @@ export async function extractPalette(logoUrl: string): Promise<Palette> {
       prompt: content,
       schema: PALETTE_SCHEMA,
       maxTokens: 2000,
+      provider,
     })
     return data
   } catch (err) {
@@ -306,6 +314,7 @@ export async function extractPalette(logoUrl: string): Promise<Palette> {
       prompt: fallback,
       schema: PALETTE_SCHEMA,
       maxTokens: 2000,
+      provider,
     })
     return data
   }
@@ -428,18 +437,20 @@ async function generateFile(
   instruction: string,
   maxTokens: number,
   usageAcc: UsageAcc,
+  provider?: AiProvider,
 ): Promise<string> {
   const { data, usage } = await generateStructured<{ content: string }>({
     system,
     prompt: instruction,
     schema: FILE_SCHEMA,
     maxTokens,
+    provider,
   })
   usageAcc.add(usage)
   return data.content
 }
 
-type UsageAcc = { add: (u: Anthropic.Usage) => void; cacheRead: number; total: number }
+type UsageAcc = { add: (u: AiUsage) => void; cacheRead: number; total: number }
 
 function newUsageAcc(): UsageAcc {
   const acc: UsageAcc = {
@@ -459,6 +470,7 @@ export async function generatePluginFiles(
 ): Promise<GeneratedPlugins> {
   const prefix = inputs.cssPrefix
   const slug = inputs.pluginSlug
+  const provider = inputs.aiProvider
   const system = buildSystemPrefix(inputs, palette)
   const usage = newUsageAcc()
 
@@ -488,6 +500,7 @@ export async function generatePluginFiles(
       prompt: instruction,
       schema: PAGE_FN_SCHEMA,
       maxTokens: 16000,
+      provider,
     })
     usage.add(u)
     pageFns.push(data.php.trim())
@@ -520,6 +533,7 @@ export async function generatePluginFiles(
       `full PHP file including the opening <?php tag.`,
     20000,
     usage,
+    provider,
   )
 
   // 3. Pages CSS
@@ -534,6 +548,7 @@ export async function generatePluginFiles(
       `Return JSON {"content": "..."}.`,
     16000,
     usage,
+    provider,
   )
 
   // 4. Header & Footer plugin main file
@@ -568,6 +583,7 @@ export async function generatePluginFiles(
       `wp_footer hooks. Return JSON {"content": "..."} with the full PHP file including <?php.`,
     24000,
     usage,
+    provider,
   )
 
   // 5. Header & Footer CSS
@@ -583,6 +599,7 @@ export async function generatePluginFiles(
       `Return JSON {"content": "..."}.`,
     16000,
     usage,
+    provider,
   )
 
   console.log(
