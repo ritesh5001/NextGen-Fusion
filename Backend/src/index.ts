@@ -25,6 +25,7 @@ import clientProfileRoutes from './routes/client-profile'
 import clientUsersRoutes from './routes/client-users'
 import wpPluginsRoutes from './routes/wp-plugins'
 import bannersRoutes from './routes/banners'
+import clientBrandRoutes from './routes/client-brand'
 import { startImageCleanupWorker } from './lib/image-cleanup'
 
 const app = express()
@@ -76,6 +77,7 @@ app.use('/api/admin', contactRoutes)
 app.use('/api/admin', leadsRoutes)
 app.use('/api/admin', wpPluginsRoutes)
 app.use('/api/admin', bannersRoutes)
+app.use('/api/admin', clientBrandRoutes)
 app.use('/api', contactFormRoutes)
 app.use('/api', projectEstimatorRoutes)
 app.use('/api', salesAssistantRoutes)

@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { AdminShell, PageHeader } from '@/components/admin/admin-shell'
-import { Plus, KeyRound, Ban, CheckCircle2 } from 'lucide-react'
+import { Plus, KeyRound, Ban, CheckCircle2, Palette } from 'lucide-react'
 
 type Client = {
   id: string
@@ -205,7 +206,11 @@ export default function AdminClientsPage() {
                 )}
                 {items.map((c) => (
                   <tr key={c.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-2 font-medium text-slate-900">{c.name}</td>
+                    <td className="px-4 py-2 font-medium text-slate-900">
+                      <Link href={`/admin/clients/${c.id}`} className="hover:underline">
+                        {c.name || c.email}
+                      </Link>
+                    </td>
                     <td className="px-4 py-2 text-slate-700">{c.company || '—'}</td>
                     <td className="px-4 py-2 text-slate-700">{c.email}</td>
                     <td className="px-4 py-2">
@@ -220,6 +225,13 @@ export default function AdminClientsPage() {
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex justify-end gap-1">
+                        <Link
+                          href={`/admin/clients/${c.id}`}
+                          className="p-1.5 rounded hover:bg-slate-200 text-slate-600"
+                          title="Brand profile"
+                        >
+                          <Palette className="h-4 w-4" />
+                        </Link>
                         <button
                           onClick={() => resetPassword(c)}
                           className="p-1.5 rounded hover:bg-slate-200 text-slate-600"

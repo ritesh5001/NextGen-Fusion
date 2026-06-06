@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Download, ImagePlus, Loader2, Sparkles, X } from 'lucide-react'
+import { ClientBrandPicker } from './client-brand-picker'
+import type { BrandProfile } from '@/lib/brand-profile'
 
 type BannerType = 'ecommerce' | 'service'
 type BannerMode = 'auto' | 'guided'
@@ -178,6 +180,21 @@ export function BannerGeneratorForm() {
   const selectProvider = (provider: BannerProvider) =>
     setValue((p) => ({ ...p, provider, model: PROVIDER_MODELS[provider][0].value }))
 
+  // Prefill the banner fields from a saved client brand profile, mapping the
+  // profile onto the banner-specific field names and loading product images.
+  function loadFromClient(profile: BrandProfile) {
+    setValue((p) => ({
+      ...p,
+      brandName: profile.businessName || p.brandName,
+      websiteUrl: profile.websiteUrl || p.websiteUrl,
+      tagline: profile.tagline || p.tagline,
+      brief: profile.description || profile.pageContent.home || p.brief,
+    }))
+    if (profile.productImageUrls.length) {
+      setImages(profile.productImageUrls.map((url) => ({ public_id: url, url })))
+    }
+  }
+
   const loadHistory = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/banners')
@@ -295,6 +312,8 @@ export function BannerGeneratorForm() {
 
   return (
     <div className="space-y-6">
+      <ClientBrandPicker onLoad={loadFromClient} />
+
       <form onSubmit={onSubmit} className="space-y-4">
         <Section title="Banner basics">
           <div className="flex flex-wrap gap-6">

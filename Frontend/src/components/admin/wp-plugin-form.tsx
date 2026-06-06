@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Boxes, Download, Loader2, Sparkles } from 'lucide-react'
+import { ClientBrandPicker } from './client-brand-picker'
+import type { BrandProfile } from '@/lib/brand-profile'
 
 type Palette = {
   bg: string
@@ -168,6 +170,28 @@ export function WpPluginForm() {
 
   const set = <K extends keyof FormValue>(k: K, v: FormValue[K]) => setValue((p) => ({ ...p, [k]: v }))
 
+  // Prefill the whole form from a saved client brand profile. The profile is a
+  // superset of FormValue (it also carries productImageUrls, unused here).
+  function loadFromClient(profile: BrandProfile) {
+    setValue({
+      businessName: profile.businessName,
+      cssPrefix: profile.cssPrefix,
+      pluginSlug: profile.pluginSlug,
+      websiteUrl: profile.websiteUrl,
+      logoUrl: profile.logoUrl,
+      tagline: profile.tagline,
+      description: profile.description,
+      contactEmail: profile.contactEmail,
+      whatsapp: profile.whatsapp,
+      country: profile.country,
+      targetAudience: profile.targetAudience,
+      social: { ...profile.social },
+      pageContent: { ...profile.pageContent },
+      policy: { ...profile.policy },
+      extraPages: profile.extraPages,
+    })
+  }
+
   async function parseAndFill() {
     if (!brief.trim()) return
     setParsing(true)
@@ -281,6 +305,8 @@ export function WpPluginForm() {
 
   return (
     <div className="space-y-6">
+      <ClientBrandPicker onLoad={loadFromClient} />
+
       <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
         <div>
           <h3 className="font-medium text-slate-900 flex items-center gap-2">
