@@ -7,10 +7,12 @@ type BannerType = 'ecommerce' | 'service'
 type BannerMode = 'auto' | 'guided'
 type BannerRatio = '16:9' | '7:3' | '1:1'
 type BannerQuality = 'low' | 'medium' | 'high'
+type BannerProvider = 'openai' | 'fal' | 'gemini'
 
 type Generation = {
   id: string
   status: 'pending' | 'running' | 'done' | 'error'
+  provider: BannerProvider | null
   banner_type: BannerType | null
   mode: BannerMode | null
   ratio: BannerRatio | null
@@ -26,6 +28,7 @@ type FormValue = {
   bannerType: BannerType
   mode: BannerMode
   ratio: BannerRatio
+  provider: BannerProvider
   quality: BannerQuality
   brandName: string
   websiteUrl: string
@@ -42,6 +45,7 @@ const EMPTY: FormValue = {
   bannerType: 'ecommerce',
   mode: 'auto',
   ratio: '16:9',
+  provider: 'openai',
   quality: 'high',
   brandName: '',
   websiteUrl: '',
@@ -60,6 +64,11 @@ const RATIOS: { value: BannerRatio; label: string; hint: string; box: string }[]
   { value: '1:1', label: 'Phone 1:1', hint: 'square', box: 'h-9 w-9' },
 ]
 const QUALITIES: BannerQuality[] = ['low', 'medium', 'high']
+const PROVIDERS: { value: BannerProvider; label: string; hint: string }[] = [
+  { value: 'openai', label: 'OpenAI', hint: 'gpt-image-1' },
+  { value: 'fal', label: 'fal.ai', hint: 'Nano Banana' },
+  { value: 'gemini', label: 'Gemini', hint: 'gemini-2.5-flash-image' },
+]
 
 const inputCls =
   'mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-slate-500 focus:outline-none'
@@ -221,6 +230,7 @@ export function BannerGeneratorForm() {
       setCurrent({
         id: json.id,
         status: 'pending',
+        provider: value.provider,
         banner_type: value.bannerType,
         mode: value.mode,
         ratio: value.ratio,
@@ -313,21 +323,44 @@ export function BannerGeneratorForm() {
             </div>
           </div>
 
-          <label className="block max-w-xs">
-            <span className={labelCls}>Image quality</span>
-            <select
-              value={value.quality}
-              onChange={(e) => set('quality', e.target.value as BannerQuality)}
-              className={inputCls}
-            >
-              {QUALITIES.map((q) => (
-                <option key={q} value={q}>
-                  {q[0].toUpperCase() + q.slice(1)}
-                  {q === 'high' ? ' (best, slower)' : q === 'low' ? ' (fast draft)' : ''}
-                </option>
+          <div>
+            <span className={labelCls}>Image AI</span>
+            <div className="mt-2 flex flex-wrap gap-3">
+              {PROVIDERS.map((p) => (
+                <button
+                  key={p.value}
+                  type="button"
+                  onClick={() => set('provider', p.value)}
+                  className={`rounded-lg border px-4 py-3 text-left transition-colors ${
+                    value.provider === p.value
+                      ? 'border-slate-900 bg-slate-50'
+                      : 'border-slate-200 hover:border-slate-300'
+                  }`}
+                >
+                  <span className="block text-sm font-medium text-slate-800">{p.label}</span>
+                  <span className="block text-xs text-slate-500">{p.hint}</span>
+                </button>
               ))}
-            </select>
-          </label>
+            </div>
+          </div>
+
+          {value.provider === 'openai' && (
+            <label className="block max-w-xs">
+              <span className={labelCls}>Image quality</span>
+              <select
+                value={value.quality}
+                onChange={(e) => set('quality', e.target.value as BannerQuality)}
+                className={inputCls}
+              >
+                {QUALITIES.map((q) => (
+                  <option key={q} value={q}>
+                    {q[0].toUpperCase() + q.slice(1)}
+                    {q === 'high' ? ' (best, slower)' : q === 'low' ? ' (fast draft)' : ''}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
         </Section>
 
         <Section title="Brand & website">
@@ -455,7 +488,7 @@ export function BannerGeneratorForm() {
                   </div>
                 )}
                 <div className="text-xs text-slate-500">
-                  {gen.ratio} · {gen.banner_type} · {new Date(gen.created_at).toLocaleDateString()}
+                  {gen.ratio} · {gen.provider ?? gen.banner_type} · {new Date(gen.created_at).toLocaleDateString()}
                 </div>
               </div>
             ))}

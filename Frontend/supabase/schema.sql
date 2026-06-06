@@ -606,10 +606,11 @@ create table if not exists banner_generations (
   id uuid primary key default gen_random_uuid(),
   status text not null default 'pending'
     check (status in ('pending', 'running', 'done', 'error')),
+  provider text,                    -- 'openai' | 'fal' | 'gemini'
   banner_type text,                 -- 'ecommerce' | 'service'
   mode text,                        -- 'auto' | 'guided'
   ratio text,                       -- '16:9' | '7:3' | '1:1'
-  quality text,                     -- 'low' | 'medium' | 'high'
+  quality text,                     -- 'low' | 'medium' | 'high' (openai only)
   prompt text,                      -- final image prompt actually used
   inputs jsonb not null default '{}'::jsonb,
   product_image_urls jsonb,         -- input product Cloudinary URLs
@@ -619,6 +620,8 @@ create table if not exists banner_generations (
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+
+alter table banner_generations add column if not exists provider text;
 
 create index if not exists banner_generations_created_idx
   on banner_generations (created_at desc);

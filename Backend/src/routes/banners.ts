@@ -7,6 +7,7 @@ import { buildBannerUrl, buildDeliveryUrl, uploadImageBufferToFolder } from '../
 import {
   generateBanner,
   type BannerInputs,
+  type BannerProvider,
   type BannerRatio,
   type BannerType,
 } from '../lib/banner-generator'
@@ -25,9 +26,17 @@ const upload = multer({
 const RATIOS: BannerRatio[] = ['16:9', '7:3', '1:1']
 const TYPES: BannerType[] = ['ecommerce', 'service']
 const QUALITIES: ImageQuality[] = ['low', 'medium', 'high']
+const PROVIDERS: BannerProvider[] = ['openai', 'fal', 'gemini']
+
+// Which env var must be set for each image provider.
+const PROVIDER_ENV: Record<BannerProvider, string> = {
+  openai: 'OPENAI_API_KEY',
+  fal: 'FAL_KEY',
+  gemini: 'GEMINI_API_KEY',
+}
 
 const ROW_COLUMNS =
-  'id, status, banner_type, mode, ratio, quality, image_url, error, created_at'
+  'id, status, provider, banner_type, mode, ratio, quality, image_url, error, created_at'
 
 function str(v: unknown): string | undefined {
   return typeof v === 'string' && v.trim() ? v.trim() : undefined
@@ -45,6 +54,9 @@ function normalizeInputs(body: unknown): BannerInputs | { error: string } {
     : 'ecommerce'
   const mode = b.mode === 'guided' ? 'guided' : 'auto'
   const ratio = RATIOS.includes(b.ratio as BannerRatio) ? (b.ratio as BannerRatio) : '16:9'
+  const provider = PROVIDERS.includes(b.provider as BannerProvider)
+    ? (b.provider as BannerProvider)
+    : 'openai'
   const quality = QUALITIES.includes(b.quality as ImageQuality)
     ? (b.quality as ImageQuality)
     : 'high'
@@ -57,6 +69,7 @@ function normalizeInputs(body: unknown): BannerInputs | { error: string } {
     bannerType,
     mode,
     ratio,
+    provider,
     quality,
     brandName,
     websiteUrl: str(b.websiteUrl),
@@ -129,12 +142,13 @@ router.post('/banners/generate', requireInternalAuth, async (req, res) => {
       res.status(400).json({ error: inputs.error })
       return
     }
-    if (!process.env.OPENAI_API_KEY) {
-      res.status(503).json({ error: 'OpenAI is not configured' })
+    const providerEnv = PROVIDER_ENV[inputs.provider]
+    if (!process.env[providerEnv]) {
+      res.status(503).json({ error: `${inputs.provider} is not configured (missing ${providerEnv})` })
       return
     }
     if (!process.env.ANTHROPIC_API_KEY) {
-      res.status(503).json({ error: 'Anthropic is not configured' })
+      res.status(503).json({ error: 'Anthropic is not configured (needed to craft the prompt)' })
       return
     }
 
@@ -143,6 +157,7 @@ router.post('/banners/generate', requireInternalAuth, async (req, res) => {
       .from('banner_generations')
       .insert({
         status: 'pending',
+        provider: inputs.provider,
         banner_type: inputs.bannerType,
         mode: inputs.mode,
         ratio: inputs.ratio,

@@ -5,6 +5,8 @@ import {
   type ImageSize,
   type InputImage,
 } from './openai'
+import { generateFalImage } from './fal'
+import { generateGeminiImage, type GeminiInputImage } from './gemini'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -13,11 +15,13 @@ import {
 export type BannerType = 'ecommerce' | 'service'
 export type BannerMode = 'auto' | 'guided'
 export type BannerRatio = '16:9' | '7:3' | '1:1'
+export type BannerProvider = 'openai' | 'fal' | 'gemini'
 
 export type BannerInputs = {
   bannerType: BannerType
   mode: BannerMode
   ratio: BannerRatio
+  provider: BannerProvider
   quality: ImageQuality
   brandName: string
   websiteUrl?: string
@@ -124,21 +128,52 @@ async function fetchInputImage(url: string, index: number): Promise<InputImage> 
   return { buffer, filename: `product-${index}.${ext}`, mediaType }
 }
 
+async function fetchImageBase64(url: string): Promise<GeminiInputImage> {
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Failed to fetch product image (${res.status})`)
+  const mediaType = res.headers.get('content-type') || 'image/jpeg'
+  const data = Buffer.from(await res.arrayBuffer()).toString('base64')
+  return { data, mimeType: mediaType }
+}
+
+// gpt-image-1 takes a fixed size; fal/gemini take an aspect ratio. We request
+// the nearest supported aspect (1:1 or 16:9) and let Cloudinary crop to the
+// exact target ratio (16:9 / 7:3 / 1:1) on delivery.
+function aspectFor(ratio: BannerRatio): string {
+  return ratio === '1:1' ? '1:1' : '16:9'
+}
+
 export async function generateBanner(
   inputs: BannerInputs,
 ): Promise<{ buffer: Buffer; prompt: string }> {
   const prompt = await craftBannerPrompt(inputs)
+  const urls = inputs.productImageUrls
 
-  const inputImages = inputs.productImageUrls.length
-    ? await Promise.all(inputs.productImageUrls.map((url, i) => fetchInputImage(url, i)))
-    : undefined
-
-  const buffer = await generateBannerImage({
-    prompt,
-    size: RATIO_TO_SIZE[inputs.ratio],
-    quality: inputs.quality,
-    inputImages,
-  })
+  let buffer: Buffer
+  if (inputs.provider === 'fal') {
+    buffer = await generateFalImage({
+      prompt,
+      aspectRatio: aspectFor(inputs.ratio),
+      productImageUrls: urls,
+    })
+  } else if (inputs.provider === 'gemini') {
+    const productImages = urls.length ? await Promise.all(urls.map(fetchImageBase64)) : []
+    buffer = await generateGeminiImage({
+      prompt,
+      aspectRatio: aspectFor(inputs.ratio),
+      productImages,
+    })
+  } else {
+    const inputImages = urls.length
+      ? await Promise.all(urls.map((url, i) => fetchInputImage(url, i)))
+      : undefined
+    buffer = await generateBannerImage({
+      prompt,
+      size: RATIO_TO_SIZE[inputs.ratio],
+      quality: inputs.quality,
+      inputImages,
+    })
+  }
 
   return { buffer, prompt }
 }
