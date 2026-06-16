@@ -30,51 +30,35 @@ const itemVariants = {
 const teamMembers = [
   {
     id: "ritesh-giri",
-    name: "Ritesh Giri",
+    name: "Ritesh Kumar Giri",
     role: "Full Stack Developer",
     image: "/member/ritesh-giri.png",
     bio: "Expert full-stack developer building scalable web applications. Leads technical architecture and delivers end-to-end digital solutions for clients.",
     color: "from-blue-500 to-blue-600"
   },
   {
-    id: "nitesh",
-    name: "Nitesh",
-    role: "Project Manager",
-    image: "/placeholder-user.jpg",
-    bio: "Keeps every project on track from kickoff to delivery. Ensures clear communication, on-time execution, and exceptional client experience.",
+    id: "vivek-gautam",
+    name: "Vivek Gautam",
+    role: "SEO & Social Media",
+    image: "/member/vivek-gautam.jpeg",
+    bio: "Drives organic growth through search engine optimization and social media strategy. Builds brand visibility and engaged audiences across every platform.",
     color: "from-emerald-500 to-emerald-600"
   },
   {
-    id: "nikhilesh",
-    name: "Nikhilesh",
-    role: "Shopify Website Developer",
-    image: "/placeholder-user.jpg",
-    bio: "Specialist in building high-converting Shopify stores. From custom themes to app integrations — delivering e-commerce experiences that sell.",
+    id: "sajal-singh",
+    name: "Sajal Singh",
+    role: "Full Stack Developer & Cinematographer",
+    image: "/member/sajal-singh.jpeg",
+    bio: "A rare blend of code and creativity — builds robust full-stack apps while crafting compelling visual stories behind the lens.",
     color: "from-violet-500 to-violet-600"
   },
   {
-    id: "vinay",
-    name: "Vinay",
-    role: "Graphics & UI/UX Designer",
-    image: "/placeholder-user.jpg",
-    bio: "Creates stunning visuals and intuitive interfaces. Translates brand identity into design systems that look great and feel effortless to use.",
-    color: "from-pink-500 to-pink-600"
-  },
-  {
-    id: "rahul",
-    name: "Rahul",
-    role: "Sales Manager",
-    image: "/placeholder-user.jpg",
-    bio: "Drives client acquisition and builds lasting business relationships. Connects the right solutions to the right clients — growing the agency pipeline.",
+    id: "mohammad-iqbal",
+    name: "Mohammad Iqbal",
+    role: "Full Stack & App Developer",
+    image: "/member/mohammad-iqbal.png",
+    bio: "Builds powerful web and mobile applications end-to-end. Turns ideas into polished, production-ready products across web and app platforms.",
     color: "from-amber-500 to-amber-600"
-  },
-  {
-    id: "ajay",
-    name: "Ajay",
-    role: "Advertising & Marketing Strategist",
-    image: "/placeholder-user.jpg",
-    bio: "Crafts data-driven ad campaigns and marketing strategies that generate real ROI. Expert in paid media, brand positioning, and audience targeting.",
-    color: "from-red-500 to-red-600"
   }
 ]
 

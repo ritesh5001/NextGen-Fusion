@@ -41,7 +41,7 @@ interface TeamMemberData {
 
 const teamMembersData: Record<string, TeamMemberData> = {
   "ritesh-giri": {
-    name: "Ritesh Giri",
+    name: "Ritesh Kumar Giri",
     role: "Full Stack Developer",
     image: "/member/ritesh-giri.png",
     email: "ritesh@nextgenfusion.in",
@@ -71,143 +71,96 @@ const teamMembersData: Record<string, TeamMemberData> = {
     ]
   },
 
-  "nitesh": {
-    name: "Nitesh",
-    role: "Project Manager",
-    image: "/placeholder-user.jpg",
-    email: "nitesh@nextgenfusion.in",
-    linkedinUrl: "https://linkedin.com/in/nitesh",
-    experience: "Details coming soon",
-    bio: "The backbone of every project at NextGen Fusion. Ensures every deliverable lands on time, within scope, and exceeds client expectations. Manages cross-functional teams and keeps communication clear from kickoff to delivery.",
+  "vivek-gautam": {
+    name: "Vivek Gautam",
+    role: "SEO & Social Media",
+    image: "/member/vivek-gautam.jpeg",
+    email: "vivek@nextgenfusion.in",
+    linkedinUrl: "https://linkedin.com/in/vivek-gautam",
+    experience: "3+ years",
+    bio: "Drives organic growth through smart search engine optimization and engaging social media strategy. Turns search rankings and social reach into real leads — building brand visibility and loyal, engaged audiences across every platform.",
     expertise: [
-      "Project Planning & Execution",
-      "Client Communication",
-      "Team Coordination",
-      "Risk Management",
-      "Agile Methodology",
-      "Stakeholder Management"
+      "Search Engine Optimization",
+      "Social Media Marketing",
+      "Content Strategy",
+      "Keyword Research",
+      "Community Management",
+      "Analytics & Reporting"
     ],
     achievements: [
-      "Details coming soon"
+      "Grew organic traffic for multiple brands through targeted SEO",
+      "Built and managed engaged social media communities",
+      "Ranked client websites on page one for competitive keywords",
+      "Data-driven content strategies that convert followers into customers"
     ],
     color: "from-emerald-500 to-emerald-600",
     skills: [
-      { category: "Project Management", items: ["Agile", "Scrum", "Kanban", "Milestone Tracking"] },
-      { category: "Communication", items: ["Client Reporting", "Stakeholder Updates", "Sprint Planning"] },
-      { category: "Tools", items: ["Notion", "Trello", "Slack", "Google Workspace"] },
-      { category: "Skills", items: ["Risk Assessment", "Budget Management", "Team Leadership"] }
+      { category: "SEO", items: ["On-Page SEO", "Technical SEO", "Link Building", "Local SEO"] },
+      { category: "Social Media", items: ["Instagram", "Facebook", "LinkedIn", "YouTube"] },
+      { category: "Content", items: ["Copywriting", "Content Calendar", "Hashtag Strategy", "Reels"] },
+      { category: "Tools", items: ["Google Analytics", "Search Console", "Ahrefs", "Meta Business Suite"] }
     ]
   },
 
-  "nikhilesh": {
-    name: "Nikhilesh",
-    role: "Shopify Website Developer",
-    image: "/placeholder-user.jpg",
-    email: "nikhilesh@nextgenfusion.in",
-    linkedinUrl: "https://linkedin.com/in/nikhilesh",
-    experience: "Details coming soon",
-    bio: "Specialist in building high-converting Shopify stores that look great and drive sales. From custom theme development to advanced app integrations — delivers e-commerce experiences built for growth.",
+  "sajal-singh": {
+    name: "Sajal Singh",
+    role: "Full Stack Developer & Cinematographer",
+    image: "/member/sajal-singh.jpeg",
+    email: "sajal@nextgenfusion.in",
+    linkedinUrl: "https://linkedin.com/in/sajal-singh",
+    experience: "4+ years",
+    bio: "A rare blend of code and creativity. Builds robust full-stack applications by day and crafts compelling visual stories behind the lens — bringing both technical precision and an artistic eye to every project.",
     expertise: [
-      "Shopify Theme Development",
-      "Shopify App Integration",
-      "E-commerce Strategy",
-      "Conversion Optimization",
-      "Liquid Templating",
-      "Payment Gateway Setup"
+      "Full Stack Development",
+      "Cinematography",
+      "Video Production",
+      "UI Implementation",
+      "Color Grading",
+      "Visual Storytelling"
     ],
     achievements: [
-      "Details coming soon"
+      "Delivered full-stack web projects from concept to launch",
+      "Shot and edited brand films and promotional content",
+      "Bridges engineering and creative production seamlessly",
+      "Built media-rich web experiences with custom video work"
     ],
     color: "from-violet-500 to-violet-600",
     skills: [
-      { category: "Shopify", items: ["Liquid", "Shopify CLI", "Custom Themes", "App Bridge"] },
-      { category: "E-commerce", items: ["Product Setup", "Collections", "Checkout Optimization", "Analytics"] },
-      { category: "Frontend", items: ["HTML/CSS", "JavaScript", "React", "Tailwind CSS"] },
-      { category: "Tools", items: ["Shopify Partners", "Metafields", "Webhooks", "REST API"] }
+      { category: "Development", items: ["React", "Next.js", "Node.js", "TypeScript"] },
+      { category: "Cinematography", items: ["Cinematography", "Lighting", "Composition", "Storyboarding"] },
+      { category: "Post-Production", items: ["Premiere Pro", "DaVinci Resolve", "After Effects", "Color Grading"] },
+      { category: "Tools", items: ["Git", "Tailwind CSS", "Figma", "Adobe Suite"] }
     ]
   },
 
-  "vinay": {
-    name: "Vinay",
-    role: "Graphics & UI/UX Designer",
-    image: "/placeholder-user.jpg",
-    email: "vinay@nextgenfusion.in",
-    linkedinUrl: "https://linkedin.com/in/vinay",
-    experience: "Details coming soon",
-    bio: "Creates stunning visuals and intuitive user interfaces that make brands memorable. Blends strong design principles with deep empathy for users — producing interfaces that are beautiful, functional, and on-brand.",
+  "mohammad-iqbal": {
+    name: "Mohammad Iqbal",
+    role: "Full Stack & App Developer",
+    image: "/member/mohammad-iqbal.png",
+    email: "iqbal@nextgenfusion.in",
+    linkedinUrl: "https://linkedin.com/in/mohammad-iqbal",
+    experience: "4+ years",
+    bio: "Builds powerful web and mobile applications end-to-end. Turns ideas into polished, production-ready products across web and app platforms — owning everything from API design to native mobile experiences.",
     expertise: [
-      "UI/UX Design",
-      "Brand Identity",
-      "Graphic Design",
-      "Wireframing & Prototyping",
-      "Design Systems",
-      "Motion Graphics"
+      "Full Stack Development",
+      "Mobile App Development",
+      "Cross-Platform Apps",
+      "API Development",
+      "App Store Deployment",
+      "Backend Architecture"
     ],
     achievements: [
-      "Details coming soon"
-    ],
-    color: "from-pink-500 to-pink-600",
-    skills: [
-      { category: "Design Tools", items: ["Figma", "Adobe Illustrator", "Photoshop", "After Effects"] },
-      { category: "UI/UX", items: ["Wireframing", "Prototyping", "User Research", "Design Systems"] },
-      { category: "Graphics", items: ["Logo Design", "Brand Identity", "Social Media Graphics", "Print Design"] },
-      { category: "Skills", items: ["Typography", "Color Theory", "Responsive Design", "Accessibility"] }
-    ]
-  },
-
-  "rahul": {
-    name: "Rahul",
-    role: "Sales Manager",
-    image: "/placeholder-user.jpg",
-    email: "rahul@nextgenfusion.in",
-    linkedinUrl: "https://linkedin.com/in/rahul",
-    experience: "Details coming soon",
-    bio: "Drives client acquisition and builds lasting business relationships that fuel agency growth. Connects the right solutions to the right clients — turning conversations into partnerships and partnerships into long-term success.",
-    expertise: [
-      "Business Development",
-      "Client Acquisition",
-      "Relationship Management",
-      "Proposal Writing",
-      "Negotiation",
-      "CRM Management"
-    ],
-    achievements: [
-      "Details coming soon"
+      "Shipped multiple mobile apps to the Play Store and App Store",
+      "Built full-stack platforms powering web and mobile together",
+      "Expert in React Native and modern app development workflows",
+      "End-to-end delivery from backend APIs to native UI"
     ],
     color: "from-amber-500 to-amber-600",
     skills: [
-      { category: "Sales", items: ["Lead Generation", "Cold Outreach", "Proposal Writing", "Closing"] },
-      { category: "Strategy", items: ["Market Research", "Competitor Analysis", "Pricing Strategy"] },
-      { category: "Communication", items: ["Client Presentations", "Negotiation", "Follow-ups"] },
-      { category: "Tools", items: ["CRM Systems", "LinkedIn Sales Navigator", "Email Marketing"] }
-    ]
-  },
-
-  "ajay": {
-    name: "Ajay",
-    role: "Advertising & Marketing Strategist",
-    image: "/placeholder-user.jpg",
-    email: "ajay@nextgenfusion.in",
-    linkedinUrl: "https://linkedin.com/in/ajay",
-    experience: "Details coming soon",
-    bio: "Crafts data-driven advertising campaigns and marketing strategies that generate measurable ROI. Expert in paid media, audience targeting, and brand positioning — turning ad spend into real business results.",
-    expertise: [
-      "Paid Advertising (Meta, Google)",
-      "Marketing Strategy",
-      "Audience Targeting",
-      "Campaign Management",
-      "Brand Positioning",
-      "Performance Analytics"
-    ],
-    achievements: [
-      "Details coming soon"
-    ],
-    color: "from-red-500 to-red-600",
-    skills: [
-      { category: "Paid Ads", items: ["Meta Ads", "Google Ads", "Instagram Ads", "YouTube Ads"] },
-      { category: "Strategy", items: ["Campaign Planning", "Audience Research", "A/B Testing", "Funnel Building"] },
-      { category: "Analytics", items: ["Meta Business Suite", "Google Analytics", "Pixel Setup", "ROI Tracking"] },
-      { category: "Tools", items: ["Canva", "AdEspresso", "Google Tag Manager", "Zapier"] }
+      { category: "Mobile", items: ["React Native", "Flutter", "Android", "iOS"] },
+      { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
+      { category: "Backend", items: ["Node.js", "Express", "Firebase", "PostgreSQL"] },
+      { category: "Tools", items: ["Git", "Expo", "Play Console", "App Store Connect"] }
     ]
   }
 }
