@@ -19,7 +19,7 @@ import {
 import { useMemo, useState, type ReactNode } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import { apiService, ProjectEstimatorData, ProjectEstimatorResponse } from "@/lib/api"
-import { computeBallpark, formatCurrency } from "@/lib/estimator-pricing"
+import { computeBallpark, computeSupport, formatCurrency, PAYMENT_TERMS } from "@/lib/estimator-pricing"
 
 const sectionVariants = {
   hidden: { opacity: 0 },
@@ -104,8 +104,8 @@ const contentOptions = [
 
 const maintenanceOptions = [
   { value: "none", label: "None" },
-  { value: "basic", label: "Basic" },
-  { value: "growth", label: "Growth" },
+  { value: "basic", label: "Support only" },
+  { value: "growth", label: "Support + changes" },
 ] as const
 
 const integrationOptions = [
@@ -150,6 +150,7 @@ export default function ProjectEstimatorSection() {
   const [result, setResult] = useState<ProjectEstimatorResponse | null>(null)
 
   const ballpark = useMemo(() => computeBallpark(form), [form])
+  const support = useMemo(() => computeSupport(form), [form])
 
   function update<K extends keyof EstimatorForm>(key: K, value: EstimatorForm[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -446,6 +447,39 @@ export default function ProjectEstimatorSection() {
                       </div>
                     </div>
 
+                    {/* Highlighted payment terms + ongoing support */}
+                    <div className={`mt-6 rounded-2xl p-[1.5px] ${GRADIENT}`}>
+                      <div className="rounded-[15px] bg-white p-5">
+                        <div className="flex items-start gap-3">
+                          <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-[#8A38F5]" />
+                          <div>
+                            <p className="text-sm font-semibold text-gray-900">Payment terms</p>
+                            <p className="mt-1 text-sm leading-6 text-gray-600">
+                              {result.payment_terms ?? "50% advance to start · 50% at payment-gateway integration"}
+                            </p>
+                          </div>
+                        </div>
+                        {result.support && (
+                          <div className="mt-4 flex items-start gap-3 border-t border-gray-100 pt-4">
+                            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" />
+                            <div>
+                              <p className="text-sm font-semibold text-gray-900">
+                                {result.support.label} —{" "}
+                                <span className={`${GRADIENT} bg-clip-text text-transparent`}>
+                                  {formatCurrency(result.support.amount)}/
+                                  {result.support.cadence === "year" ? "yr" : "mo"}
+                                </span>
+                              </p>
+                              <p className="mt-1 text-sm leading-6 text-gray-600">
+                                Recurring, billed separately from the one-time build.
+                                {result.support.note ? ` ${result.support.note}` : ""}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
                     <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-2">
                       <ListCard title="Highlighted features" items={result.highlighted_features} />
                       <ListCard title="Scope breakdown" items={result.scope_breakdown} />
@@ -555,7 +589,17 @@ export default function ProjectEstimatorSection() {
                       weeks
                     </span>
                   </span>
+                  {support && (
+                    <span>
+                      Support:{" "}
+                      <span className="font-medium text-white">
+                        {formatCurrency(support.amount)}/{support.cadence === "year" ? "yr" : "mo"}
+                      </span>
+                    </span>
+                  )}
                 </div>
+
+                <p className="mt-3 text-xs leading-5 text-white/55">{PAYMENT_TERMS}</p>
 
                 {/* Drivers */}
                 <div className="mt-6 flex flex-wrap gap-2">

@@ -130,6 +130,8 @@ export interface ProjectEstimatorResponse {
   summary: string
   estimated_cost_inr: { min: number; max: number }
   estimated_timeline_weeks: { min: number; max: number }
+  support?: { amount: number; cadence: 'year' | 'month'; label: string; note?: string } | null
+  payment_terms?: string
   confidence: 'low' | 'medium' | 'high'
   highlighted_features: string[]
   scope_breakdown: string[]

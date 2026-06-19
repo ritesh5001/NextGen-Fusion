@@ -41,10 +41,19 @@ type EstimatorInput = {
   notes: string
 }
 
+type SupportPlan = {
+  amount: number
+  cadence: 'year' | 'month'
+  label: string
+  note?: string
+} | null
+
 type EstimateResult = {
   summary: string
   estimated_cost_inr: { min: number; max: number }
   estimated_timeline_weeks: { min: number; max: number }
+  support: SupportPlan
+  payment_terms: string
   confidence: 'low' | 'medium' | 'high'
   highlighted_features: string[]
   scope_breakdown: string[]
@@ -145,6 +154,29 @@ function rateCardBase(
       return wp ? { min: 15000, max: 30000 } : { min: 15000, max: 80000 }
   }
 }
+
+// Ongoing support (recurring, billed separately from the one-time build).
+// Mirrors computeSupport() in Frontend/src/lib/estimator-pricing.ts.
+function computeSupport(input: EstimatorInput): SupportPlan {
+  switch (input.maintenance) {
+    case 'none':
+      return null
+    case 'basic':
+      return { amount: 2000, cadence: 'year', label: 'Support (uptime & fixes)' }
+    case 'growth':
+      return input.buildType === 'wordpress'
+        ? { amount: 15000, cadence: 'year', label: 'Support + changes' }
+        : {
+            amount: 5000,
+            cadence: 'month',
+            label: 'Support + changes',
+            note: 'Large or complex change requests are quoted separately.',
+          }
+  }
+}
+
+const PAYMENT_TERMS = '50% advance to start · 50% at payment-gateway integration'
+const ECOMMERCE_INCLUDED = ['Payment gateway integration', 'Shiprocket integration']
 
 function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
   const wp = input.buildType === 'wordpress'
@@ -285,14 +317,22 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
   const scope = [
     `Core build for a ${input.projectType.replace('-', ' ')} project`,
     `${input.pageCount} page scope with ${input.designLevel} design treatment`,
+    input.projectType === 'ecommerce' ? `Included at no extra cost: ${ECOMMERCE_INCLUDED.join(' & ')}` : null,
     input.features.length ? `Feature set includes ${input.features.join(', ')}` : 'Lean MVP feature set',
     input.integrations.length ? `External integrations: ${input.integrations.join(', ')}` : 'Minimal third-party integration complexity',
-  ]
+  ].filter((x): x is string => Boolean(x))
+
+  const support = computeSupport(input)
 
   const assumptions = [
+    `Payment terms: ${PAYMENT_TERMS}.`,
     input.contentReadiness === 'ready' ? 'Content and brand assets are ready to use.' : 'Content/design iteration will affect final scope.',
     input.timeline === 'asap' ? 'Fast-track delivery requires tighter feedback cycles and priority allocation.' : 'Standard delivery rhythm with normal revision cycles.',
-    input.projectType === 'saas' || input.projectType === 'custom' ? 'Complex custom logic can push the quote toward the upper side of the range.' : 'Estimate assumes standard delivery without unusual compliance or enterprise constraints.',
+    support
+      ? `Ongoing support is recurring and billed separately (${support.label}).`
+      : input.projectType === 'saas' || input.projectType === 'custom'
+        ? 'Complex custom logic can push the quote toward the upper side of the range.'
+        : 'Estimate assumes standard delivery without unusual compliance or enterprise constraints.',
   ]
 
   const buildLabel = input.buildType === 'wordpress' ? 'WordPress/Shopify' : 'custom-coded'
@@ -301,6 +341,8 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
     summary: `This looks like a ${buildLabel} ${input.projectType.replace('-', ' ')} build with ${input.features.length || 'a small'} scoped feature set and a ${input.timeline.replace('-', ' ')} delivery target.`,
     estimated_cost_inr: cost,
     estimated_timeline_weeks: { min: weeksMin, max: weeksMax },
+    support,
+    payment_terms: PAYMENT_TERMS,
     confidence,
     highlighted_features: highlights.slice(0, 5),
     scope_breakdown: scope,
@@ -405,6 +447,8 @@ async function generateWithGrok(input: EstimatorInput, baseline: EstimateResult)
       min: Math.max(1, Math.round(estimatedTimeline.min)),
       max: Math.max(Math.round(estimatedTimeline.max), Math.round(estimatedTimeline.min)),
     },
+    support: baseline.support,
+    payment_terms: baseline.payment_terms,
     confidence:
       parsed.confidence === 'low' || parsed.confidence === 'medium' || parsed.confidence === 'high'
         ? parsed.confidence
@@ -445,6 +489,8 @@ router.post('/project-estimator', async (req, res) => {
       ...estimate,
       estimated_cost_inr: baseline.estimated_cost_inr,
       estimated_timeline_weeks: baseline.estimated_timeline_weeks,
+      support: baseline.support,
+      payment_terms: baseline.payment_terms,
     }
 
     const sb = getSupabaseAdmin()

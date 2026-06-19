@@ -124,11 +124,12 @@ const contentWeeks: Record<ContentReadiness, number> = {
   'need-help': 2,
 }
 
-// Hosting & maintenance (INR, first cycle): WordPress hosting ₹1,500 · VPS ₹5,000.
+// Support is billed separately as a recurring plan (see computeSupport), so it is
+// NOT part of the one-time build total.
 const maintenanceCost: Record<MaintenanceLevel, number> = {
   none: 0,
-  basic: 1500,
-  growth: 5000,
+  basic: 0,
+  growth: 0,
 }
 
 const maintenanceWeeks: Record<MaintenanceLevel, number> = {
@@ -165,6 +166,44 @@ export type Ballpark = {
   cost: { min: number; max: number }
   weeks: { min: number; max: number }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Ongoing support (recurring, billed separately from the one-time build).
+//  - basic  : ₹2,000 / year (uptime monitoring & fixes, no content changes)
+//  - growth : "support + changes" → WordPress/Shopify ₹15,000 / year,
+//             custom-coded ₹5,000 / month (large changes quoted separately)
+// Mirrors computeSupport() in Backend/src/routes/project-estimator.ts.
+// ─────────────────────────────────────────────────────────────────────────────
+export type SupportPlan = {
+  amount: number // INR
+  cadence: 'year' | 'month'
+  label: string
+  note?: string
+} | null
+
+export function computeSupport(form: ProjectEstimatorData): SupportPlan {
+  switch (form.maintenance) {
+    case 'none':
+      return null
+    case 'basic':
+      return { amount: 2000, cadence: 'year', label: 'Support (uptime & fixes)' }
+    case 'growth':
+      return form.buildType === 'wordpress'
+        ? { amount: 15000, cadence: 'year', label: 'Support + changes' }
+        : {
+            amount: 5000,
+            cadence: 'month',
+            label: 'Support + changes',
+            note: 'Large or complex change requests are quoted separately.',
+          }
+  }
+}
+
+// Standard payment terms shown (highlighted) on every estimate.
+export const PAYMENT_TERMS = '50% advance to start · 50% at payment-gateway integration'
+
+// Integrations bundled into every ecommerce build at no extra cost.
+export const ECOMMERCE_INCLUDED = ['Payment gateway integration', 'Shiprocket integration']
 
 export function computeBallpark(form: ProjectEstimatorData): Ballpark {
   const base = rateCardBase(form.projectType, form.buildType, form.ecommercePackage)
