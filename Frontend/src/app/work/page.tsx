@@ -221,7 +221,7 @@ export default function WorkPage() {
         </section>
 
         <DeliveredWall
-          heading="Every site we've shipped"
+          heading="Every project delivered"
           subheading="Live websites and online stores delivered for clients across India and beyond. Click any to visit."
         />
 

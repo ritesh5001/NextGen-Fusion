@@ -3,6 +3,7 @@
 import { motion, type Variants } from "framer-motion"
 import Image from "next/image"
 import { openBookingModal } from "@/components/booking-modal"
+import { deliveredProjects } from "@/lib/delivered-projects"
 
 // Types
 type AnimationVariants = Record<string, Variants>
@@ -316,12 +317,11 @@ const HeroContent = () => {
       </motion.div>
 
       {/* Proof line directly under the CTA */}
-      {/* TODO: confirm exact count — currently mirrors staticProjects */}
       <motion.p
         className="mt-5 text-sm text-gray-500"
         variants={animationVariants.subtitle}
       >
-        13+ projects delivered · 0 clients ghosted
+        {deliveredProjects.length}+ projects delivered · 0 clients ghosted
       </motion.p>
     </motion.div>
   )

@@ -18,7 +18,6 @@ const item = {
 
 export default function WorkSection() {
   const featured = staticProjects.filter((p) => p.featured);
-  const rest = staticProjects.filter((p) => !p.featured).slice(0, 4);
 
   return (
     <section className="bg-white py-28 px-4 sm:px-6 lg:px-8">
@@ -33,7 +32,7 @@ export default function WorkSection() {
         >
           <motion.div variants={item} className="mb-3">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-              Our Work
+              Projects delivered
             </span>
           </motion.div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
@@ -129,63 +128,8 @@ export default function WorkSection() {
           ))}
         </motion.div>
 
-        {/* Supporting grid */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-4"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          variants={container}
-        >
-          {rest.map((project) => (
-            <motion.div key={project.slug} variants={item}>
-              <Link href={`/work/${project.slug}`} className="group block">
-                <div className="relative overflow-hidden rounded-xl bg-gray-100 aspect-[4/3] mb-3">
-                  <Image
-                    src={project.coverImage}
-                    alt={project.title}
-                    fill
-                    className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-                    sizes="(max-width: 640px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="bg-white/90 backdrop-blur-sm text-gray-700 text-[10px] font-medium px-2 py-0.5 rounded-full border border-white/60">
-                      {project.category.split(" / ").slice(-1)[0]}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-[11px] text-gray-400 mb-0.5">
-                  {project.domain}
-                </p>
-                <h4 className="text-sm font-semibold text-gray-800 group-hover:text-purple-600 transition-colors line-clamp-1">
-                  {project.title}
-                </h4>
-                <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-purple-600 group-hover:text-purple-700">
-                  Read More
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* View all CTA */}
-        <motion.div
-          className="mt-10 text-center"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link
-            href="/work"
-            className="inline-flex items-center gap-2 border border-gray-200 text-gray-700 hover:text-white hover:bg-gray-900 hover:border-gray-900 font-medium text-sm px-6 py-3 rounded-full transition-all duration-200 group"
-          >
-            Explore all {staticProjects.length} projects
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </motion.div>
+        {/* Breadth (the full delivered-projects screenshot wall) is merged in
+            directly below this section in home-client, so no separate CTA here. */}
       </div>
     </section>
   );

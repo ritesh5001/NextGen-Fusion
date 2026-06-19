@@ -29,13 +29,8 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
       <SocialProofSection />
       <div id="work">
         <WorkSection />
+        <DeliveredWall limit={8} hideHeader showViewAll />
       </div>
-      <DeliveredWall
-        limit={8}
-        heading="Recently delivered"
-        subheading="A few of the live websites and stores we've shipped for clients."
-        showViewAll
-      />
       <ComparisonSection />
       <div id="services">
         <ServicesSection />

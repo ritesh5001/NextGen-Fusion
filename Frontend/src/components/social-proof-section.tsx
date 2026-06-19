@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion"
 import { staticProjects } from "@/lib/static-projects"
+import { deliveredProjects } from "@/lib/delivered-projects"
 
 // TODO: Replace placeholder logos/stats with real client logos and verified numbers.
 const clientNames = staticProjects.slice(0, 6).map((p) => p.title)
 
 const stats = [
-  { metric: `${staticProjects.length}+`, label: "Projects delivered" },
+  { metric: `${deliveredProjects.length}+`, label: "Projects delivered" },
   { metric: "3,226+", label: "Vendors powered" }, // TODO: confirm aggregate
   { metric: "0", label: "Clients ghosted" },
   { metric: "100%", label: "Mobile-optimized builds" },

@@ -49,56 +49,73 @@ type DeliveredWallProps = {
   heading?: string
   subheading?: string
   showViewAll?: boolean
+  /** When true, render only the grid (no badge/heading) — used to merge into another section. */
+  hideHeader?: boolean
 }
 
 export default function DeliveredWall({
   limit,
-  heading = "Sites we've delivered",
+  heading = "Projects we've delivered",
   subheading,
   showViewAll = false,
+  hideHeader = false,
 }: DeliveredWallProps) {
   const items = limit ? deliveredProjects.slice(0, limit) : deliveredProjects
 
   return (
-    <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+    <section className={`bg-white px-4 sm:px-6 lg:px-8 ${hideHeader ? "pb-20 pt-0" : "py-20"}`}>
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800">
-              Delivered work
-            </span>
-            <h2 className="mt-3 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
-              {heading.includes(" ") ? (
-                <>
-                  {heading.split(" ").slice(0, -1).join(" ")}{" "}
-                  <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                    {heading.split(" ").slice(-1)}
-                  </span>
-                </>
-              ) : (
-                heading
-              )}
-            </h2>
-            <p className="mt-3 max-w-2xl text-gray-500">
-              {subheading ?? `${deliveredProjects.length}+ live websites and stores built and shipped for real businesses.`}
-            </p>
+        {!hideHeader && (
+          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800">
+                Projects delivered
+              </span>
+              <h2 className="mt-3 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                {heading.includes(" ") ? (
+                  <>
+                    {heading.split(" ").slice(0, -1).join(" ")}{" "}
+                    <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
+                      {heading.split(" ").slice(-1)}
+                    </span>
+                  </>
+                ) : (
+                  heading
+                )}
+              </h2>
+              <p className="mt-3 max-w-2xl text-gray-500">
+                {subheading ?? `${deliveredProjects.length}+ live websites and stores built and shipped for real businesses.`}
+              </p>
+            </div>
+            {showViewAll && (
+              <Link
+                href="/work"
+                className="inline-flex shrink-0 items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+              >
+                See all {deliveredProjects.length} projects
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            )}
           </div>
-          {showViewAll && (
-            <Link
-              href="/work"
-              className="inline-flex shrink-0 items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
-            >
-              See all {deliveredProjects.length} sites
-              <ArrowUpRight className="h-4 w-4" />
-            </Link>
-          )}
-        </div>
+        )}
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {items.map((project) => (
             <DeliveredCard key={project.slug} project={project} />
           ))}
         </div>
+
+        {hideHeader && showViewAll && (
+          <div className="mt-10 text-center">
+            <Link
+              href="/work"
+              className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-6 py-3 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+            >
+              See all {deliveredProjects.length} projects delivered
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   )
