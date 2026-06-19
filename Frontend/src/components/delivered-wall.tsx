@@ -86,6 +86,8 @@ type DeliveredWallProps = {
   hideHeader?: boolean
   /** When true, show category + ecommerce-subcategory filter chips (use on the full /work wall). */
   showFilters?: boolean
+  /** Render the heading as <h1> (use when the wall is the page's primary heading). */
+  asPageHeading?: boolean
 }
 
 const CATEGORY_ORDER: DeliveredCategory[] = ["ecommerce", "service", "custom"]
@@ -97,7 +99,9 @@ export default function DeliveredWall({
   showViewAll = false,
   hideHeader = false,
   showFilters = false,
+  asPageHeading = false,
 }: DeliveredWallProps) {
+  const HeadingTag = asPageHeading ? "h1" : "h2"
   const [activeCat, setActiveCat] = useState<"all" | DeliveredCategory>("all")
   const [activeSub, setActiveSub] = useState<string>("all")
 
@@ -134,7 +138,7 @@ export default function DeliveredWall({
               <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800">
                 Projects delivered
               </span>
-              <h2 className="mt-3 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+              <HeadingTag className="mt-3 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
                 {heading.includes(" ") ? (
                   <>
                     {heading.split(" ").slice(0, -1).join(" ")}{" "}
@@ -145,7 +149,7 @@ export default function DeliveredWall({
                 ) : (
                   heading
                 )}
-              </h2>
+              </HeadingTag>
               <p className="mt-3 max-w-2xl text-gray-500">
                 {subheading ?? `${deliveredProjects.length}+ live websites and stores built and shipped for real businesses.`}
               </p>
