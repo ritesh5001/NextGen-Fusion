@@ -13,6 +13,7 @@ import FAQSection from "@/components/faq-section"
 import ContactSection from "@/components/contact-section"
 import ProjectEstimatorSection from "@/components/project-estimator-section"
 import WorkSection from "@/components/work-section"
+import DeliveredWall from "@/components/delivered-wall"
 import CTABanner from "@/components/cta-banner"
 
 type HomeClientProps = {
@@ -29,6 +30,12 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
       <div id="work">
         <WorkSection />
       </div>
+      <DeliveredWall
+        limit={8}
+        heading="Recently delivered"
+        subheading="A few of the live websites and stores we've shipped for clients."
+        showViewAll
+      />
       <ComparisonSection />
       <div id="services">
         <ServicesSection />

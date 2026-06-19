@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import CTABanner from "@/components/cta-banner";
+import DeliveredWall from "@/components/delivered-wall";
 import { staticProjects, StaticProject } from "@/lib/static-projects";
 
 const categories = [
@@ -218,6 +219,11 @@ export default function WorkPage() {
             </AnimatePresence>
           </motion.div>
         </section>
+
+        <DeliveredWall
+          heading="Every site we've shipped"
+          subheading="Live websites and online stores delivered for clients across India and beyond. Click any to visit."
+        />
 
         <div className="max-w-7xl mx-auto px-6 pb-16">
           <CTABanner />
