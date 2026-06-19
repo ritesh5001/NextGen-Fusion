@@ -210,6 +210,13 @@ export const menuData: MenuChannel[] = [
             callout: "In-depth project breakdowns",
             icon: "maas-ve",
           },
+          {
+            label: "Support & Plans",
+            callout: "Subscribe to support & product tools",
+            icon: "help-circle",
+            url: "/support",
+            target: "_self",
+          },
         ],
       },
     ],
