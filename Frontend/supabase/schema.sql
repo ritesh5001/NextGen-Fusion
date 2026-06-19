@@ -507,9 +507,7 @@ create table if not exists client_users (
     check (subscription_status in ('trialing', 'active', 'past_due', 'canceled', 'inactive')),
   subscription_current_period_end timestamptz,
   allowed_tools text[] not null default array[
-    'product_catalog',
-    'image_library',
-    'ai_product_copy'
+    'product_catalog'
   ],
   created_at timestamptz default now(),
   updated_at timestamptz default now()

@@ -5,9 +5,7 @@ alter table client_users add column if not exists subscription_plan text not nul
 alter table client_users add column if not exists subscription_status text not null default 'active';
 alter table client_users add column if not exists subscription_current_period_end timestamptz;
 alter table client_users add column if not exists allowed_tools text[] not null default array[
-  'product_catalog',
-  'image_library',
-  'ai_product_copy'
+  'product_catalog'
 ];
 
 do $$

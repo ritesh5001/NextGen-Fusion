@@ -119,7 +119,7 @@ export default function AdminClientsPage() {
     if (status === null) return
     const tools = prompt(
       'Allowed tools, comma separated: product_catalog, image_library, ai_product_copy',
-      (client.allowed_tools || []).join(', ') || 'product_catalog, image_library, ai_product_copy',
+      (client.allowed_tools || []).join(', ') || 'product_catalog',
     )
     if (tools === null) return
     const currentPeriodEnd = prompt(

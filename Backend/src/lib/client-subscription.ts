@@ -7,7 +7,7 @@ export const CLIENT_TOOLS = ['product_catalog', 'image_library', 'ai_product_cop
 export type ClientTool = (typeof CLIENT_TOOLS)[number]
 export type SubscriptionStatus = 'trialing' | 'active' | 'past_due' | 'canceled' | 'inactive'
 
-export const DEFAULT_CLIENT_TOOLS: ClientTool[] = ['product_catalog', 'image_library', 'ai_product_copy']
+export const DEFAULT_CLIENT_TOOLS: ClientTool[] = ['product_catalog']
 
 export function isClientTool(value: unknown): value is ClientTool {
   return typeof value === 'string' && (CLIENT_TOOLS as readonly string[]).includes(value)
