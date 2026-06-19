@@ -221,8 +221,9 @@ export default function WorkPage() {
         </section>
 
         <DeliveredWall
+          showFilters
           heading="Every project delivered"
-          subheading="Live websites and online stores delivered for clients across India and beyond. Click any to visit."
+          subheading="Live websites and online stores delivered for clients across India and beyond. Filter by category, or click any to visit."
         />
 
         <div className="max-w-7xl mx-auto px-6 pb-16">

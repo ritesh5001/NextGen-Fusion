@@ -1,9 +1,39 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
-import { deliveredProjects, type DeliveredProject } from "@/lib/delivered-projects"
+import {
+  deliveredProjects,
+  CATEGORY_LABELS,
+  ECOMMERCE_SUBCATEGORIES,
+  type DeliveredProject,
+  type DeliveredCategory,
+} from "@/lib/delivered-projects"
+
+function Chip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+        active
+          ? "border-transparent bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] text-white shadow-sm"
+          : "border-gray-200 text-gray-600 hover:border-gray-400"
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
 
 function DeliveredCard({ project }: { project: DeliveredProject }) {
   const [errored, setErrored] = useState(false)
@@ -39,6 +69,9 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
           {project.name}
         </p>
         <p className="truncate text-xs text-gray-400">{project.host}</p>
+        <span className="mt-1.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
+          {project.subcategory ?? CATEGORY_LABELS[project.category]}
+        </span>
       </div>
     </a>
   )
@@ -51,7 +84,11 @@ type DeliveredWallProps = {
   showViewAll?: boolean
   /** When true, render only the grid (no badge/heading) — used to merge into another section. */
   hideHeader?: boolean
+  /** When true, show category + ecommerce-subcategory filter chips (use on the full /work wall). */
+  showFilters?: boolean
 }
+
+const CATEGORY_ORDER: DeliveredCategory[] = ["ecommerce", "service", "custom"]
 
 export default function DeliveredWall({
   limit,
@@ -59,8 +96,34 @@ export default function DeliveredWall({
   subheading,
   showViewAll = false,
   hideHeader = false,
+  showFilters = false,
 }: DeliveredWallProps) {
-  const items = limit ? deliveredProjects.slice(0, limit) : deliveredProjects
+  const [activeCat, setActiveCat] = useState<"all" | DeliveredCategory>("all")
+  const [activeSub, setActiveSub] = useState<string>("all")
+
+  // Only categories/subcategories that actually have projects show as chips.
+  const presentCats = useMemo(
+    () => CATEGORY_ORDER.filter((c) => deliveredProjects.some((p) => p.category === c)),
+    [],
+  )
+  const presentSubs = useMemo(
+    () =>
+      ECOMMERCE_SUBCATEGORIES.filter((s) =>
+        deliveredProjects.some((p) => p.category === "ecommerce" && p.subcategory === s),
+      ),
+    [],
+  )
+
+  const filtered = useMemo(() => {
+    return deliveredProjects.filter((p) => {
+      if (activeCat !== "all" && p.category !== activeCat) return false
+      if (activeCat === "ecommerce" && activeSub !== "all" && p.subcategory !== activeSub) return false
+      return true
+    })
+  }, [activeCat, activeSub])
+
+  const base = showFilters ? filtered : deliveredProjects
+  const items = limit ? base.slice(0, limit) : base
 
   return (
     <section className={`bg-white px-4 sm:px-6 lg:px-8 ${hideHeader ? "pb-20 pt-0" : "py-20"}`}>
@@ -95,6 +158,38 @@ export default function DeliveredWall({
                 See all {deliveredProjects.length} projects
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
+            )}
+          </div>
+        )}
+
+        {showFilters && (
+          <div className="mb-8 space-y-4">
+            <div className="flex flex-wrap gap-2">
+              <Chip active={activeCat === "all"} onClick={() => { setActiveCat("all"); setActiveSub("all") }}>
+                All ({deliveredProjects.length})
+              </Chip>
+              {presentCats.map((c) => (
+                <Chip
+                  key={c}
+                  active={activeCat === c}
+                  onClick={() => { setActiveCat(c); setActiveSub("all") }}
+                >
+                  {CATEGORY_LABELS[c]} ({deliveredProjects.filter((p) => p.category === c).length})
+                </Chip>
+              ))}
+            </div>
+
+            {activeCat === "ecommerce" && (
+              <div className="flex flex-wrap gap-2 border-t border-gray-100 pt-4">
+                <Chip active={activeSub === "all"} onClick={() => setActiveSub("all")}>
+                  All products
+                </Chip>
+                {presentSubs.map((s) => (
+                  <Chip key={s} active={activeSub === s} onClick={() => setActiveSub(s)}>
+                    {s} ({deliveredProjects.filter((p) => p.subcategory === s).length})
+                  </Chip>
+                ))}
+              </div>
             )}
           </div>
         )}
