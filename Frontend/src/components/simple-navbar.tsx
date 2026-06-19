@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
-import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, type LucideIcon } from "lucide-react"
+import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/components/booking-modal"
 
 type MenuItem = {
@@ -138,10 +138,9 @@ export default function SimpleNavbar() {
             </nav>
           </motion.div>
 
-          {/* Client Login */}
-          <motion.button
-            onClick={() => router.push('/portal/login')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full text-black font-semibold text-xs sm:text-sm hover:bg-white/40 transition-colors"
+          {/* User Auth */}
+          <motion.div
+            className="flex items-center gap-1.5 rounded-full p-1"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.4)",
               backdropFilter: "blur(20px)",
@@ -152,9 +151,21 @@ export default function SimpleNavbar() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.1, delay: 0.07 }}
           >
-            <LogIn className="w-4 h-4" />
-            Client Login
-          </motion.button>
+            <button
+              onClick={() => router.push('/portal/login')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-black font-semibold text-xs sm:text-sm hover:bg-white/50 transition-colors"
+            >
+              <LogIn className="w-4 h-4" />
+              Login
+            </button>
+            <button
+              onClick={() => router.push('/portal/signup')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 text-white font-semibold text-xs sm:text-sm hover:bg-slate-800 transition-colors"
+            >
+              <UserPlus className="w-4 h-4" />
+              Sign Up
+            </button>
+          </motion.div>
 
           {/* CTA Button */}
           <motion.div
@@ -244,7 +255,17 @@ export default function SimpleNavbar() {
                     className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
                   >
                     <LogIn className="w-5 h-5" />
-                    <span className="font-medium">Client Login</span>
+                    <span className="font-medium">User Login</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      router.push('/portal/signup')
+                      setIsMobileMenuOpen(false)
+                    }}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
+                  >
+                    <UserPlus className="w-5 h-5" />
+                    <span className="font-medium">User Sign Up</span>
                   </button>
                 </nav>
               </div>
