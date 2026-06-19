@@ -1,4 +1,5 @@
 import rawUrls from "@/data/delivered-urls.json"
+import capturedSlugs from "@/data/delivered-captured.json"
 
 export type DeliveredProject = {
   url: string
@@ -6,7 +7,10 @@ export type DeliveredProject = {
   name: string // display name
   slug: string // file-safe id, used for the screenshot filename
   image: string // /delivered/<slug>.jpg
+  hasImage: boolean // true when a screenshot exists on disk
 }
+
+const captured = new Set(capturedSlugs as string[])
 
 // Nicer display names for recognisable brands; everything else falls back to the host.
 const NAME_OVERRIDES: Record<string, string> = {
@@ -57,14 +61,19 @@ function fallbackName(host: string): string {
   return core.charAt(0).toUpperCase() + core.slice(1)
 }
 
-export const deliveredProjects: DeliveredProject[] = (rawUrls as string[]).map((url) => {
-  const host = hostFromUrl(url)
-  const slug = host.replace(/[^a-z0-9]+/g, "-")
-  return {
-    url,
-    host,
-    name: NAME_OVERRIDES[host] ?? fallbackName(host),
-    slug,
-    image: `/delivered/${slug}.jpg`,
-  }
-})
+export const deliveredProjects: DeliveredProject[] = (rawUrls as string[])
+  .map((url) => {
+    const host = hostFromUrl(url)
+    const slug = host.replace(/[^a-z0-9]+/g, "-")
+    return {
+      url,
+      host,
+      name: NAME_OVERRIDES[host] ?? fallbackName(host),
+      slug,
+      image: `/delivered/${slug}.jpg`,
+      hasImage: captured.has(slug),
+    }
+  })
+  // Show entries that have a real screenshot first (keeps the homepage teaser strong);
+  // entries without a screenshot fall to the end and render a branded name card.
+  .sort((a, b) => Number(b.hasImage) - Number(a.hasImage))

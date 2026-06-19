@@ -1,7 +1,7 @@
 // Captures a screenshot of every delivered project site into public/delivered/<slug>.jpg
 // Usage: node scripts/capture-delivered.mjs   (re-run is safe; existing files are skipped)
 import { chromium } from "playwright"
-import { readFile, mkdir, access } from "node:fs/promises"
+import { readFile, writeFile, readdir, mkdir, access } from "node:fs/promises"
 import { constants } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -64,6 +64,18 @@ async function main() {
   }
 
   await browser.close()
+
+  // Refresh the manifest of slugs that actually have a screenshot on disk, so the
+  // UI can prefer real screenshots over fallback cards.
+  const captured = (await readdir(outDir))
+    .filter((f) => f.endsWith(".jpg"))
+    .map((f) => f.replace(/\.jpg$/, ""))
+    .sort()
+  await writeFile(
+    path.join(root, "src", "data", "delivered-captured.json"),
+    JSON.stringify(captured, null, 2) + "\n",
+  )
+
   console.log(`\nDONE — captured ${ok}/${urls.length}. Failed: ${failed.length ? failed.join(", ") : "none"}`)
 }
 
