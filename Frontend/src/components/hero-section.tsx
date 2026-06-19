@@ -155,8 +155,19 @@ const HeroContent = () => {
         </div>
       </motion.div>
 
+      {/* Positioning line: who we help + what they get + hook */}
+      <motion.p
+        className="text-sm sm:text-base font-medium text-gray-500 max-w-2xl mx-auto mb-5"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08, duration: 0.3 }}
+      >
+        Conversion-focused websites for growing D2C &amp; ecommerce brands — built fast, and we
+        don&apos;t ghost you after launch.
+      </motion.p>
+
       {/* Heading with blur reveal from left to right */}
-      <motion.div
+      <motion.h1
         className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight mb-8"
         variants={animationVariants.sleek}
       >
@@ -269,20 +280,20 @@ const HeroContent = () => {
             </motion.span>
           </div>
         </div>
-      </motion.div>
+      </motion.h1>
 
-      {/* Subtitle */}
-      <motion.p 
-        className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-12"
+      {/* Subtitle — outcome, not feature list */}
+      <motion.p
+        className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-10"
         variants={animationVariants.subtitle}
       >
-        We create stunning, high-performance websites that don&apos;t ghost you after launch.
-        Your success is our priority, from concept to launch and beyond.
+        We design and build websites that turn visitors into enquiries and sales — then keep
+        improving them long after launch.
       </motion.p>
 
-      {/* CTA Buttons */}
-      <motion.div 
-        className="flex justify-center"
+      {/* CTA Buttons — one primary, one lighter secondary */}
+      <motion.div
+        className="flex flex-col sm:flex-row items-center justify-center gap-3"
         variants={animationVariants.subtitle}
       >
         <motion.button
@@ -292,9 +303,26 @@ const HeroContent = () => {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
-          Book a Call
+          Book a Free Call
         </motion.button>
+        <motion.a
+          href="#project-estimator"
+          className="px-8 py-3.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-base sm:text-lg"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          Get a Free Estimate
+        </motion.a>
       </motion.div>
+
+      {/* Proof line directly under the CTA */}
+      {/* TODO: confirm exact count — currently mirrors staticProjects */}
+      <motion.p
+        className="mt-5 text-sm text-gray-500"
+        variants={animationVariants.subtitle}
+      >
+        13+ projects delivered · 0 clients ghosted
+      </motion.p>
     </motion.div>
   )
 }

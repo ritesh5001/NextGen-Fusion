@@ -112,19 +112,14 @@ export default function ComparisonSection() {
   
   const comparisonData = [
     {
-      category: "Education",
-      livingTech: "In-depth tech and strategy training for students.",
-      others: "Basic guidance, rarely structured.",
-    },
-    {
       category: "Custom Pricing",
       livingTech: "Tailored packages, flexible, no hidden costs",
       others: "Fixed or subscription plans, less flexible.",
     },
     {
       category: "Speed",
-      livingTech: "Projects done in 12-48 hours with top quality.**",
-      others: "Slower delivery, often 1-2 days or more.",
+      livingTech: "Most projects delivered in 2-3 weeks, without cutting corners.",
+      others: "Slower delivery, often months with unclear timelines.",
     },
     {
       category: "Quality",

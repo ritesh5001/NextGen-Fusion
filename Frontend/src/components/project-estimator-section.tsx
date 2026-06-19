@@ -19,7 +19,7 @@ import {
 import { useMemo, useState, type ReactNode } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import { apiService, ProjectEstimatorData, ProjectEstimatorResponse } from "@/lib/api"
-import { computeBallpark, formatUSD } from "@/lib/estimator-pricing"
+import { computeBallpark, formatCurrency } from "@/lib/estimator-pricing"
 
 const sectionVariants = {
   hidden: { opacity: 0 },
@@ -395,7 +395,7 @@ export default function ProjectEstimatorSection() {
                     <div className="mt-6 overflow-hidden rounded-[24px] bg-[#0b0d12] p-6 text-white">
                       <p className="text-xs uppercase tracking-[0.22em] text-white/50">Estimated investment</p>
                       <div className={`mt-3 text-3xl font-bold sm:text-4xl ${GRADIENT} bg-clip-text text-transparent`}>
-                        {formatUSD(result.estimated_cost_inr.min)} – {formatUSD(result.estimated_cost_inr.max)}
+                        {formatCurrency(result.estimated_cost_inr.min)} – {formatCurrency(result.estimated_cost_inr.max)}
                       </div>
                       <p className="mt-4 max-w-2xl text-sm leading-7 text-white/70">{result.summary}</p>
 
@@ -506,8 +506,8 @@ export default function ProjectEstimatorSection() {
                     className={`mt-4 text-4xl font-bold tracking-tight sm:text-5xl ${GRADIENT} bg-clip-text text-transparent`}
                   >
                     {step === 3 && result
-                      ? `${formatUSD(result.estimated_cost_inr.min)} – ${formatUSD(result.estimated_cost_inr.max)}`
-                      : `${formatUSD(ballpark.cost.min)} – ${formatUSD(ballpark.cost.max)}`}
+                      ? `${formatCurrency(result.estimated_cost_inr.min)} – ${formatCurrency(result.estimated_cost_inr.max)}`
+                      : `${formatCurrency(ballpark.cost.min)} – ${formatCurrency(ballpark.cost.max)}`}
                   </motion.div>
                 </AnimatePresence>
 

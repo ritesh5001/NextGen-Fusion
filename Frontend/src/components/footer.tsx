@@ -9,11 +9,12 @@ export default function Footer() {
     setIsClient(true);
   }, []);
   const navigationLinks = [
-    { name: "Home", href: "#hero" },
-    { name: "About", href: "#about" },
-    { name: "Services", href: "#services" },
-    { name: "Portfolio", href: "#portfolio" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "/#hero" },
+    { name: "About", href: "/#about" },
+    { name: "Services", href: "/#services" },
+    { name: "Work", href: "/work" },
+    { name: "Courses", href: "/courses" },
+    { name: "Contact", href: "/#contact" },
   ];
 
   const socialLinks = [

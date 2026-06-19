@@ -98,6 +98,11 @@ export default function WorkSection() {
                 {/* Meta */}
                 <div>
                   <p className="text-xs text-gray-400 mb-1">{project.domain}</p>
+                  {project.results?.[0] && (
+                    <p className="mb-2 text-sm font-semibold bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
+                      {project.results[0].metric} {project.results[0].label}
+                    </p>
+                  )}
                   <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors mb-2">
                     {project.title}
                   </h3>

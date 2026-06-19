@@ -165,17 +165,6 @@ export const menuData: MenuChannel[] = [
           },
         ],
       },
-      {
-        list: [
-          {
-            label: "Our Education Programs",
-            callout: "Explore our learning paths and boost your career",
-            icon: "edit-alt",
-            isImage: true,
-            isRightPanel: true
-          }
-        ]
-      },
     ],
   },
   {

@@ -2,15 +2,18 @@
 
 import { Portfolio } from "@/lib/api"
 import HeroSection from "@/components/hero-section"
+import SocialProofSection from "@/components/social-proof-section"
 import AboutUsSection from "@/components/about-us-section"
 import ComparisonSection from "@/components/comparison-section"
 import ServicesSection from "@/components/services-section"
+import ProcessSection from "@/components/process-section"
 import StackMarqueeSection from "@/components/stack-marquee-section"
-import BannerSection from "@/components/banner-section"
+import TestimonialsSection from "@/components/testimonials-section"
 import FAQSection from "@/components/faq-section"
 import ContactSection from "@/components/contact-section"
 import ProjectEstimatorSection from "@/components/project-estimator-section"
 import WorkSection from "@/components/work-section"
+import CTABanner from "@/components/cta-banner"
 
 type HomeClientProps = {
   portfolios: Portfolio[]
@@ -22,27 +25,27 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
       <div id="hero">
         <HeroSection />
       </div>
-      {/* Hero marquee removed per request */}
+      <SocialProofSection />
+      <div id="work">
+        <WorkSection />
+      </div>
       <ComparisonSection />
       <div id="services">
         <ServicesSection />
       </div>
-      {/* Portfolio section removed per request */}
-      <div id="work">
-        <WorkSection />
-      </div>
-      <div id="project-estimator">
-        <ProjectEstimatorSection />
-      </div>
-      <BannerSection />
+      <ProcessSection />
       <div id="about">
         <AboutUsSection />
+      </div>
+      <TestimonialsSection />
+      <div id="project-estimator">
+        <ProjectEstimatorSection />
       </div>
       <StackMarqueeSection />
       <div id="faq">
         <FAQSection />
       </div>
-      <ProjectEstimatorSection />
+      <CTABanner className="py-16" />
       <div id="contact">
         <ContactSection />
       </div>

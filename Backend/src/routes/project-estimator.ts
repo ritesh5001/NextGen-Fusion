@@ -50,8 +50,8 @@ type EstimateResult = {
 
 function clampRange(min: number, max: number) {
   return {
-    min: Math.max(100, Math.round(min / 10) * 10),
-    max: Math.min(2000, Math.max(Math.round(max / 10) * 10, Math.round(min / 10) * 10)),
+    min: Math.max(400, Math.round(min / 50) * 50),
+    max: Math.min(12000, Math.max(Math.round(max / 50) * 50, Math.round(min / 50) * 50)),
   }
 }
 
@@ -107,25 +107,25 @@ function isMissingTableError(error: { code?: string; message?: string } | null |
 
 function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
   const baseByType: Record<ProjectType, { min: number; max: number; weeks: [number, number] }> = {
-    'landing-page': { min: 100, max: 180, weeks: [1, 2] },
-    portfolio: { min: 100, max: 200, weeks: [1, 3] },
-    ecommerce: { min: 100, max: 200, weeks: [2, 5] },
-    saas: { min: 300, max: 1400, weeks: [4, 10] },
-    custom: { min: 100, max: 2000, weeks: [2, 12] },
+    'landing-page': { min: 400, max: 800, weeks: [1, 2] },
+    portfolio: { min: 500, max: 1000, weeks: [1, 3] },
+    ecommerce: { min: 900, max: 2500, weeks: [2, 5] },
+    saas: { min: 2000, max: 6000, weeks: [4, 10] },
+    custom: { min: 800, max: 8000, weeks: [2, 12] },
   }
 
   const featureCost: Record<string, number> = {
-    payment: 20,
-    auth: 30,
-    dashboard: 150,
-    blog: 20,
-    booking: 40,
-    cms: 20,
-    crm: 50,
-    analytics: 20,
-    multi_language: 30,
-    seo_setup: 100,
-    whatsapp: 10,
+    payment: 150,
+    auth: 200,
+    dashboard: 800,
+    blog: 120,
+    booking: 250,
+    cms: 150,
+    crm: 350,
+    analytics: 150,
+    multi_language: 200,
+    seo_setup: 400,
+    whatsapp: 60,
   }
 
   const featureWeeks: Record<string, number> = {
@@ -144,9 +144,9 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
 
   const pageCost: Record<PageCount, number> = {
     '1-5': 0,
-    '6-15': 40,
-    '16-30': 90,
-    '30+': 180,
+    '6-15': 250,
+    '16-30': 600,
+    '30+': 1200,
   }
 
   const pageWeeks: Record<PageCount, number> = {
@@ -164,8 +164,8 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
 
   const contentCost: Record<ContentReadiness, number> = {
     ready: 0,
-    partial: 20,
-    'need-help': 60,
+    partial: 150,
+    'need-help': 400,
   }
 
   const contentWeeks: Record<ContentReadiness, number> = {
@@ -176,8 +176,8 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
 
   const maintenanceCost: Record<MaintenanceLevel, number> = {
     none: 0,
-    basic: 20,
-    growth: 60,
+    basic: 120,
+    growth: 350,
   }
 
   const maintenanceWeeks: Record<MaintenanceLevel, number> = {
@@ -201,9 +201,9 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
         : 'high'
 
   const base = baseByType[input.projectType]
-  const featuresCost = input.features.reduce((sum, feature) => sum + (featureCost[feature] || 20), 0)
+  const featuresCost = input.features.reduce((sum, feature) => sum + (featureCost[feature] || 150), 0)
   const featuresWeeks = input.features.reduce((sum, feature) => sum + (featureWeeks[feature] || 1), 0)
-  const integrationsCost = input.integrations.length * 25
+  const integrationsCost = input.integrations.length * 150
   const integrationsWeeks = input.integrations.length
 
   let min = base.min + pageCost[input.pageCount] + featuresCost + integrationsCost + contentCost[input.contentReadiness] + maintenanceCost[input.maintenance]

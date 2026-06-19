@@ -143,26 +143,27 @@ export default function FAQSection() {
     {
       question: "How much do your services cost?",
       answer:
-        "Typical website builds are often around $100-$200 for standard WordPress or Shopify scope, SEO usually starts around $100, and custom-coded websites can range from about $100 up to $2,000 depending on scope.",
+        "Most marketing and ecommerce sites land between roughly $800 and $2,500 depending on pages, features, and design level, while larger custom or SaaS builds scale beyond that. Use our project estimator above for a tailored range in your currency — every quote is fixed and transparent, with no hidden costs.",
+    },
+    {
+      question: "How long does a project take?",
+      answer:
+        "Most websites are delivered in 2-3 weeks. Larger ecommerce, custom, or SaaS builds take longer, and we lock an exact timeline with you on the discovery call before any work starts.",
     },
     {
       question: "What if I'm not satisfied with the results?",
       answer:
-        "We offer revisions and work closely with you to ensure the final result meets your expectations and business goals.",
+        "Every project includes review rounds at agreed milestones, so you sign off as we go and there are no surprises at launch. We keep iterating until the result matches the scope and your business goals.",
     },
     {
       question: "Do you provide ongoing support after project completion?",
-      answer: "Yes, we offer various maintenance and support packages to keep your digital solutions running smoothly.",
-    },
-    {
-      question: "Does NextGen Fusion offer any courses or training?",
       answer:
-        "We occasionally offer workshops and training sessions. Follow us on social media for updates on upcoming educational opportunities.",
+        "Yes. We don't ghost you after launch. We offer monthly maintenance and growth packages covering updates, monitoring, fixes, and improvements.",
     },
     {
       question: "What are the working hours of NextGen Fusion?",
       answer:
-        "We typically work Monday to Friday, 9 AM to 6 PM. However, we're flexible and can accommodate different time zones for our clients.",
+        "We typically work Monday to Friday, 9 AM to 6 PM IST. We're flexible and regularly accommodate clients across different time zones.",
     },
   ]
 
@@ -212,7 +213,7 @@ export default function FAQSection() {
               className="mb-6"
               variants={textVariants}
             >
-              <BadgeSubtitle>Frequently Ask Question</BadgeSubtitle>
+              <BadgeSubtitle>Frequently Asked Questions</BadgeSubtitle>
             </motion.div>
             <motion.h2 
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6"
@@ -299,9 +300,9 @@ export default function FAQSection() {
                       </motion.div>
                       <div className="text-center">
                         <div className="text-sm font-semibold text-gray-900">
-                          {activeIndex !== null ? "Us ❤️" : "Our Client ❤️"}
+                          {activeIndex !== null ? "NextGen Fusion" : "Your Questions"}
                         </div>
-                        <div className="text-xs text-green-500">Online Now</div>
+                        <div className="text-xs text-gray-400">Usually replies within a day</div>
                       </div>
                     </div>
                     <div className="relative" ref={dropdownRef}>

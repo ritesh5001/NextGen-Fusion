@@ -126,7 +126,7 @@ export default function AboutUsSection() {
             >
               <BadgeSubtitle>About Us</BadgeSubtitle>
             </motion.div>
-            <motion.h1 
+            <motion.h2
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-8"
               variants={textVariants}
             >
@@ -152,7 +152,7 @@ export default function AboutUsSection() {
               <span className="text-gray-900">NextGen</span>
               <br />
               <span className="text-gray-900">Fusion</span>
-            </motion.h1>
+            </motion.h2>
           </motion.div>
 
           {/* Right Column */}
@@ -172,8 +172,9 @@ export default function AboutUsSection() {
               >
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Why we showed up</h3>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  Founded for you to be friends, accompanying you in every step of your business journey. Through
-                  digitals, we also come to empower people through education, creating impact beyond our imagination.
+                  We started NextGen Fusion to be the partner businesses actually want, one that stays
+                  invested at every step of your journey, not just until the invoice clears. We build to
+                  drive real growth, and we don&apos;t ghost you after launch.
                 </p>
               </motion.div>
               <motion.div
@@ -183,8 +184,9 @@ export default function AboutUsSection() {
               >
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Our Focus and Work</h3>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  We specialize in crafting seamless digital experiences that resonate with your audience. We aim
-                  businesses to build solutions that not only address your current needs but outcomes.
+                  We craft seamless digital experiences that resonate with your audience. We help businesses
+                  build solutions that don&apos;t just meet today&apos;s needs, they drive measurable
+                  outcomes: more enquiries, more sales, and lasting growth.
                 </p>
               </motion.div>
             </motion.div>
@@ -195,7 +197,7 @@ export default function AboutUsSection() {
                 className="text-2xl font-bold text-gray-900 mb-3"
                 variants={textVariants}
               >
-                Meet the Persona Behind Our Work
+                Meet the Team Behind Our Work
               </motion.h2>
               <motion.p 
                 className="text-gray-600 text-sm sm:text-base mb-8"

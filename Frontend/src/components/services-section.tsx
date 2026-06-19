@@ -246,7 +246,7 @@ export default function ServicesSection() {
           className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-0 divide-y divide-gray-100/50 sm:divide-y-0 sm:divide-x divide-gray-100/50"
           variants={containerVariants}
         >
-          {services.map((service, index) => {
+          {services.slice(0, 6).map((service, index) => {
             const isActive = activeCard === index
             const href = serviceRoutes[service.title] ?? "#"
 
@@ -304,6 +304,16 @@ export default function ServicesSection() {
               </Link>
             )
           })}
+        </motion.div>
+
+        {/* View all services */}
+        <motion.div className="mt-12 text-left" variants={textVariants}>
+          <Link
+            href="/services"
+            className="inline-flex items-center gap-2 border border-gray-200 text-gray-700 hover:text-white hover:bg-gray-900 hover:border-gray-900 font-medium text-sm px-6 py-3 rounded-full transition-all duration-200"
+          >
+            View all services
+          </Link>
         </motion.div>
       </div>
     </motion.section>

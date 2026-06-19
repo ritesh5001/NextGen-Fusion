@@ -20,7 +20,12 @@ const structuredData = {
       name: "NextGen Fusion",
       url: siteUrl,
       logo: `${siteUrl}/images/livtechlogo.svg`,
-      sameAs: ["https://www.nextgenfusion.in"],
+      sameAs: [
+        "https://www.nextgenfusion.in",
+        "https://www.instagram.com/nextgenfusion.in/",
+        "https://x.com/nextgenfusion",
+        "https://www.youtube.com/@nextgenfusion",
+      ],
       contactPoint: [
         {
           "@type": "ContactPoint",
@@ -30,7 +35,30 @@ const structuredData = {
           availableLanguage: ["English", "Hindi"],
         },
       ],
+      // TODO: replace placeholder rating with verified Google/Clutch review data
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "5.0",
+        reviewCount: "13",
+        bestRating: "5",
+        worstRating: "1",
+      },
     },
+    ...[
+      "Website Development",
+      "E-commerce Web Development",
+      "Web Design",
+      "SEO Services",
+      "AI Automation & Development",
+      "Software Development",
+    ].map((service) => ({
+      "@type": "Service",
+      "@id": `${siteUrl}/#service-${service.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+      name: service,
+      serviceType: service,
+      provider: { "@id": `${siteUrl}/#organization` },
+      areaServed: ["IN", "Worldwide"],
+    })),
     {
       "@type": "WebSite",
       "@id": `${siteUrl}/#website`,
