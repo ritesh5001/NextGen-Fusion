@@ -5,6 +5,8 @@ import { getSupabaseAdmin } from '../lib/supabase'
 const router = Router()
 
 const PROJECT_TYPES = ['landing-page', 'portfolio', 'ecommerce', 'saas', 'custom'] as const
+const BUILD_TYPES = ['wordpress', 'custom'] as const
+const ECOMMERCE_PACKAGES = ['standard', 'premium', 'extra-premium', 'custom-functionality'] as const
 const TIMELINES = ['asap', '1-month', '3-months', 'flexible'] as const
 const PAGE_COUNTS = ['1-5', '6-15', '16-30', '30+'] as const
 const DESIGN_LEVELS = ['clean', 'premium', 'conversion-focused'] as const
@@ -12,6 +14,8 @@ const CONTENT_READINESS = ['ready', 'partial', 'need-help'] as const
 const MAINTENANCE_LEVELS = ['none', 'basic', 'growth'] as const
 
 type ProjectType = typeof PROJECT_TYPES[number]
+type BuildType = typeof BUILD_TYPES[number]
+type EcommercePackage = typeof ECOMMERCE_PACKAGES[number]
 type Timeline = typeof TIMELINES[number]
 type PageCount = typeof PAGE_COUNTS[number]
 type DesignLevel = typeof DESIGN_LEVELS[number]
@@ -24,6 +28,8 @@ type EstimatorInput = {
   phone: string
   companyName: string
   projectType: ProjectType
+  buildType: BuildType
+  ecommercePackage: EcommercePackage
   features: string[]
   timeline: Timeline
   pageCount: PageCount
@@ -49,10 +55,9 @@ type EstimateResult = {
 }
 
 function clampRange(min: number, max: number) {
-  return {
-    min: Math.max(400, Math.round(min / 50) * 50),
-    max: Math.min(12000, Math.max(Math.round(max / 50) * 50, Math.round(min / 50) * 50)),
-  }
+  const lo = Math.max(4000, Math.round(Math.min(min, 300000) / 100) * 100)
+  const hi = Math.max(lo, Math.round(Math.min(max, 300000) / 100) * 100)
+  return { min: lo, max: hi }
 }
 
 function uniqueList(values: unknown[]): string[] {
@@ -65,6 +70,8 @@ function sanitizeInput(body: any): EstimatorInput | null {
   if (!body || typeof body !== 'object') return null
 
   const projectType = typeof body.projectType === 'string' ? body.projectType : ''
+  const buildType = typeof body.buildType === 'string' ? body.buildType : ''
+  const ecommercePackage = typeof body.ecommercePackage === 'string' ? body.ecommercePackage : ''
   const timeline = typeof body.timeline === 'string' ? body.timeline : ''
   const pageCount = typeof body.pageCount === 'string' ? body.pageCount : ''
   const designLevel = typeof body.designLevel === 'string' ? body.designLevel : ''
@@ -73,6 +80,8 @@ function sanitizeInput(body: any): EstimatorInput | null {
 
   if (
     !PROJECT_TYPES.includes(projectType as ProjectType) ||
+    !BUILD_TYPES.includes(buildType as BuildType) ||
+    !ECOMMERCE_PACKAGES.includes(ecommercePackage as EcommercePackage) ||
     !TIMELINES.includes(timeline as Timeline) ||
     !PAGE_COUNTS.includes(pageCount as PageCount) ||
     !DESIGN_LEVELS.includes(designLevel as DesignLevel) ||
@@ -88,6 +97,8 @@ function sanitizeInput(body: any): EstimatorInput | null {
     phone: typeof body.phone === 'string' ? body.phone.trim().slice(0, 60) : '',
     companyName: typeof body.companyName === 'string' ? body.companyName.trim().slice(0, 180) : '',
     projectType: projectType as ProjectType,
+    buildType: buildType as BuildType,
+    ecommercePackage: ecommercePackage as EcommercePackage,
     features: uniqueList(Array.isArray(body.features) ? body.features : []),
     timeline: timeline as Timeline,
     pageCount: pageCount as PageCount,
@@ -105,28 +116,56 @@ function isMissingTableError(error: { code?: string; message?: string } | null |
   return error.code === '42P01' || /schema cache|could not find the table/i.test(error.message || '')
 }
 
-function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
-  const baseByType: Record<ProjectType, { min: number; max: number; weeks: [number, number] }> = {
-    'landing-page': { min: 400, max: 800, weeks: [1, 2] },
-    portfolio: { min: 500, max: 1000, weeks: [1, 3] },
-    ecommerce: { min: 900, max: 2500, weeks: [2, 5] },
-    saas: { min: 2000, max: 6000, weeks: [4, 10] },
-    custom: { min: 800, max: 8000, weeks: [2, 12] },
-  }
+// Rate-card base price (INR) by project type + build type (+ ecommerce package).
+// Mirrors rateCardBase() in Frontend/src/lib/estimator-pricing.ts.
+function rateCardBase(
+  projectType: ProjectType,
+  buildType: BuildType,
+  pkg: EcommercePackage,
+): { min: number; max: number } {
+  const wp = buildType === 'wordpress'
 
-  const featureCost: Record<string, number> = {
-    payment: 150,
-    auth: 200,
-    dashboard: 800,
-    blog: 120,
-    booking: 250,
-    cms: 150,
-    crm: 350,
-    analytics: 150,
-    multi_language: 200,
-    seo_setup: 400,
-    whatsapp: 60,
+  switch (projectType) {
+    case 'landing-page':
+    case 'portfolio':
+      return wp ? { min: 4000, max: 4000 } : { min: 10000, max: 10000 }
+    case 'ecommerce': {
+      const table: Record<EcommercePackage, { wp: { min: number; max: number }; custom: { min: number; max: number } }> = {
+        standard: { wp: { min: 4000, max: 4000 }, custom: { min: 50000, max: 50000 } },
+        premium: { wp: { min: 6000, max: 6000 }, custom: { min: 80000, max: 80000 } },
+        'extra-premium': { wp: { min: 10000, max: 10000 }, custom: { min: 100000, max: 100000 } },
+        'custom-functionality': { wp: { min: 6000, max: 12000 }, custom: { min: 100000, max: 200000 } },
+      }
+      const row = table[pkg] ?? table.standard
+      return wp ? row.wp : row.custom
+    }
+    case 'saas':
+      return wp ? { min: 15000, max: 30000 } : { min: 50000, max: 120000 }
+    case 'custom':
+      return wp ? { min: 15000, max: 30000 } : { min: 15000, max: 80000 }
   }
+}
+
+function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
+  const wp = input.buildType === 'wordpress'
+
+  // Custom-coded feature/dev cost (INR). WordPress treats these as plugin cost.
+  const featureCostBase: Record<string, number> = {
+    payment: 8000,
+    auth: 10000,
+    dashboard: 30000,
+    blog: 5000,
+    booking: 12000,
+    cms: 8000,
+    crm: 15000,
+    analytics: 5000,
+    multi_language: 8000,
+    seo_setup: 8000,
+    whatsapp: 2000,
+  }
+  const WP_FEATURE_FACTOR = 0.25
+  const featureCostFor = (feature: string) =>
+    Math.round((featureCostBase[feature] ?? 8000) * (wp ? WP_FEATURE_FACTOR : 1))
 
   const featureWeeks: Record<string, number> = {
     payment: 1,
@@ -142,11 +181,12 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
     whatsapp: 0,
   }
 
-  const pageCost: Record<PageCount, number> = {
-    '1-5': 0,
-    '6-15': 250,
-    '16-30': 600,
-    '30+': 1200,
+  const ADDITIONAL_PAGE_COST = 1000
+  const pageExtra: Record<PageCount, { min: number; max: number }> = {
+    '1-5': { min: 0, max: 4 },
+    '6-15': { min: 5, max: 14 },
+    '16-30': { min: 15, max: 29 },
+    '30+': { min: 30, max: 40 },
   }
 
   const pageWeeks: Record<PageCount, number> = {
@@ -158,14 +198,14 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
 
   const designMultiplier: Record<DesignLevel, number> = {
     clean: 1,
-    premium: 1.18,
-    'conversion-focused': 1.28,
+    premium: 1.1,
+    'conversion-focused': 1.2,
   }
 
   const contentCost: Record<ContentReadiness, number> = {
     ready: 0,
-    partial: 150,
-    'need-help': 400,
+    partial: 3000,
+    'need-help': 8000,
   }
 
   const contentWeeks: Record<ContentReadiness, number> = {
@@ -176,8 +216,8 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
 
   const maintenanceCost: Record<MaintenanceLevel, number> = {
     none: 0,
-    basic: 120,
-    growth: 350,
+    basic: 1500,
+    growth: 5000,
   }
 
   const maintenanceWeeks: Record<MaintenanceLevel, number> = {
@@ -187,10 +227,18 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
   }
 
   const urgencyMultiplier: Record<Timeline, number> = {
-    asap: 1.12,
+    asap: 1.1,
     '1-month': 1.05,
     '3-months': 1,
     flexible: 0.98,
+  }
+
+  const weeksByType: Record<ProjectType, [number, number]> = {
+    'landing-page': [1, 2],
+    portfolio: [1, 3],
+    ecommerce: [2, 5],
+    saas: [4, 10],
+    custom: [2, 8],
   }
 
   const confidence: EstimateResult['confidence'] =
@@ -200,20 +248,31 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
         ? 'medium'
         : 'high'
 
-  const base = baseByType[input.projectType]
-  const featuresCost = input.features.reduce((sum, feature) => sum + (featureCost[feature] || 150), 0)
-  const featuresWeeks = input.features.reduce((sum, feature) => sum + (featureWeeks[feature] || 1), 0)
-  const integrationsCost = input.integrations.length * 150
+  const base = rateCardBase(input.projectType, input.buildType, input.ecommercePackage)
+  const featuresCost = input.features.reduce((sum, feature) => sum + featureCostFor(feature), 0)
+  const featuresWeeks = input.features.reduce((sum, feature) => sum + (featureWeeks[feature] ?? 1), 0)
+  const perIntegration = wp ? 2500 : 10000
+  const integrationsCost = input.integrations.length * perIntegration
   const integrationsWeeks = input.integrations.length
 
-  let min = base.min + pageCost[input.pageCount] + featuresCost + integrationsCost + contentCost[input.contentReadiness] + maintenanceCost[input.maintenance]
-  let max = base.max + Math.round(pageCost[input.pageCount] * 1.35) + Math.round(featuresCost * 1.35) + Math.round(integrationsCost * 1.4) + contentCost[input.contentReadiness] + maintenanceCost[input.maintenance]
+  const pageApplies = input.projectType === 'landing-page' || input.projectType === 'portfolio'
+  const pageAddMin = pageApplies ? pageExtra[input.pageCount].min * ADDITIONAL_PAGE_COST : 0
+  const pageAddMax = pageApplies ? pageExtra[input.pageCount].max * ADDITIONAL_PAGE_COST : 0
 
-  min = Math.round(min * designMultiplier[input.designLevel] * urgencyMultiplier[input.timeline])
-  max = Math.round(max * designMultiplier[input.designLevel] * urgencyMultiplier[input.timeline])
+  const extras = contentCost[input.contentReadiness] + maintenanceCost[input.maintenance]
 
-  const weeksMin = Math.max(1, base.weeks[0] + Math.floor(featuresWeeks * 0.6) + pageWeeks[input.pageCount] + contentWeeks[input.contentReadiness])
-  const weeksMax = Math.max(weeksMin + 1, base.weeks[1] + featuresWeeks + pageWeeks[input.pageCount] + contentWeeks[input.contentReadiness] + maintenanceWeeks[input.maintenance] + integrationsWeeks)
+  let min = base.min + pageAddMin + featuresCost + integrationsCost + extras
+  let max = base.max + pageAddMax + Math.round(featuresCost * 1.3) + Math.round(integrationsCost * 1.3) + extras
+
+  const designMult = input.projectType === 'ecommerce' ? 1 : designMultiplier[input.designLevel]
+  const urgency = urgencyMultiplier[input.timeline]
+  min = Math.round(min * designMult * urgency)
+  max = Math.round(max * designMult * urgency)
+  if (max <= min) max = Math.round(min * 1.15)
+
+  const baseWeeks = weeksByType[input.projectType]
+  const weeksMin = Math.max(1, baseWeeks[0] + Math.floor(featuresWeeks * 0.6) + pageWeeks[input.pageCount] + contentWeeks[input.contentReadiness])
+  const weeksMax = Math.max(weeksMin + 1, baseWeeks[1] + featuresWeeks + pageWeeks[input.pageCount] + contentWeeks[input.contentReadiness] + maintenanceWeeks[input.maintenance] + integrationsWeeks)
 
   const cost = clampRange(min, max)
 
@@ -236,8 +295,10 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
     input.projectType === 'saas' || input.projectType === 'custom' ? 'Complex custom logic can push the quote toward the upper side of the range.' : 'Estimate assumes standard delivery without unusual compliance or enterprise constraints.',
   ]
 
+  const buildLabel = input.buildType === 'wordpress' ? 'WordPress/Shopify' : 'custom-coded'
+
   return {
-    summary: `This looks like a ${input.designLevel} ${input.projectType.replace('-', ' ')} build with ${input.features.length || 'a small'} scoped feature set and a ${input.timeline.replace('-', ' ')} delivery target.`,
+    summary: `This looks like a ${buildLabel} ${input.projectType.replace('-', ' ')} build with ${input.features.length || 'a small'} scoped feature set and a ${input.timeline.replace('-', ' ')} delivery target.`,
     estimated_cost_inr: cost,
     estimated_timeline_weeks: { min: weeksMin, max: weeksMax },
     confidence,
@@ -265,6 +326,8 @@ async function generateWithGrok(input: EstimatorInput, baseline: EstimateResult)
     name: input.name,
     companyName: input.companyName,
     projectType: input.projectType,
+    buildType: input.buildType,
+    ecommercePackage: input.ecommercePackage,
     features: input.features,
     timeline: input.timeline,
     pageCount: input.pageCount,
@@ -291,14 +354,14 @@ async function generateWithGrok(input: EstimatorInput, baseline: EstimateResult)
         {
           role: 'system',
           content:
-            'You are a senior web agency solutions architect for NextGen Fusion. Return only valid JSON. Quote only in USD. Stay close to these pricing rules unless the input clearly justifies the upper end: WordPress or Shopify websites around $100-$200, SEO around $100, and custom-coded websites from about $100 up to $2,000. Do not include markdown fences. Stay reasonably close to the provided baseline estimate.',
+            'You are a senior web agency solutions architect for NextGen Fusion. Return only valid JSON, no markdown fences. The pricing comes from a fixed INR rate card and is provided to you as baselineEstimate.estimated_cost_inr — you MUST copy those exact numbers and never change them. Your job is only to write helpful, accurate text (summary, scope, assumptions, highlights). All amounts are in Indian Rupees (INR).',
         },
         {
           role: 'user',
           content:
             `Generate a structured project estimate for this website/app brief.\n` +
             `Return JSON with exactly these keys: summary, estimated_cost_inr, estimated_timeline_weeks, confidence, highlighted_features, scope_breakdown, assumptions, next_step.\n` +
-            `estimated_cost_inr must still use that key name for compatibility, but the numbers inside it must be USD amounts.\n` +
+            `estimated_cost_inr must be exactly the baselineEstimate.estimated_cost_inr values (INR). Do not recalculate or alter them.\n` +
             `estimated_timeline_weeks must be {"min": number, "max": number}.\n` +
             `confidence must be one of low, medium, high.\n` +
             `highlighted_features, scope_breakdown, assumptions must each be arrays of short strings.\n` +
@@ -376,6 +439,14 @@ router.post('/project-estimator', async (req, res) => {
       console.error('[project-estimator] Grok estimate failed, using fallback:', err instanceof Error ? err.message : err)
     }
 
+    // The rate card is the single source of truth: never let the AI move the price
+    // or timeline. AI is only allowed to enrich the supporting text.
+    estimate = {
+      ...estimate,
+      estimated_cost_inr: baseline.estimated_cost_inr,
+      estimated_timeline_weeks: baseline.estimated_timeline_weeks,
+    }
+
     const sb = getSupabaseAdmin()
     const { data, error } = await sb
       .from('project_estimator_submissions')
@@ -393,7 +464,14 @@ router.post('/project-estimator', async (req, res) => {
         maintenance: input.maintenance,
         integrations: input.integrations,
         goals: input.goals,
-        notes: input.notes || null,
+        notes:
+          [
+            `Build type: ${input.buildType === 'wordpress' ? 'WordPress/Shopify' : 'Custom-coded'}`,
+            input.projectType === 'ecommerce' ? `eCommerce package: ${input.ecommercePackage}` : null,
+            input.notes ? `\n${input.notes}` : null,
+          ]
+            .filter(Boolean)
+            .join(' · ') || null,
         estimate_summary: estimate.summary,
         estimated_cost_min: estimate.estimated_cost_inr.min,
         estimated_cost_max: estimate.estimated_cost_inr.max,

@@ -112,6 +112,8 @@ export interface ProjectEstimatorData {
   phone: string
   companyName: string
   projectType: 'landing-page' | 'portfolio' | 'ecommerce' | 'saas' | 'custom'
+  buildType: 'wordpress' | 'custom'
+  ecommercePackage: 'standard' | 'premium' | 'extra-premium' | 'custom-functionality'
   features: string[]
   timeline: 'asap' | '1-month' | '3-months' | 'flexible'
   pageCount: '1-5' | '6-15' | '16-30' | '30+'

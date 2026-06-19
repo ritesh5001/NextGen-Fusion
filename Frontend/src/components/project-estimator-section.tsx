@@ -64,6 +64,18 @@ const featureOptions = [
   { value: "whatsapp", label: "WhatsApp" },
 ] as const
 
+const buildTypeOptions = [
+  { value: "wordpress", label: "WordPress / Shopify" },
+  { value: "custom", label: "Custom-Coded" },
+] as const
+
+const ecommercePackageOptions = [
+  { value: "standard", label: "Standard" },
+  { value: "premium", label: "Premium" },
+  { value: "extra-premium", label: "Extra Premium" },
+  { value: "custom-functionality", label: "Custom Functionality" },
+] as const
+
 const timelineOptions = [
   { value: "asap", label: "ASAP" },
   { value: "1-month", label: "1 Month" },
@@ -114,6 +126,8 @@ const initialForm: EstimatorForm = {
   phone: "",
   companyName: "",
   projectType: "landing-page",
+  buildType: "wordpress",
+  ecommercePackage: "standard",
   features: [],
   timeline: "3-months",
   pageCount: "1-5",
@@ -227,6 +241,26 @@ export default function ProjectEstimatorSection() {
                         />
                       ))}
                     </div>
+
+                    <div className="mt-6">
+                      <Segmented
+                        label="How should we build it?"
+                        options={buildTypeOptions}
+                        value={form.buildType}
+                        onChange={(v) => update("buildType", v as EstimatorForm["buildType"])}
+                      />
+                    </div>
+
+                    {form.projectType === "ecommerce" && (
+                      <div className="mt-6">
+                        <Segmented
+                          label="Store package"
+                          options={ecommercePackageOptions}
+                          value={form.ecommercePackage}
+                          onChange={(v) => update("ecommercePackage", v as EstimatorForm["ecommercePackage"])}
+                        />
+                      </div>
+                    )}
 
                     <div className="mt-6 grid gap-5 sm:grid-cols-2">
                       <Segmented
