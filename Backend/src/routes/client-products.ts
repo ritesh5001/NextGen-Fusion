@@ -2,8 +2,10 @@ import { Router } from 'express'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { requireClient } from '../middleware/auth'
+import { requireClientTool } from '../lib/client-subscription'
 
 const router = Router()
+router.use(requireClientTool('product_catalog'))
 
 const PRODUCT_COLUMNS =
   'id, title, description, vendor, product_type, category, tags, published, options, variants, images, created_at, updated_at'

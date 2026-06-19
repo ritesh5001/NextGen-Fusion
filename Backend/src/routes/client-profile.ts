@@ -5,7 +5,8 @@ import { requireClient } from '../middleware/auth'
 
 const router = Router()
 
-const PROFILE_COLUMNS = 'id, name, company, email, phone'
+const PROFILE_COLUMNS =
+  'id, name, company, email, phone, subscription_plan, subscription_status, subscription_current_period_end, allowed_tools'
 
 router.get('/profile', requireClient, async (req, res) => {
   try {

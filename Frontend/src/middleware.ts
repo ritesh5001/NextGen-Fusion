@@ -22,7 +22,13 @@ export async function middleware(req: NextRequest) {
 
   // ----- Client portal -----
   if (normalizedPath === '/portal' || normalizedPath.startsWith('/portal/')) {
-    if (normalizedPath === '/portal/login') return NextResponse.next()
+    const publicPortalPaths = new Set([
+      '/portal/login',
+      '/portal/signup',
+      '/portal/forgot-password',
+      '/portal/reset-password',
+    ])
+    if (publicPortalPaths.has(normalizedPath)) return NextResponse.next()
     const role = await getRole(token)
     if (role === 'client') return NextResponse.next()
     const url = req.nextUrl.clone()

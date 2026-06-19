@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { LayoutDashboard, Package, Images, User, LogOut } from 'lucide-react'
+import { LayoutDashboard, Package, Images, User, LogOut, CreditCard } from 'lucide-react'
 
 const NAV = [
   { href: '/portal', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/portal/products', label: 'My Products', icon: Package, exact: false },
   { href: '/portal/images', label: 'My Images', icon: Images, exact: true },
+  { href: '/portal/subscription', label: 'Subscription', icon: CreditCard, exact: true },
   { href: '/portal/profile', label: 'Profile', icon: User, exact: true },
 ]
 

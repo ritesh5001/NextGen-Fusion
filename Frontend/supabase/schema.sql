@@ -502,16 +502,38 @@ create table if not exists client_users (
   email text not null unique,
   password_hash text not null,
   is_active boolean not null default true,
+  subscription_plan text not null default 'starter',
+  subscription_status text not null default 'active'
+    check (subscription_status in ('trialing', 'active', 'past_due', 'canceled', 'inactive')),
+  subscription_current_period_end timestamptz,
+  allowed_tools text[] not null default array[
+    'product_catalog',
+    'image_library',
+    'ai_product_copy'
+  ],
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
 
 create index if not exists client_users_email_idx on client_users (email);
 create index if not exists client_users_is_active_idx on client_users (is_active);
+create index if not exists client_users_subscription_status_idx on client_users (subscription_status);
 
 drop trigger if exists trg_client_users_updated_at on client_users;
 create trigger trg_client_users_updated_at before update on client_users
   for each row execute function set_updated_at();
+
+create table if not exists client_password_reset_tokens (
+  id uuid primary key default gen_random_uuid(),
+  client_id uuid not null references client_users(id) on delete cascade,
+  token_hash text not null unique,
+  expires_at timestamptz not null,
+  used_at timestamptz,
+  created_at timestamptz default now()
+);
+
+create index if not exists client_password_reset_tokens_client_idx on client_password_reset_tokens (client_id);
+create index if not exists client_password_reset_tokens_expires_idx on client_password_reset_tokens (expires_at);
 
 -- =========================
 -- Client product catalog (one row per product; variants stored as JSONB)

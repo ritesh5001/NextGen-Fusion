@@ -2,8 +2,10 @@ import { Router } from 'express'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { requireClient } from '../middleware/auth'
 import { AiNotConfiguredError, generateProductCopyFromImage } from '../lib/ai-vision'
+import { requireClientTool } from '../lib/client-subscription'
 
 const router = Router()
+router.use(requireClientTool('ai_product_copy'))
 
 function isAllowedImageUrl(value: unknown): value is string {
   if (typeof value !== 'string' || !value) return false

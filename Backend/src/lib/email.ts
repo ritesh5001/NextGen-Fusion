@@ -110,3 +110,51 @@ export async function sendCampaignEmail({ campaign, contact, type }: SendArgs): 
     }
   }
 }
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+export async function sendPasswordResetEmail(args: {
+  to: string
+  name?: string | null
+  resetUrl: string
+}): Promise<SendResult> {
+  const fromEmail = process.env.RESEND_FROM_EMAIL
+  if (!fromEmail) {
+    return { ok: false, error: 'RESEND_FROM_EMAIL env is not set', subject: 'Reset your NextGen Fusion password' }
+  }
+  const fromName = process.env.RESEND_FROM_NAME || 'NextGen Fusion'
+  const replyTo = process.env.RESEND_REPLY_TO || undefined
+  const safeName = escapeHtml(args.name?.trim() || 'there')
+  const safeResetUrl = escapeHtml(args.resetUrl)
+  const subject = 'Reset your NextGen Fusion password'
+
+  try {
+    const res = await getResend().emails.send({
+      from: `${fromName} <${fromEmail}>`,
+      to: args.to,
+      subject,
+      html: wrapHtmlEmail(`
+        <p style="margin:0 0 16px">Hi ${safeName},</p>
+        <p style="margin:0 0 20px">Use the button below to reset your NextGen Fusion portal password. This link expires in 1 hour.</p>
+        <p style="margin:0 0 20px">
+          <a href="${safeResetUrl}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;border-radius:8px;padding:10px 16px;font-weight:600">Reset password</a>
+        </p>
+        <p style="margin:0;color:#64748b;font-size:13px">If you did not request this, you can ignore this email.</p>
+      `),
+      replyTo,
+    })
+    if (res.error) {
+      return { ok: false, error: res.error.message || 'Resend error', subject }
+    }
+    return { ok: true, messageId: res.data?.id ?? null, subject }
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err), subject }
+  }
+}

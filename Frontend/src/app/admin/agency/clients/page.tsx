@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { AgencyShell, PageHeader } from '@/components/admin/agency-shell'
-import { Plus, KeyRound, Ban, CheckCircle2 } from 'lucide-react'
+import { Plus, KeyRound, Ban, CheckCircle2, CreditCard } from 'lucide-react'
 
 type Client = {
   id: string
@@ -10,6 +10,10 @@ type Client = {
   company: string | null
   email: string
   is_active: boolean
+  subscription_plan: string | null
+  subscription_status: string | null
+  allowed_tools: string[] | null
+  subscription_current_period_end: string | null
   created_at: string
 }
 
@@ -104,6 +108,39 @@ export default function AgencyClientsPage() {
     else alert('Failed to update password')
   }
 
+  async function editSubscription(client: Client) {
+    const plan = prompt('Plan name:', client.subscription_plan || 'starter')
+    if (plan === null) return
+    const status = prompt(
+      'Status: trialing, active, past_due, canceled, inactive',
+      client.subscription_status || 'active',
+    )
+    if (status === null) return
+    const tools = prompt(
+      'Allowed tools, comma separated: product_catalog, image_library, ai_product_copy',
+      (client.allowed_tools || []).join(', ') || 'product_catalog, image_library, ai_product_copy',
+    )
+    if (tools === null) return
+    const currentPeriodEnd = prompt(
+      'Current period end ISO date, or blank for no expiry:',
+      client.subscription_current_period_end || '',
+    )
+    if (currentPeriodEnd === null) return
+
+    const res = await fetch(`/api/agency/client-users/${client.id}`, {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        subscription_plan: plan,
+        subscription_status: status,
+        allowed_tools: tools.split(',').map((tool) => tool.trim()).filter(Boolean),
+        subscription_current_period_end: currentPeriodEnd.trim() || null,
+      }),
+    })
+    if (res.ok) load()
+    else alert('Failed to update subscription')
+  }
+
   return (
     <AgencyShell>
       <div className="p-6 max-w-5xl">
@@ -191,6 +228,8 @@ export default function AgencyClientsPage() {
                   <th className="px-4 py-2 font-medium">Name</th>
                   <th className="px-4 py-2 font-medium">Company</th>
                   <th className="px-4 py-2 font-medium">Email</th>
+                  <th className="px-4 py-2 font-medium">Plan</th>
+                  <th className="px-4 py-2 font-medium">Subscription</th>
                   <th className="px-4 py-2 font-medium">Status</th>
                   <th className="px-4 py-2 font-medium text-right">Actions</th>
                 </tr>
@@ -198,7 +237,7 @@ export default function AgencyClientsPage() {
               <tbody className="divide-y divide-slate-100">
                 {items.length === 0 && !loading && (
                   <tr>
-                    <td colSpan={5} className="px-4 py-12 text-center text-slate-500">
+                    <td colSpan={7} className="px-4 py-12 text-center text-slate-500">
                       No clients yet. Create one to give them portal access.
                     </td>
                   </tr>
@@ -208,6 +247,12 @@ export default function AgencyClientsPage() {
                     <td className="px-4 py-2 font-medium text-slate-900">{c.name}</td>
                     <td className="px-4 py-2 text-slate-700">{c.company || '-'}</td>
                     <td className="px-4 py-2 text-slate-700">{c.email}</td>
+                    <td className="px-4 py-2 text-slate-700">{c.subscription_plan || 'starter'}</td>
+                    <td className="px-4 py-2">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
+                        {c.subscription_status || 'active'}
+                      </span>
+                    </td>
                     <td className="px-4 py-2">
                       <span
                         className={
@@ -220,6 +265,13 @@ export default function AgencyClientsPage() {
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex justify-end gap-1">
+                        <button
+                          onClick={() => editSubscription(c)}
+                          className="p-1.5 rounded hover:bg-slate-200 text-slate-600"
+                          title="Edit subscription"
+                        >
+                          <CreditCard className="h-4 w-4" />
+                        </button>
                         <button
                           onClick={() => resetPassword(c)}
                           className="p-1.5 rounded hover:bg-slate-200 text-slate-600"

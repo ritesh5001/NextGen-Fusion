@@ -4,8 +4,10 @@ import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { requireClient } from '../middleware/auth'
 import { buildDeliveryUrl, destroyImage, uploadImageBuffer } from '../lib/cloudinary'
+import { requireClientTool } from '../lib/client-subscription'
 
 const router = Router()
+router.use(requireClientTool('image_library'))
 
 const upload = multer({
   storage: multer.memoryStorage(),
