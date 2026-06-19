@@ -5,9 +5,10 @@ import { getSupabaseAdmin } from '../lib/supabase'
 const router = Router()
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Subscription plan catalog — the BACKEND copy is the price authority. The
-// frontend has a display-only mirror in Frontend/src/lib/subscription-plans.ts.
-// Amounts are in INR rupees here; Razorpay is charged in paise (× 100).
+// Subscription plan catalog. Prices are managed from the admin panel and stored
+// in the `subscription_plans` table — that table is the price authority. The
+// hardcoded DEFAULT_PLANS below are a fallback used only if the table is missing
+// or empty. Amounts are in INR rupees; Razorpay is charged in paise (× 100).
 // ─────────────────────────────────────────────────────────────────────────────
 type BillingPeriod = 'year' | 'month'
 type Plan = {
@@ -15,13 +16,45 @@ type Plan = {
   name: string
   amount: number // INR rupees
   period: BillingPeriod
+  tagline?: string
+  features?: string[]
+  highlighted?: boolean
 }
 
-const PLANS: Record<string, Plan> = {
-  'website-support': { id: 'website-support', name: 'Website Support', amount: 2000, period: 'year' },
-  'support-changes-wp': { id: 'support-changes-wp', name: 'Support + Changes (WordPress/Shopify)', amount: 15000, period: 'year' },
-  'support-changes-custom': { id: 'support-changes-custom', name: 'Support + Changes (Custom-coded)', amount: 5000, period: 'month' },
-  'product-catalog': { id: 'product-catalog', name: 'Product Catalog Access', amount: 4999, period: 'year' },
+const DEFAULT_PLANS: Plan[] = [
+  { id: 'website-support', name: 'Website Support', amount: 2000, period: 'year', tagline: 'Keep your site healthy.', features: ['Uptime monitoring', 'Security & plugin updates', 'Bug fixes', 'Email support'] },
+  { id: 'support-changes-wp', name: 'Support + Changes', amount: 15000, period: 'year', tagline: 'For WordPress & Shopify sites.', highlighted: true, features: ['Everything in Website Support', 'Content & design change requests', 'Product / page updates', 'Priority email support'] },
+  { id: 'support-changes-custom', name: 'Support + Changes (Custom)', amount: 5000, period: 'month', tagline: 'For custom-coded sites & apps.', features: ['Dedicated developer support', 'Ongoing changes & enhancements', 'Performance & SEO upkeep', 'Large changes quoted separately'] },
+  { id: 'product-catalog', name: 'Product Catalog Access', amount: 4999, period: 'year', tagline: 'Upload & manage your products.', features: ['Access the product upload tools in your portal', 'Add & manage products with variants', 'Bulk CSV import', 'WooCommerce / Shopify CSV export'] },
+]
+
+// Active plans, sourced from the admin-managed table with a safe fallback.
+async function getActivePlans(): Promise<Plan[]> {
+  try {
+    const sb = getSupabaseAdmin()
+    const { data, error } = await sb
+      .from('subscription_plans')
+      .select('id, name, amount, period, tagline, features, highlighted, active, sort_order')
+      .eq('active', true)
+      .order('sort_order', { ascending: true })
+    if (error || !data || data.length === 0) return DEFAULT_PLANS
+    return data.map((r) => ({
+      id: r.id,
+      name: r.name,
+      amount: r.amount,
+      period: r.period as BillingPeriod,
+      tagline: r.tagline ?? undefined,
+      features: Array.isArray(r.features) ? (r.features as string[]) : [],
+      highlighted: !!r.highlighted,
+    }))
+  } catch {
+    return DEFAULT_PLANS
+  }
+}
+
+async function getPlanById(id: string): Promise<Plan | null> {
+  const plans = await getActivePlans()
+  return plans.find((p) => p.id === id) ?? null
 }
 
 function getKeys() {
@@ -41,8 +74,8 @@ function cleanStr(v: unknown, max: number): string {
 }
 
 // Public list of plans (display + cross-checking on the client).
-router.get('/payments/plans', (_req, res) => {
-  res.json({ data: Object.values(PLANS) })
+router.get('/payments/plans', async (_req, res) => {
+  res.json({ data: await getActivePlans() })
 })
 
 // Create a Razorpay order for the chosen plan.
@@ -55,7 +88,7 @@ router.post('/payments/razorpay/order', async (req, res) => {
     }
 
     const planId = cleanStr(req.body?.planId, 60)
-    const plan = PLANS[planId]
+    const plan = await getPlanById(planId)
     if (!plan) {
       res.status(400).json({ error: 'Unknown plan' })
       return

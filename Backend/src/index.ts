@@ -12,6 +12,7 @@ import cronRoutes from './routes/cron'
 import leadsRoutes from './routes/leads'
 import projectEstimatorRoutes from './routes/project-estimator'
 import paymentsRoutes from './routes/payments'
+import subscriptionPlansRoutes from './routes/subscription-plans'
 import salesAssistantRoutes from './routes/sales-assistant'
 import statsRoutes from './routes/stats'
 import agencyAuthRoutes from './routes/agency-auth'
@@ -79,6 +80,7 @@ app.use('/api/admin', leadsRoutes)
 app.use('/api/admin', wpPluginsRoutes)
 app.use('/api/admin', bannersRoutes)
 app.use('/api/admin', clientBrandRoutes)
+app.use('/api/admin', subscriptionPlansRoutes)
 app.use('/api', contactFormRoutes)
 app.use('/api', projectEstimatorRoutes)
 app.use('/api', paymentsRoutes)

@@ -1,7 +1,23 @@
 import type { Metadata } from "next"
 import SubscribePlans from "@/components/subscribe-plans"
+import { API_BASE_URL } from "@/lib/api"
+import { subscriptionPlans, type SubscriptionPlan } from "@/lib/subscription-plans"
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
+
+// Plans are managed in the admin panel; fetch the live catalog (fallback to the
+// bundled defaults if the backend is unreachable at request time).
+async function getPlans(): Promise<SubscriptionPlan[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/payments/plans`, { cache: "no-store" })
+    if (!res.ok) throw new Error("plans fetch failed")
+    const json = await res.json()
+    const data = json?.data
+    return Array.isArray(data) && data.length ? data : subscriptionPlans
+  } catch {
+    return subscriptionPlans
+  }
+}
 
 export const metadata: Metadata = {
   title: "Support & Subscription Plans",
@@ -12,7 +28,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function SupportPage() {
+export default async function SupportPage() {
+  const plans = await getPlans()
   return (
     <section className="bg-white px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -32,7 +49,7 @@ export default function SupportPage() {
           </p>
         </div>
 
-        <SubscribePlans />
+        <SubscribePlans plans={plans} />
       </div>
     </section>
   )

@@ -41,7 +41,7 @@ function loadRazorpay(): Promise<boolean> {
 
 type Status = "idle" | "loading" | "success" | "error"
 
-export default function SubscribePlans() {
+export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: SubscriptionPlan[] }) {
   const [selected, setSelected] = useState<SubscriptionPlan | null>(null)
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
   const [status, setStatus] = useState<Status>("idle")
@@ -122,7 +122,7 @@ export default function SubscribePlans() {
   return (
     <>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {subscriptionPlans.map((plan) => (
+        {plans.map((plan) => (
           <div
             key={plan.id}
             className={`flex flex-col rounded-2xl border p-6 ${

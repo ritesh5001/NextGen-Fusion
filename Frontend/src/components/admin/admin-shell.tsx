@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays, Briefcase, Package, Boxes, Image } from 'lucide-react'
+import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays, Briefcase, Package, Boxes, Image, CreditCard } from 'lucide-react'
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -17,6 +17,7 @@ const NAV = [
   { href: '/admin/clients', label: 'Clients', icon: Package },
   { href: '/admin/wp-plugins', label: 'WP Plugins', icon: Boxes },
   { href: '/admin/banners', label: 'Banners', icon: Image },
+  { href: '/admin/subscription-plans', label: 'Subscription Plans', icon: CreditCard },
 ]
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
