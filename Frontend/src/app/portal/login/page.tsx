@@ -12,6 +12,10 @@ function LoginForm() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  // Only allow internal redirects (e.g. /support) — never an absolute/external URL.
+  const rawRedirect = searchParams.get('redirect') || ''
+  const safeRedirect = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/portal'
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -27,8 +31,7 @@ function LoginForm() {
         setError(json.error || 'Invalid email or password')
         return
       }
-      const redirect = searchParams.get('redirect') || '/portal'
-      router.replace(redirect)
+      router.replace(safeRedirect)
       router.refresh()
     } catch {
       setError('Unable to connect. Try again.')
@@ -92,7 +95,10 @@ function LoginForm() {
 
         <p className="mt-5 text-center text-sm text-slate-500">
           New to NextGen Fusion?{' '}
-          <Link href="/portal/signup" className="font-medium text-slate-900 hover:underline">
+          <Link
+            href={safeRedirect !== '/portal' ? `/portal/signup?redirect=${encodeURIComponent(safeRedirect)}` : '/portal/signup'}
+            className="font-medium text-slate-900 hover:underline"
+          >
             Create account
           </Link>
         </p>

@@ -14,9 +14,16 @@ create table if not exists public.subscription_orders (
   razorpay_order_id text not null unique,
   razorpay_payment_id text,
   status text not null default 'created' check (status in ('created', 'paid', 'failed')),
-  notes text
+  notes text,
+  -- Logged-in portal account that placed the order (authenticated checkout).
+  client_id uuid references public.client_users(id) on delete set null
 );
 
+-- Backfill for existing installs created before authenticated checkout.
+alter table public.subscription_orders
+  add column if not exists client_id uuid references public.client_users(id) on delete set null;
+
 create index if not exists subscription_orders_email_idx on public.subscription_orders (customer_email);
+create index if not exists subscription_orders_client_idx on public.subscription_orders (client_id);
 create index if not exists subscription_orders_status_idx on public.subscription_orders (status);
 create index if not exists subscription_orders_created_idx on public.subscription_orders (created_at desc);

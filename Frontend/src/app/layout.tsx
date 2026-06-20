@@ -22,14 +22,13 @@ const structuredData = {
       logo: `${siteUrl}/images/livtechlogo.svg`,
       sameAs: [
         "https://www.nextgenfusion.in",
-        "https://www.instagram.com/nextgenfusion.in/",
-        "https://x.com/nextgenfusion",
-        "https://www.youtube.com/@nextgenfusion",
+        "https://www.instagram.com/nextgenfusion.devs/",
       ],
       contactPoint: [
         {
           "@type": "ContactPoint",
           telephone: "+91-7348228167",
+          email: "contact@nextgenfusion.in",
           contactType: "sales",
           areaServed: "IN",
           availableLanguage: ["English", "Hindi"],
@@ -194,7 +193,6 @@ export const metadata: Metadata = {
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: ["/metaicon.svg"],
-    creator: "@nextgenfusion",
   },
 
   // Additional meta tags

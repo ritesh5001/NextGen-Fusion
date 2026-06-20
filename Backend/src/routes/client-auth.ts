@@ -5,12 +5,10 @@ import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { COOKIE_NAME } from '../middleware/auth'
-import { DEFAULT_CLIENT_TOOLS } from '../lib/client-subscription'
 import { sendPasswordResetEmail } from '../lib/email'
 
 const router = Router()
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000
-const DEFAULT_TRIAL_DAYS = 14
 
 function getSecret(): Uint8Array {
   const secret = process.env.ADMIN_SESSION_SECRET
@@ -115,7 +113,6 @@ router.post('/signup', async (req, res) => {
       return
     }
 
-    const trialEndsAt = new Date(Date.now() + DEFAULT_TRIAL_DAYS * 24 * 60 * 60 * 1000).toISOString()
     const password_hash = await bcrypt.hash(password, 12)
     const supabase = getSupabaseAdmin()
     const { data, error } = await supabase
@@ -125,10 +122,12 @@ router.post('/signup', async (req, res) => {
         company: company || null,
         email,
         password_hash,
+        // Self-signups are "users": no catalog access until they pay (₹500/yr).
+        account_type: 'user',
         subscription_plan: 'starter',
-        subscription_status: 'trialing',
-        subscription_current_period_end: trialEndsAt,
-        allowed_tools: DEFAULT_CLIENT_TOOLS,
+        subscription_status: 'inactive',
+        subscription_current_period_end: null,
+        allowed_tools: [],
       })
       .select('id, name, email, subscription_status, subscription_plan, subscription_current_period_end, allowed_tools')
       .single()

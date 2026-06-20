@@ -56,7 +56,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
   {
     id: "product-catalog",
     name: "Product Catalog Access",
-    amount: 4999,
+    amount: 500,
     period: "year",
     tagline: "Upload & manage your products.",
     features: [

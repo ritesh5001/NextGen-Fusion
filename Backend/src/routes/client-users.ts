@@ -8,12 +8,16 @@ import { DEFAULT_CLIENT_TOOLS, normalizeAllowedTools } from '../lib/client-subsc
 const router = Router()
 const DEFAULT_TRIAL_DAYS = 14
 
+function normalizeAccountType(value: unknown, fallback: 'client' | 'user'): 'client' | 'user' {
+  return value === 'client' || value === 'user' ? value : fallback
+}
+
 router.get('/client-users', requireInternalAuth, async (_req, res) => {
   try {
     const supabase = getSupabaseAdmin()
     const { data, error } = await supabase
       .from('client_users')
-      .select('id, name, company, email, phone, is_active, subscription_plan, subscription_status, subscription_current_period_end, allowed_tools, created_at, updated_at')
+      .select('id, name, company, email, phone, is_active, account_type, subscription_plan, subscription_status, subscription_current_period_end, allowed_tools, created_at, updated_at')
       .order('created_at', { ascending: false })
 
     if (error) throw error
@@ -26,7 +30,7 @@ router.get('/client-users', requireInternalAuth, async (_req, res) => {
 
 router.post('/client-users', requireInternalAuth, async (req, res) => {
   try {
-    const { name, company, email, password, phone, subscription_plan, subscription_status, allowed_tools } = req.body
+    const { name, company, email, password, phone, account_type, subscription_plan, subscription_status, allowed_tools } = req.body
     // Name is optional — if the admin doesn't set one, the client is prompted
     // to complete their profile on first login.
     if (!email || !password) {
@@ -49,12 +53,14 @@ router.post('/client-users', requireInternalAuth, async (req, res) => {
         phone: phone || null,
         email: email.toLowerCase().trim(),
         password_hash,
+        // Accounts created from the admin panel are real clients (free catalog access).
+        account_type: normalizeAccountType(account_type, 'client'),
         subscription_plan: typeof subscription_plan === 'string' ? subscription_plan.trim() || 'starter' : 'starter',
         subscription_status: typeof subscription_status === 'string' ? subscription_status : 'trialing',
         subscription_current_period_end: trialEndsAt,
         allowed_tools: allowed_tools === undefined ? DEFAULT_CLIENT_TOOLS : normalizeAllowedTools(allowed_tools),
       })
-      .select('id, name, company, email, phone, is_active, subscription_plan, subscription_status, subscription_current_period_end, allowed_tools, created_at')
+      .select('id, name, company, email, phone, is_active, account_type, subscription_plan, subscription_status, subscription_current_period_end, allowed_tools, created_at')
       .single()
 
     if (error) {
@@ -79,6 +85,7 @@ router.patch('/client-users/:id', requireInternalAuth, async (req, res) => {
       email,
       phone,
       is_active,
+      account_type,
       subscription_plan,
       subscription_status,
       subscription_current_period_end,
@@ -90,6 +97,7 @@ router.patch('/client-users/:id', requireInternalAuth, async (req, res) => {
     if (phone !== undefined) updates.phone = phone
     if (email !== undefined) updates.email = email.toLowerCase().trim()
     if (is_active !== undefined) updates.is_active = is_active
+    if (account_type !== undefined) updates.account_type = normalizeAccountType(account_type, 'user')
     if (subscription_plan !== undefined) updates.subscription_plan = subscription_plan || null
     if (subscription_status !== undefined) updates.subscription_status = subscription_status
     if (subscription_current_period_end !== undefined) {
@@ -102,7 +110,7 @@ router.patch('/client-users/:id', requireInternalAuth, async (req, res) => {
       .from('client_users')
       .update(updates)
       .eq('id', req.params.id)
-      .select('id, name, company, email, phone, is_active, subscription_plan, subscription_status, subscription_current_period_end, allowed_tools, updated_at')
+      .select('id, name, company, email, phone, is_active, account_type, subscription_plan, subscription_status, subscription_current_period_end, allowed_tools, updated_at')
       .single()
 
     if (error) throw error

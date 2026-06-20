@@ -14,19 +14,20 @@ export default function Footer() {
     { name: "Services", href: "/#services" },
     { name: "Work", href: "/work" },
     { name: "Support & Plans", href: "/support" },
-    { name: "Courses", href: "/courses" },
     { name: "Contact", href: "/#contact" },
   ];
 
   const socialLinks = [
     {
-      name: "Instagram",
-      href: "https://www.instagram.com/nextgenfusion.in/",
+      name: "@nextgenfusion.devs",
+      href: "https://www.instagram.com/nextgenfusion.devs/",
     },
-    { name: "Twitter", href: "https://x.com/nextgenfusion" },
-    { name: "Youtube", href: "https://www.youtube.com/@nextgenfusion" },
-    { name: "Dribbble", href: "https://dribbble.com/nextgenfusion" },
-    { name: "Behance", href: "https://www.behance.net/nextgenfusion" },
+  ];
+
+  const contactLinks = [
+    { name: "contact@nextgenfusion.in", href: "mailto:contact@nextgenfusion.in" },
+    { name: "WhatsApp chat", href: "https://wa.me/917348228167" },
+    { name: "+91 73482 28167", href: "tel:+917348228167" },
   ];
 
   return (
@@ -97,7 +98,7 @@ export default function Footer() {
                   </ul>
                 </div>
 
-                {/* Social */}
+                {/* Social & Contact */}
                 <div>
                   <h3 className="text-lg font-semibold mb-6 text-white">
                     Social
@@ -110,6 +111,22 @@ export default function Footer() {
                           className="text-gray-200 hover:text-white transition-colors duration-200"
                           target="_blank"
                           rel="noopener noreferrer"
+                        >
+                          {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <h3 className="text-lg font-semibold mb-6 mt-8 text-white">
+                    Get in touch
+                  </h3>
+                  <ul className="space-y-4">
+                    {contactLinks.map((link) => (
+                      <li key={link.name}>
+                        <a
+                          href={link.href}
+                          className="text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {link.name}
                         </a>
@@ -177,7 +194,7 @@ export default function Footer() {
                   </ul>
                 </div>
 
-                {/* Social */}
+                {/* Social & Contact */}
                 <div>
                   <h3 className="text-lg font-semibold mb-4 text-white">
                     Social
@@ -190,6 +207,22 @@ export default function Footer() {
                           className="text-gray-200 hover:text-white transition-colors duration-200"
                           target="_blank"
                           rel="noopener noreferrer"
+                        >
+                          {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <h3 className="text-lg font-semibold mb-4 mt-6 text-white">
+                    Get in touch
+                  </h3>
+                  <ul className="space-y-3">
+                    {contactLinks.map((link) => (
+                      <li key={link.name}>
+                        <a
+                          href={link.href}
+                          className="text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {link.name}
                         </a>

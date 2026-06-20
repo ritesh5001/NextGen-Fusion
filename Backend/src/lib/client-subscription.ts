@@ -43,24 +43,32 @@ export function requireClientTool(tool: ClientTool) {
         const supabase = getSupabaseAdmin()
         const { data, error } = await supabase
           .from('client_users')
-          .select('is_active, subscription_status, subscription_current_period_end, allowed_tools')
+          .select('is_active, account_type, subscription_status, subscription_current_period_end, allowed_tools')
           .eq('id', req.client_id)
           .single()
 
-        if (error || !data || !hasActiveSubscription(data)) {
+        if (error || !data || data.is_active === false) {
           res.status(403).json({ error: 'An active subscription is required to use this tool' })
           return
         }
 
-        const allowedTools = normalizeAllowedTools(data.allowed_tools)
-        if (!allowedTools.includes(tool)) {
-          res.status(403).json({ error: 'This tool is not included in your subscription' })
-          return
+        // Real agency clients always have access to the client tools — no payment
+        // required. Self-signup users must have paid (active sub + allowed tool).
+        if (data.account_type !== 'client') {
+          if (!hasActiveSubscription(data)) {
+            res.status(403).json({ error: 'An active subscription is required to use this tool' })
+            return
+          }
+          const allowedTools = normalizeAllowedTools(data.allowed_tools)
+          if (!allowedTools.includes(tool)) {
+            res.status(403).json({ error: 'This tool is not included in your subscription' })
+            return
+          }
         }
 
         req.client_subscription = {
           status: (data.subscription_status || 'active') as SubscriptionStatus,
-          allowed_tools: allowedTools,
+          allowed_tools: normalizeAllowedTools(data.allowed_tools),
           current_period_end: data.subscription_current_period_end || null,
         }
         next()

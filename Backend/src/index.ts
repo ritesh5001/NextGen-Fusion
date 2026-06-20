@@ -11,7 +11,7 @@ import contactRoutes from './routes/contacts'
 import cronRoutes from './routes/cron'
 import leadsRoutes from './routes/leads'
 import projectEstimatorRoutes from './routes/project-estimator'
-import paymentsRoutes from './routes/payments'
+import paymentsRoutes, { clientPaymentsRouter } from './routes/payments'
 import subscriptionPlansRoutes from './routes/subscription-plans'
 import salesAssistantRoutes from './routes/sales-assistant'
 import statsRoutes from './routes/stats'
@@ -89,6 +89,7 @@ app.use('/api/cron', cronRoutes)
 app.use('/api/agency', agencyAuthRoutes)
 app.use('/api/agency', agencyMembersRoutes)
 app.use('/api/agency', agencyProjectsRoutes)
+app.use('/api/client', clientPaymentsRouter)
 app.use('/api/client', clientAuthRoutes)
 app.use('/api/client', clientProductRoutes)
 app.use('/api/client', clientImageRoutes)

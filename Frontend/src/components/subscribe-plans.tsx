@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Check, X, Loader2, ShieldCheck } from "lucide-react"
-import { API_BASE_URL } from "@/lib/api"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { Check, X, Loader2, ShieldCheck, CheckCircle2 } from "lucide-react"
 import { subscriptionPlans, type SubscriptionPlan } from "@/lib/subscription-plans"
 
 const inr = (v: number) =>
@@ -39,29 +40,41 @@ function loadRazorpay(): Promise<boolean> {
   })
 }
 
+// Same-origin client API (the Next proxy forwards the session cookie). 200 means
+// the visitor is logged in as a portal account.
+async function isLoggedIn(): Promise<boolean> {
+  try {
+    const res = await fetch("/api/client/profile", { cache: "no-store" })
+    return res.ok
+  } catch {
+    return false
+  }
+}
+
 type Status = "idle" | "loading" | "success" | "error"
 
 export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: SubscriptionPlan[] }) {
-  const [selected, setSelected] = useState<SubscriptionPlan | null>(null)
-  const [form, setForm] = useState({ name: "", email: "", phone: "" })
+  const router = useRouter()
+  const [active, setActive] = useState<SubscriptionPlan | null>(null)
   const [status, setStatus] = useState<Status>("idle")
   const [message, setMessage] = useState("")
 
   const close = () => {
     if (status === "loading") return
-    setSelected(null)
+    setActive(null)
     setStatus("idle")
     setMessage("")
-    setForm({ name: "", email: "", phone: "" })
   }
 
-  async function pay() {
-    if (!selected) return
-    if (form.name.trim().length < 2 || !form.email.includes("@")) {
-      setStatus("error")
-      setMessage("Please enter your name and a valid email.")
+  async function startCheckout(plan: SubscriptionPlan) {
+    // Any payment requires login first.
+    if (!(await isLoggedIn())) {
+      alert("Please log in first to continue with the payment.")
+      router.push(`/portal/login?redirect=${encodeURIComponent("/support")}`)
       return
     }
+
+    setActive(plan)
     setStatus("loading")
     setMessage("")
 
@@ -69,15 +82,20 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
       const sdkOk = await loadRazorpay()
       if (!sdkOk) throw new Error("Could not load the payment SDK. Check your connection and retry.")
 
-      const orderRes = await fetch(`${API_BASE_URL}/payments/razorpay/order`, {
+      const orderRes = await fetch("/api/client/payments/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ planId: selected.id, ...form }),
+        body: JSON.stringify({ planId: plan.id }),
       })
       const orderJson = await orderRes.json()
+      if (orderRes.status === 401) {
+        alert("Please log in first to continue with the payment.")
+        router.push(`/portal/login?redirect=${encodeURIComponent("/support")}`)
+        return
+      }
       if (!orderRes.ok) throw new Error(orderJson?.error || "Could not start the payment.")
 
-      const { orderId, amount, currency, keyId, plan } = orderJson.data
+      const { orderId, amount, currency, keyId, prefill, plan: planInfo } = orderJson.data
       const Razorpay = (window as unknown as { Razorpay: RazorpayConstructor }).Razorpay
 
       const rzp = new Razorpay({
@@ -85,9 +103,9 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
         amount,
         currency,
         name: "NextGen Fusion",
-        description: `${plan.name} — ${inr(plan.amount)}/${plan.period === "year" ? "yr" : "mo"}`,
+        description: `${planInfo.name} — ${inr(planInfo.amount)}/${planInfo.period === "year" ? "yr" : "mo"}`,
         order_id: orderId,
-        prefill: { name: form.name, email: form.email, contact: form.phone },
+        prefill: { name: prefill?.name || "", email: prefill?.email || "", contact: prefill?.phone || "" },
         theme: { color: "#2B35AB" },
         modal: {
           ondismiss: () => {
@@ -97,15 +115,19 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
         },
         handler: async (resp) => {
           try {
-            const vRes = await fetch(`${API_BASE_URL}/payments/razorpay/verify`, {
+            const vRes = await fetch("/api/client/payments/verify", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(resp),
+              body: JSON.stringify({ ...resp, planId: plan.id }),
             })
             const vJson = await vRes.json()
             if (!vRes.ok || !vJson?.data?.verified) throw new Error(vJson?.error || "Verification failed.")
             setStatus("success")
-            setMessage("Payment successful! We'll be in touch shortly to activate your plan.")
+            setMessage(
+              plan.id === "product-catalog"
+                ? "Payment successful! Your Product Catalog access is now active."
+                : "Payment successful! Your plan is now active.",
+            )
           } catch (e) {
             setStatus("error")
             setMessage(e instanceof Error ? e.message : "Verification failed.")
@@ -113,6 +135,7 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
         },
       })
       rzp.open()
+      setStatus("idle")
     } catch (e) {
       setStatus("error")
       setMessage(e instanceof Error ? e.message : "Something went wrong.")
@@ -150,84 +173,64 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
             </ul>
             <button
               type="button"
-              onClick={() => { setSelected(plan); setStatus("idle"); setMessage("") }}
-              className={`mt-6 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
+              onClick={() => startCheckout(plan)}
+              disabled={status === "loading"}
+              className={`mt-6 rounded-lg px-4 py-2.5 text-sm font-semibold transition disabled:opacity-60 ${
                 plan.highlighted
                   ? "bg-gradient-to-r from-[#2B35AB] to-[#8A38F5] text-white hover:opacity-90"
                   : "bg-gray-900 text-white hover:bg-gray-800"
               }`}
             >
-              Subscribe — {inr(plan.amount)}/{plan.period === "year" ? "yr" : "mo"}
+              {status === "loading" && active?.id === plan.id
+                ? "Starting…"
+                : `Subscribe — ${inr(plan.amount)}/${plan.period === "year" ? "yr" : "mo"}`}
             </button>
           </div>
         ))}
       </div>
 
       <p className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-gray-400">
-        <ShieldCheck className="h-4 w-4" /> Secure payments by Razorpay · GST extra where applicable
+        <ShieldCheck className="h-4 w-4" /> Secure payments by Razorpay · You&apos;ll be asked to log in before paying · GST extra where applicable
       </p>
 
-      {/* Checkout modal */}
-      {selected && (
+      {/* Status modal (success / error) */}
+      {active && (status === "success" || status === "error") && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4" onClick={close}>
-          <div
-            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">{selected.name}</h3>
-                <p className="text-sm text-gray-500">
-                  {inr(selected.amount)}/{selected.period === "year" ? "year" : "month"}
-                </p>
-              </div>
+              <h3 className="text-lg font-bold text-gray-900">{active.name}</h3>
               <button onClick={close} className="rounded-full p-1 text-gray-400 hover:bg-gray-100" aria-label="Close">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {status === "success" ? (
-              <div className="mt-6 rounded-xl bg-emerald-50 p-4 text-center text-sm text-emerald-700">
-                {message}
+              <div className="mt-6 space-y-4">
+                <div className="flex items-start gap-3 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-700">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
+                  <span>{message}</span>
+                </div>
+                {active.id === "product-catalog" && (
+                  <Link
+                    href="/portal/products"
+                    className="flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#2B35AB] to-[#8A38F5] px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+                  >
+                    Go to my products
+                  </Link>
+                )}
               </div>
             ) : (
-              <div className="mt-5 space-y-3">
-                <input
-                  value={form.name}
-                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                  placeholder="Your name"
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-gray-400"
-                />
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-                  placeholder="Work email"
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-gray-400"
-                />
-                <input
-                  value={form.phone}
-                  onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                  placeholder="Phone (optional)"
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-gray-400"
-                />
-
-                {message && status === "error" && (
-                  <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{message}</p>
-                )}
-
-                <button
-                  type="button"
-                  onClick={pay}
-                  disabled={status === "loading"}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#2B35AB] to-[#8A38F5] px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
-                >
-                  {status === "loading" ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                  {status === "loading" ? "Starting…" : `Pay ${inr(selected.amount)}`}
-                </button>
-                <p className="text-center text-xs text-gray-400">Powered by Razorpay · UPI, cards, netbanking</p>
-              </div>
+              <p className="mt-6 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{message}</p>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Loading overlay while the Razorpay SDK / order is being prepared */}
+      {status === "loading" && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
+          <div className="flex items-center gap-3 rounded-xl bg-white px-5 py-4 text-sm font-medium text-gray-700 shadow-2xl">
+            <Loader2 className="h-5 w-5 animate-spin" /> Starting secure checkout…
           </div>
         </div>
       )}

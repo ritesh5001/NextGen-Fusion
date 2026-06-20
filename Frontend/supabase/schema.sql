@@ -509,6 +509,9 @@ create table if not exists client_users (
   allowed_tools text[] not null default array[
     'product_catalog'
   ],
+  -- 'client' = real agency client (admin-created) → free product-catalog access.
+  -- 'user'   = self-signup → must pay to unlock the product catalog.
+  account_type text not null default 'user' check (account_type in ('client', 'user')),
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -583,6 +586,20 @@ create index if not exists client_images_created_idx on client_images (created_a
 
 -- Client portal account phone (editable on the client profile).
 alter table client_users add column if not exists phone text;
+
+-- Distinguish real clients (free catalog access) from self-signup users (pay to unlock).
+alter table client_users
+  add column if not exists account_type text not null default 'user';
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint where conname = 'client_users_account_type_check'
+  ) then
+    alter table client_users
+      add constraint client_users_account_type_check
+      check (account_type in ('client', 'user'));
+  end if;
+end $$;
 
 -- Link an agency project to a portal client account so the client can see it.
 alter table agency_projects

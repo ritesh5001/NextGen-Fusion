@@ -1,20 +1,24 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const inputCls =
   'w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400'
 
-export default function ClientSignupPage() {
+function SignupForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [name, setName] = useState('')
   const [company, setCompany] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const rawRedirect = searchParams.get('redirect') || ''
+  const safeRedirect = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/portal'
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -31,7 +35,7 @@ export default function ClientSignupPage() {
         setError(json.error || 'Could not create your account')
         return
       }
-      router.replace('/portal')
+      router.replace(safeRedirect)
       router.refresh()
     } catch {
       setError('Unable to connect. Try again.')
@@ -46,7 +50,9 @@ export default function ClientSignupPage() {
         <div className="mb-6">
           <div className="text-sm font-semibold tracking-tight text-slate-900">NextGen Fusion</div>
           <h1 className="text-xl font-semibold mt-1">Create your portal account</h1>
-          <p className="text-sm text-slate-500 mt-1">Start with access to the client tools included in your trial.</p>
+          <p className="text-sm text-slate-500 mt-1">
+            Unlock the product catalog tools anytime from Support &amp; Plans.
+          </p>
         </div>
 
         {error && (
@@ -98,11 +104,22 @@ export default function ClientSignupPage() {
 
         <p className="mt-5 text-center text-sm text-slate-500">
           Already have an account?{' '}
-          <Link href="/portal/login" className="font-medium text-slate-900 hover:underline">
+          <Link
+            href={safeRedirect !== '/portal' ? `/portal/login?redirect=${encodeURIComponent(safeRedirect)}` : '/portal/login'}
+            className="font-medium text-slate-900 hover:underline"
+          >
             Sign in
           </Link>
         </p>
       </div>
     </div>
+  )
+}
+
+export default function ClientSignupPage() {
+  return (
+    <Suspense>
+      <SignupForm />
+    </Suspense>
   )
 }

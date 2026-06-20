@@ -76,9 +76,10 @@ export default function PortalSubscriptionPage() {
                   <p className="mt-2 text-sm text-slate-500">
                     {status === 'trialing' ? 'Trial ends' : 'Current period ends'}: {fmtDate(profile?.subscription_current_period_end)}
                   </p>
-                  {(profile?.subscription_plan || 'starter').toLowerCase() === 'starter' && (
+                  {!active && (
                     <p className="mt-2 text-sm text-slate-600">
-                      Starter includes product adding access. More tools can be added to this plan later.
+                      You don&apos;t have an active plan yet. Unlock the Product Catalog tools from{' '}
+                      <a href="/support" className="font-medium text-slate-900 underline">Support &amp; Plans</a>.
                     </p>
                   )}
                 </div>
