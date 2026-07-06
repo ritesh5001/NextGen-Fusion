@@ -118,25 +118,58 @@ const integrationOptions = [
   "Custom API",
 ] as const
 
-type EstimatorForm = ProjectEstimatorData
+// Fields the user actively picks — blank until chosen, so nothing is preselected.
+type SelectableKey =
+  | "projectType"
+  | "buildType"
+  | "ecommercePackage"
+  | "timeline"
+  | "pageCount"
+  | "designLevel"
+  | "contentReadiness"
+  | "maintenance"
+
+type EstimatorForm = Omit<ProjectEstimatorData, SelectableKey> & {
+  [K in SelectableKey]: ProjectEstimatorData[K] | ""
+}
 
 const initialForm: EstimatorForm = {
   name: "",
   email: "",
   phone: "",
   companyName: "",
-  projectType: "landing-page",
-  buildType: "wordpress",
-  ecommercePackage: "standard",
+  projectType: "",
+  buildType: "",
+  ecommercePackage: "",
   features: [],
-  timeline: "3-months",
-  pageCount: "1-5",
-  designLevel: "premium",
-  contentReadiness: "partial",
-  maintenance: "basic",
+  timeline: "",
+  pageCount: "",
+  designLevel: "",
+  contentReadiness: "",
+  maintenance: "",
   integrations: [],
   goals: "",
   notes: "",
+}
+
+// Resolve the blank-slate form into a full ProjectEstimatorData once the essential
+// choices exist. Untouched optional fields fall back to neutral (no-upcharge)
+// defaults so the live ballpark and the API stay in agreement. Returns null while
+// the essentials are still unselected.
+function resolveEstimatorForm(form: EstimatorForm): ProjectEstimatorData | null {
+  if (!form.projectType || !form.buildType || !form.pageCount || !form.timeline) return null
+  if (form.projectType === "ecommerce" && !form.ecommercePackage) return null
+  return {
+    ...form,
+    projectType: form.projectType,
+    buildType: form.buildType,
+    ecommercePackage: form.ecommercePackage || "standard",
+    timeline: form.timeline,
+    pageCount: form.pageCount,
+    designLevel: form.designLevel || "clean",
+    contentReadiness: form.contentReadiness || "ready",
+    maintenance: form.maintenance || "none",
+  }
 }
 
 const GRADIENT = "bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4]"
@@ -149,8 +182,9 @@ export default function ProjectEstimatorSection() {
   const [error, setError] = useState("")
   const [result, setResult] = useState<ProjectEstimatorResponse | null>(null)
 
-  const ballpark = useMemo(() => computeBallpark(form), [form])
-  const support = useMemo(() => computeSupport(form), [form])
+  const resolved = useMemo(() => resolveEstimatorForm(form), [form])
+  const ballpark = useMemo(() => (resolved ? computeBallpark(resolved) : null), [resolved])
+  const support = useMemo(() => (resolved ? computeSupport(resolved) : null), [resolved])
 
   function update<K extends keyof EstimatorForm>(key: K, value: EstimatorForm[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -165,16 +199,16 @@ export default function ProjectEstimatorSection() {
     }))
   }
 
-  const isStepOneValid = !!form.projectType && !!form.timeline && !!form.pageCount
+  const isStepOneValid = resolved !== null
   const isStepTwoValid =
     form.name.trim().length >= 2 && form.email.trim().length >= 5 && form.goals.trim().length >= 12
 
   async function handleEstimate() {
-    if (!isStepOneValid || !isStepTwoValid) return
+    if (!resolved || !isStepTwoValid) return
     setLoading(true)
     setError("")
     try {
-      const response = await apiService.estimateProject(form)
+      const response = await apiService.estimateProject(resolved)
       setResult(response)
       setStep(3)
     } catch (err) {
@@ -565,7 +599,9 @@ export default function ProjectEstimatorSection() {
                     key={
                       step === 3 && result
                         ? `final-${result.estimated_cost_inr.min}-${result.estimated_cost_inr.max}`
-                        : `bp-${ballpark.cost.min}-${ballpark.cost.max}`
+                        : ballpark
+                          ? `bp-${ballpark.cost.min}-${ballpark.cost.max}`
+                          : "bp-empty"
                     }
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -575,20 +611,26 @@ export default function ProjectEstimatorSection() {
                   >
                     {step === 3 && result
                       ? `${formatCurrency(result.estimated_cost_inr.min)} – ${formatCurrency(result.estimated_cost_inr.max)}`
-                      : `${formatCurrency(ballpark.cost.min)} – ${formatCurrency(ballpark.cost.max)}`}
+                      : ballpark
+                        ? `${formatCurrency(ballpark.cost.min)} – ${formatCurrency(ballpark.cost.max)}`
+                        : "—"}
                   </motion.div>
                 </AnimatePresence>
 
                 <div className="mt-4 flex items-center gap-4 text-sm text-white/70">
-                  <span>
-                    Timeline:{" "}
-                    <span className="font-medium text-white">
-                      {step === 3 && result
-                        ? `${result.estimated_timeline_weeks.min}-${result.estimated_timeline_weeks.max}`
-                        : `${ballpark.weeks.min}-${ballpark.weeks.max}`}{" "}
-                      weeks
+                  {ballpark ? (
+                    <span>
+                      Timeline:{" "}
+                      <span className="font-medium text-white">
+                        {step === 3 && result
+                          ? `${result.estimated_timeline_weeks.min}-${result.estimated_timeline_weeks.max}`
+                          : `${ballpark.weeks.min}-${ballpark.weeks.max}`}{" "}
+                        weeks
+                      </span>
                     </span>
-                  </span>
+                  ) : (
+                    <span className="text-white/50">Pick your build to see a live estimate.</span>
+                  )}
                   {support && (
                     <span>
                       Support:{" "}
@@ -603,8 +645,10 @@ export default function ProjectEstimatorSection() {
 
                 {/* Drivers */}
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <Pill>{projectTypes.find((p) => p.value === form.projectType)?.label}</Pill>
-                  <Pill>{form.pageCount} pages</Pill>
+                  {form.projectType && (
+                    <Pill>{projectTypes.find((p) => p.value === form.projectType)?.label}</Pill>
+                  )}
+                  {form.pageCount && <Pill>{form.pageCount} pages</Pill>}
                   {form.features.slice(0, 3).map((f) => (
                     <Pill key={f}>{featureLabel(f)}</Pill>
                   ))}
@@ -700,7 +744,7 @@ function Segmented<T extends string>({
 }: {
   label: string
   options: readonly { value: T; label: string }[]
-  value: T
+  value: T | ""
   onChange: (value: T) => void
 }) {
   return (
