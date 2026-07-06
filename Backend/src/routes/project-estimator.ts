@@ -63,9 +63,12 @@ type EstimateResult = {
   model: string | null
 }
 
-function clampRange(min: number, max: number) {
-  const lo = Math.max(4000, Math.round(Math.min(min, 300000) / 100) * 100)
-  const hi = Math.max(lo, Math.round(Math.min(max, 300000) / 100) * 100)
+// WordPress/Shopify builds are always quoted in the ₹4,000–₹7,000 band.
+const WP_MAX_COST = 7000
+
+function clampRange(min: number, max: number, cap = 300000) {
+  const lo = Math.max(4000, Math.round(Math.min(min, cap) / 100) * 100)
+  const hi = Math.max(lo, Math.round(Math.min(max, cap) / 100) * 100)
   return { min: lo, max: hi }
 }
 
@@ -306,7 +309,7 @@ function buildHeuristicEstimate(input: EstimatorInput): EstimateResult {
   const weeksMin = Math.max(1, baseWeeks[0] + Math.floor(featuresWeeks * 0.6) + pageWeeks[input.pageCount] + contentWeeks[input.contentReadiness])
   const weeksMax = Math.max(weeksMin + 1, baseWeeks[1] + featuresWeeks + pageWeeks[input.pageCount] + contentWeeks[input.contentReadiness] + maintenanceWeeks[input.maintenance] + integrationsWeeks)
 
-  const cost = clampRange(min, max)
+  const cost = clampRange(min, max, wp ? WP_MAX_COST : 300000)
 
   const highlights = [
     input.projectType.replace('-', ' '),

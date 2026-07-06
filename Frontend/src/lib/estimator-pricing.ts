@@ -155,10 +155,12 @@ const weeksByType: Record<ProjectType, [number, number]> = {
 
 const MIN_COST = 4000
 const MAX_COST = 300000
+// WordPress/Shopify builds are always quoted in the ₹4,000–₹7,000 band.
+const WP_MAX_COST = 7000
 
-function clamp(min: number, max: number): { min: number; max: number } {
-  const lo = Math.max(MIN_COST, Math.round(Math.min(min, MAX_COST) / 100) * 100)
-  const hi = Math.max(lo, Math.round(Math.min(max, MAX_COST) / 100) * 100)
+function clamp(min: number, max: number, cap: number = MAX_COST): { min: number; max: number } {
+  const lo = Math.max(MIN_COST, Math.round(Math.min(min, cap) / 100) * 100)
+  const hi = Math.max(lo, Math.round(Math.min(max, cap) / 100) * 100)
   return { min: lo, max: hi }
 }
 
@@ -250,7 +252,8 @@ export function computeBallpark(form: ProjectEstimatorData): Ballpark {
       integrationsWeeks,
   )
 
-  return { cost: clamp(min, max), weeks: { min: weeksMin, max: weeksMax } }
+  const costCap = form.buildType === 'wordpress' ? WP_MAX_COST : MAX_COST
+  return { cost: clamp(min, max, costCap), weeks: { min: weeksMin, max: weeksMax } }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
