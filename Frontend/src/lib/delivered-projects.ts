@@ -124,6 +124,7 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "kenstto.com": ["ecommerce", "Other"],
   "khyationlinemart.in": ["ecommerce", "Other"],
   "hmsbrothers.com": ["ecommerce", "Other"],
+  "orangelilies.com": ["ecommerce", "Beauty & Wellness"],
 }
 
 // Nicer display names for recognisable brands; everything else falls back to the host.
@@ -160,6 +161,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "atharavelectroplaters.com": "Atharav Electroplaters",
   "chemnetixventures.com": "Chemnetix Ventures",
   "soukprofumi.it": "Souk Profumi",
+  "orangelilies.com": "Orange Lilies",
 }
 
 function hostFromUrl(url: string): string {
@@ -191,6 +193,7 @@ export const deliveredProjects: DeliveredProject[] = (rawUrls as string[])
       subcategory,
     }
   })
-  // Show entries that have a real screenshot first (keeps the homepage teaser strong);
-  // entries without a screenshot fall to the end and render a branded name card.
-  .sort((a, b) => Number(b.hasImage) - Number(a.hasImage))
+  // Only list projects that actually have a screenshot on disk. Sites whose
+  // screenshot couldn't be captured are hidden entirely (no fallback name cards).
+  // Order follows delivered-urls.json, so the homepage teaser shows the first N there.
+  .filter((project) => project.hasImage)

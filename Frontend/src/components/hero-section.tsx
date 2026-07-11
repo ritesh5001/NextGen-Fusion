@@ -179,7 +179,7 @@ const HeroContent = () => {
               <span className="whitespace-nowrap font-bold">Sleek</span>
               <div className="relative mx-2 translate-y-1 overflow-hidden hero-icon">
                 <Image
-                  src="/images/man.png"
+                  src="/images/man-hero.png"
                   alt="Sleek"
                   width={32}
                   height={32}
@@ -189,7 +189,7 @@ const HeroContent = () => {
               <span className="whitespace-nowrap font-bold">, Fast</span>
               <div className="relative ml-2 translate-y-1 overflow-hidden hero-icon">
                 <Image
-                  src="/images/eagle.png"
+                  src="/images/eagle-hero.png"
                   alt="Fast"
                   width={32}
                   height={32}
@@ -204,7 +204,7 @@ const HeroContent = () => {
             </motion.span>
             <motion.div className="relative -translate-y-1 inline-block hero-icon" variants={animationVariants.animeMobile}>
               <Image
-                src="/images/ghost.png"
+                src="/images/ghost-hero.png"
                 alt="Doesn't Ghost"
                 width={32}
                 height={32}
@@ -234,7 +234,7 @@ const HeroContent = () => {
             </motion.span>
             <motion.div className="relative -translate-y-5 inline-block hero-icon" variants={animationVariants.sleek}>
               <Image
-                src="/images/man.svg"
+                src="/images/man-hero.png"
                 alt="Sleek"
                 width={56}
                 height={56}
@@ -246,7 +246,7 @@ const HeroContent = () => {
             </motion.span>
             <motion.div className="relative -translate-y-5 inline-block hero-icon" variants={animationVariants.fast}>
               <Image
-                src="/images/eagle.svg"
+                src="/images/eagle-hero.png"
                 alt="Fast"
                 width={56}
                 height={56}
@@ -260,7 +260,7 @@ const HeroContent = () => {
             </motion.span>
             <motion.div className="relative -translate-y-1 inline-block hero-icon" variants={animationVariants.anime}>
               <Image
-                src="/images/ghost.svg"
+                src="/images/ghost-hero.png"
                 alt="Doesn't Ghost"
                 width={56}
                 height={56}
