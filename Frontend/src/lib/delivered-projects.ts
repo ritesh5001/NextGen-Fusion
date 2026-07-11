@@ -193,7 +193,9 @@ export const deliveredProjects: DeliveredProject[] = (rawUrls as string[])
       subcategory,
     }
   })
+
   // Only list projects that actually have a screenshot on disk. Sites whose
   // screenshot couldn't be captured are hidden entirely (no fallback name cards).
   // Order follows delivered-urls.json, so the homepage teaser shows the first N there.
+  
   .filter((project) => project.hasImage)
