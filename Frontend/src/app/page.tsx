@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { apiService } from "@/lib/api"
 import HomeClient from "@/components/home-client"
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
@@ -29,9 +28,6 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function Home() {
-  // Server-side fetch to avoid CORS in browser
-  const portfolios = await apiService.getPortfolios()
-
-  return <HomeClient portfolios={portfolios} />
+export default function Home() {
+  return <HomeClient />
 }

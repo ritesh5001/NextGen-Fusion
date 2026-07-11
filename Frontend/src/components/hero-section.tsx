@@ -341,7 +341,6 @@ export default function HeroSection() {
             width={599.6} 
             height={695.8} 
             className="opacity-100"
-            priority
           />
         </div>
         
@@ -353,7 +352,6 @@ export default function HeroSection() {
             width={599} 
             height={775.8} 
             className="opacity-100"
-            priority
           />
         </div>
 
@@ -366,7 +364,6 @@ export default function HeroSection() {
               width={300} 
               height={350} 
               className="opacity-60"
-              priority
             />
           </div>
           
@@ -377,7 +374,6 @@ export default function HeroSection() {
               width={300} 
               height={388} 
               className="opacity-60"
-              priority
             />
           </div>
         </div>

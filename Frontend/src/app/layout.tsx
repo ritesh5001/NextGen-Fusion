@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { inter, interDisplay } from "./fonts";
+import { inter, interDisplay, trap } from "./fonts";
 import "./globals.css";
-import "../styles/fonts.css";
 import "../styles/optimized-icons.css";
 import ConsoleEasterEgg from "@/components/console-easter-egg";
 import ErrorBoundary from "@/components/error-boundary";
@@ -199,6 +198,7 @@ export const metadata: Metadata = {
   other: {
     "theme-color": "#2B35AB",
     "msapplication-TileColor": "#2B35AB",
+    "msapplication-TileImage": "/favicon/ms-icon-144x144.png",
     "msapplication-config": "/favicon/browserconfig.xml",
   },
 
@@ -231,8 +231,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${interDisplay.variable} font-sans`}
-      style={{ fontFamily: "Trap, sans-serif" }}
+      className={`${trap.variable} ${inter.variable} ${interDisplay.variable} font-sans`}
     >
       <head>
         {/* Meta tags tambahan untuk compatibility */}
@@ -251,84 +250,8 @@ export default function RootLayout({
         <meta name="rating" content="general" />
         <meta httpEquiv="content-language" content="en-us" />
 
-        {/* Favicon - generated files */}
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon/favicon-16x16.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="96x96"
-          href="/favicon/favicon-96x96.png"
-        />
-        <link rel="shortcut icon" href="/favicon.ico" />
-
-        {/* Apple Touch Icons */}
-        <link
-          rel="apple-touch-icon"
-          sizes="57x57"
-          href="/favicon/apple-icon-57x57.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="60x60"
-          href="/favicon/apple-icon-60x60.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="72x72"
-          href="/favicon/apple-icon-72x72.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="76x76"
-          href="/favicon/apple-icon-76x76.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="114x114"
-          href="/favicon/apple-icon-114x114.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="120x120"
-          href="/favicon/apple-icon-120x120.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="144x144"
-          href="/favicon/apple-icon-144x144.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="152x152"
-          href="/favicon/apple-icon-152x152.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/favicon/apple-icon-180x180.png"
-        />
-        <link rel="apple-touch-icon" href="/favicon/apple-icon.png" />
-
-        {/* Windows Phone */}
-        <meta
-          name="msapplication-TileImage"
-          content="/favicon/ms-icon-144x144.png"
-        />
-        <meta name="msapplication-TileColor" content="#2B35AB" />
-
-        {/* Manifest */}
-        <link rel="manifest" href="/favicon/manifest.json" />
+        {/* Favicons, apple-touch icons, tile metas and manifest are declared
+            in the `metadata` export above — no hand-written <link> tags needed. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

@@ -1,26 +1,26 @@
 "use client"
 
-import { Portfolio } from "@/lib/api"
+import dynamic from "next/dynamic"
 import HeroSection from "@/components/hero-section"
 import SocialProofSection from "@/components/social-proof-section"
-import AboutUsSection from "@/components/about-us-section"
-import ComparisonSection from "@/components/comparison-section"
-import ServicesSection from "@/components/services-section"
-import ProcessSection from "@/components/process-section"
-import StackMarqueeSection from "@/components/stack-marquee-section"
-import TestimonialsSection from "@/components/testimonials-section"
-import FAQSection from "@/components/faq-section"
-import ContactSection from "@/components/contact-section"
-import ProjectEstimatorSection from "@/components/project-estimator-section"
-import WorkSection from "@/components/work-section"
-import DeliveredWall from "@/components/delivered-wall"
-import CTABanner from "@/components/cta-banner"
 
-type HomeClientProps = {
-  portfolios: Portfolio[]
-}
+// Below-the-fold sections are code-split so their JS (and framer-motion usage)
+// loads as separate chunks instead of bloating the initial homepage bundle.
+// SSR stays on (default) so the content is still in the HTML for SEO / no CLS.
+const AboutUsSection = dynamic(() => import("@/components/about-us-section"))
+const ComparisonSection = dynamic(() => import("@/components/comparison-section"))
+const ServicesSection = dynamic(() => import("@/components/services-section"))
+const ProcessSection = dynamic(() => import("@/components/process-section"))
+const StackMarqueeSection = dynamic(() => import("@/components/stack-marquee-section"))
+const TestimonialsSection = dynamic(() => import("@/components/testimonials-section"))
+const FAQSection = dynamic(() => import("@/components/faq-section"))
+const ContactSection = dynamic(() => import("@/components/contact-section"))
+const ProjectEstimatorSection = dynamic(() => import("@/components/project-estimator-section"))
+const WorkSection = dynamic(() => import("@/components/work-section"))
+const DeliveredWall = dynamic(() => import("@/components/delivered-wall"))
+const CTABanner = dynamic(() => import("@/components/cta-banner"))
 
-export default function HomeClient({ portfolios }: HomeClientProps) {
+export default function HomeClient() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-white">
       <div id="hero">

@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
 import {
@@ -51,13 +52,13 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
             {project.host}
           </div>
         ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={project.image}
             alt={`${project.name} — website delivered by NextGen Fusion`}
-            loading="lazy"
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             onError={() => setErrored(true)}
-            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
           />
         )}
         <div className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 opacity-0 shadow transition-opacity group-hover:opacity-100">

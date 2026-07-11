@@ -3,28 +3,30 @@ import localFont from 'next/font/local';
 export const trap = localFont({
   src: [
     {
-      path: '../../public/fonts/trap/Trap-Regular.otf',
+      path: '../../public/fonts/trap/Trap-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/trap/Trap-Medium.otf',
+      path: '../../public/fonts/trap/Trap-Medium.woff2',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/trap/Trap-SemiBold.otf',
+      path: '../../public/fonts/trap/Trap-SemiBold.woff2',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/trap/Trap-Bold.otf',
+      path: '../../public/fonts/trap/Trap-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
   ],
   variable: '--font-trap',
   display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial', 'sans-serif'],
 });
 
 export const inter = localFont({

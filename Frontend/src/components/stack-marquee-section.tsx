@@ -80,16 +80,16 @@ export default function StackMarqueeSection() {
   // A single curated row of the core tools we work with.
   const techStackLines = [
     [
-      { name: "React", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
-      { name: "Next.js", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
-      { name: "TypeScript", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
-      { name: "Node.js", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
-      { name: "Tailwind", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
-      { name: "PostgreSQL", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" },
-      { name: "MongoDB", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" },
-      { name: "Figma", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
-      { name: "AWS", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
-      { name: "Docker", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
+      { name: "React", iconUrl: "/tech-icons/react.svg" },
+      { name: "Next.js", iconUrl: "/tech-icons/nextjs.svg" },
+      { name: "TypeScript", iconUrl: "/tech-icons/typescript.svg" },
+      { name: "Node.js", iconUrl: "/tech-icons/nodejs.svg" },
+      { name: "Tailwind", iconUrl: "/tech-icons/tailwindcss.svg" },
+      { name: "PostgreSQL", iconUrl: "/tech-icons/postgresql.svg" },
+      { name: "MongoDB", iconUrl: "/tech-icons/mongodb.svg" },
+      { name: "Figma", iconUrl: "/tech-icons/figma.svg" },
+      { name: "AWS", iconUrl: "/tech-icons/aws.svg" },
+      { name: "Docker", iconUrl: "/tech-icons/docker.svg" },
     ],
   ]
 

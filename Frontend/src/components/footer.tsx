@@ -34,7 +34,7 @@ export default function Footer() {
     <footer
       className="relative text-white bg-cover bg-center bg-no-repeat w-full"
       style={{
-        backgroundImage: "url('/images/footerbg.png')",
+        backgroundImage: "url('/images/footerbg.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -140,7 +140,7 @@ export default function Footer() {
             {/* Copyright */}
             <div className="mt-8 pt-6">
               <p className="text-gray-200 text-sm text-right">
-                © 2025 NextGen Fusion. All rights reserved.
+                © 2026 NextGen Fusion. All rights reserved.
               </p>
             </div>
           </div>
@@ -239,7 +239,7 @@ export default function Footer() {
                 Built by the Talented and Creative Crew
               </p>
               <p className="text-gray-200 text-sm">
-                © 2025 NextGen Fusion. All rights reserved.
+                © 2026 NextGen Fusion. All rights reserved.
               </p>
             </div>
           </div>

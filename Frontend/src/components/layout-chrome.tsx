@@ -1,11 +1,15 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import { usePathname } from "next/navigation"
 import IntegratedNavbar from "@/components/integrated-navbar"
-import FloatingWhatsApp from "@/components/floating-whatsapp"
 import Footer from "@/components/footer"
-import BookingModal from "@/components/booking-modal"
-import SalesChatbot from "@/components/sales-chatbot"
+
+// Interaction-only widgets: keep them out of the critical bundle and load
+// them on the client after the page is interactive.
+const BookingModal = dynamic(() => import("@/components/booking-modal"), { ssr: false })
+const SalesChatbot = dynamic(() => import("@/components/sales-chatbot"), { ssr: false })
+const FloatingWhatsApp = dynamic(() => import("@/components/floating-whatsapp"), { ssr: false })
 
 export default function LayoutChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
