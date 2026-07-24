@@ -21,6 +21,13 @@ type Client = {
 const inputCls =
   'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10'
 
+// Surface the backend's `details` (e.g. the underlying Postgres error) so a 500
+// shows the real cause instead of a generic message.
+function errorMessage(json: { error?: string; details?: string } | null, fallback: string): string {
+  const base = json?.error || fallback
+  return json?.details ? `${base}: ${json.details}` : base
+}
+
 export default function AdminClientsPage() {
   const [items, setItems] = useState<Client[]>([])
   const [loading, setLoading] = useState(false)
@@ -40,7 +47,7 @@ export default function AdminClientsPage() {
     try {
       const res = await fetch('/api/admin/client-users')
       const json = await res.json()
-      if (!res.ok) throw new Error(json?.error || 'Failed to load clients')
+      if (!res.ok) throw new Error(errorMessage(json, 'Failed to load clients'))
       setItems(json.data || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load clients')
@@ -64,7 +71,7 @@ export default function AdminClientsPage() {
         body: JSON.stringify({ name, company, email, password }),
       })
       const json = await res.json()
-      if (!res.ok) throw new Error(json?.error || 'Failed to create client')
+      if (!res.ok) throw new Error(errorMessage(json, 'Failed to create client'))
       setName('')
       setCompany('')
       setEmail('')
