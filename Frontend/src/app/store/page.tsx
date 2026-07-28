@@ -34,6 +34,10 @@ export default async function StorePage() {
           <Link href="/store/purchases" className="font-medium text-purple-600 hover:underline">
             Retrieve your downloads
           </Link>
+          <span className="mx-2 text-gray-300">·</span>
+          <Link href="/store/license" className="text-gray-500 hover:underline">License</Link>
+          <span className="mx-2 text-gray-300">·</span>
+          <Link href="/store/refunds" className="text-gray-500 hover:underline">Refund Policy</Link>
         </p>
       </section>
 

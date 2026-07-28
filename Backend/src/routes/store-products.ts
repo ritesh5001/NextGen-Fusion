@@ -2,6 +2,8 @@ import { Router } from 'express'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { requireInternalAuth } from '../middleware/auth'
+import { sendProductDeliveryEmail } from '../lib/email'
+import { downloadSecret, buildDownloadUrl } from '../lib/store-download'
 
 const router = Router()
 
@@ -177,6 +179,76 @@ router.delete('/store-products/:id', requireInternalAuth, async (req, res) => {
   } catch (error) {
     logRouteError('store-products:delete', error)
     res.status(500).json({ error: 'Failed to delete product', details: getErrorMessage(error) })
+  }
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sales / purchases (admin)
+// ─────────────────────────────────────────────────────────────────────────────
+router.get('/store-purchases', requireInternalAuth, async (_req, res) => {
+  try {
+    const supabase = getSupabaseAdmin()
+    const { data, error } = await supabase
+      .from('store_purchases')
+      .select(
+        'id, product_id, customer_email, customer_name, amount, currency, status, license_key, download_count, download_limit, razorpay_payment_id, created_at, paid_at, store_products(title, slug)',
+      )
+      .order('created_at', { ascending: false })
+      .limit(500)
+
+    if (error) throw error
+    res.json({ data })
+  } catch (error) {
+    logRouteError('store-purchases:list', error)
+    res.status(500).json({ error: 'Failed to fetch sales', details: getErrorMessage(error) })
+  }
+})
+
+// Re-send the delivery email (license + download link) for one purchase.
+router.post('/store-purchases/:id/resend', requireInternalAuth, async (req, res) => {
+  try {
+    const secret = downloadSecret()
+    if (!secret) {
+      res.status(503).json({ error: 'Downloads are not configured (missing STORE_DOWNLOAD_SECRET).' })
+      return
+    }
+    const supabase = getSupabaseAdmin()
+    const { data: purchase, error } = await supabase
+      .from('store_purchases')
+      .select('id, status, license_key, customer_email, customer_name, product_id')
+      .eq('id', req.params.id)
+      .maybeSingle()
+    if (error) throw error
+    if (!purchase) {
+      res.status(404).json({ error: 'Purchase not found' })
+      return
+    }
+    if (purchase.status !== 'paid') {
+      res.status(400).json({ error: 'Only paid purchases can be re-sent' })
+      return
+    }
+
+    const { data: product } = await supabase
+      .from('store_products')
+      .select('title')
+      .eq('id', purchase.product_id)
+      .maybeSingle()
+
+    const result = await sendProductDeliveryEmail({
+      to: purchase.customer_email,
+      name: purchase.customer_name,
+      productTitle: product?.title || 'Your purchase',
+      licenseKey: purchase.license_key || '—',
+      downloadUrl: buildDownloadUrl(purchase.id, secret),
+    })
+    if (!result.ok) {
+      res.status(502).json({ error: result.error || 'Email failed to send' })
+      return
+    }
+    res.json({ ok: true, messageId: result.messageId })
+  } catch (error) {
+    logRouteError('store-purchases:resend', error)
+    res.status(500).json({ error: 'Failed to re-send email', details: getErrorMessage(error) })
   }
 })
 

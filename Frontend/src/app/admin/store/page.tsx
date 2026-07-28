@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { AdminShell, PageHeader } from '@/components/admin/admin-shell'
-import { Plus, Trash2, Pencil, ExternalLink } from 'lucide-react'
+import { Plus, Trash2, Pencil, ExternalLink, BarChart3 } from 'lucide-react'
 
 type Product = {
   id: string
@@ -182,12 +183,20 @@ export default function AdminStorePage() {
           title="Store"
           description="Digital products (CRM/ERP, templates) sold at /store. Set the price and details here; upload the downloadable file to R2 and paste its key (delivery wiring comes next)."
           action={
-            <button
-              onClick={startCreate}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 text-white px-3 py-2 text-sm font-medium hover:bg-slate-800 transition"
-            >
-              <Plus className="h-4 w-4" /> New product
-            </button>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/admin/store/sales"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition"
+              >
+                <BarChart3 className="h-4 w-4" /> Sales
+              </Link>
+              <button
+                onClick={startCreate}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 text-white px-3 py-2 text-sm font-medium hover:bg-slate-800 transition"
+              >
+                <Plus className="h-4 w-4" /> New product
+              </button>
+            </div>
           }
         />
 

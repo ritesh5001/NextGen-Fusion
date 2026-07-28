@@ -93,6 +93,12 @@ export default async function StoreProductPage({ params }: PageProps) {
               {product.version && <p className="mt-3 text-xs text-gray-400">Version {product.version}</p>}
             </div>
 
+            <p className="mt-3 text-xs text-gray-400">
+              By purchasing you agree to our{' '}
+              <Link href="/store/license" className="underline hover:text-gray-600">License Agreement</Link> and{' '}
+              <Link href="/store/refunds" className="underline hover:text-gray-600">Refund Policy</Link>.
+            </p>
+
             {product.features.length > 0 && (
               <div className="mt-8">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">What&apos;s included</h2>
