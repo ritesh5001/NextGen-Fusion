@@ -58,7 +58,7 @@ export function BuyButton({
   const [phone, setPhone] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState<{ licenseKey: string } | null>(null)
+  const [success, setSuccess] = useState<{ licenseKey: string; downloadUrl: string | null } | null>(null)
 
   async function pay(e: React.FormEvent) {
     e.preventDefault()
@@ -103,7 +103,7 @@ export function BuyButton({
             })
             const vj = await vr.json()
             if (!vr.ok) throw new Error(vj?.error || 'We could not confirm your payment. Contact support with your payment id.')
-            setSuccess({ licenseKey: vj.data.licenseKey })
+            setSuccess({ licenseKey: vj.data.licenseKey, downloadUrl: vj.data.downloadUrl ?? null })
             setOpen(false)
           } catch (err) {
             setError(err instanceof Error ? err.message : 'Verification failed')
@@ -128,8 +128,16 @@ export function BuyButton({
         <code className="mt-1 block select-all rounded-md bg-white px-3 py-2 font-mono text-sm text-gray-900">
           {success.licenseKey}
         </code>
+        {success.downloadUrl && (
+          <a
+            href={success.downloadUrl}
+            className="mt-4 inline-block rounded-lg bg-slate-900 px-6 py-3 text-base font-medium text-white transition hover:bg-slate-800"
+          >
+            Download now
+          </a>
+        )}
         <p className="mt-3 text-sm text-green-700">
-          Keep this key safe. Your download link will be emailed to <strong>{email || 'your email'}</strong> shortly.
+          We&apos;ve also emailed your license key and download link to <strong>{email || 'your email'}</strong>.
         </p>
       </div>
     )

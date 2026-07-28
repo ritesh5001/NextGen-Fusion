@@ -29,6 +29,12 @@ export default async function StorePage() {
         <p className="mt-3 max-w-2xl text-lg text-gray-500">
           Production-grade CRM, ERP, and tools we&apos;ve built — buy once, download the full source, and ship faster.
         </p>
+        <p className="mt-4 text-sm text-gray-500">
+          Already bought?{' '}
+          <Link href="/store/purchases" className="font-medium text-purple-600 hover:underline">
+            Retrieve your downloads
+          </Link>
+        </p>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-24">

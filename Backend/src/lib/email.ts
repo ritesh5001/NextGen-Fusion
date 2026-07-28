@@ -120,6 +120,52 @@ function escapeHtml(value: string): string {
     .replace(/'/g, '&#39;')
 }
 
+// Delivery email after a store purchase: license key + secure download link.
+export async function sendProductDeliveryEmail(args: {
+  to: string
+  name?: string | null
+  productTitle: string
+  licenseKey: string
+  downloadUrl: string
+}): Promise<SendResult> {
+  const fromEmail = process.env.RESEND_FROM_EMAIL
+  const subject = `Your download — ${args.productTitle}`
+  if (!fromEmail) {
+    return { ok: false, error: 'RESEND_FROM_EMAIL env is not set', subject }
+  }
+  const fromName = process.env.RESEND_FROM_NAME || 'NextGen Fusion'
+  const replyTo = process.env.RESEND_REPLY_TO || undefined
+  const safeName = escapeHtml(args.name?.trim() || 'there')
+  const safeTitle = escapeHtml(args.productTitle)
+  const safeKey = escapeHtml(args.licenseKey)
+  const safeUrl = escapeHtml(args.downloadUrl)
+
+  try {
+    const res = await getResend().emails.send({
+      from: `${fromName} <${fromEmail}>`,
+      to: args.to,
+      subject,
+      html: wrapHtmlEmail(`
+        <p style="margin:0 0 16px">Hi ${safeName},</p>
+        <p style="margin:0 0 20px">Thanks for your purchase of <strong>${safeTitle}</strong>. Here's your download and license.</p>
+        <p style="margin:0 0 8px;font-size:13px;color:#64748b">License key</p>
+        <p style="margin:0 0 20px"><code style="display:inline-block;background:#f1f5f9;border-radius:6px;padding:8px 12px;font-family:monospace;font-size:14px">${safeKey}</code></p>
+        <p style="margin:0 0 20px">
+          <a href="${safeUrl}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;border-radius:8px;padding:12px 20px;font-weight:600">Download your product</a>
+        </p>
+        <p style="margin:0;color:#64748b;font-size:13px">Keep this email — you can re-download from the link above. Need help? Just reply.</p>
+      `),
+      replyTo,
+    })
+    if (res.error) {
+      return { ok: false, error: res.error.message || 'Resend error', subject }
+    }
+    return { ok: true, messageId: res.data?.id ?? null, subject }
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err), subject }
+  }
+}
+
 export async function sendPasswordResetEmail(args: {
   to: string
   name?: string | null

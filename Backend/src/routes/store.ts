@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import crypto from 'node:crypto'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import {
@@ -7,8 +8,36 @@ import {
   verifyRazorpaySignature,
   generateLicenseKey,
 } from '../lib/razorpay'
+import { isR2Configured, presignR2Download } from '../lib/r2'
+import { sendProductDeliveryEmail } from '../lib/email'
 
 const router = Router()
+
+// Base URL for building buyer-facing download links (used in emails).
+const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://nextgenfusion.in').replace(/\/+$/, '')
+
+// Stateless, unguessable download tokens (HMAC of the purchase id). No extra
+// column needed — the token is valid while the purchase stays under its limit.
+function downloadSecret(): string | null {
+  return process.env.STORE_DOWNLOAD_SECRET || process.env.ADMIN_SESSION_SECRET || null
+}
+function signDownloadToken(purchaseId: string, secret: string): string {
+  const sig = crypto.createHmac('sha256', secret).update(purchaseId).digest('base64url')
+  return `${purchaseId}.${sig}`
+}
+function verifyDownloadToken(token: string, secret: string): string | null {
+  const idx = token.lastIndexOf('.')
+  if (idx <= 0) return null
+  const purchaseId = token.slice(0, idx)
+  const sig = token.slice(idx + 1)
+  const expected = crypto.createHmac('sha256', secret).update(purchaseId).digest('base64url')
+  if (sig.length !== expected.length) return null
+  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null
+  return purchaseId
+}
+function buildDownloadUrl(purchaseId: string, secret: string): string {
+  return `${PUBLIC_SITE_URL}/api/store/download?token=${encodeURIComponent(signDownloadToken(purchaseId, secret))}`
+}
 
 // Public-facing columns only — never expose r2_key (the private file location).
 const PUBLIC_COLUMNS =
@@ -172,7 +201,7 @@ router.post('/store/verify', async (req, res) => {
     const supabase = getSupabaseAdmin()
     const { data: purchase, error: pErr } = await supabase
       .from('store_purchases')
-      .select('id, status, license_key, product_id')
+      .select('id, status, license_key, product_id, customer_email, customer_name')
       .eq('razorpay_order_id', orderId)
       .maybeSingle()
     if (pErr) throw pErr
@@ -204,10 +233,132 @@ router.post('/store/verify', async (req, res) => {
       product = data
     }
 
-    res.json({ data: { verified: true, licenseKey, product } })
+    const secret = downloadSecret()
+    const downloadUrl = secret ? buildDownloadUrl(purchase.id, secret) : null
+
+    // Email the license + download link (best-effort — never fail the purchase).
+    if (downloadUrl && product && purchase.customer_email) {
+      sendProductDeliveryEmail({
+        to: purchase.customer_email,
+        name: purchase.customer_name,
+        productTitle: product.title,
+        licenseKey,
+        downloadUrl,
+      }).catch((e) => logRouteError('store:verify:email', e))
+    }
+
+    res.json({ data: { verified: true, licenseKey, product, downloadUrl } })
   } catch (error) {
     logRouteError('store:verify', error)
     res.status(500).json({ error: 'Verification failed', details: getErrorMessage(error) })
+  }
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Secure download: validate the token + entitlement, count the download, then
+// 302 to a short-lived R2 presigned URL (the file streams from R2, not us).
+// ─────────────────────────────────────────────────────────────────────────────
+router.get('/store/download', async (req, res) => {
+  try {
+    const secret = downloadSecret()
+    if (!secret) {
+      res.status(503).json({ error: 'Downloads are not configured (missing STORE_DOWNLOAD_SECRET).' })
+      return
+    }
+    const token = typeof req.query.token === 'string' ? req.query.token : ''
+    const purchaseId = token ? verifyDownloadToken(token, secret) : null
+    if (!purchaseId) {
+      res.status(403).json({ error: 'Invalid download link' })
+      return
+    }
+
+    const supabase = getSupabaseAdmin()
+    const { data: purchase, error } = await supabase
+      .from('store_purchases')
+      .select('id, status, download_count, download_limit, product_id')
+      .eq('id', purchaseId)
+      .maybeSingle()
+    if (error) throw error
+    if (!purchase || purchase.status !== 'paid') {
+      res.status(403).json({ error: 'No paid purchase found for this link' })
+      return
+    }
+    if (purchase.download_count >= purchase.download_limit) {
+      res.status(429).json({ error: 'Download limit reached. Contact support if you need access again.' })
+      return
+    }
+
+    const { data: product } = await supabase
+      .from('store_products')
+      .select('title, r2_key')
+      .eq('id', purchase.product_id)
+      .maybeSingle()
+    if (!product?.r2_key) {
+      res.status(503).json({ error: 'The file for this product is not available yet.' })
+      return
+    }
+    if (!isR2Configured()) {
+      res.status(503).json({ error: 'File storage is not configured.' })
+      return
+    }
+
+    const filename = `${(product.title || 'product').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.zip`
+    const url = await presignR2Download(product.r2_key, 900, filename)
+    if (!url) {
+      res.status(502).json({ error: 'Could not generate the download link.' })
+      return
+    }
+
+    await supabase
+      .from('store_purchases')
+      .update({ download_count: purchase.download_count + 1 })
+      .eq('id', purchase.id)
+
+    res.redirect(302, url)
+  } catch (error) {
+    logRouteError('store:download', error)
+    res.status(500).json({ error: 'Download failed', details: getErrorMessage(error) })
+  }
+})
+
+// Re-send download links for all paid purchases tied to an email (guest re-download).
+router.post('/store/purchases/resend', async (req, res) => {
+  try {
+    const email = cleanStr(req.body?.email, 200).toLowerCase()
+    if (!EMAIL_RE.test(email)) {
+      res.status(400).json({ error: 'A valid email is required' })
+      return
+    }
+    const secret = downloadSecret()
+    const supabase = getSupabaseAdmin()
+    const { data: purchases } = await supabase
+      .from('store_purchases')
+      .select('id, license_key, product_id, customer_name')
+      .eq('customer_email', email)
+      .eq('status', 'paid')
+
+    if (secret && purchases && purchases.length > 0) {
+      for (const p of purchases) {
+        const { data: product } = await supabase
+          .from('store_products')
+          .select('title')
+          .eq('id', p.product_id)
+          .maybeSingle()
+        if (!product) continue
+        await sendProductDeliveryEmail({
+          to: email,
+          name: p.customer_name,
+          productTitle: product.title,
+          licenseKey: p.license_key || '—',
+          downloadUrl: buildDownloadUrl(p.id, secret),
+        }).catch((e) => logRouteError('store:resend:email', e))
+      }
+    }
+    // Generic response — never reveal whether an email has purchases.
+    res.json({ data: { ok: true } })
+  } catch (error) {
+    logRouteError('store:resend', error)
+    res.status(500).json({ error: 'Could not process request', details: getErrorMessage(error) })
   }
 })
 
