@@ -25,6 +25,8 @@ import clientAiRoutes from './routes/client-ai'
 import clientProjectRoutes from './routes/client-projects'
 import clientProfileRoutes from './routes/client-profile'
 import clientUsersRoutes from './routes/client-users'
+import storeProductsRoutes from './routes/store-products'
+import storeRoutes from './routes/store'
 import wpPluginsRoutes from './routes/wp-plugins'
 import bannersRoutes from './routes/banners'
 import clientBrandRoutes from './routes/client-brand'
@@ -98,6 +100,8 @@ app.use('/api/client', clientProjectRoutes)
 app.use('/api/client', clientProfileRoutes)
 app.use('/api/admin', clientUsersRoutes)
 app.use('/api/agency', clientUsersRoutes)
+app.use('/api/admin', storeProductsRoutes)
+app.use('/api', storeRoutes)
 
 app.get('/health', (_req, res) => res.json({ ok: true }))
 
