@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
-import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, type LucideIcon } from "lucide-react"
+import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/components/booking-modal"
 
 type MenuItem = {
@@ -19,6 +19,7 @@ type MenuItem = {
 const menuItems: MenuItem[] = [
   { name: "Home", href: "/", isPage: true, Icon: Home },
   { name: "Services", href: "services", isPage: false, Icon: Wrench },
+  { name: "Store", href: "/store", isPage: true, Icon: Store },
   { name: "Blogs", href: "/blog", isPage: true, Icon: BookOpen },
   { name: "About", href: "about", isPage: false, Icon: User },
   { name: "Contact", href: "contact", isPage: false, Icon: MessageCircle },

@@ -12,6 +12,7 @@ export default function Footer() {
     { name: "Home", href: "/#hero" },
     { name: "About", href: "/#about" },
     { name: "Services", href: "/#services" },
+    { name: "Store", href: "/store" },
     { name: "Work", href: "/work" },
     { name: "Support & Plans", href: "/support" },
     { name: "Contact", href: "/#contact" },
