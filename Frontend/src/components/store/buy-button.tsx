@@ -136,8 +136,11 @@ export function BuyButton({
             Download now
           </a>
         )}
-        <p className="mt-3 text-sm text-green-700">
-          We&apos;ve also emailed your license key and download link to <strong>{email || 'your email'}</strong>.
+        <p className="mt-3 text-sm text-green-800">
+          🛠️ Our support team will contact you at <strong>{email || 'your email'}</strong> shortly to deploy &amp; set up your product.
+        </p>
+        <p className="mt-2 text-xs text-green-700">
+          A confirmation has been emailed to you{success.downloadUrl ? ' with your download link' : ''}.
         </p>
       </div>
     )

@@ -197,21 +197,24 @@ router.post('/store/verify', async (req, res) => {
       .eq('razorpay_order_id', orderId)
     if (updErr) throw updErr
 
-    let product: { slug: string; title: string } | null = null
+    let product: { slug: string; title: string; r2_key: string | null } | null = null
     if (purchase.product_id) {
       const { data } = await supabase
         .from('store_products')
-        .select('slug, title')
+        .select('slug, title, r2_key')
         .eq('id', purchase.product_id)
         .maybeSingle()
       product = data
     }
 
     const secret = downloadSecret()
-    const downloadUrl = secret ? buildDownloadUrl(purchase.id, secret) : null
+    // Only offer a download when a file has actually been uploaded for this product;
+    // otherwise delivery is handled by the team (deployment / setup).
+    const downloadUrl = secret && product?.r2_key ? buildDownloadUrl(purchase.id, secret) : null
 
-    // Email the license + download link (best-effort — never fail the purchase).
-    if (downloadUrl && product && purchase.customer_email) {
+    // Confirmation email (best-effort — never fail the purchase). Includes the
+    // download link if a file is ready, otherwise a "we'll set it up" message.
+    if (product && purchase.customer_email) {
       sendProductDeliveryEmail({
         to: purchase.customer_email,
         name: purchase.customer_name,
@@ -221,7 +224,14 @@ router.post('/store/verify', async (req, res) => {
       }).catch((e) => logRouteError('store:verify:email', e))
     }
 
-    res.json({ data: { verified: true, licenseKey, product, downloadUrl } })
+    res.json({
+      data: {
+        verified: true,
+        licenseKey,
+        product: product ? { slug: product.slug, title: product.title } : null,
+        downloadUrl,
+      },
+    })
   } catch (error) {
     logRouteError('store:verify', error)
     res.status(500).json({ error: 'Verification failed', details: getErrorMessage(error) })

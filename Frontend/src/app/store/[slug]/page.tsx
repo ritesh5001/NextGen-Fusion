@@ -80,6 +80,10 @@ export default async function StoreProductPage({ params }: PageProps) {
 
             <div className="mt-8 rounded-2xl border border-gray-100 p-6 shadow-sm">
               <BuyButton productId={product.id} slug={product.slug} title={product.title} priceInr={product.price_inr} />
+              <p className="mt-4 flex items-start gap-2 text-sm text-gray-600">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+                <span><strong>Deployment &amp; setup included.</strong> Our support team will contact you after purchase to get it live for you.</span>
+              </p>
               {product.demo_url && (
                 <a
                   href={product.demo_url}
