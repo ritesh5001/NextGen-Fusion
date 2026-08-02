@@ -1,8 +1,14 @@
-// Public store data — fetched server-side via the same-origin /api/store proxy
-// (rewritten to the Backend in next.config.js). Revalidated so the storefront
-// stays fast (near-static) instead of hitting the API on every request.
+// Public store data, fetched server-side. In production we hit the Backend
+// DIRECTLY (BACKEND_URL) — a server usually can't loop back to its own public
+// domain (hairpin NAT), so fetching https://<site>/api/... from the server
+// fails even though the same URL works from a browser. BACKEND_URL is reachable
+// internally (it's what the /api/store rewrite proxies to). Falls back to the
+// same-origin proxy for local dev where BACKEND_URL may be unset.
+// Revalidated so the storefront stays fast instead of hitting the API each request.
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const API_BASE = process.env.BACKEND_URL
+  ? `${process.env.BACKEND_URL.replace(/\/+$/, '')}/api`
+  : `${(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/+$/, '')}/api`
 
 export type StoreProduct = {
   id: string
@@ -30,7 +36,7 @@ export function formatInr(value: number): string {
 
 export async function getStoreProducts(): Promise<StoreProduct[]> {
   try {
-    const res = await fetch(`${SITE_URL}/api/store/products`, { next: { revalidate: 60 } })
+    const res = await fetch(`${API_BASE}/store/products`, { next: { revalidate: 60 } })
     if (!res.ok) return []
     const json = await res.json()
     return (json.data as StoreProduct[]) || []
@@ -41,7 +47,7 @@ export async function getStoreProducts(): Promise<StoreProduct[]> {
 
 export async function getStoreProduct(slug: string): Promise<StoreProduct | null> {
   try {
-    const res = await fetch(`${SITE_URL}/api/store/products/${encodeURIComponent(slug)}`, {
+    const res = await fetch(`${API_BASE}/store/products/${encodeURIComponent(slug)}`, {
       next: { revalidate: 60 },
     })
     if (!res.ok) return null
