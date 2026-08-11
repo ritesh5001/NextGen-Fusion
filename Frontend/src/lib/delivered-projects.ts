@@ -41,6 +41,7 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "webscraperhub.com": ["custom"],
   "terrestrialyt.com": ["custom"],
   // ── Service-based businesses ─────────────────────────────────────────
+  "riteshgiri.dev": ["service"],
   "3am-assignments.com": ["service"],
   "filtxpert.com": ["service"],
   "hcbengineering.in": ["service"],
@@ -178,6 +179,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "poshwave.co.in": "PoshWave",
   "nuaura.co": "Nuáura",
   "keoolix.in": "Keoolix",
+  "riteshgiri.dev": "Ritesh Giri",
 }
 
 function hostFromUrl(url: string): string {
