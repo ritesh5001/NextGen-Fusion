@@ -2,6 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
 
 # Sitemap
 Sitemap: https://nextgenfusion.in/sitemap.xml
@@ -22,6 +24,8 @@ User-agent: Googlebot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
 
 User-agent: Googlebot-Image
 Allow: /

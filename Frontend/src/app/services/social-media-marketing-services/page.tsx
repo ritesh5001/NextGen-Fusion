@@ -1,22 +1,35 @@
 import type { Metadata } from "next"
 import SocialMediaServicePage from "@/components/services/SocialMediaServicePage"
+import { JsonLd } from "@/components/json-ld"
+import { breadcrumbSchema, buildMetadata, serviceSchema } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
+const PATH = "/services/social-media-marketing-services"
+const NAME = "Social Media Marketing Services"
 
-export const metadata: Metadata = {
-  title: "Social Media Marketing Services | NextGen Fusion",
+export const metadata: Metadata = buildMetadata({
+  title: "Social Media Marketing Services",
   description: "Social Media Marketing Services by NextGen Fusion — strategic content, community management, and paid amplification that builds brand authority and drives business results.",
-  alternates: { canonical: `${siteUrl}/services/social-media-marketing-services` },
-  openGraph: {
-    title: "Social Media Marketing Services | NextGen Fusion",
-    description: "Build brand authority and convert followers into customers with strategic social media marketing.",
-    url: `${siteUrl}/services/social-media-marketing-services`,
-    siteName: "NextGen Fusion",
-    type: "website",
-  },
-  twitter: { card: "summary_large_image", title: "Social Media Marketing Services | NextGen Fusion", description: "Social media programs that build brand authority and drive real business results." },
-}
+  path: PATH,
+  ogTitle: "Social Media Marketing Services | NextGen Fusion",
+  ogDescription: "Build brand authority and convert followers into customers with strategic social media marketing.",
+  twitterTitle: "Social Media Marketing Services | NextGen Fusion",
+  twitterDescription: "Social media programs that build brand authority and drive real business results.",
+})
 
 export default function Page() {
-  return <SocialMediaServicePage />
+  return (
+    <>
+      <JsonLd
+        data={[
+          serviceSchema({ name: NAME, description: "Build brand authority and convert followers into customers with strategic social media marketing.", path: PATH }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+            { name: NAME, path: PATH },
+          ]),
+        ]}
+      />
+      <SocialMediaServicePage />
+    </>
+  )
 }

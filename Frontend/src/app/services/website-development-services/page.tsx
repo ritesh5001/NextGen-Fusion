@@ -1,32 +1,35 @@
 import type { Metadata } from "next"
-
 import WebsiteDevelopmentServicePage from "@/components/services/WebsiteDevelopmentServicePage"
+import { JsonLd } from "@/components/json-ld"
+import { breadcrumbSchema, buildMetadata, serviceSchema } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
+const PATH = "/services/website-development-services"
+const NAME = "Website Development Services"
 
-export const metadata: Metadata = {
-  title: "Website Development Services | NextGen Fusion",
-  description:
-    "Website Development Services by NextGen Fusion for high-performance, SEO-ready, and conversion-focused websites that help businesses generate measurable growth.",
-  alternates: {
-    canonical: `${siteUrl}/services/website-development-services`,
-  },
-  openGraph: {
-    title: "Website Development Services | NextGen Fusion",
-    description:
-      "Get conversion-focused Website Development Services with strategy, design, development, and SEO built for growth.",
-    url: `${siteUrl}/services/website-development-services`,
-    siteName: "NextGen Fusion",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Website Development Services | NextGen Fusion",
-    description:
-      "Modern Website Development Services for businesses that want performance, rankings, and higher conversion rates.",
-  },
-}
+export const metadata: Metadata = buildMetadata({
+  title: "Website Development Services",
+  description: "Website Development Services by NextGen Fusion for high-performance, SEO-ready, and conversion-focused websites that help businesses generate measurable growth.",
+  path: PATH,
+  ogTitle: "Website Development Services | NextGen Fusion",
+  ogDescription: "Get conversion-focused Website Development Services with strategy, design, development, and SEO built for growth.",
+  twitterTitle: "Website Development Services | NextGen Fusion",
+  twitterDescription: "Modern Website Development Services for businesses that want performance, rankings, and higher conversion rates.",
+})
 
 export default function Page() {
-  return <WebsiteDevelopmentServicePage />
+  return (
+    <>
+      <JsonLd
+        data={[
+          serviceSchema({ name: NAME, description: "Get conversion-focused Website Development Services with strategy, design, development, and SEO built for growth.", path: PATH }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+            { name: NAME, path: PATH },
+          ]),
+        ]}
+      />
+      <WebsiteDevelopmentServicePage />
+    </>
+  )
 }

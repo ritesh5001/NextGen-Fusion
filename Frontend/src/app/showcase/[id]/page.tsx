@@ -1,8 +1,10 @@
+import type { Metadata } from "next"
 import { ArrowLeft, ExternalLink, Calendar, Clock } from "lucide-react"
 import Image from "next/image"
 import { apiService } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import Link from "next/link"
+import { buildMetadata } from "@/lib/seo"
 
 export async function generateStaticParams() {
   try {
@@ -25,6 +27,23 @@ function formatDate(dateString: string) {
 
 type Props = {
   params: Promise<{ id: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
+  const item = await apiService.getShowcaseItem(Number(id)).catch(() => null)
+  if (!item) return buildMetadata({
+    title: "Showcase",
+    description: "A project from the NextGen Fusion showcase.",
+    path: `/showcase/${id}`,
+  })
+
+  return buildMetadata({
+    title: `${item.title} — Showcase`,
+    description: `${item.title} — a website designed and developed by NextGen Fusion. See the live build and what went into it.`,
+    path: `/showcase/${item.id}`,
+    image: item.image ? normalizeImagePath(item.image) : undefined,
+  })
 }
 
 export default async function ShowcaseDetailPage(props: Props) {

@@ -8,6 +8,7 @@ import Link from "next/link"
 import { apiService } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import ScrollToTop from "@/components/scroll-to-top"
+import { DEFAULT_OG_IMAGE } from "@/lib/seo"
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   try {
@@ -49,13 +50,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: "article",
       publishedTime: blogPost.published_at,
       authors: [blogPost.author],
-      images: blogPost.cover_image ? [normalizeImagePath(blogPost.cover_image)] : ["/metaicon.svg"],
+      images: blogPost.cover_image ? [normalizeImagePath(blogPost.cover_image)] : [DEFAULT_OG_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title: `${blogPost.title} | NextGen Fusion`,
       description: blogPost.excerpt,
-      images: blogPost.cover_image ? [normalizeImagePath(blogPost.cover_image)] : ["/metaicon.svg"],
+      images: blogPost.cover_image ? [normalizeImagePath(blogPost.cover_image)] : [DEFAULT_OG_IMAGE],
     },
   }
 }

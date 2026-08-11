@@ -1,22 +1,35 @@
 import type { Metadata } from "next"
 import PpcServicePage from "@/components/services/PpcServicePage"
+import { JsonLd } from "@/components/json-ld"
+import { breadcrumbSchema, buildMetadata, serviceSchema } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
+const PATH = "/services/ppc-services"
+const NAME = "PPC Services"
 
-export const metadata: Metadata = {
-  title: "PPC Services | NextGen Fusion",
+export const metadata: Metadata = buildMetadata({
+  title: "PPC Services",
   description: "PPC Services by NextGen Fusion — ROI-focused Google and Meta Ads campaigns with full conversion tracking, creative testing, and continuous optimization.",
-  alternates: { canonical: `${siteUrl}/services/ppc-services` },
-  openGraph: {
-    title: "PPC Services | NextGen Fusion",
-    description: "Maximize return on every rupee spent with strategic Google Ads and Meta Ads campaigns.",
-    url: `${siteUrl}/services/ppc-services`,
-    siteName: "NextGen Fusion",
-    type: "website",
-  },
-  twitter: { card: "summary_large_image", title: "PPC Services | NextGen Fusion", description: "High-ROI paid advertising campaigns across Google and Meta." },
-}
+  path: PATH,
+  ogTitle: "PPC Services | NextGen Fusion",
+  ogDescription: "Maximize return on every rupee spent with strategic Google Ads and Meta Ads campaigns.",
+  twitterTitle: "PPC Services | NextGen Fusion",
+  twitterDescription: "High-ROI paid advertising campaigns across Google and Meta.",
+})
 
 export default function Page() {
-  return <PpcServicePage />
+  return (
+    <>
+      <JsonLd
+        data={[
+          serviceSchema({ name: NAME, description: "Maximize return on every rupee spent with strategic Google Ads and Meta Ads campaigns.", path: PATH }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+            { name: NAME, path: PATH },
+          ]),
+        ]}
+      />
+      <PpcServicePage />
+    </>
+  )
 }

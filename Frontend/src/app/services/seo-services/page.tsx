@@ -1,22 +1,35 @@
 import type { Metadata } from "next"
 import SeoServicePage from "@/components/services/SeoServicePage"
+import { JsonLd } from "@/components/json-ld"
+import { breadcrumbSchema, buildMetadata, serviceSchema } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
+const PATH = "/services/seo-services"
+const NAME = "SEO Services"
 
-export const metadata: Metadata = {
-  title: "SEO Services | NextGen Fusion",
+export const metadata: Metadata = buildMetadata({
+  title: "SEO Services",
   description: "SEO Services by NextGen Fusion — technical SEO, keyword strategy, on-page optimization, and link building that builds compounding organic traffic and qualified leads.",
-  alternates: { canonical: `${siteUrl}/services/seo-services` },
-  openGraph: {
-    title: "SEO Services | NextGen Fusion",
-    description: "Build organic visibility with technical SEO, keyword strategy, content optimization, and authority building.",
-    url: `${siteUrl}/services/seo-services`,
-    siteName: "NextGen Fusion",
-    type: "website",
-  },
-  twitter: { card: "summary_large_image", title: "SEO Services | NextGen Fusion", description: "Turn Google into your most reliable lead source with expert SEO services." },
-}
+  path: PATH,
+  ogTitle: "SEO Services | NextGen Fusion",
+  ogDescription: "Build organic visibility with technical SEO, keyword strategy, content optimization, and authority building.",
+  twitterTitle: "SEO Services | NextGen Fusion",
+  twitterDescription: "Turn Google into your most reliable lead source with expert SEO services.",
+})
 
 export default function Page() {
-  return <SeoServicePage />
+  return (
+    <>
+      <JsonLd
+        data={[
+          serviceSchema({ name: NAME, description: "Build organic visibility with technical SEO, keyword strategy, content optimization, and authority building.", path: PATH }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+            { name: NAME, path: PATH },
+          ]),
+        ]}
+      />
+      <SeoServicePage />
+    </>
+  )
 }

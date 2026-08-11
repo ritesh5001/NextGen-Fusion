@@ -10,6 +10,7 @@ import { notFound } from "next/navigation"
 import CTABanner from "@/components/cta-banner"
 import ScrollToTop from "@/components/scroll-to-top"
 import { ImageWithModal } from "@/components/ui/image-modal"
+import { DEFAULT_OG_IMAGE } from "@/lib/seo"
 
 export const dynamicParams = true
 export const dynamic = 'force-dynamic'
@@ -43,13 +44,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `${siteUrl}/portofolio/${portfolio.slug}`,
       siteName: "NextGen Fusion",
       type: "article",
-      images: portfolio.cover_image ? [normalizeImagePath(portfolio.cover_image)] : ["/metaicon.svg"],
+      images: portfolio.cover_image ? [normalizeImagePath(portfolio.cover_image)] : [DEFAULT_OG_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title: `${portfolio.title} Project | NextGen Fusion`,
       description,
-      images: portfolio.cover_image ? [normalizeImagePath(portfolio.cover_image)] : ["/metaicon.svg"],
+      images: portfolio.cover_image ? [normalizeImagePath(portfolio.cover_image)] : [DEFAULT_OG_IMAGE],
     },
   }
 }

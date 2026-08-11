@@ -7,8 +7,7 @@ import ErrorBoundary from "@/components/error-boundary";
 import "@/lib/error-handler";
 import LenisProvider from "@/components/lenis-provider";
 import LayoutChrome from "@/components/layout-chrome";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in";
+import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -33,14 +32,10 @@ const structuredData = {
           availableLanguage: ["English", "Hindi"],
         },
       ],
-      // TODO: replace placeholder rating with verified Google/Clutch review data
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "5.0",
-        reviewCount: "13",
-        bestRating: "5",
-        worstRating: "1",
-      },
+      // NOTE: aggregateRating deliberately omitted. Google's structured-data
+      // policy requires ratings to come from genuine, on-page user reviews;
+      // shipping placeholder numbers risks a manual action. Re-add only with
+      // verified Google/Clutch review data plus visible reviews on the page.
     },
     ...[
       "Website Development",
@@ -175,14 +170,7 @@ export const metadata: Metadata = {
     title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
-    images: [
-      {
-        url: "/metaicon.svg",
-        width: 1200,
-        height: 630,
-        alt: "NextGen Fusion - Web Development & Design Agency",
-      },
-    ],
+    images: OG_IMAGES,
   },
 
   // Twitter Card
@@ -191,7 +179,7 @@ export const metadata: Metadata = {
     title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
-    images: ["/metaicon.svg"],
+    images: [DEFAULT_OG_IMAGE],
   },
 
   // Additional meta tags
