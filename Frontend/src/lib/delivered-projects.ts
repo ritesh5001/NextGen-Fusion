@@ -62,6 +62,9 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "bholawelding.com": ["service"],
   "chikusmile.com": ["service"],
   // ── E-commerce: Fashion & Clothing ───────────────────────────────────
+  "rumaneroyale.com": ["ecommerce", "Fashion & Clothing"],
+  "royalvaster.co.uk": ["ecommerce", "Fashion & Clothing"],
+  "poshwave.co.in": ["ecommerce", "Fashion & Clothing"],
   "urbenthreads.in": ["ecommerce", "Fashion & Clothing"],
   "samaraha.com": ["ecommerce", "Fashion & Clothing"],
   "anchalweaves.com": ["ecommerce", "Fashion & Clothing"],
@@ -86,6 +89,8 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "luntra.co.in": ["ecommerce", "Fashion & Clothing"],
   "unitexfashion.in": ["ecommerce", "Fashion & Clothing"],
   // ── E-commerce: Jewelry ──────────────────────────────────────────────
+  "slowy.in": ["ecommerce", "Jewelry"],
+  "sweetyonline.com": ["ecommerce", "Jewelry"],
   "lesbijouxdangeli.com": ["ecommerce", "Jewelry"],
   "swarnsutra.com": ["ecommerce", "Jewelry"],
   "glamourjewellery.in": ["ecommerce", "Jewelry"],
@@ -93,6 +98,9 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "sudheerktonegramgold.com": ["ecommerce", "Jewelry"],
   "vyorajewelhouse.com": ["ecommerce", "Jewelry"],
   // ── E-commerce: Beauty & Wellness ────────────────────────────────────
+  "vayue.in": ["ecommerce", "Beauty & Wellness"],
+  "nuaura.co": ["ecommerce", "Beauty & Wellness"],
+  "aalaenatural.com": ["ecommerce", "Beauty & Wellness"],
   "aquossilver.com": ["ecommerce", "Beauty & Wellness"],
   "fabonaturals.com": ["ecommerce", "Beauty & Wellness"],
   "sweatfreelife.com": ["ecommerce", "Beauty & Wellness"],
@@ -162,6 +170,14 @@ const NAME_OVERRIDES: Record<string, string> = {
   "chemnetixventures.com": "Chemnetix Ventures",
   "soukprofumi.it": "Souk Profumi",
   "orangelilies.com": "Orange Lilies",
+  "rumaneroyale.com": "Rumäne Royale",
+  "aalaenatural.com": "Aalae Natural",
+  "royalvaster.co.uk": "Royal Vastar",
+  "sweetyonline.com": "Sweety Bangles & Jewels",
+  "vayue.in": "Vayué",
+  "poshwave.co.in": "PoshWave",
+  "nuaura.co": "Nuáura",
+  "keoolix.in": "Keoolix",
 }
 
 function hostFromUrl(url: string): string {
