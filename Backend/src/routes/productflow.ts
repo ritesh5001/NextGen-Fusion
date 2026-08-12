@@ -20,6 +20,7 @@ import { seedBuiltInTemplates } from '../lib/productflow/csv/templates'
 import { PF_MAPPING_TOKENS } from '../lib/productflow/csv/mapper'
 import { generateProjectCsv, recordExport } from '../lib/productflow/csv/generator'
 import { summarizeReport } from '../lib/productflow/csv/validator'
+import { runHealthCheck } from '../lib/productflow/health'
 
 const router = Router()
 router.use(requireInternalAuth)
@@ -662,6 +663,17 @@ router.get('/productflow/exports', async (req, res) => {
     res.json({ data })
   } catch (error) {
     fail(res, error, 'productflow:exports:list')
+  }
+})
+
+// ── System health (Phase 10) ────────────────────────────────────────────────
+
+router.get('/productflow/health', async (req, res) => {
+  try {
+    // ?deep=true spends one small AI call to prove the provider really answers.
+    res.json({ data: await runHealthCheck(req.query.deep === 'true') })
+  } catch (error) {
+    fail(res, error, 'productflow:health')
   }
 })
 
