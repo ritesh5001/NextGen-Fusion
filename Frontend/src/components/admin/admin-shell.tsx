@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays, Briefcase, Package, Boxes, Image, CreditCard, Store } from 'lucide-react'
+import { Users, Send, LayoutDashboard, LogOut, Building2, FileText, Calculator, MessageSquare, CalendarDays, Briefcase, Package, Boxes, Image, CreditCard, Store, Bot } from 'lucide-react'
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -16,6 +16,7 @@ const NAV = [
   { href: '/admin/agency', label: 'Agency CRM', icon: Briefcase },
   { href: '/admin/clients', label: 'Clients', icon: Package },
   { href: '/admin/store', label: 'Store', icon: Store },
+  { href: '/admin/productflow', label: 'ProductFlow', icon: Bot },
   { href: '/admin/wp-plugins', label: 'WP Plugins', icon: Boxes },
   { href: '/admin/banners', label: 'Banners', icon: Image },
   { href: '/admin/subscription-plans', label: 'Subscription Plans', icon: CreditCard },

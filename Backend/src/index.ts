@@ -30,6 +30,8 @@ import storeRoutes from './routes/store'
 import wpPluginsRoutes from './routes/wp-plugins'
 import bannersRoutes from './routes/banners'
 import clientBrandRoutes from './routes/client-brand'
+import productflowRoutes from './routes/productflow'
+import productflowWebhookRoutes from './routes/productflow-webhook'
 import { startImageCleanupWorker } from './lib/image-cleanup'
 
 const app = express()
@@ -102,6 +104,10 @@ app.use('/api/admin', clientUsersRoutes)
 app.use('/api/agency', clientUsersRoutes)
 app.use('/api/admin', storeProductsRoutes)
 app.use('/api', storeRoutes)
+app.use('/api/admin', productflowRoutes)
+// Public: Telegram posts here. Authenticity is proven by the secret token
+// header rather than an admin session, so it must sit outside /api/admin.
+app.use('/api/productflow', productflowWebhookRoutes)
 
 app.get('/health', (_req, res) => res.json({ ok: true }))
 
