@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
 import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, type LucideIcon } from "lucide-react"
@@ -15,6 +16,13 @@ type MenuItem = {
   isPage: boolean
   Icon: LucideIcon
 }
+
+/**
+ * Real URL for a menu item. Every nav entry must render an anchor with a valid
+ * href so search engines can crawl the site's internal links — on-page section
+ * links still scroll smoothly because react-scroll calls preventDefault().
+ */
+const hrefFor = (item: MenuItem) => (item.isPage ? item.href : `/#${item.href}`)
 
 const menuItems: MenuItem[] = [
   { name: "Home", href: "/", isPage: true, Icon: Home },
@@ -61,21 +69,6 @@ export default function SimpleNavbar() {
     }
   }
 
-  const handleNavItemClick = (item: MenuItem) => {
-    if (item.href === "/") {
-      handleLogoClick()
-    } else if (item.isPage) {
-      // Navigate to separate page
-      router.push(item.href)
-    } else if (isHomePage) {
-      // If on home page, use smooth scroll
-      return
-    } else {
-      // If on other pages, navigate to home page with section
-      router.push(`/#${item.href}`)
-    }
-  }
-
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
@@ -105,12 +98,19 @@ export default function SimpleNavbar() {
             transition={{ duration: 0.1, delay: 0.05 }}
           >
             {/* Logo */}
-            <div
-              onClick={handleLogoClick}
+            <Link
+              href="/"
+              onClick={(e) => {
+                if (isHomePage) {
+                  e.preventDefault()
+                  handleLogoClick()
+                }
+              }}
               className="cursor-pointer"
+              aria-label="NextGen Fusion — home"
             >
-              <Image src="/images/site-logo.png" alt="Logo" width={120} height={32} className="h-8 w-auto" />
-            </div>
+              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={480} height={270} className="h-8 w-auto" />
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="flex items-center gap-6">
@@ -119,6 +119,7 @@ export default function SimpleNavbar() {
                   {isHomePage && !item.isPage ? (
                     <ScrollLink
                       to={item.href}
+                      href={hrefFor(item)}
                       smooth={true}
                       duration={500}
                       offset={-80}
@@ -127,12 +128,18 @@ export default function SimpleNavbar() {
                       {item.name}
                     </ScrollLink>
                   ) : (
-                    <button
-                      onClick={() => handleNavItemClick(item)}
+                    <Link
+                      href={hrefFor(item)}
+                      onClick={(e) => {
+                        if (item.href === "/") {
+                          e.preventDefault()
+                          handleLogoClick()
+                        }
+                      }}
                       className="text-black font-medium hover:text-gray-600 transition-colors"
                     >
                       {item.name}
-                    </button>
+                    </Link>
                   )}
                 </div>
               ))}
@@ -225,6 +232,7 @@ export default function SimpleNavbar() {
                       {isHomePage && !item.isPage ? (
                         <ScrollLink
                           to={item.href}
+                          href={hrefFor(item)}
                           smooth={true}
                           duration={500}
                           offset={-80}
@@ -235,16 +243,20 @@ export default function SimpleNavbar() {
                           <span className="font-medium">{item.name}</span>
                         </ScrollLink>
                       ) : (
-                        <button
-                          onClick={() => {
-                            handleNavItemClick(item)
+                        <Link
+                          href={hrefFor(item)}
+                          onClick={(e) => {
+                            if (item.href === "/") {
+                              e.preventDefault()
+                              handleLogoClick()
+                            }
                             setIsMobileMenuOpen(false)
                           }}
                           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
                         >
                           <item.Icon className="w-5 h-5" />
                           <span className="font-medium">{item.name}</span>
-                        </button>
+                        </Link>
                       )}
                     </div>
                   ))}
@@ -294,7 +306,7 @@ export default function SimpleNavbar() {
               onClick={handleLogoClick}
               className="cursor-pointer"
             >
-              <Image src="/images/site-logo.png" alt="Logo" width={80} height={20} className="h-5 w-auto" />
+              <Image src="/images/site-logo.png" alt="Logo" width={480} height={270} className="h-5 w-auto" />
             </div>
 
             {/* Tombol Hamburger di kanan logo */}
