@@ -110,6 +110,34 @@ export function sendMessage(
   })
 }
 
+/**
+ * Every callback_query MUST be answered or the client's button keeps showing a
+ * loading spinner until it times out. `text` shows a brief toast in Telegram.
+ */
+export function answerCallbackQuery(
+  token: string,
+  callbackQueryId: string,
+  text?: string,
+): Promise<boolean> {
+  return call<boolean>(token, 'answerCallbackQuery', {
+    callback_query_id: callbackQueryId,
+    ...(text ? { text: text.slice(0, 200) } : {}),
+  })
+}
+
+/** Removes the inline keyboard from a message once it has been acted on. */
+export function editMessageReplyMarkup(
+  token: string,
+  chatId: string | number,
+  messageId: number,
+): Promise<unknown> {
+  return call(token, 'editMessageReplyMarkup', {
+    chat_id: chatId,
+    message_id: messageId,
+    reply_markup: { inline_keyboard: [] },
+  })
+}
+
 type TelegramFile = {
   file_id: string
   file_unique_id: string

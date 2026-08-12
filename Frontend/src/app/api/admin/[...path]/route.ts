@@ -30,6 +30,11 @@ async function proxyRequest(req: Request, method: string, path: string) {
   const resContentType = upstream.headers.get('content-type')
   if (resContentType) responseHeaders.set('content-type', resContentType)
 
+  // File downloads (e.g. the ProductFlow CSV export) carry their filename here;
+  // without it the browser renders the file inline instead of saving it.
+  const disposition = upstream.headers.get('content-disposition')
+  if (disposition) responseHeaders.set('content-disposition', disposition)
+
   const setCookie = upstream.headers.get('set-cookie')
   if (setCookie) responseHeaders.set('set-cookie', setCookie)
 

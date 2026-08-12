@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { timingSafeEqual } from 'node:crypto'
 import { logRouteError } from '../lib/http-errors'
 import { loadPfSettings } from '../lib/productflow/settings'
+import { answerCallbackQuery, editMessageReplyMarkup } from '../lib/productflow/telegram'
 import { fromTelegramUpdate, type TelegramUpdate } from '../lib/productflow/message'
 import {
   findClientByExternalId,
@@ -57,24 +58,42 @@ router.post('/telegram/webhook', async (req, res) => {
       const userId = callback.from?.id ? String(callback.from.id) : null
       res.json({ ok: true })
 
-      if (parsed && chatId && userId) {
-        void (async () => {
-          try {
-            const client = await findClientByExternalId('telegram', userId)
-            if (!client) return
-            const reply = await handleCallback({
-              token,
-              chatId,
-              clientId: client.id,
-              action: parsed.action,
-              draftId: parsed.draftId,
-            })
-            await replyToCallback(token, chatId, reply)
-          } catch (error) {
-            logRouteError('productflow:callback', error)
+      void (async () => {
+        try {
+          // Always answer, even on a bad payload, or the client's button spins
+          // until Telegram times it out.
+          if (!parsed || !chatId || !userId) {
+            await answerCallbackQuery(token, callback.id).catch(() => {})
+            return
           }
-        })()
-      }
+
+          const client = await findClientByExternalId('telegram', userId)
+          if (!client) {
+            await answerCallbackQuery(token, callback.id, 'This chat is not linked to a project.')
+            return
+          }
+
+          const reply = await handleCallback({
+            token,
+            chatId,
+            clientId: client.id,
+            action: parsed.action,
+            draftId: parsed.draftId,
+          })
+
+          await answerCallbackQuery(token, callback.id).catch(() => {})
+
+          // Retire the keyboard so the same draft cannot be actioned twice.
+          if (parsed.action !== 'edit' && callback.message?.message_id) {
+            await editMessageReplyMarkup(token, chatId, callback.message.message_id).catch(() => {})
+          }
+
+          await replyToCallback(token, chatId, reply)
+        } catch (error) {
+          logRouteError('productflow:callback', error)
+          await answerCallbackQuery(token, callback.id).catch(() => {})
+        }
+      })()
       return
     }
 

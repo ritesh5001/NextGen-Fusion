@@ -16,6 +16,10 @@ import {
   savePfSettings,
   toPublicSettings,
 } from '../lib/productflow/settings'
+import { seedBuiltInTemplates } from '../lib/productflow/csv/templates'
+import { PF_MAPPING_TOKENS } from '../lib/productflow/csv/mapper'
+import { generateProjectCsv, recordExport } from '../lib/productflow/csv/generator'
+import { summarizeReport } from '../lib/productflow/csv/validator'
 
 const router = Router()
 router.use(requireInternalAuth)
@@ -487,6 +491,177 @@ router.get('/productflow/products', async (req, res) => {
     res.json({ data })
   } catch (error) {
     fail(res, error, 'productflow:products:list')
+  }
+})
+
+// ── CSV templates (Phase 8) ─────────────────────────────────────────────────
+
+const TEMPLATE_COLUMNS = 'id, name, platform, columns, mapping, rules, is_default, created_at'
+
+router.get('/productflow/templates', async (_req, res) => {
+  try {
+    // First visit seeds the WooCommerce / Shopify / custom starters.
+    await seedBuiltInTemplates()
+    const { data, error } = await getSupabaseAdmin()
+      .from('pf_csv_templates')
+      .select(TEMPLATE_COLUMNS)
+      .order('platform', { ascending: true })
+    if (error) throw error
+    res.json({ data, tokens: PF_MAPPING_TOKENS })
+  } catch (error) {
+    fail(res, error, 'productflow:templates:list')
+  }
+})
+
+router.post('/productflow/templates', async (req, res) => {
+  try {
+    const body = (req.body ?? {}) as Record<string, unknown>
+    const name = str(body.name)
+    if (!name) {
+      res.status(400).json({ error: 'Template name is required' })
+      return
+    }
+    const columns = Array.isArray(body.columns) ? body.columns.map(String) : []
+    if (!columns.length) {
+      res.status(400).json({ error: 'At least one column is required' })
+      return
+    }
+
+    const { data, error } = await getSupabaseAdmin()
+      .from('pf_csv_templates')
+      .insert({
+        name,
+        platform: str(body.platform) ?? 'custom',
+        columns,
+        mapping: (body.mapping as Record<string, string>) ?? {},
+        rules: (body.rules as Record<string, unknown>) ?? {},
+      })
+      .select(TEMPLATE_COLUMNS)
+      .single()
+
+    if (error) throw error
+    res.json({ data })
+  } catch (error) {
+    fail(res, error, 'productflow:templates:create')
+  }
+})
+
+router.patch('/productflow/templates/:id', async (req, res) => {
+  try {
+    const body = (req.body ?? {}) as Record<string, unknown>
+    const patch: Record<string, unknown> = {}
+    const name = str(body.name)
+    if (name) patch.name = name
+    if ('platform' in body) patch.platform = str(body.platform) ?? 'custom'
+    if (Array.isArray(body.columns)) patch.columns = body.columns.map(String)
+    if (body.mapping && typeof body.mapping === 'object') patch.mapping = body.mapping
+    if (body.rules && typeof body.rules === 'object') patch.rules = body.rules
+
+    if (!Object.keys(patch).length) {
+      res.status(400).json({ error: 'Nothing to update' })
+      return
+    }
+
+    const { data, error } = await getSupabaseAdmin()
+      .from('pf_csv_templates')
+      .update(patch)
+      .eq('id', req.params.id)
+      .select(TEMPLATE_COLUMNS)
+      .single()
+
+    if (error) throw error
+    res.json({ data })
+  } catch (error) {
+    fail(res, error, 'productflow:templates:patch')
+  }
+})
+
+router.delete('/productflow/templates/:id', async (req, res) => {
+  try {
+    const { error } = await getSupabaseAdmin()
+      .from('pf_csv_templates')
+      .delete()
+      .eq('id', req.params.id)
+    if (error) throw error
+    res.json({ data: { ok: true } })
+  } catch (error) {
+    fail(res, error, 'productflow:templates:delete')
+  }
+})
+
+// ── CSV generation (Phase 9) ────────────────────────────────────────────────
+
+/** Dry run: what would export, and what is blocking it. */
+router.get('/productflow/projects/:id/csv/preview', async (req, res) => {
+  try {
+    const result = await generateProjectCsv(req.params.id, {
+      onlyUnexported: req.query.onlyNew === 'true',
+      dryRun: true,
+    })
+    res.json({
+      data: {
+        ok: result.ok,
+        productCount: result.productCount,
+        templateName: result.templateName,
+        errors: result.report.errors,
+        warnings: result.report.warnings,
+        summary: summarizeReport(result.report),
+      },
+    })
+  } catch (error) {
+    fail(res, error, 'productflow:csv:preview')
+  }
+})
+
+/** Streams the CSV as a download and records the export. */
+router.get('/productflow/projects/:id/csv', async (req, res) => {
+  try {
+    const onlyNew = req.query.onlyNew === 'true'
+    const result = await generateProjectCsv(req.params.id, { onlyUnexported: onlyNew })
+
+    if (!result.ok || !result.csv || !result.filename) {
+      res.status(422).json({
+        error: 'CSV cannot be generated yet',
+        summary: summarizeReport(result.report),
+        errors: result.report.errors,
+        warnings: result.report.warnings,
+      })
+      return
+    }
+
+    await recordExport({
+      projectId: req.params.id,
+      templateName: result.templateName,
+      filename: result.filename,
+      productCount: result.productCount,
+      markExported: req.query.markExported !== 'false',
+    })
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8')
+    res.setHeader('Content-Disposition', `attachment; filename="${result.filename}"`)
+    // Excel needs a BOM to read UTF-8 (₹, accented brand names) correctly.
+    res.send(`﻿${result.csv}`)
+  } catch (error) {
+    fail(res, error, 'productflow:csv:download')
+  }
+})
+
+router.get('/productflow/exports', async (req, res) => {
+  try {
+    const projectId = str(req.query.projectId)
+    let query = getSupabaseAdmin()
+      .from('pf_csv_exports')
+      .select('id, project_id, template_id, filename, product_count, created_at')
+      .order('created_at', { ascending: false })
+      .limit(50)
+
+    if (projectId) query = query.eq('project_id', projectId)
+
+    const { data, error } = await query
+    if (error) throw error
+    res.json({ data })
+  } catch (error) {
+    fail(res, error, 'productflow:exports:list')
   }
 })
 

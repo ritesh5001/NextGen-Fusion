@@ -10,6 +10,9 @@ import {
   Plus,
   CheckCircle2,
   AlertTriangle,
+  Download,
+  FileCheck,
+  Table2,
 } from 'lucide-react'
 import { AdminShell, PageHeader } from '@/components/admin/admin-shell'
 
@@ -96,6 +99,32 @@ type PfDraft = {
   updated_at: string
 }
 
+type PfTemplate = {
+  id: string
+  name: string
+  platform: string
+  columns: string[]
+  mapping: Record<string, string>
+  is_default: boolean
+}
+
+type PfExport = {
+  id: string
+  project_id: string
+  filename: string
+  product_count: number
+  created_at: string
+}
+
+type CsvPreview = {
+  ok: boolean
+  productCount: number
+  templateName: string | null
+  errors: { code: string; message: string }[]
+  warnings: { code: string; message: string }[]
+  summary: string
+}
+
 type PfProduct = {
   id: string
   client_id: string
@@ -130,6 +159,9 @@ export default function ProductFlowPage() {
   const [images, setImages] = useState<PfImage[]>([])
   const [drafts, setDrafts] = useState<PfDraft[]>([])
   const [products, setProducts] = useState<PfProduct[]>([])
+  const [templates, setTemplates] = useState<PfTemplate[]>([])
+  const [exports, setExports] = useState<PfExport[]>([])
+  const [preview, setPreview] = useState<Record<string, CsvPreview>>({})
   const [stats, setStats] = useState<Stats | null>(null)
 
   const [botToken, setBotToken] = useState('')
@@ -143,7 +175,7 @@ export default function ProductFlowPage() {
   const load = useCallback(async () => {
     setError(null)
     try {
-      const [s, c, p, m, i, st, dr, pr] = await Promise.all([
+      const [s, c, p, m, i, st, dr, pr, tp, ex] = await Promise.all([
         call<Settings>('/settings'),
         call<PfClient[]>('/clients'),
         call<PfProject[]>('/projects'),
@@ -152,6 +184,8 @@ export default function ProductFlowPage() {
         call<Stats>('/stats'),
         call<PfDraft[]>('/drafts'),
         call<PfProduct[]>('/products'),
+        call<PfTemplate[]>('/templates'),
+        call<PfExport[]>('/exports'),
       ])
       setSettings(s)
       setClients(c ?? [])
@@ -161,6 +195,8 @@ export default function ProductFlowPage() {
       setStats(st)
       setDrafts(dr ?? [])
       setProducts(pr ?? [])
+      setTemplates(tp ?? [])
+      setExports(ex ?? [])
       if (s.telegramWebhookUrl && !baseUrl) {
         setBaseUrl(new URL(s.telegramWebhookUrl).origin)
       }
@@ -274,6 +310,17 @@ export default function ProductFlowPage() {
       await call(`/drafts/${id}`, { method: 'DELETE' })
       await load()
     })
+
+  const checkCsv = (projectId: string) =>
+    run(`csv-${projectId}`, async () => {
+      const p = await call<CsvPreview>(`/projects/${projectId}/csv/preview`)
+      setPreview((prev) => ({ ...prev, [projectId]: p }))
+    })
+
+  // A download must go through the browser, not fetch(), so the file is saved.
+  const downloadCsv = (projectId: string) => {
+    window.location.href = `${API}/projects/${projectId}/csv`
+  }
 
   const clientName = (id: string) => clients.find((c) => c.id === id)?.name ?? '—'
 
@@ -588,22 +635,70 @@ export default function ProductFlowPage() {
         ) : (
           <ul className="divide-y divide-slate-100">
             {projects.map((p) => (
-              <li key={p.id} className="flex items-center justify-between py-2 text-sm">
-                <div>
-                  <div className="font-medium text-slate-900">{p.name}</div>
-                  <div className="text-xs text-slate-500">
-                    {clientName(p.client_id)} · {p.platform}
-                    {p.website_url ? ` · ${p.website_url}` : ''}
+              <li key={p.id} className="py-3 text-sm">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="font-medium text-slate-900">{p.name}</div>
+                    <div className="text-xs text-slate-500">
+                      {clientName(p.client_id)} · {p.platform}
+                      {p.website_url ? ` · ${p.website_url}` : ''}
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <button
+                      onClick={() => checkCsv(p.id)}
+                      disabled={busy === `csv-${p.id}`}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                    >
+                      {busy === `csv-${p.id}` ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <FileCheck className="h-3.5 w-3.5" />
+                      )}
+                      Check CSV
+                    </button>
+                    <button
+                      onClick={() => downloadCsv(p.id)}
+                      disabled={preview[p.id] ? !preview[p.id].ok : false}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white disabled:opacity-40"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      CSV
+                    </button>
+                    <button
+                      onClick={() => deleteProject(p.id)}
+                      disabled={busy === `project-${p.id}`}
+                      className="rounded-lg border border-slate-300 p-1.5 text-slate-500 hover:text-red-600"
+                      aria-label={`Delete ${p.name}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
-                <button
-                  onClick={() => deleteProject(p.id)}
-                  disabled={busy === `project-${p.id}`}
-                  className="rounded-lg border border-slate-300 p-1.5 text-slate-500 hover:text-red-600"
-                  aria-label={`Delete ${p.name}`}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
+
+                {preview[p.id] && (
+                  <div
+                    className={`mt-2 rounded-lg border px-3 py-2 text-xs ${
+                      preview[p.id].ok
+                        ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+                        : 'border-red-200 bg-red-50 text-red-700'
+                    }`}
+                  >
+                    <div className="font-medium">
+                      {preview[p.id].ok
+                        ? `Ready — ${preview[p.id].productCount} product(s) via ${preview[p.id].templateName}`
+                        : 'CSV cannot be generated yet'}
+                    </div>
+                    {preview[p.id].errors.map((e, idx) => (
+                      <div key={idx}>· {e.message}</div>
+                    ))}
+                    {preview[p.id].warnings.slice(0, 5).map((w, idx) => (
+                      <div key={`w${idx}`} className="text-amber-700">
+                        ⚠ {w.message}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -717,6 +812,55 @@ export default function ProductFlowPage() {
           </div>
         )}
       </section>
+
+      {/* ── CSV templates (Phase 8) ──────────────────────────────────────── */}
+      <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5">
+        <h2 className="mb-1 flex items-center gap-2 text-base font-semibold text-slate-900">
+          <Table2 className="h-4 w-4" /> CSV templates
+        </h2>
+        <p className="mb-3 text-sm text-slate-600">
+          Each project exports through the template matching its platform. Columns and field
+          mapping are data, so a client with an unusual importer is handled by editing a template
+          rather than changing code.
+        </p>
+        {templates.length === 0 ? (
+          <p className="text-sm text-slate-500">Loading templates…</p>
+        ) : (
+          <ul className="space-y-2">
+            {templates.map((t) => (
+              <li key={t.id} className="rounded-lg border border-slate-200 px-3 py-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-900">{t.name}</span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+                    {t.platform}
+                  </span>
+                </div>
+                <div className="mt-1 truncate text-xs text-slate-500">
+                  {t.columns.length} columns · {t.columns.slice(0, 6).join(', ')}
+                  {t.columns.length > 6 ? '…' : ''}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {/* ── Export history (Phase 9) ─────────────────────────────────────── */}
+      {exports.length > 0 && (
+        <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="mb-3 text-base font-semibold text-slate-900">Recent CSV exports</h2>
+          <ul className="divide-y divide-slate-100 text-sm">
+            {exports.map((e) => (
+              <li key={e.id} className="flex items-center justify-between py-2">
+                <span className="font-mono text-xs text-slate-700">{e.filename}</span>
+                <span className="text-xs text-slate-500">
+                  {e.product_count} product(s) · {new Date(e.created_at).toLocaleString()}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* ── Inbound log ──────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
