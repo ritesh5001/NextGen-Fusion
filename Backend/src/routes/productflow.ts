@@ -24,8 +24,15 @@ import { runHealthCheck } from '../lib/productflow/health'
 import { replayClientMessages, type ReplayResult } from '../lib/productflow/replay'
 import { sendMessage } from '../lib/productflow/telegram'
 import { describeProgress, PF_STAGES } from '../lib/productflow/progress'
-import { testAllProviders, testProvider } from '../lib/productflow/ai-test'
-import { PF_AI_PROVIDERS, type PfAiProvider } from '../lib/productflow/settings'
+import { testAllIntegrations, testIntegration } from '../lib/productflow/ai-test'
+import {
+  AI_DRIVERS,
+  deleteIntegration,
+  listIntegrations,
+  toPublicIntegration,
+  upsertIntegration,
+  type PfDriver,
+} from '../lib/productflow/integrations'
 
 const router = Router()
 router.use(requireInternalAuth)
@@ -751,18 +758,117 @@ router.post('/productflow/ai/test', async (req, res) => {
     const requested = str((req.body ?? {}).provider)
 
     if (!requested || requested === 'all') {
-      res.json({ data: await testAllProviders() })
+      res.json({ data: await testAllIntegrations() })
       return
     }
 
-    if (!PF_AI_PROVIDERS.includes(requested as PfAiProvider)) {
-      res.status(400).json({ error: `Unknown provider "${requested}"` })
-      return
-    }
-
-    res.json({ data: [await testProvider(requested as PfAiProvider)] })
+    res.json({ data: [await testIntegration(requested)] })
   } catch (error) {
     fail(res, error, 'productflow:ai:test')
+  }
+})
+
+// ── Integrations ────────────────────────────────────────────────────────────
+
+router.get('/productflow/integrations', async (_req, res) => {
+  try {
+    const rows = await listIntegrations()
+    res.json({
+      data: rows.map(toPublicIntegration),
+      drivers: AI_DRIVERS,
+    })
+  } catch (error) {
+    fail(res, error, 'productflow:integrations:list')
+  }
+})
+
+/**
+ * Creates or updates an integration.
+ *
+ * An omitted apiKey leaves the stored key untouched; an empty string clears it
+ * so the environment variable takes over again.
+ */
+router.put('/productflow/integrations/:slug', async (req, res) => {
+  try {
+    const body = (req.body ?? {}) as Record<string, unknown>
+    const slug = req.params.slug.trim().toLowerCase()
+
+    if (!/^[a-z0-9][a-z0-9_-]*$/.test(slug)) {
+      res.status(400).json({ error: 'Slug must be lowercase letters, numbers, - or _' })
+      return
+    }
+
+    const driver = str(body.driver) as PfDriver | undefined
+    if (driver && !AI_DRIVERS.includes(driver) && !['telegram', 'cloudinary'].includes(driver)) {
+      res.status(400).json({ error: `Unknown driver "${driver}"` })
+      return
+    }
+
+    if (driver === 'openai_compatible' && body.baseUrl !== undefined) {
+      const base = str(body.baseUrl)
+      if (base) {
+        try {
+          new URL(base)
+        } catch {
+          res.status(400).json({ error: 'Base URL is not a valid URL' })
+          return
+        }
+      }
+    }
+
+    const saved = await upsertIntegration(slug, {
+      label: str(body.label),
+      driver,
+      kind: str(body.kind) as never,
+      apiKey: body.apiKey === undefined ? undefined : String(body.apiKey ?? '').trim(),
+      baseUrl: body.baseUrl === undefined ? undefined : String(body.baseUrl ?? '').trim(),
+      textModel: body.textModel === undefined ? undefined : String(body.textModel ?? '').trim(),
+      visionModel:
+        body.visionModel === undefined ? undefined : String(body.visionModel ?? '').trim(),
+      enabled: body.enabled === undefined ? undefined : Boolean(body.enabled),
+      supportsVision:
+        body.supportsVision === undefined ? undefined : Boolean(body.supportsVision),
+    })
+
+    res.json({ data: toPublicIntegration(saved) })
+  } catch (error) {
+    fail(res, error, 'productflow:integrations:save')
+  }
+})
+
+router.delete('/productflow/integrations/:slug', async (req, res) => {
+  try {
+    await deleteIntegration(req.params.slug)
+    res.json({ data: { ok: true } })
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('Built-in')) {
+      res.status(400).json({ error: error.message })
+      return
+    }
+    fail(res, error, 'productflow:integrations:delete')
+  }
+})
+
+/** Makes an integration the one used for classification. */
+router.post('/productflow/integrations/:slug/default', async (req, res) => {
+  try {
+    const slug = req.params.slug
+    const rows = await listIntegrations('ai')
+    const target = rows.find((r) => r.slug === slug)
+
+    if (!target) {
+      res.status(404).json({ error: 'Integration not found' })
+      return
+    }
+    if (!target.enabled) {
+      res.status(400).json({ error: 'Enable the integration before making it the default' })
+      return
+    }
+
+    await savePfSettings({ ai_provider: slug as never })
+    res.json({ data: { aiProvider: slug } })
+  } catch (error) {
+    fail(res, error, 'productflow:integrations:default')
   }
 })
 

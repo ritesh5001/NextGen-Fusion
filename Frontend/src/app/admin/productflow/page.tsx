@@ -151,6 +151,26 @@ type PfProgress = {
 
 type PfStage = { key: string; label: string }
 
+type PfIntegration = {
+  id: string
+  slug: string
+  label: string
+  kind: 'ai' | 'messaging' | 'storage'
+  driver: string
+  enabled: boolean
+  is_builtin: boolean
+  supports_vision: boolean
+  hasKey: boolean
+  keyPreview: string | null
+  keySource: 'panel' | 'env' | 'none'
+  envKey: string | null
+  baseUrl: string | null
+  config: Record<string, string>
+  last_tested_at: string | null
+  last_test_ok: boolean | null
+  last_test_error: string | null
+}
+
 type PfProbe = {
   ok: boolean
   ms: number
@@ -180,6 +200,7 @@ const TABS = [
   ['messages', 'Messages & Images'],
   ['templates', 'CSV Templates'],
   ['exports', 'CSV Exports'],
+  ['integrations', 'Integrations'],
   ['settings', 'Settings'],
 ] as const
 
@@ -222,6 +243,11 @@ export default function ProductFlowPage() {
   const [templates, setTemplates] = useState<PfTemplate[]>([])
   const [exports, setExports] = useState<PfExport[]>([])
   const [preview, setPreview] = useState<Record<string, CsvPreview>>({})
+  const [integrations, setIntegrations] = useState<PfIntegration[]>([])
+  const [drivers, setDrivers] = useState<string[]>([])
+  const [edit, setEdit] = useState<Record<string, Record<string, string>>>({})
+  const [showAdd, setShowAdd] = useState(false)
+  const [newInt, setNewInt] = useState({ slug: '', label: '', driver: 'openai_compatible', apiKey: '', baseUrl: '', textModel: '' })
   const [aiTests, setAiTests] = useState<Record<string, PfProviderTest>>({})
   const [alerts, setAlerts] = useState<PfAlert[]>([])
   const [stages, setStages] = useState<PfStage[]>([])
@@ -275,7 +301,17 @@ export default function ProductFlowPage() {
     void load()
     call<PfHealth>('/health').then(setHealth).catch(() => {})
     call<PfAlert[]>('/alerts').then((a) => setAlerts(a ?? [])).catch(() => {})
+    void loadIntegrations()
   }, [])
+
+  async function loadIntegrations() {
+    const res = await fetch(`${API}/integrations`)
+    const json = await res.json().catch(() => null)
+    if (res.ok) {
+      setIntegrations((json?.data as PfIntegration[]) ?? [])
+      setDrivers((json?.drivers as string[]) ?? [])
+    }
+  }
 
   async function run(key: string, fn: () => Promise<void>, successMessage?: string) {
     setBusy(key)
@@ -387,6 +423,54 @@ export default function ProductFlowPage() {
         for (const r of results) next[r.provider] = r
         return next
       })
+    })
+
+  const field = (slug: string, key: string) => edit[slug]?.[key] ?? ''
+  const setField = (slug: string, key: string, value: string) =>
+    setEdit((p) => ({ ...p, [slug]: { ...(p[slug] ?? {}), [key]: value } }))
+
+  const saveIntegration = (slug: string, patch: Record<string, unknown>) =>
+    run(`int-${slug}`, async () => {
+      const res = await fetch(`${API}/integrations/${slug}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      })
+      const json = await res.json().catch(() => null)
+      if (!res.ok) throw new Error(json?.error || 'Save failed')
+      setEdit((p) => ({ ...p, [slug]: {} }))
+      await loadIntegrations()
+      setNotice(`Saved ${slug}.`)
+    })
+
+  const removeIntegration = (slug: string) =>
+    run(`int-${slug}`, async () => {
+      const res = await fetch(`${API}/integrations/${slug}`, { method: 'DELETE' })
+      const json = await res.json().catch(() => null)
+      if (!res.ok) throw new Error(json?.error || 'Delete failed')
+      await loadIntegrations()
+    })
+
+  const makeDefault = (slug: string) =>
+    run(`def-${slug}`, async () => {
+      await call(`/integrations/${slug}/default`, { method: 'POST' })
+      await load()
+      setNotice(`${slug} is now the active AI provider.`)
+    })
+
+  const addIntegration = () =>
+    run('int-new', async () => {
+      const res = await fetch(`${API}/integrations/${newInt.slug.trim().toLowerCase()}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...newInt, kind: 'ai', supportsVision: true }),
+      })
+      const json = await res.json().catch(() => null)
+      if (!res.ok) throw new Error(json?.error || 'Could not add provider')
+      setNewInt({ slug: '', label: '', driver: 'openai_compatible', apiKey: '', baseUrl: '', textModel: '' })
+      setShowAdd(false)
+      await loadIntegrations()
+      setNotice('Provider added.')
     })
 
   const dismissAlerts = () =>
@@ -556,6 +640,297 @@ export default function ProductFlowPage() {
           </button>
         ))}
       </div>
+
+      {/* ── Integrations ─────────────────────────────────────────────────── */}
+      {tab === 'integrations' && (
+        <section className="mb-6 space-y-4">
+          <div className="rounded-xl border border-slate-200 bg-white p-5">
+            <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900">
+                <Plug className="h-4 w-4" /> Integrations
+              </h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => testAi('all')}
+                  disabled={busy === 'ai-all'}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium"
+                >
+                  {busy === 'ai-all' ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Activity className="h-3.5 w-3.5" />
+                  )}
+                  Test all AI
+                </button>
+                <button
+                  onClick={() => setShowAdd((v) => !v)}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add provider
+                </button>
+              </div>
+            </div>
+            <p className="text-sm text-slate-600">
+              Keys entered here override the server&rsquo;s environment variables, so you can rotate
+              a key or switch models without a redeploy. Keys are stored server-side and only ever
+              shown masked.
+            </p>
+
+            {showAdd && (
+              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                <p className="mb-2 text-xs text-slate-600">
+                  Any OpenAI-compatible endpoint works here — OpenRouter, Together, DeepSeek,
+                  Mistral, xAI, or a local Ollama. Give the base URL and a model name.
+                </p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <input
+                    value={newInt.slug}
+                    onChange={(e) => setNewInt((p) => ({ ...p, slug: e.target.value }))}
+                    placeholder="slug (e.g. openrouter)"
+                    className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                  />
+                  <input
+                    value={newInt.label}
+                    onChange={(e) => setNewInt((p) => ({ ...p, label: e.target.value }))}
+                    placeholder="Display name"
+                    className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                  />
+                  <select
+                    value={newInt.driver}
+                    onChange={(e) => setNewInt((p) => ({ ...p, driver: e.target.value }))}
+                    className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                  >
+                    {drivers.map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    value={newInt.baseUrl}
+                    onChange={(e) => setNewInt((p) => ({ ...p, baseUrl: e.target.value }))}
+                    placeholder="https://openrouter.ai/api/v1"
+                    className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                  />
+                  <input
+                    type="password"
+                    value={newInt.apiKey}
+                    onChange={(e) => setNewInt((p) => ({ ...p, apiKey: e.target.value }))}
+                    placeholder="API key"
+                    className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                  />
+                  <input
+                    value={newInt.textModel}
+                    onChange={(e) => setNewInt((p) => ({ ...p, textModel: e.target.value }))}
+                    placeholder="Model id"
+                    className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                  />
+                </div>
+                <button
+                  onClick={addIntegration}
+                  disabled={!newInt.slug.trim() || busy === 'int-new'}
+                  className="mt-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
+                >
+                  {busy === 'int-new' ? 'Adding…' : 'Add provider'}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {(['ai', 'messaging', 'storage'] as const).map((kind) => {
+            const rows = integrations.filter((i) => i.kind === kind)
+            if (!rows.length) return null
+            return (
+              <div key={kind} className="rounded-xl border border-slate-200 bg-white p-5">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+                  {kind === 'ai' ? 'AI providers' : kind === 'messaging' ? 'Messaging' : 'Storage'}
+                </h3>
+                <div className="space-y-3">
+                  {rows.map((i) => {
+                    const active = settings?.aiProvider === i.slug
+                    const t = aiTests[i.slug]
+                    return (
+                      <div
+                        key={i.slug}
+                        className={`rounded-lg border p-3 ${
+                          active ? 'border-slate-900 ring-1 ring-slate-900' : 'border-slate-200'
+                        }`}
+                      >
+                        <div className="flex flex-wrap items-start justify-between gap-2">
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-900">
+                              {i.label}
+                              {active && (
+                                <span className="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] text-white">
+                                  default
+                                </span>
+                              )}
+                              {!i.enabled && (
+                                <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] text-slate-600">
+                                  disabled
+                                </span>
+                              )}
+                              <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">
+                                {i.driver}
+                              </span>
+                            </div>
+                            <div className="mt-0.5 text-xs">
+                              {i.hasKey ? (
+                                <span className="text-emerald-700">
+                                  Key {i.keyPreview}
+                                  <span className="text-slate-500">
+                                    {' '}
+                                    · from {i.keySource === 'panel' ? 'this panel' : i.envKey}
+                                  </span>
+                                </span>
+                              ) : (
+                                <span className="text-amber-700">
+                                  No key{i.envKey ? ` — set here or via ${i.envKey}` : ''}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex shrink-0 flex-wrap gap-1.5">
+                            {i.kind === 'ai' && (
+                              <>
+                                <button
+                                  onClick={() => testAi(i.slug)}
+                                  disabled={busy === `ai-${i.slug}`}
+                                  className="rounded-lg border border-slate-300 px-2 py-1 text-xs"
+                                >
+                                  {busy === `ai-${i.slug}` ? '…' : 'Test'}
+                                </button>
+                                {!active && (
+                                  <button
+                                    onClick={() => makeDefault(i.slug)}
+                                    disabled={busy === `def-${i.slug}`}
+                                    className="rounded-lg bg-slate-900 px-2 py-1 text-xs font-medium text-white"
+                                  >
+                                    Set default
+                                  </button>
+                                )}
+                              </>
+                            )}
+                            <button
+                              onClick={() => saveIntegration(i.slug, { enabled: !i.enabled })}
+                              disabled={busy === `int-${i.slug}`}
+                              className="rounded-lg border border-slate-300 px-2 py-1 text-xs"
+                            >
+                              {i.enabled ? 'Disable' : 'Enable'}
+                            </button>
+                            {!i.is_builtin && (
+                              <button
+                                onClick={() => removeIntegration(i.slug)}
+                                disabled={busy === `int-${i.slug}`}
+                                className="rounded-lg border border-red-300 p-1 text-red-600"
+                                aria-label={`Delete ${i.label}`}
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        {i.kind === 'ai' && (
+                          <div className="mt-3 grid gap-2 border-t border-slate-100 pt-3 sm:grid-cols-4">
+                            <input
+                              type="password"
+                              value={field(i.slug, 'apiKey')}
+                              onChange={(e) => setField(i.slug, 'apiKey', e.target.value)}
+                              placeholder={i.hasKey ? 'Replace API key' : 'API key'}
+                              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs sm:col-span-2"
+                            />
+                            <input
+                              value={field(i.slug, 'textModel') || i.config?.textModel || ''}
+                              onChange={(e) => setField(i.slug, 'textModel', e.target.value)}
+                              placeholder="Text model (blank = default)"
+                              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs"
+                            />
+                            <input
+                              value={field(i.slug, 'visionModel') || i.config?.visionModel || ''}
+                              onChange={(e) => setField(i.slug, 'visionModel', e.target.value)}
+                              placeholder="Vision model"
+                              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs"
+                            />
+                            {i.driver === 'openai_compatible' && (
+                              <input
+                                value={field(i.slug, 'baseUrl') || i.baseUrl || ''}
+                                onChange={(e) => setField(i.slug, 'baseUrl', e.target.value)}
+                                placeholder="Base URL"
+                                className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs sm:col-span-2"
+                              />
+                            )}
+                            <div className="sm:col-span-4">
+                              <button
+                                onClick={() =>
+                                  saveIntegration(i.slug, {
+                                    ...(edit[i.slug] ?? {}),
+                                    supportsVision: Boolean(
+                                      field(i.slug, 'visionModel') || i.config?.visionModel,
+                                    ),
+                                  })
+                                }
+                                disabled={
+                                  busy === `int-${i.slug}` ||
+                                  Object.keys(edit[i.slug] ?? {}).length === 0
+                                }
+                                className="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-40"
+                              >
+                                {busy === `int-${i.slug}` ? 'Saving…' : 'Save changes'}
+                              </button>
+                              <span className="ml-2 text-[11px] text-slate-500">
+                                Leave the key blank to keep the current one; clear a saved key to
+                                fall back to the environment variable.
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        {t && (
+                          <div className="mt-2 space-y-1 border-t border-slate-100 pt-2">
+                            {[
+                              ['Text', t.text],
+                              ['Images', t.vision],
+                            ].map(([label, x]) => {
+                              const probe = x as PfProbe
+                              if (!probe) return null
+                              if (probe.skipped) {
+                                return (
+                                  <div key={label as string} className="text-[11px] text-slate-500">
+                                    <span className="font-medium">{label as string}:</span> not
+                                    supported — {probe.skipped}
+                                  </div>
+                                )
+                              }
+                              return (
+                                <div
+                                  key={label as string}
+                                  className={`text-[11px] ${probe.ok ? 'text-emerald-700' : 'text-red-700'}`}
+                                >
+                                  <span className="font-medium">{label as string}:</span>{' '}
+                                  {probe.ok ? `working · ${probe.ms}ms` : 'failed'}
+                                  {probe.model && (
+                                    <span className="text-slate-500"> · {probe.model}</span>
+                                  )}
+                                  {probe.error && (
+                                    <div className="mt-0.5 break-words font-mono text-[10px] text-red-600">
+                                      {probe.error}
+                                    </div>
+                                  )}
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </section>
+      )}
 
       {/* ── System health ────────────────────────────────────────────────── */}
       {tab === 'dashboard' && (

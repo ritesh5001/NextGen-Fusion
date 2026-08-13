@@ -1,5 +1,6 @@
 import { getSupabaseAdmin } from '../supabase'
-import { generateStructuredPf, imageBlock, textBlock, type PfContent } from './ai'
+import { imageBlock, textBlock, type PfContent } from './ai'
+import { runIntegration } from './ai-runner'
 import {
   PF_CLASSIFICATIONS,
   PF_CLASSIFY_SCHEMA,
@@ -171,12 +172,13 @@ export async function classifyMessage(opts: {
     content.push(imageBlock(url))
   }
 
-  const { data } = await generateStructuredPf<unknown>({
+  // `provider` is the integration slug the admin selected.
+  const { data } = await runIntegration<unknown>({
+    slug: opts.provider,
     system: PF_SYSTEM_PROMPT,
     prompt: content,
     schema: PF_CLASSIFY_SCHEMA,
     maxTokens: 4000,
-    provider: opts.provider,
   })
 
   return normalizeResult(data)

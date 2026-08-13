@@ -1,27 +1,21 @@
 import { getSupabaseAdmin } from '../supabase'
-import { getAnthropicModel } from '../anthropic'
-import { getGroqTextModel, getGroqVisionModel } from '../groq'
+import { imageBlock, textBlock } from './ai'
+import { runIntegration, textModelFor, visionModelFor } from './ai-runner'
 import {
-  generateStructuredPf,
-  getGeminiTextModel,
-  getOpenAITextModel,
-  imageBlock,
-  providerSupportsVision,
-  textBlock,
-} from './ai'
-import {
-  isPfAiProviderConfigured,
-  PF_AI_PROVIDERS,
-  PF_AI_PROVIDER_ENV,
-  PF_AI_PROVIDER_LABELS,
-  type PfAiProvider,
-} from './settings'
+  AI_DRIVERS,
+  listIntegrations,
+  getIntegration,
+  recordTestResult,
+  resolveApiKey,
+  credentialSource,
+  type PfIntegration,
+} from './integrations'
 
-// Lets an admin prove a provider actually works before relying on it.
+// Proves an integration actually works before anyone relies on it.
 //
-// Text and vision are tested separately on purpose: Groq answers text fine but
-// serves no multimodal model, and that mismatch is what silently broke every
-// message with a photo. A single combined "is it up?" check hides it.
+// Text and vision are probed separately on purpose: Groq answers text fine but
+// serves no multimodal model, and that mismatch silently broke every message
+// with a photo. A single "is it up?" check hides exactly that.
 
 export type PfProbe = {
   ok: boolean
@@ -32,10 +26,12 @@ export type PfProbe = {
 }
 
 export type PfProviderTest = {
-  provider: PfAiProvider
+  provider: string
   label: string
+  driver: string
   configured: boolean
-  envVar: string
+  keySource: 'panel' | 'env' | 'none'
+  envVar: string | null
   text: PfProbe
   vision: PfProbe
 }
@@ -47,30 +43,10 @@ const PING_SCHEMA = {
   properties: { classification: { type: 'string' } },
 }
 
-function textModelFor(provider: PfAiProvider): string {
-  switch (provider) {
-    case 'claude':
-      return getAnthropicModel()
-    case 'groq':
-      return getGroqTextModel()
-    case 'gemini':
-      return getGeminiTextModel()
-    case 'openai':
-      return getOpenAITextModel()
-  }
-}
+const short = (error: unknown): string =>
+  (error instanceof Error ? error.message : String(error)).replace(/\s+/g, ' ').slice(0, 220)
 
-function visionModelFor(provider: PfAiProvider): string | null {
-  if (provider === 'groq') return process.env.GROQ_VISION_MODEL || null
-  return textModelFor(provider)
-}
-
-const short = (error: unknown): string => {
-  const message = error instanceof Error ? error.message : String(error)
-  return message.replace(/\s+/g, ' ').slice(0, 220)
-}
-
-/** A real product image to test vision with; vision is skipped without one. */
+/** A real product image to probe vision with; skipped when none exists yet. */
 async function sampleImageUrl(): Promise<string | null> {
   const { data } = await getSupabaseAdmin()
     .from('pf_product_images')
@@ -82,53 +58,56 @@ async function sampleImageUrl(): Promise<string | null> {
   return (data?.[0]?.url as string) ?? null
 }
 
-async function probe(
-  provider: PfAiProvider,
-  withImage: string | null,
-): Promise<PfProbe> {
-  const model = withImage ? visionModelFor(provider) : textModelFor(provider)
+async function probe(integration: PfIntegration, withImage: string | null): Promise<PfProbe> {
+  const model = withImage ? visionModelFor(integration) : textModelFor(integration)
   const started = Date.now()
 
   try {
-    await generateStructuredPf<{ classification: string }>({
+    await runIntegration<{ classification: string }>({
+      slug: integration.slug,
       system: 'Reply with {"classification":"PRODUCT"} and nothing else.',
       prompt: withImage
         ? [textBlock('Classify this product image.'), imageBlock(withImage)]
         : [textBlock('Black hoodie 1299')],
       schema: PING_SCHEMA,
       maxTokens: 256,
-      provider,
-      // Report what this provider actually does, not what the fallback rescues.
+      // Report what this integration really does, not what the fallback rescues.
       noFallback: true,
     })
-    return { ok: true, ms: Date.now() - started, model, error: null }
+    return { ok: true, ms: Date.now() - started, model: model || null, error: null }
   } catch (error) {
-    return { ok: false, ms: Date.now() - started, model, error: short(error) }
+    return { ok: false, ms: Date.now() - started, model: model || null, error: short(error) }
   }
 }
 
-export async function testProvider(provider: PfAiProvider): Promise<PfProviderTest> {
+export async function testIntegration(slug: string): Promise<PfProviderTest> {
+  const integration = await getIntegration(slug)
+  if (!integration) throw new Error(`Integration "${slug}" not found`)
+
   const base = {
-    provider,
-    label: PF_AI_PROVIDER_LABELS[provider],
-    configured: isPfAiProviderConfigured(provider),
-    envVar: PF_AI_PROVIDER_ENV[provider],
+    provider: integration.slug,
+    label: integration.label,
+    driver: integration.driver,
+    configured: Boolean(resolveApiKey(integration)),
+    keySource: credentialSource(integration),
+    envVar: integration.config?.envKey ?? null,
   }
 
   if (!base.configured) {
-    const missing: PfProbe = {
-      ok: false,
-      ms: 0,
-      model: null,
-      error: `${PF_AI_PROVIDER_ENV[provider]} is not set`,
-    }
+    const missing: PfProbe = { ok: false, ms: 0, model: null, error: 'No API key configured' }
+    await recordTestResult(slug, false, 'No API key configured')
     return { ...base, text: missing, vision: missing }
   }
 
-  const text = await probe(provider, null)
+  if (!integration.enabled) {
+    const off: PfProbe = { ok: false, ms: 0, model: null, error: null, skipped: 'Disabled' }
+    return { ...base, text: off, vision: off }
+  }
 
-  // Vision is only meaningful if the provider offers a multimodal model.
-  if (!providerSupportsVision(provider)) {
+  const text = await probe(integration, null)
+  await recordTestResult(slug, text.ok, text.error)
+
+  if (!visionModelFor(integration)) {
     return {
       ...base,
       text,
@@ -138,9 +117,9 @@ export async function testProvider(provider: PfAiProvider): Promise<PfProviderTe
         model: null,
         error: null,
         skipped:
-          provider === 'groq'
-            ? 'Groq serves no multimodal model. Images are dropped and products are read from text only.'
-            : 'No vision model configured.',
+          integration.driver === 'groq'
+            ? 'Groq serves no multimodal model — images are dropped and products read from text only.'
+            : 'No vision model configured for this provider.',
       },
     }
   }
@@ -153,21 +132,23 @@ export async function testProvider(provider: PfAiProvider): Promise<PfProviderTe
       vision: {
         ok: false,
         ms: 0,
-        model: visionModelFor(provider),
+        model: visionModelFor(integration),
         error: null,
         skipped: 'No stored product image to test with yet.',
       },
     }
   }
 
-  return { ...base, text, vision: await probe(provider, image) }
+  return { ...base, text, vision: await probe(integration, image) }
 }
 
-/** Tests providers one after another; parallel calls trip free-tier rate limits. */
-export async function testAllProviders(): Promise<PfProviderTest[]> {
+/** Tests sequentially; parallel calls trip free-tier rate limits. */
+export async function testAllIntegrations(): Promise<PfProviderTest[]> {
+  const integrations = await listIntegrations('ai')
   const results: PfProviderTest[] = []
-  for (const provider of PF_AI_PROVIDERS) {
-    results.push(await testProvider(provider))
+  for (const integration of integrations) {
+    if (!AI_DRIVERS.includes(integration.driver)) continue
+    results.push(await testIntegration(integration.slug))
   }
   return results
 }

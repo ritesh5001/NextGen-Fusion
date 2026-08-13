@@ -4,9 +4,13 @@ import { getSupabaseAdmin } from '../supabase'
 // Providers the admin can pick for product extraction. Claude and Groq already
 // have structured-output helpers; Gemini and OpenAI are wired in Phase 4.
 export const PF_AI_PROVIDERS = ['claude', 'groq', 'gemini', 'openai'] as const
-export type PfAiProvider = (typeof PF_AI_PROVIDERS)[number]
 
-export const PF_AI_PROVIDER_LABELS: Record<PfAiProvider, string> = {
+// The selected provider is an INTEGRATION SLUG, not a fixed enum — admins can
+// register their own providers, so any slug is valid. The four built-ins above
+// are just the ones that ship by default.
+export type PfAiProvider = string
+
+export const PF_AI_PROVIDER_LABELS: Record<string, string> = {
   claude: 'Claude (Anthropic)',
   groq: 'Groq (Llama)',
   gemini: 'Google Gemini',
@@ -15,7 +19,7 @@ export const PF_AI_PROVIDER_LABELS: Record<PfAiProvider, string> = {
 
 // Which env var holds the key for each provider, so the admin UI can show what
 // is actually usable rather than offering a provider that cannot run.
-export const PF_AI_PROVIDER_ENV: Record<PfAiProvider, string> = {
+export const PF_AI_PROVIDER_ENV: Record<string, string> = {
   claude: 'ANTHROPIC_API_KEY',
   groq: 'GROQ_API_KEY',
   gemini: 'GEMINI_API_KEY',
@@ -23,11 +27,15 @@ export const PF_AI_PROVIDER_ENV: Record<PfAiProvider, string> = {
 }
 
 export function isPfAiProviderConfigured(provider: PfAiProvider): boolean {
-  return Boolean(process.env[PF_AI_PROVIDER_ENV[provider]])
+  const envVar = PF_AI_PROVIDER_ENV[provider]
+  return Boolean(envVar && process.env[envVar])
 }
 
+/** Accepts any integration slug; falls back to the default provider. */
 export function resolvePfAiProvider(value: unknown): PfAiProvider {
-  return PF_AI_PROVIDERS.includes(value as PfAiProvider) ? (value as PfAiProvider) : 'claude'
+  if (typeof value !== 'string') return 'claude'
+  const slug = value.trim().toLowerCase()
+  return /^[a-z0-9][a-z0-9_-]*$/.test(slug) ? slug : 'claude'
 }
 
 export type PfSettings = {
