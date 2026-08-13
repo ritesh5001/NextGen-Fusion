@@ -610,7 +610,7 @@ export default function ProductFlowPage() {
         <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5">
           <h2 className="mb-1 text-base font-semibold text-slate-900">AI provider</h2>
           <p className="mb-3 text-sm text-slate-600">
-            Used to classify messages and extract product data. Wired up in Phase 4.
+            Used to classify incoming messages and extract product data. Switch provider any time — the change takes effect on the next message.
           </p>
           <div className="flex flex-wrap gap-2">
             {settings?.providers.map((p) => {
@@ -895,7 +895,7 @@ export default function ProductFlowPage() {
       {tab === 'products' && (
         <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5">
           <h2 className="mb-1 text-base font-semibold text-slate-900">Approved products</h2>
-          <p className="mb-3 text-sm text-slate-600">Ready to export as CSV in Phase 8/9.</p>
+          <p className="mb-3 text-sm text-slate-600">Approved products. Export them from the Projects tab.</p>
           {products.length === 0 ? (
             <p className="text-sm text-slate-500">Nothing approved yet.</p>
           ) : (
