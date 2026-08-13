@@ -24,6 +24,8 @@ import { runHealthCheck } from '../lib/productflow/health'
 import { replayClientMessages, type ReplayResult } from '../lib/productflow/replay'
 import { sendMessage } from '../lib/productflow/telegram'
 import { describeProgress, PF_STAGES } from '../lib/productflow/progress'
+import { testAllProviders, testProvider } from '../lib/productflow/ai-test'
+import { PF_AI_PROVIDERS, type PfAiProvider } from '../lib/productflow/settings'
 
 const router = Router()
 router.use(requireInternalAuth)
@@ -734,6 +736,33 @@ router.get('/productflow/exports', async (req, res) => {
     res.json({ data })
   } catch (error) {
     fail(res, error, 'productflow:exports:list')
+  }
+})
+
+// ── AI provider tests ───────────────────────────────────────────────────────
+
+/**
+ * Runs a real (tiny) call against one provider, or all of them.
+ * Text and vision are reported separately — a provider can pass one and fail
+ * the other, which is exactly how images silently stopped working.
+ */
+router.post('/productflow/ai/test', async (req, res) => {
+  try {
+    const requested = str((req.body ?? {}).provider)
+
+    if (!requested || requested === 'all') {
+      res.json({ data: await testAllProviders() })
+      return
+    }
+
+    if (!PF_AI_PROVIDERS.includes(requested as PfAiProvider)) {
+      res.status(400).json({ error: `Unknown provider "${requested}"` })
+      return
+    }
+
+    res.json({ data: [await testProvider(requested as PfAiProvider)] })
+  } catch (error) {
+    fail(res, error, 'productflow:ai:test')
   }
 })
 

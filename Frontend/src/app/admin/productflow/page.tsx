@@ -151,6 +151,23 @@ type PfProgress = {
 
 type PfStage = { key: string; label: string }
 
+type PfProbe = {
+  ok: boolean
+  ms: number
+  model: string | null
+  error: string | null
+  skipped?: string
+}
+
+type PfProviderTest = {
+  provider: string
+  label: string
+  configured: boolean
+  envVar: string
+  text: PfProbe
+  vision: PfProbe
+}
+
 type PfCheck = { key: string; label: string; status: 'ok' | 'warn' | 'fail'; detail: string }
 type PfHealth = { ready: boolean; checks: PfCheck[] }
 
@@ -205,6 +222,7 @@ export default function ProductFlowPage() {
   const [templates, setTemplates] = useState<PfTemplate[]>([])
   const [exports, setExports] = useState<PfExport[]>([])
   const [preview, setPreview] = useState<Record<string, CsvPreview>>({})
+  const [aiTests, setAiTests] = useState<Record<string, PfProviderTest>>({})
   const [alerts, setAlerts] = useState<PfAlert[]>([])
   const [stages, setStages] = useState<PfStage[]>([])
   const [health, setHealth] = useState<PfHealth | null>(null)
@@ -356,6 +374,19 @@ export default function ProductFlowPage() {
         )
       }
       await load()
+    })
+
+  const testAi = (provider: string) =>
+    run(`ai-${provider}`, async () => {
+      const results = await call<PfProviderTest[]>('/ai/test', {
+        method: 'POST',
+        body: JSON.stringify({ provider }),
+      })
+      setAiTests((prev) => {
+        const next = { ...prev }
+        for (const r of results) next[r.provider] = r
+        return next
+      })
     })
 
   const dismissAlerts = () =>
@@ -721,23 +752,98 @@ export default function ProductFlowPage() {
           <p className="mb-3 text-sm text-slate-600">
             Used to classify incoming messages and extract product data. Switch provider any time — the change takes effect on the next message.
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="mb-3 flex justify-end">
+            <button
+              onClick={() => testAi('all')}
+              disabled={busy === 'ai-all'}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium"
+            >
+              {busy === 'ai-all' ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Activity className="h-3.5 w-3.5" />
+              )}
+              Test all providers
+            </button>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
             {settings?.providers.map((p) => {
               const active = settings.aiProvider === p.value
+              const t = aiTests[p.value]
+              const probe = (label: string, x: PfProbe | undefined) => {
+                if (!x) return null
+                if (x.skipped) {
+                  return (
+                    <div className="text-[11px] text-slate-500">
+                      <span className="font-medium">{label}:</span> not supported — {x.skipped}
+                    </div>
+                  )
+                }
+                return (
+                  <div className={`text-[11px] ${x.ok ? 'text-emerald-700' : 'text-red-700'}`}>
+                    <span className="font-medium">{label}:</span>{' '}
+                    {x.ok ? `working · ${x.ms}ms` : 'failed'}
+                    {x.model && <span className="text-slate-500"> · {x.model}</span>}
+                    {x.error && (
+                      <div className="mt-0.5 break-words font-mono text-[10px] text-red-600">
+                        {x.error}
+                      </div>
+                    )}
+                  </div>
+                )
+              }
+
               return (
-                <button
+                <div
                   key={p.value}
-                  onClick={() => setProvider(p.value)}
-                  disabled={busy === 'provider'}
-                  className={`rounded-lg border px-3 py-2 text-left text-sm ${
-                    active ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 bg-white text-slate-700'
+                  className={`rounded-lg border p-3 ${
+                    active ? 'border-slate-900 ring-1 ring-slate-900' : 'border-slate-300'
                   }`}
                 >
-                  <div className="font-medium">{p.label}</div>
-                  <div className={`text-xs ${active ? 'text-slate-300' : p.configured ? 'text-emerald-600' : 'text-amber-600'}`}>
-                    {p.configured ? 'Key configured' : `Set ${p.envVar}`}
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="text-sm font-medium text-slate-900">
+                        {p.label}
+                        {active && (
+                          <span className="ml-2 rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-medium text-white">
+                            in use
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`text-xs ${p.configured ? 'text-emerald-600' : 'text-amber-600'}`}
+                      >
+                        {p.configured ? 'Key configured' : `Set ${p.envVar}`}
+                      </div>
+                    </div>
+                    <div className="flex shrink-0 gap-1.5">
+                      <button
+                        onClick={() => testAi(p.value)}
+                        disabled={busy === `ai-${p.value}`}
+                        className="rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-600"
+                      >
+                        {busy === `ai-${p.value}` ? '…' : 'Test'}
+                      </button>
+                      {!active && (
+                        <button
+                          onClick={() => setProvider(p.value)}
+                          disabled={busy === 'provider'}
+                          className="rounded-lg bg-slate-900 px-2 py-1 text-xs font-medium text-white"
+                        >
+                          Use
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </button>
+
+                  {t && (
+                    <div className="mt-2 space-y-1 border-t border-slate-100 pt-2">
+                      {probe('Text', t.text)}
+                      {probe('Images', t.vision)}
+                    </div>
+                  )}
+                </div>
               )
             })}
           </div>

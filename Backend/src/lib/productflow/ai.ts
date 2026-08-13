@@ -57,6 +57,10 @@ function getGenAI(): GoogleGenAI {
   return genAi
 }
 
+const IMAGE_FETCH_TIMEOUT_MS = 10_000
+// Gemini bills inline images by size and large photos dominate latency.
+const MAX_INLINE_IMAGE_BYTES = 4 * 1024 * 1024
+
 export function getGeminiTextModel(): string {
   // The "-latest" alias tracks the current Flash release. Pinning a dated model
   // breaks silently when Google retires it for new accounts.
@@ -75,9 +79,17 @@ async function toGeminiParts(prompt: PfContent) {
       continue
     }
     if (block.type === 'image' && block.source.type === 'url') {
-      const res = await fetch(block.source.url)
-      if (!res.ok) continue
+      // Gemini cannot fetch remote images, so the bytes are inlined. A slow or
+      // hanging image host would otherwise stall the whole webhook, so the
+      // download is bounded and a failure just drops that one image.
+      const res = await fetch(block.source.url, {
+        signal: AbortSignal.timeout(IMAGE_FETCH_TIMEOUT_MS),
+      }).catch(() => null)
+      if (!res?.ok) continue
+
       const buffer = Buffer.from(await res.arrayBuffer())
+      if (buffer.byteLength > MAX_INLINE_IMAGE_BYTES) continue
+
       parts.push({
         inlineData: {
           mimeType: res.headers.get('content-type') || 'image/jpeg',
@@ -250,11 +262,18 @@ export async function generateStructuredPf<T>(opts: {
   schema: JsonSchema
   maxTokens?: number
   provider: PfAiProvider
+  /**
+   * Disables the drop-images retry. Diagnostics must set this: the fallback is
+   * what keeps production working, but it would make a broken vision model look
+   * healthy in a test.
+   */
+  noFallback?: boolean
 }): Promise<{ data: T; usage: AiUsage }> {
   const imagesPresent = hasImages(opts.prompt)
 
   // Never send images to a provider that cannot read them.
   if (imagesPresent && !providerSupportsVision(opts.provider)) {
+    if (opts.noFallback) throw new Error(`${opts.provider} has no vision model configured`)
     return dispatch<T>({ ...opts, prompt: stripImages(opts.prompt) })
   }
 
@@ -264,7 +283,7 @@ export async function generateStructuredPf<T>(opts: {
     // A vision call can still fail for reasons outside our control (model
     // retired, image host unreachable, size limits). The product text alone is
     // usually enough, so retry without images rather than losing the message.
-    if (!imagesPresent) throw error
+    if (!imagesPresent || opts.noFallback) throw error
     return dispatch<T>({ ...opts, prompt: stripImages(opts.prompt) })
   }
 }
