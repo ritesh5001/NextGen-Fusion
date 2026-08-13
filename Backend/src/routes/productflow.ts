@@ -23,6 +23,7 @@ import { summarizeReport } from '../lib/productflow/csv/validator'
 import { runHealthCheck } from '../lib/productflow/health'
 import { replayClientMessages, type ReplayResult } from '../lib/productflow/replay'
 import { sendMessage } from '../lib/productflow/telegram'
+import { describeProgress, PF_STAGES } from '../lib/productflow/progress'
 
 const router = Router()
 router.use(requireInternalAuth)
@@ -437,7 +438,7 @@ router.get('/productflow/messages', async (req, res) => {
     let query = getSupabaseAdmin()
       .from('pf_messages')
       .select(
-        'id, client_id, project_id, source, external_message_id, message_type, text, classification, media_group_id, created_at',
+        'id, client_id, project_id, source, external_message_id, message_type, text, classification, error, media_group_id, created_at',
       )
       .order('created_at', { ascending: false })
       .limit(limit)
@@ -509,7 +510,20 @@ router.get('/productflow/drafts', async (req, res) => {
     }
 
     res.json({
-      data: (data ?? []).map((d) => ({ ...d, image_count: counts.get(d.id as string) ?? 0 })),
+      data: (data ?? []).map((d) => {
+        const imageCount = counts.get(d.id as string) ?? 0
+        return {
+          ...d,
+          image_count: imageCount,
+          progress: describeProgress({
+            status: d.status as string,
+            productData: (d.product_data as Record<string, unknown>) ?? {},
+            imageCount,
+            missingFields: Array.isArray(d.missing_fields) ? (d.missing_fields as string[]) : [],
+          }),
+        }
+      }),
+      stages: PF_STAGES,
     })
   } catch (error) {
     fail(res, error, 'productflow:drafts:list')
@@ -720,6 +734,95 @@ router.get('/productflow/exports', async (req, res) => {
     res.json({ data })
   } catch (error) {
     fail(res, error, 'productflow:exports:list')
+  }
+})
+
+// ── Alerts ──────────────────────────────────────────────────────────────────
+
+/**
+ * Processing failures the admin should act on.
+ *
+ * Grouped by error so a provider outage reads as one actionable alert
+ * ("Groq failed 12 times: model not found") rather than twelve identical rows.
+ */
+router.get('/productflow/alerts', async (_req, res) => {
+  try {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const supabase = getSupabaseAdmin()
+
+    const { data: failures } = await supabase
+      .from('pf_messages')
+      .select('id, client_id, error, created_at')
+      .eq('classification', 'ERROR')
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(200)
+
+    const grouped = new Map<string, { count: number; lastAt: string; sample: string }>()
+    for (const row of failures ?? []) {
+      const message = (row.error as string) ?? 'Unknown error'
+      // Collapse on the first line; retry counters and ids differ per attempt.
+      const key = message.split('\n')[0].slice(0, 160)
+      const existing = grouped.get(key)
+      if (existing) existing.count++
+      else grouped.set(key, { count: 1, lastAt: row.created_at as string, sample: message })
+    }
+
+    const { data: imageFailures } = await supabase
+      .from('pf_product_images')
+      .select('id, error, created_at')
+      .eq('status', 'failed')
+      .gte('created_at', since)
+      .limit(50)
+
+    const settings = await loadPfSettings()
+
+    const alerts = [
+      ...[...grouped.entries()].map(([key, v]) => ({
+        type: 'ai_failure',
+        severity: 'error' as const,
+        title: `AI could not process ${v.count} message${v.count === 1 ? '' : 's'}`,
+        detail: v.sample.slice(0, 300),
+        hint:
+          `Provider in use: ${settings.ai_provider}. ` +
+          'Switch provider in Settings, or fix the key/quota, then use Reprocess on the client.',
+        count: v.count,
+        lastAt: v.lastAt,
+        key,
+      })),
+      ...(imageFailures?.length
+        ? [
+            {
+              type: 'image_failure',
+              severity: 'warning' as const,
+              title: `${imageFailures.length} image(s) could not be saved`,
+              detail: (imageFailures[0].error as string) ?? '',
+              hint: 'Ask the client to resend them, or use Reprocess.',
+              count: imageFailures.length,
+              lastAt: imageFailures[0].created_at as string,
+              key: 'image_failure',
+            },
+          ]
+        : []),
+    ]
+
+    res.json({ data: alerts })
+  } catch (error) {
+    fail(res, error, 'productflow:alerts')
+  }
+})
+
+/** Clears resolved failures so the banner disappears after a successful retry. */
+router.post('/productflow/alerts/dismiss', async (_req, res) => {
+  try {
+    const { error } = await getSupabaseAdmin()
+      .from('pf_messages')
+      .update({ classification: null, error: null })
+      .eq('classification', 'ERROR')
+    if (error) throw error
+    res.json({ data: { ok: true } })
+  } catch (error) {
+    fail(res, error, 'productflow:alerts:dismiss')
   }
 })
 

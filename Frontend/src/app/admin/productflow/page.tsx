@@ -67,6 +67,7 @@ type PfMessage = {
   message_type: string
   text: string | null
   classification: string | null
+  error: string | null
   created_at: string
 }
 
@@ -98,6 +99,7 @@ type PfDraft = {
   last_question: string | null
   image_count: number
   updated_at: string
+  progress?: PfProgress
 }
 
 type PfTemplate = {
@@ -125,6 +127,29 @@ type CsvPreview = {
   warnings: { code: string; message: string }[]
   summary: string
 }
+
+type PfAlert = {
+  type: string
+  severity: 'error' | 'warning'
+  title: string
+  detail: string
+  hint: string
+  count: number
+  lastAt: string
+  key: string
+}
+
+type PfProgress = {
+  stage: string
+  stageIndex: number
+  totalStages: number
+  percent: number
+  done: string[]
+  blockedBy: string[]
+  note: string
+}
+
+type PfStage = { key: string; label: string }
 
 type PfCheck = { key: string; label: string; status: 'ok' | 'warn' | 'fail'; detail: string }
 type PfHealth = { ready: boolean; checks: PfCheck[] }
@@ -180,6 +205,8 @@ export default function ProductFlowPage() {
   const [templates, setTemplates] = useState<PfTemplate[]>([])
   const [exports, setExports] = useState<PfExport[]>([])
   const [preview, setPreview] = useState<Record<string, CsvPreview>>({})
+  const [alerts, setAlerts] = useState<PfAlert[]>([])
+  const [stages, setStages] = useState<PfStage[]>([])
   const [health, setHealth] = useState<PfHealth | null>(null)
   const [tab, setTab] = useState<Tab>('dashboard')
   const [stats, setStats] = useState<Stats | null>(null)
@@ -202,7 +229,7 @@ export default function ProductFlowPage() {
         call<PfMessage[]>('/messages?limit=25'),
         call<PfImage[]>('/images?limit=18'),
         call<Stats>('/stats'),
-        call<PfDraft[]>('/drafts'),
+        fetch(`${API}/drafts`).then((r) => r.json()),
         call<PfProduct[]>('/products'),
         call<PfTemplate[]>('/templates'),
         call<PfExport[]>('/exports'),
@@ -213,7 +240,8 @@ export default function ProductFlowPage() {
       setMessages(m ?? [])
       setImages(i ?? [])
       setStats(st)
-      setDrafts(dr ?? [])
+      setDrafts((dr?.data as PfDraft[]) ?? [])
+      setStages((dr?.stages as PfStage[]) ?? [])
       setProducts(pr ?? [])
       setTemplates(tp ?? [])
       setExports(ex ?? [])
@@ -228,6 +256,7 @@ export default function ProductFlowPage() {
   useEffect(() => {
     void load()
     call<PfHealth>('/health').then(setHealth).catch(() => {})
+    call<PfAlert[]>('/alerts').then((a) => setAlerts(a ?? [])).catch(() => {})
   }, [])
 
   async function run(key: string, fn: () => Promise<void>, successMessage?: string) {
@@ -329,6 +358,13 @@ export default function ProductFlowPage() {
       await load()
     })
 
+  const dismissAlerts = () =>
+    run('alerts', async () => {
+      await call('/alerts/dismiss', { method: 'POST' })
+      setAlerts(await call<PfAlert[]>('/alerts'))
+      await load()
+    })
+
   const replayClient = (id: string) =>
     run(`replay-${id}`, async () => {
       const r = await call<{
@@ -418,6 +454,49 @@ export default function ProductFlowPage() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* ── Processing alerts ────────────────────────────────────────────── */}
+      {alerts.length > 0 && (
+        <section className="mb-6 space-y-2">
+          {alerts.map((a) => (
+            <div
+              key={a.key}
+              className={`rounded-xl border px-4 py-3 ${
+                a.severity === 'error'
+                  ? 'border-red-200 bg-red-50'
+                  : 'border-amber-200 bg-amber-50'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div
+                    className={`flex items-center gap-2 text-sm font-semibold ${
+                      a.severity === 'error' ? 'text-red-800' : 'text-amber-800'
+                    }`}
+                  >
+                    <AlertTriangle className="h-4 w-4 shrink-0" />
+                    {a.title}
+                  </div>
+                  <p className="mt-1 break-words font-mono text-xs text-slate-600">{a.detail}</p>
+                  <p className="mt-1 text-xs text-slate-600">{a.hint}</p>
+                </div>
+                <div className="flex shrink-0 flex-col items-end gap-1">
+                  <span className="text-xs text-slate-500">
+                    {new Date(a.lastAt).toLocaleString()}
+                  </span>
+                  <button
+                    onClick={dismissAlerts}
+                    disabled={busy === 'alerts'}
+                    className="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs text-slate-600"
+                  >
+                    {busy === 'alerts' ? 'Clearing…' : 'Clear'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </section>
       )}
 
       {/* ── Section tabs (Phase 10) ──────────────────────────────────────── */}
@@ -915,8 +994,47 @@ export default function ProductFlowPage() {
                         {data.category ? ` · ${data.category}` : ''}
                         {` · ${d.image_count} image${d.image_count === 1 ? '' : 's'}`}
                       </div>
+                      {d.progress && (
+                        <div className="mt-2 max-w-xl">
+                          <div className="mb-1 flex items-center justify-between text-[11px] text-slate-500">
+                            <span>{d.progress.note}</span>
+                            <span className="font-medium text-slate-700">
+                              {d.progress.percent}%
+                            </span>
+                          </div>
+                          <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+                            <div
+                              className={`h-full rounded-full transition-all ${
+                                d.progress.blockedBy.length ? 'bg-amber-400' : 'bg-emerald-500'
+                              }`}
+                              style={{ width: `${d.progress.percent}%` }}
+                            />
+                          </div>
+                          <ol className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                            {(stages.length ? stages : []).map((st) => {
+                              const done = d.progress!.done.includes(st.key)
+                              const current = d.progress!.stage === st.key
+                              return (
+                                <li
+                                  key={st.key}
+                                  className={`flex items-center gap-1 text-[11px] ${
+                                    current
+                                      ? 'font-semibold text-slate-900'
+                                      : done
+                                        ? 'text-emerald-700'
+                                        : 'text-slate-400'
+                                  }`}
+                                >
+                                  <span>{done ? '●' : '○'}</span>
+                                  {st.label}
+                                </li>
+                              )
+                            })}
+                          </ol>
+                        </div>
+                      )}
                       {d.missing_fields?.length > 0 && (
-                        <div className="mt-1 text-xs text-amber-700">
+                        <div className="mt-1.5 text-xs text-amber-700">
                           Missing: {d.missing_fields.join(', ')}
                         </div>
                       )}
@@ -1056,12 +1174,23 @@ export default function ProductFlowPage() {
                         <span className="mr-1 rounded bg-slate-100 px-1.5 py-0.5 text-xs">{m.message_type}</span>
                       )}
                       {m.classification && (
-                        <span className="mr-1 rounded bg-indigo-50 px-1.5 py-0.5 text-xs font-medium text-indigo-700">
+                        <span
+                          className={`mr-1 rounded px-1.5 py-0.5 text-xs font-medium ${
+                            m.classification === 'ERROR'
+                              ? 'bg-red-50 text-red-700'
+                              : 'bg-indigo-50 text-indigo-700'
+                          }`}
+                        >
                           {m.classification}
                         </span>
                       )}
                       {m.text || <span className="text-slate-400">(no text)</span>}
                     </div>
+                    {m.error && (
+                      <div className="mt-1 break-words rounded bg-red-50 px-2 py-1 font-mono text-[11px] text-red-700">
+                        {m.error}
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>

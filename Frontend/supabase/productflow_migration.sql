@@ -136,6 +136,11 @@ create table if not exists pf_messages (
 
 -- Telegram message ids are unique per CHAT, not globally, so the chat id must
 -- be part of the key or two clients could collide and drop each other's messages.
+-- Why a message failed to process (AI provider down, model retired, quota).
+-- Kept separate from `classification` so the badge stays clean and the admin
+-- panel can raise a real notification instead of the failure being invisible.
+alter table pf_messages add column if not exists error text;
+
 create unique index if not exists pf_messages_external_idx
   on pf_messages (source, external_chat_id, external_message_id)
   where external_message_id is not null;

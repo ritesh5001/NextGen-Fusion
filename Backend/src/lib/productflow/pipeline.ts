@@ -232,7 +232,7 @@ export async function runPipeline(opts: {
     const reason = (error instanceof Error ? error.message : String(error)).slice(0, 400)
     await getSupabaseAdmin()
       .from('pf_messages')
-      .update({ classification: `ERROR: ${reason}`.slice(0, 500) })
+      .update({ classification: 'ERROR', error: `[${opts.provider}] ${reason}` })
       .eq('id', opts.messageId)
       .then(() => {}, () => {})
 
