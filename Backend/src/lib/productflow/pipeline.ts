@@ -225,7 +225,17 @@ export async function runPipeline(opts: {
     })
   } catch (error) {
     logRouteError('productflow:classify', error)
-    // The message is already stored; failing the AI call must not lose it.
+
+    // Record WHY it failed on the message itself. Without this the admin panel
+    // shows an unclassified message and the client sees a generic apology, with
+    // no way to tell a missing API key from a retired model.
+    const reason = (error instanceof Error ? error.message : String(error)).slice(0, 400)
+    await getSupabaseAdmin()
+      .from('pf_messages')
+      .update({ classification: `ERROR: ${reason}`.slice(0, 500) })
+      .eq('id', opts.messageId)
+      .then(() => {}, () => {})
+
     return {
       classification: 'ERROR',
       reply: 'I could not process that just now. Please try again in a moment.',

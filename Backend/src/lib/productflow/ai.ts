@@ -104,10 +104,17 @@ async function generateStructuredGemini<T>(opts: {
     config: {
       systemInstruction: systemWithSchema(opts.system, opts.schema),
       responseMimeType: 'application/json',
-      maxOutputTokens: opts.maxTokens ?? 8000,
+      // Gemini's internal "thinking" tokens are charged against this budget, so
+      // a tight limit truncates the JSON mid-object and the parse fails. Keep a
+      // generous floor.
+      maxOutputTokens: Math.max(opts.maxTokens ?? 8000, 4096),
       temperature: 0.2,
     },
   })
+
+  if (response.candidates?.[0]?.finishReason === 'MAX_TOKENS') {
+    throw new Error('Gemini hit the output token limit before finishing the JSON')
+  }
 
   const text = response.text?.trim()
   if (!text) throw new Error('Gemini returned no text content')
@@ -199,7 +206,23 @@ async function generateStructuredOpenAI<T>(opts: {
 
 // ── Dispatcher ──────────────────────────────────────────────────────────────
 
-export async function generateStructuredPf<T>(opts: {
+/**
+ * Whether a provider can accept image content.
+ *
+ * Groq currently serves no multimodal model — the old
+ * `llama-4-scout-17b-16e-instruct` returns 404 model_not_found — so images must
+ * be dropped rather than sent. Setting GROQ_VISION_MODEL re-enables vision if
+ * Groq ships one again.
+ */
+export function providerSupportsVision(provider: PfAiProvider): boolean {
+  if (provider === 'groq') return Boolean(process.env.GROQ_VISION_MODEL)
+  return true
+}
+
+const hasImages = (prompt: PfContent) => prompt.some((b) => b.type === 'image')
+const stripImages = (prompt: PfContent) => prompt.filter((b) => b.type !== 'image')
+
+function dispatch<T>(opts: {
   system: string
   prompt: PfContent
   schema: JsonSchema
@@ -218,5 +241,30 @@ export async function generateStructuredPf<T>(opts: {
     default:
       if (!process.env.ANTHROPIC_API_KEY) throw new PfAiNotConfiguredError('claude')
       return generateStructured<T>({ ...opts, provider: 'claude' })
+  }
+}
+
+export async function generateStructuredPf<T>(opts: {
+  system: string
+  prompt: PfContent
+  schema: JsonSchema
+  maxTokens?: number
+  provider: PfAiProvider
+}): Promise<{ data: T; usage: AiUsage }> {
+  const imagesPresent = hasImages(opts.prompt)
+
+  // Never send images to a provider that cannot read them.
+  if (imagesPresent && !providerSupportsVision(opts.provider)) {
+    return dispatch<T>({ ...opts, prompt: stripImages(opts.prompt) })
+  }
+
+  try {
+    return await dispatch<T>(opts)
+  } catch (error) {
+    // A vision call can still fail for reasons outside our control (model
+    // retired, image host unreachable, size limits). The product text alone is
+    // usually enough, so retry without images rather than losing the message.
+    if (!imagesPresent) throw error
+    return dispatch<T>({ ...opts, prompt: stripImages(opts.prompt) })
   }
 }
