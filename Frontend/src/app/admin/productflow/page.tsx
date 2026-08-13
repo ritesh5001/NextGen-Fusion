@@ -310,7 +310,37 @@ export default function ProductFlowPage() {
 
   const setClientStatus = (id: string, status: string) =>
     run(`client-${id}`, async () => {
-      await call(`/clients/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) })
+      const res = await fetch(`${API}/clients/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      })
+      const json = await res.json().catch(() => null)
+      if (!res.ok) throw new Error(json?.error || 'Update failed')
+      const r = json?.replay
+      if (r && (r.messagesProcessed || r.imagesStored)) {
+        setNotice(
+          `Activated. Reprocessed ${r.messagesProcessed} earlier message(s)` +
+            (r.imagesStored ? ` and saved ${r.imagesStored} image(s)` : '') +
+            (r.imagesFailed ? ` · ${r.imagesFailed} image(s) failed` : '') +
+            '.',
+        )
+      }
+      await load()
+    })
+
+  const replayClient = (id: string) =>
+    run(`replay-${id}`, async () => {
+      const r = await call<{
+        messagesProcessed: number
+        imagesStored: number
+        imagesFailed: number
+      }>(`/clients/${id}/replay`, { method: 'POST' })
+      setNotice(
+        `Reprocessed ${r.messagesProcessed} message(s), saved ${r.imagesStored} image(s)` +
+          (r.imagesFailed ? ` · ${r.imagesFailed} failed` : '') +
+          '.',
+      )
       await load()
     })
 
@@ -681,16 +711,33 @@ export default function ProductFlowPage() {
                         {c.last_message_at ? new Date(c.last_message_at).toLocaleString() : '—'}
                       </td>
                       <td className="py-2 text-right">
-                        <select
-                          value={c.status}
-                          onChange={(e) => setClientStatus(c.id, e.target.value)}
-                          disabled={busy === `client-${c.id}`}
-                          className="rounded-lg border border-slate-300 px-2 py-1 text-xs"
-                        >
-                          <option value="pending">pending</option>
-                          <option value="active">active</option>
-                          <option value="blocked">blocked</option>
-                        </select>
+                        <div className="inline-flex items-center gap-2">
+                          {c.status === 'active' && (
+                            <button
+                              onClick={() => replayClient(c.id)}
+                              disabled={busy === `replay-${c.id}`}
+                              title="Re-run the AI over this client's unprocessed messages and fetch any images that were skipped"
+                              className="inline-flex items-center gap-1 rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-600"
+                            >
+                              {busy === `replay-${c.id}` ? (
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                              ) : (
+                                <RefreshCw className="h-3 w-3" />
+                              )}
+                              Reprocess
+                            </button>
+                          )}
+                          <select
+                            value={c.status}
+                            onChange={(e) => setClientStatus(c.id, e.target.value)}
+                            disabled={busy === `client-${c.id}`}
+                            className="rounded-lg border border-slate-300 px-2 py-1 text-xs"
+                          >
+                            <option value="pending">pending</option>
+                            <option value="active">active</option>
+                            <option value="blocked">blocked</option>
+                          </select>
+                        </div>
                       </td>
                     </tr>
                   ))}

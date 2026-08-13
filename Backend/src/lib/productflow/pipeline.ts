@@ -22,6 +22,24 @@ import type { PfClassifyResult } from './prompts'
 
 const DEFAULT_REQUIRED = ['name', 'price', 'category', 'images']
 
+// Fallback category. Clients rarely state one, and blocking a complete product
+// over it is worse than shipping it uncategorised — every platform accepts this
+// value and it is trivial to reassign later in the store.
+export const DEFAULT_CATEGORY = 'Uncategorized'
+
+/**
+ * Fills in values the client did not give but that the export needs.
+ * Applied before the missing-field check, so a defaulted field never blocks.
+ */
+function applyDefaults(data: Record<string, unknown>): Record<string, unknown> {
+  const filled = { ...data }
+  const category = filled.category
+  if (typeof category !== 'string' || !category.trim()) {
+    filled.category = DEFAULT_CATEGORY
+  }
+  return filled
+}
+
 export type PipelineOutcome = {
   classification: string
   reply: string
@@ -110,12 +128,21 @@ async function loadCurrency(projectId: string | null): Promise<string> {
  * for exactly what is missing rather than guessing (spec §18, §38).
  */
 async function settleDraft(
+  // reassigned when defaults are persisted
+  // eslint-disable-next-line prefer-const
   draft: PfDraft,
   aiReply: string,
   autoApprove = false,
 ): Promise<PipelineOutcome> {
   await attachLooseImages(draft.client_id, draft.id)
   const images = await getDraftImages(draft.id)
+
+  // Persist the defaults so the draft, the review card and the exported product
+  // all agree on what the category is.
+  const withDefaults = applyDefaults(draft.product_data)
+  if (withDefaults.category !== draft.product_data.category) {
+    draft = await updateDraft(draft.id, { productData: withDefaults })
+  }
 
   const required = await loadRequiredFields(draft.project_id)
   const missing = findMissingFields(draft.product_data, required, images.length)

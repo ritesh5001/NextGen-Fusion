@@ -21,6 +21,8 @@ import { PF_MAPPING_TOKENS } from '../lib/productflow/csv/mapper'
 import { generateProjectCsv, recordExport } from '../lib/productflow/csv/generator'
 import { summarizeReport } from '../lib/productflow/csv/validator'
 import { runHealthCheck } from '../lib/productflow/health'
+import { replayClientMessages, type ReplayResult } from '../lib/productflow/replay'
+import { sendMessage } from '../lib/productflow/telegram'
 
 const router = Router()
 router.use(requireInternalAuth)
@@ -245,6 +247,12 @@ router.patch('/productflow/clients/:id', async (req, res) => {
       return
     }
 
+    const { data: before } = await getSupabaseAdmin()
+      .from('pf_clients')
+      .select('status')
+      .eq('id', req.params.id)
+      .maybeSingle()
+
     const { data, error } = await getSupabaseAdmin()
       .from('pf_clients')
       .update(patch)
@@ -253,9 +261,58 @@ router.patch('/productflow/clients/:id', async (req, res) => {
       .single()
 
     if (error) throw error
-    res.json({ data })
+
+    // Activating a client replays what they already sent, so the product they
+    // messaged about while pending is built without them retyping it.
+    let replay: ReplayResult | null = null
+    if (patch.status === 'active' && before?.status !== 'active') {
+      try {
+        replay = await replayClientMessages(data as never)
+        if (replay.messagesProcessed || replay.imagesStored) {
+          const settings = await loadPfSettings()
+          const chatId = (data as Record<string, unknown>).external_chat_id as string | null
+          if (settings.telegram_bot_token && chatId) {
+            await sendMessage(
+              settings.telegram_bot_token,
+              chatId,
+              `Your account is active. ✅ I went back through your earlier messages${
+                replay.imagesStored ? ` and saved ${replay.imagesStored} image(s)` : ''
+              }.\n\n${replay.lastReply ?? ''}`.trim(),
+            ).catch(() => {})
+          }
+        }
+      } catch (replayError) {
+        logRouteError('productflow:clients:replay', replayError)
+      }
+    }
+
+    res.json({ data, replay })
   } catch (error) {
     fail(res, error, 'productflow:clients:patch')
+  }
+})
+
+/** Manual re-run, for a client whose messages failed the first time. */
+router.post('/productflow/clients/:id/replay', async (req, res) => {
+  try {
+    const { data } = await getSupabaseAdmin()
+      .from('pf_clients')
+      .select('id, name, status, external_chat_id, active_project_id')
+      .eq('id', req.params.id)
+      .maybeSingle()
+
+    if (!data) {
+      res.status(404).json({ error: 'Client not found' })
+      return
+    }
+    if (data.status !== 'active') {
+      res.status(400).json({ error: 'Activate the client first' })
+      return
+    }
+
+    res.json({ data: await replayClientMessages(data as never) })
+  } catch (error) {
+    fail(res, error, 'productflow:clients:replay')
   }
 })
 

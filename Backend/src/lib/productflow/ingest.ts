@@ -169,7 +169,12 @@ export async function ingestMessage(message: PfInboundMessage): Promise<IngestRe
   let imagesStored = 0
   let imagesFailed = 0
 
-  if (message.media.length && client.status === 'active') {
+  // Images are stored for pending clients too. Telegram file ids stay valid but
+  // the bytes are only reachable while the bot knows about them, and a real
+  // client usually sends photos before an admin has had time to activate them —
+  // dropping those images loses work that cannot be recovered. Only a blocked
+  // client is skipped. AI (the expensive part) still waits for activation.
+  if (message.media.length && client.status !== 'blocked') {
     const settings = await loadPfSettings()
     const token = settings.telegram_bot_token
 
@@ -265,6 +270,24 @@ async function recentDraftImageUrls(clientId: string): Promise<string[]> {
     .reverse()
 }
 
+const NOTICE_WINDOW_MS = 10 * 60 * 1000
+
+/**
+ * True when this client already received the "not linked yet" notice in the
+ * last few minutes, judged by whether they had an earlier message in that
+ * window (the notice is sent at most once per burst).
+ */
+async function alreadyNotifiedRecently(clientId: string): Promise<boolean> {
+  const since = new Date(Date.now() - NOTICE_WINDOW_MS).toISOString()
+  const { count } = await getSupabaseAdmin()
+    .from('pf_messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('client_id', clientId)
+    .gte('created_at', since)
+
+  return (count ?? 0) > 1
+}
+
 /** Inline Approve / Edit / Cancel buttons shown on a completed draft (spec §24). */
 function reviewKeyboard(draftId: string) {
   return {
@@ -289,11 +312,16 @@ export async function sendIngestReply(
   if (result.duplicate) return
 
   if (result.clientStatus !== 'active') {
+    // Sending a product with photos produces one update per photo; replying to
+    // each would spam the client with the same notice several times over.
+    if (await alreadyNotifiedRecently(result.clientId)) return
+
     await sendMessage(
       token,
       chatId,
-      'Thanks for your message. This chat is not linked to a project yet — ' +
-        'the NextGen Fusion team has been notified and will activate it shortly.',
+      'Thanks — I have saved your messages and images. This chat is not linked to a ' +
+        'project yet, so the NextGen Fusion team has been notified. Once it is activated ' +
+        'I will process everything you have already sent — you will not need to send it again.',
     ).catch((error) => logRouteError('productflow:reply', error))
     return
   }
