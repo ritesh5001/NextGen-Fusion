@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { offices } from "@/data/offices";
 
 export default function Footer() {
   const [isClient, setIsClient] = useState(false);
@@ -47,7 +48,7 @@ export default function Footer() {
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Desktop Layout */}
           <div className="hidden lg:block">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+            <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
               {/* Left Content */}
               <div className="space-y-8">
                 <div>
@@ -75,6 +76,34 @@ export default function Footer() {
                   <p className="text-gray-200 text-sm">
                     Built by the Talented and Creative Crew
                   </p>
+                </div>
+              </div>
+
+              {/* Middle Column - Offices */}
+              <div>
+                <h3 className="text-lg font-semibold mb-6 text-white">
+                  Our Offices
+                </h3>
+                <div className="space-y-6">
+                  {offices.map((office) => (
+                    <div key={office.city} className="border-l-2 border-white/20 pl-4">
+                      <p className="text-sm font-semibold text-white mb-1">
+                        {office.city}
+                      </p>
+                      <p className="text-xs text-gray-300 mb-2 leading-relaxed">
+                        {office.address}
+                      </p>
+                      <p className="text-xs text-gray-300 mb-2">
+                        <strong>Managed by:</strong> {office.contact.name}
+                      </p>
+                      <a
+                        href={`tel:${office.contact.phone}`}
+                        className="text-xs text-gray-200 hover:text-white transition-colors duration-200"
+                      >
+                        {office.contact.phone}
+                      </a>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -170,6 +199,34 @@ export default function Footer() {
                 >
                   contact@nextgenfusion.in
                 </a>
+              </div>
+            </div>
+
+            {/* Offices Section */}
+            <div className="border border-white/20 rounded-lg p-4 sm:p-6 bg-black/20 backdrop-blur-sm">
+              <h3 className="text-lg font-semibold mb-4 text-white">
+                Our Offices
+              </h3>
+              <div className="space-y-4">
+                {offices.map((office) => (
+                  <div key={office.city} className="border-l-2 border-white/20 pl-3">
+                    <p className="text-sm font-semibold text-white mb-1">
+                      {office.city}
+                    </p>
+                    <p className="text-xs text-gray-300 mb-2 leading-relaxed">
+                      {office.address}
+                    </p>
+                    <p className="text-xs text-gray-300 mb-2">
+                      <strong>Managed by:</strong> {office.contact.name}
+                    </p>
+                    <a
+                      href={`tel:${office.contact.phone}`}
+                      className="text-xs text-gray-200 hover:text-white transition-colors duration-200"
+                    >
+                      {office.contact.phone}
+                    </a>
+                  </div>
+                ))}
               </div>
             </div>
 

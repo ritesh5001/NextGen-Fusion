@@ -2,12 +2,13 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
-import { ArrowRight, ArrowLeft, Target, Map, Lightbulb, Users, CheckCircle, AlertCircle } from "lucide-react"
+import { ArrowRight, ArrowLeft, Target, Map, Lightbulb, Users, CheckCircle, AlertCircle, MapPin, Phone } from "lucide-react"
 import { useState } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import PhoneInput from "./phone-input"
 import { apiService, ContactFormData } from "@/lib/api"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
+import { offices } from "@/data/offices"
 
 // Animation variants
 const containerVariants = {
@@ -598,6 +599,79 @@ export default function ContactSection() {
               )}
             </AnimatePresence>
           </motion.div>
+        </div>
+
+        {/* Offices Section */}
+        <div className="mt-16 sm:mt-20 md:mt-24 pt-12 sm:pt-16 md:pt-20 border-t border-gray-200">
+          <motion.div 
+            className="text-center mb-8 sm:mb-12 md:mb-16"
+            variants={itemVariants}
+          >
+            <motion.div 
+              className="mb-4"
+              variants={textVariants}
+            >
+              <BadgeSubtitle>Our Offices</BadgeSubtitle>
+            </motion.div>
+            <motion.h2 
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
+              variants={textVariants}
+            >
+              Visit Us at Our Locations
+            </motion.h2>
+            <motion.p 
+              className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto"
+              variants={textVariants}
+            >
+              Connect with us at either of our offices for in-person consultations and support.
+            </motion.p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {offices.map((office, index) => (
+              <motion.div
+                key={office.city}
+                className="border border-gray-200 rounded-xl p-6 sm:p-8 hover:shadow-lg transition-shadow duration-300 bg-white"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                      {office.city}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {office.address}
+                    </p>
+                  </div>
+
+                  <div className="border-t border-gray-200 pt-4">
+                    <p className="text-sm font-medium text-gray-700 mb-3">
+                      <strong>Managed by:</strong> {office.contact.name}
+                    </p>
+                    <a
+                      href={`tel:${office.contact.phone}`}
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200"
+                    >
+                      <Phone className="w-4 h-4" />
+                      {office.contact.phone}
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </motion.section>
