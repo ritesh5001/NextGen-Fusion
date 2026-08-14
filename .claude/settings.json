@@ -14,8 +14,7 @@
       "TodoWrite(*)",
       "NotebookRead(*)",
       "NotebookEdit(*)",
-      "Task(*)",
-      "mcp__*"
+      "Task(*)"
     ]
   },
   "hooks": {
