@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto'
 import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
+import { sendCareerAdminAlert, sendCareerApplicantAck } from '../lib/career-email'
 
 const router = Router()
 
@@ -153,7 +154,40 @@ router.post('/career-applications', handleResumeUpload, async (req, res) => {
       return
     }
 
-    res.status(201).json({ data })
+    // The application is already stored, so a mail failure must never fail the
+    // request — the candidate would resubmit and we would hold a duplicate.
+    const emailArgs = {
+      roleTitle: String(data.role_title),
+      name: String(data.name),
+      email: String(data.email),
+      phone: String(data.phone),
+      location: data.location as string | null,
+      experience: data.experience as string | null,
+      portfolioUrl: data.portfolio_url as string | null,
+      coverNote: data.cover_note as string | null,
+      resumeFilename: data.resume_filename as string | null,
+      applicationId: String(data.id),
+    }
+
+    const [adminResult, applicantResult] = await Promise.allSettled([
+      sendCareerAdminAlert(emailArgs),
+      sendCareerApplicantAck(emailArgs),
+    ])
+
+    if (adminResult.status === 'rejected') {
+      logRouteError('careers:notify-admin', adminResult.reason)
+    }
+    if (applicantResult.status === 'rejected') {
+      logRouteError('careers:notify-applicant', applicantResult.reason)
+    }
+
+    res.status(201).json({
+      data,
+      notifications: {
+        admin: adminResult.status === 'fulfilled',
+        applicant: applicantResult.status === 'fulfilled',
+      },
+    })
   } catch (err) {
     logRouteError('careers:apply', err)
     res.status(500).json({ error: getErrorMessage(err) })
