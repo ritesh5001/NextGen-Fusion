@@ -1,9 +1,9 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { MessageCircle } from "lucide-react"
 import { useState, useEffect } from "react"
 import { trackEvent } from "@/lib/analytics"
+import { WhatsAppIcon } from "@/components/icons/whatsapp-icon"
 
 interface FloatingWhatsAppProps {
   phoneNumber?: string
@@ -57,8 +57,8 @@ export default function FloatingWhatsApp({
         }}
         whileTap={{ scale: 0.9 }}
       >
-        {/* WhatsApp Icon */}
-        <MessageCircle className="w-6 h-6" />
+        <WhatsAppIcon className="w-6 h-6 relative z-10" />
+        <span className="sr-only">Chat with us on WhatsApp</span>
         
         {/* Pulse animation */}
         <motion.div
