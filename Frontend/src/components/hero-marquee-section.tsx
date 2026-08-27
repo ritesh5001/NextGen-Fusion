@@ -71,7 +71,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
             {portfolios.map((portfolio, index) => (
               <Link
                 key={`first-${index}`}
-                href={`/portofolio/${portfolio.slug}`}
+                href="/work"
                 className="flex-shrink-0 w-80 h-48 sm:w-96 sm:h-56 md:w-[28rem] md:h-72 lg:w-[32rem] lg:h-80 rounded-2xl mx-4 overflow-hidden border-2 border-black/20 hover:border-black/40 transition-all duration-300 group relative cursor-pointer"
               >
                 <Image
@@ -118,7 +118,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
             {portfolios.map((portfolio, index) => (
               <Link
                 key={`second-${index}`}
-                href={`/portofolio/${portfolio.slug}`}
+                href="/work"
                 className="flex-shrink-0 w-80 h-48 sm:w-96 sm:h-56 md:w-[28rem] md:h-72 lg:w-[32rem] lg:h-80 rounded-2xl mx-4 overflow-hidden border-2 border-black/20 hover:border-black/40 transition-all duration-300 group relative cursor-pointer"
               >
                 <Image

@@ -6,7 +6,7 @@ Disallow: /portal/
 Disallow: /store/purchases/
 
 # Sitemap
-Sitemap: https://nextgenfusion.in/sitemap.xml
+Sitemap: https://www.nextgenfusion.in/sitemap.xml
 
 # Allow specific file types
 Allow: *.css

@@ -226,7 +226,7 @@ export default function FAQSection() {
                 >
                   <Image
                     src={getIconSrc("/images/chat.svg", "/images/chat.png")}
-                    alt="Chat"
+                    alt=""
                     width={48}
                     height={48}
                     className="object-contain w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
@@ -241,7 +241,7 @@ export default function FAQSection() {
                 >
                   <Image
                     src={getIconSrc("/images/people.svg", "/images/people.png")}
-                    alt="People"
+                    alt=""
                     width={48}
                     height={48}
                     className="object-contain w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"

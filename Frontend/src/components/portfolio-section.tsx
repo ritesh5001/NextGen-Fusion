@@ -141,7 +141,7 @@ export default function PortfolioSection({
     description: item.background || item.goal || "",
     category: item.category || "Project",
     image: normalizeImagePath(item.cover_image),
-    link: `/portofolio/${item.slug}`,
+    link: "/work",
     imageHeight: "h-80",
   }));
 
@@ -212,7 +212,7 @@ export default function PortfolioSection({
               whileTap={{ scale: 0.95 }}
             >
               <Link
-                href="/portofolio"
+                href="/work"
                 className="flex items-center gap-2 text-gray-800 hover:text-purple-600 font-medium transition-colors group"
               >
                 View all portfolio

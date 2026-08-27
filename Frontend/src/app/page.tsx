@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import HomeClient from "@/components/home-client"
-import { DEFAULT_OG_IMAGE, OG_IMAGES } from "@/lib/seo"
+import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
 
 export const metadata: Metadata = {
   // The root layout's `%s | NextGen Fusion` template does not apply to the root
@@ -19,6 +18,7 @@ export const metadata: Metadata = {
       "Websites, SEO campaigns, mobile apps, software, and digital products built for measurable business growth.",
     url: `${siteUrl}/`,
     siteName: "NextGen Fusion",
+    locale: "en_IN",
     type: "website",
     images: OG_IMAGES,
   },

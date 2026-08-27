@@ -1,32 +1,15 @@
 import type { Metadata } from "next";
-import { DEFAULT_OG_IMAGE } from "@/lib/seo"
+import { buildMetadata } from "@/lib/seo";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in";
-
-export const metadata: Metadata = {
-  title: "Blogs",
+export const metadata: Metadata = buildMetadata({
+  title: "Blog",
   description:
-    "Read NextGen Fusion blogs on web development, SEO, design, software, automation, marketing, and digital product growth.",
-  alternates: {
-    canonical: `${siteUrl}/blog`,
-  },
-  openGraph: {
-    title: "Blogs | NextGen Fusion",
-    description:
-      "Insights on web development, SEO, design, software, automation, marketing, and digital product growth.",
-    url: `${siteUrl}/blog`,
-    siteName: "NextGen Fusion",
-    type: "website",
-    images: [DEFAULT_OG_IMAGE],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Blogs | NextGen Fusion",
-    description:
-      "Insights on web development, SEO, design, software, automation, marketing, and digital product growth.",
-    images: [DEFAULT_OG_IMAGE],
-  },
-};
+    "Practical guides on web development, SEO, e-commerce, and digital product growth from the NextGen Fusion team.",
+  path: "/blog",
+  ogTitle: "Web Development, SEO & Digital Growth Insights",
+  ogDescription:
+    "Guides on building websites, ranking them, and turning them into revenue — from the team that ships them.",
+});
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return children;

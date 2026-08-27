@@ -24,7 +24,7 @@ export const offices: Office[] = [
     coordinates: "19.0408, 72.8260",
     contact: {
       name: "Mohd Mustejab Ansari",
-      phone: "7715821892"
+      phone: "+91 77158 21892"
     }
   }
 ]

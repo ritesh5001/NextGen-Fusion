@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import SubscribePlans from "@/components/subscribe-plans"
 import { API_BASE_URL } from "@/lib/api"
 import { subscriptionPlans, type SubscriptionPlan } from "@/lib/subscription-plans"
+import { siteUrl } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
 
 // Plans are managed in the admin panel; fetch the live catalog (fallback to the
 // bundled defaults if the backend is unreachable at request time).

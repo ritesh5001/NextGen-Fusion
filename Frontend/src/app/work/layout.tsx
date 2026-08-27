@@ -1,32 +1,19 @@
 import type { Metadata } from "next";
-import { DEFAULT_OG_IMAGE } from "@/lib/seo"
+import { buildMetadata } from "@/lib/seo";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in";
-
-export const metadata: Metadata = {
-  title: "Projects & Case Studies",
+// Sole owner of /work metadata. work/page.tsx also exported a `metadata`
+// object, and the merge took title/description from the page while keeping the
+// layout's Open Graph — so the shared card said "Projects & Case Studies" while
+// Google showed "Our Work — Projects Delivered".
+export const metadata: Metadata = buildMetadata({
+  title: "Our Work — Projects Delivered",
   description:
-    "Explore NextGen Fusion projects and case studies across e-commerce, B2B marketplaces, HR tech, engineering, AgriTech, and custom web development.",
-  alternates: {
-    canonical: `${siteUrl}/work`,
-  },
-  openGraph: {
-    title: "Projects & Case Studies | NextGen Fusion",
-    description:
-      "See digital products, websites, marketplaces, and business platforms built by NextGen Fusion.",
-    url: `${siteUrl}/work`,
-    siteName: "NextGen Fusion",
-    type: "website",
-    images: [DEFAULT_OG_IMAGE],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Projects & Case Studies | NextGen Fusion",
-    description:
-      "See digital products, websites, marketplaces, and business platforms built by NextGen Fusion.",
-    images: [DEFAULT_OG_IMAGE],
-  },
-};
+    "Browse the websites and online stores NextGen Fusion has delivered for clients — e-commerce, B2B marketplaces, HR tech, engineering, and AgriTech.",
+  path: "/work",
+  ogTitle: "Our Work — Projects Delivered",
+  ogDescription:
+    "See the digital products, websites, marketplaces, and business platforms built by NextGen Fusion.",
+});
 
 export default function WorkLayout({ children }: { children: React.ReactNode }) {
   return children;

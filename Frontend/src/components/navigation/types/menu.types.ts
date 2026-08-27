@@ -195,7 +195,7 @@ export const menuData: MenuChannel[] = [
             label: "Portfolio",
             callout: "See our latest projects",
             icon: "maas-mr",
-            url: "/portofolio",
+            url: "/work",
             target: "_self",
           },
           {

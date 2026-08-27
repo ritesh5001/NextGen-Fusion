@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Check, ExternalLink } from 'lucide-react'
 import { getStoreProduct } from '@/lib/store'
 import { BuyButton } from '@/components/store/buy-button'
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'
+import { absoluteUrl, buildMetadata, siteUrl } from '@/lib/seo'
 
 type PageProps = { params: Promise<{ slug: string }> }
 
@@ -13,16 +13,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params
   const product = await getStoreProduct(slug)
   if (!product) return { title: 'Product not found' }
-  return {
-    title: `${product.title} — NextGen Fusion Store`,
+  // Title is the bare product name: the root layout's title.template appends
+  // "| NextGen Fusion". Appending "— NextGen Fusion Store" here too produced a
+  // doubled brand that ate ~20 of the ~60 characters Google shows, truncating
+  // the actual product name. buildMetadata also gives store pages the same
+  // canonical, OG and Twitter handling the rest of the site already has.
+  return buildMetadata({
+    title: product.title,
     description: product.summary || product.description?.slice(0, 160) || product.title,
-    alternates: { canonical: `${siteUrl}/store/${product.slug}` },
-    openGraph: {
-      title: product.title,
-      description: product.summary || product.title,
-      images: product.cover_image ? [product.cover_image] : undefined,
-    },
-  }
+    path: `/store/${product.slug}`,
+    image: product.cover_image || undefined,
+  })
 }
 
 export default async function StoreProductPage({ params }: PageProps) {
@@ -30,8 +31,33 @@ export default async function StoreProductPage({ params }: PageProps) {
   const product = await getStoreProduct(slug)
   if (!product) notFound()
 
+  // Product + Offer is what unlocks price and availability in the SERP for
+  // these pages, which carry the highest commercial intent on the site.
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.summary || product.description?.slice(0, 300) || product.title,
+    sku: product.slug,
+    category: product.category || 'Software',
+    image: product.cover_image ? [product.cover_image] : undefined,
+    brand: { '@type': 'Brand', name: 'NextGen Fusion' },
+    offers: {
+      '@type': 'Offer',
+      url: absoluteUrl(`/store/${product.slug}`),
+      price: product.price_inr,
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      seller: { '@id': `${siteUrl}/#organization` },
+    },
+  }
+
   return (
     <main className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-24 pb-24">
         <Link href="/store" className="text-sm text-gray-500 hover:text-gray-900">
           ← Back to store
@@ -42,8 +68,16 @@ export default async function StoreProductPage({ params }: PageProps) {
           <div>
             <div className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-50">
               {product.cover_image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={product.cover_image} alt={product.title} className="w-full object-cover" />
+                <Image
+                  src={product.cover_image}
+                  alt={product.title}
+                  width={1200}
+                  height={750}
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  unoptimized={product.cover_image.startsWith('http')}
+                  className="w-full object-cover"
+                />
               ) : (
                 <div className="flex aspect-[16/10] items-center justify-center text-gray-400">No preview</div>
               )}
@@ -51,8 +85,16 @@ export default async function StoreProductPage({ params }: PageProps) {
             {product.gallery.length > 0 && (
               <div className="mt-4 grid grid-cols-3 gap-3">
                 {product.gallery.map((src, i) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={i} src={src} alt={`${product.title} screenshot ${i + 1}`} className="aspect-video w-full rounded-lg border border-gray-100 object-cover" />
+                  <Image
+                    key={i}
+                    src={src}
+                    alt={`${product.title} screenshot ${i + 1}`}
+                    width={400}
+                    height={225}
+                    sizes="(max-width: 1024px) 33vw, 16vw"
+                    unoptimized={src.startsWith('http')}
+                    className="aspect-video w-full rounded-lg border border-gray-100 object-cover"
+                  />
                 ))}
               </div>
             )}

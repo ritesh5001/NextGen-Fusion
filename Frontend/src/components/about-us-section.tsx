@@ -138,7 +138,7 @@ export default function AboutUsSection() {
                 >
                   <Image
                     src={getIconSrc("/images/handwaves.svg", "/images/handwaves.png")}
-                    alt="Hand Wave"
+                    alt=""
                     width={56}
                     height={56}
                     className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"

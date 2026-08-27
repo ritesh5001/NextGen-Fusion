@@ -7,7 +7,9 @@ import ErrorBoundary from "@/components/error-boundary";
 import "@/lib/error-handler";
 import LenisProvider from "@/components/lenis-provider";
 import LayoutChrome from "@/components/layout-chrome";
+import { Analytics } from "@/components/analytics";
 import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
+import { offices } from "@/data/offices";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -17,11 +19,12 @@ const structuredData = {
       "@id": `${siteUrl}/#organization`,
       name: "NextGen Fusion",
       url: siteUrl,
-      logo: `${siteUrl}/images/livtechlogo.svg`,
-      sameAs: [
-        "https://www.nextgenfusion.in",
-        "https://www.instagram.com/nextgenfusion.devs/",
-      ],
+      // Google requires a raster logo; the SVG here was silently ignored.
+      logo: `${siteUrl}/images/site-logo.png`,
+      // sameAs is for profiles that corroborate the entity elsewhere. Listing
+      // our own homepage told Google nothing, and pointing it at the www host
+      // while `url` used the apex actively muddied canonicalisation.
+      sameAs: ["https://www.instagram.com/nextgenfusion.devs/"],
       contactPoint: [
         {
           "@type": "ContactPoint",
@@ -37,6 +40,41 @@ const structuredData = {
       // shipping placeholder numbers risks a manual action. Re-add only with
       // verified Google/Clutch review data plus visible reviews on the page.
     },
+    // One ProfessionalService per physical office, linked back to the
+    // Organization. These carry the local entity signals (address, geo, phone)
+    // that the Organization node alone cannot express.
+    ...offices.map((office) => {
+      const [latitude, longitude] = office.coordinates
+        .split(",")
+        .map((part) => Number(part.trim()));
+      return {
+        "@type": "ProfessionalService",
+        "@id": `${siteUrl}/#office-${office.city.toLowerCase()}`,
+        name: `NextGen Fusion — ${office.city}`,
+        url: siteUrl,
+        image: `${siteUrl}/images/site-logo.png`,
+        parentOrganization: { "@id": `${siteUrl}/#organization` },
+        telephone: office.contact.phone,
+        email: "contact@nextgenfusion.in",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: office.address,
+          addressLocality: office.city,
+          addressCountry: "IN",
+        },
+        geo: { "@type": "GeoCoordinates", latitude, longitude },
+        areaServed: ["IN", "Worldwide"],
+        priceRange: "₹₹",
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            opens: "10:00",
+            closes: "19:00",
+          },
+        ],
+      };
+    }),
     ...[
       "Website Development",
       "E-commerce Web Development",
@@ -82,15 +120,6 @@ export const metadata: Metadata = {
   },
   description:
     "NextGen Fusion builds high-performance websites, SEO campaigns, mobile apps, software, and digital products for businesses that need measurable growth.",
-  keywords: [
-    "web development",
-    "web design",
-    "digital agency",
-    "website creation",
-    "NextGen Fusion",
-    "custom websites",
-    "SEO optimization",
-  ],
   authors: [{ name: "NextGen Fusion" }],
   creator: "NextGen Fusion",
   publisher: "NextGen Fusion",
@@ -164,7 +193,7 @@ export const metadata: Metadata = {
   // Open Graph untuk sharing (card preview)
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "en_IN",
     url: siteUrl,
     siteName: "NextGen Fusion",
     title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
@@ -218,7 +247,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
       className={`${trap.variable} ${inter.variable} ${interDisplay.variable} font-sans`}
     >
       <head>
@@ -231,13 +260,6 @@ export default function RootLayout({
         <meta name="msapplication-navbutton-color" content="#2B35AB" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#2B35AB" />
 
-        {/* Additional SEO meta tags */}
-        <meta name="language" content="English" />
-        <meta name="revisit-after" content="7 days" />
-        <meta name="distribution" content="global" />
-        <meta name="rating" content="general" />
-        <meta httpEquiv="content-language" content="en-us" />
-
         {/* Favicons, apple-touch icons, tile metas and manifest are declared
             in the `metadata` export above — no hand-written <link> tags needed. */}
         <script
@@ -247,6 +269,7 @@ export default function RootLayout({
 
       </head>
       <body className="min-h-screen bg-white md:pb-0 pb-24">
+        <Analytics />
         <ErrorBoundary>
           <LenisProvider>
             <ConsoleEasterEgg />

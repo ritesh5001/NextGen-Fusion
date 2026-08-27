@@ -1,6 +1,10 @@
 import type { Metadata } from "next"
 
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
+// www is the canonical host: Google had already indexed it, so we follow that
+// choice rather than forcing a migration. The apex 301s here (see
+// next.config.js redirects). This one value feeds every canonical, OG url,
+// sitemap entry and schema @id on the site.
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.nextgenfusion.in"
 
 export const SITE_NAME = "NextGen Fusion"
 
@@ -75,6 +79,7 @@ export function buildMetadata({
       description: ogDescription ?? description,
       url,
       siteName: SITE_NAME,
+      locale: "en_IN",
       type,
       images,
       ...(publishedTime ? { publishedTime } : {}),

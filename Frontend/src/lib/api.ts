@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'
+const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nextgenfusion.in'
 const DEFAULT_API_BASE_URL = process.env.NODE_ENV === 'production'
   ? `${DEFAULT_SITE_URL}/api`
   : 'http://localhost:8000/api'

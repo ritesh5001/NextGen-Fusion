@@ -222,7 +222,7 @@ export default function ServicesSection() {
               >
                 <OptimizedIcon
                   src={getIconSrc("/images/paint.svg", "/images/paint.png")}
-                  alt="paint icon"
+                  alt=""
                   variants={iconVariants}
                 />
               </motion.div>

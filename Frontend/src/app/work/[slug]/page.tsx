@@ -15,12 +15,12 @@ import {
 } from "lucide-react";
 import ScrollToTop from "@/components/scroll-to-top";
 import { staticProjects, getProjectBySlug } from "@/lib/static-projects";
+import { siteUrl } from "@/lib/seo"
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in";
 
 export async function generateStaticParams() {
   return staticProjects.map((p) => ({ slug: p.slug }));

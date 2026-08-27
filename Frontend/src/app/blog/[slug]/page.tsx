@@ -8,7 +8,7 @@ import Link from "next/link"
 import { apiService } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import ScrollToTop from "@/components/scroll-to-top"
-import { DEFAULT_OG_IMAGE } from "@/lib/seo"
+import { DEFAULT_OG_IMAGE, siteUrl } from "@/lib/seo"
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   try {
@@ -27,7 +27,6 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 export const dynamicParams = true  // Mengizinkan parameter dinamis untuk SSR
 export const dynamic = 'force-dynamic'  // Menggunakan SSR
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -181,7 +180,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
               <div className="flex items-center justify-center gap-4">
                 <ShareButton 
                   title={blogPost.title}
-                  url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'}/blog/${blogPost.slug}`}
+                  url={`${siteUrl}/blog/${blogPost.slug}`}
                 />
                 
                 {/* No live/code links for blog posts */}

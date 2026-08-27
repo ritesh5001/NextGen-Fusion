@@ -2,83 +2,79 @@ import type { MetadataRoute } from "next"
 import { absoluteUrl } from "@/lib/seo"
 import { staticProjects } from "@/lib/static-projects"
 import { apiService } from "@/lib/api"
+import { getStoreProducts } from "@/lib/store"
+import { serviceSlugs } from "@/data/services-nav"
 
-// Revalidate hourly so newly published blog posts and portfolio entries show up
-// without a redeploy.
+// Revalidate hourly so newly published blog posts, store products and
+// portfolio entries show up without a redeploy.
 export const revalidate = 3600
 
-const SERVICE_SLUGS = [
-  "website-development-services",
-  "ecommerce-web-development-services",
-  "web-design-services",
-  "android-app-development-services",
-  "seo-services",
-  "ppc-services",
-  "social-media-marketing-services",
-  "ai-automation-development-services",
-  "software-development-services",
-  "api-integration-services",
-  "cloud-solutions",
-  "website-maintenance-services",
-]
+
+/**
+ * Real edit dates for hand-authored routes.
+ *
+ * These were previously `new Date()`, which meant every URL claimed it had just
+ * changed on every hourly regeneration. Google explicitly discourages that: a
+ * sitemap where everything is always fresh carries no information, so lastmod
+ * stops being trusted for the whole domain.
+ *
+ * Update the date here when you meaningfully edit a page. Dynamic sections
+ * below derive their dates from real content timestamps instead.
+ */
+const STATIC_LAST_MODIFIED: Record<string, string> = {
+  "/": "2026-08-14",
+  "/services": "2026-08-14",
+  "/work": "2026-08-14",
+  "/blog": "2026-08-27",
+  "/showcase": "2026-08-14",
+  "/team": "2026-08-14",
+  "/careers": "2026-08-27",
+  "/store": "2026-08-14",
+  "/support": "2026-08-14",
+  "/store/license": "2026-08-14",
+  "/store/refunds": "2026-08-14",
+}
+
+const SERVICES_LAST_MODIFIED = "2026-08-14"
 
 type Entry = MetadataRoute.Sitemap[number]
 
-const entry = (
-  path: string,
-  changeFrequency: Entry["changeFrequency"],
-  priority: number,
-  lastModified: Date | string = new Date(),
-): Entry => ({
+// changeFrequency and priority are deliberately omitted: Google has ignored
+// both for years, and they only added noise to every entry.
+const entry = (path: string, lastModified: Date | string): Entry => ({
   url: absoluteUrl(path),
   lastModified,
-  changeFrequency,
-  priority,
 })
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries: MetadataRoute.Sitemap = [
-    entry("/", "weekly", 1.0),
-    entry("/services", "monthly", 0.9),
-    entry("/work", "weekly", 0.9),
-    entry("/portofolio", "weekly", 0.8),
-    entry("/blog", "weekly", 0.8),
-    entry("/showcase", "monthly", 0.7),
-    entry("/team", "monthly", 0.6),
-    entry("/careers", "weekly", 0.6),
-    entry("/store", "weekly", 0.7),
-    entry("/support", "monthly", 0.4),
-    entry("/store/license", "yearly", 0.3),
-    entry("/store/refunds", "yearly", 0.3),
-    ...SERVICE_SLUGS.map((slug) => entry(`/services/${slug}`, "monthly", 0.8)),
-    ...staticProjects.map((p) => entry(`/work/${p.slug}`, "monthly", 0.7)),
+    ...Object.entries(STATIC_LAST_MODIFIED).map(([path, date]) => entry(path, date)),
+    ...serviceSlugs.map((slug) => entry(`/services/${slug}`, SERVICES_LAST_MODIFIED)),
+    ...staticProjects.map((p) => entry(`/work/${p.slug}`, SERVICES_LAST_MODIFIED)),
   ]
 
   // Remote content is best-effort: a Backend hiccup must not fail the build or
   // serve an empty sitemap, so each source degrades to "skip this section".
-  const [blogEntries, portfolioEntries] = await Promise.all([
+  const [blogEntries, storeEntries] = await Promise.all([
     apiService
       .getActiveBlogPosts()
       .then((posts) =>
         posts.map((post) =>
-          entry(
-            `/blog/${post.slug}`,
-            "monthly",
-            0.6,
-            post.updated_at || post.published_at || new Date(),
-          ),
+          entry(`/blog/${post.slug}`, post.updated_at || post.published_at || new Date()),
         ),
       )
       .catch(() => [] as MetadataRoute.Sitemap),
-    apiService
-      .getPortfolios()
-      .then((items) =>
-        items
-          .filter((item) => item.slug)
-          .map((item) => entry(`/portofolio/${item.slug}`, "monthly", 0.6)),
+    // 47 product pages that render server-side with full metadata and were
+    // absent from the sitemap entirely — the highest commercial-intent URLs
+    // on the site had no path in.
+    getStoreProducts()
+      .then((products) =>
+        products
+          .filter((product) => product.slug)
+          .map((product) => entry(`/store/${product.slug}`, product.created_at || new Date())),
       )
       .catch(() => [] as MetadataRoute.Sitemap),
   ])
 
-  return [...staticEntries, ...blogEntries, ...portfolioEntries]
+  return [...staticEntries, ...blogEntries, ...storeEntries]
 }

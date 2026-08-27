@@ -19,7 +19,7 @@ export function normalizeImagePath(imagePath: string | null | undefined): string
   }
   
   // Configurable asset base URL
-  const assetBase = process.env.NEXT_PUBLIC_ASSET_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'
+  const assetBase = process.env.NEXT_PUBLIC_ASSET_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nextgenfusion.in'
   
   // Handle storage paths from backend
   if (imagePath.startsWith('/storage/')) {

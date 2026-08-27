@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getStoreProducts, formatInr } from '@/lib/store'
+import { siteUrl } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'
 
 export const metadata: Metadata = {
   title: 'Store — Ready-to-Use CRM, ERP & Software',
@@ -56,11 +57,14 @@ export default async function StorePage() {
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-gray-50">
                   {p.cover_image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={p.cover_image}
                       alt={p.title}
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      // Product art is served from the CMS host, which is not in
+                      // next.config remotePatterns; matches how blog covers are handled.
+                      unoptimized={p.cover_image.startsWith('http')}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />
                   ) : (

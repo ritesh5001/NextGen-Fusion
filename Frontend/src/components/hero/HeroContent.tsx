@@ -64,7 +64,7 @@ export const HeroContent = ({ variants }: HeroContentProps) => {
               <div className="relative mx-2 translate-y-1 overflow-hidden hero-icon">
                 <Image
                   src="/images/man-hero.png"
-                  alt="Sleek"
+                  alt=""
                   width={32}
                   height={32}
                   className="object-contain w-8 h-8"
@@ -74,7 +74,7 @@ export const HeroContent = ({ variants }: HeroContentProps) => {
               <div className="relative ml-2 translate-y-1 overflow-hidden hero-icon">
                 <Image
                   src="/images/eagle-hero.png"
-                  alt="Fast"
+                  alt=""
                   width={32}
                   height={32}
                   className="object-contain w-8 h-8"
@@ -90,7 +90,7 @@ export const HeroContent = ({ variants }: HeroContentProps) => {
             <motion.div className="relative -translate-y-1 inline-block hero-icon" variants={animationVariants.animeMobile}>
               <Image
                 src="/images/ghost-hero.png"
-                alt="Doesn't Ghost"
+                alt=""
                 width={32}
                 height={32}
                 className="object-contain w-8 h-8"

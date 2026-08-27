@@ -258,7 +258,7 @@ export default function PortfolioSection({ portfolios = [] }: { portfolios: Port
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href="/portofolio" className="flex items-center gap-2 text-gray-800 hover:text-purple-600 font-medium transition-colors group">
+              <Link href="/work" className="flex items-center gap-2 text-gray-800 hover:text-purple-600 font-medium transition-colors group">
                 View all portfolio
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>

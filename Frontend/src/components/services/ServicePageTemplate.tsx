@@ -104,8 +104,29 @@ const sectionVariants = {
 export default function ServicePageTemplate({ data }: { data: ServicePageData }) {
   const AboutIcon = SERVICE_ICON_MAP[data.aboutIcon]
 
+  // FAQPage markup for the FAQ block rendered below. One change here makes all
+  // twelve service pages eligible for FAQ rich results — the questions and
+  // answers were already on the page, just not marked up.
+  const faqSchema = data.faqs.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: data.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      }
+    : null
+
   return (
     <div className="min-h-screen bg-white">
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <main className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-24">
 
@@ -138,7 +159,7 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="/portofolio"
+                  href="/work"
                   className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors"
                 >
                   View Case Studies
@@ -327,7 +348,7 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="/portofolio"
+                  href="/work"
                   className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-6 py-3 text-white font-semibold hover:bg-white/10 transition-colors"
                 >
                   View Our Work

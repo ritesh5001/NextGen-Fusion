@@ -1,17 +1,5 @@
-import type { Metadata } from "next"
 import CTABanner from "@/components/cta-banner"
 import DeliveredWall from "@/components/delivered-wall"
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
-
-export const metadata: Metadata = {
-  title: "Our Work — Projects Delivered",
-  description:
-    "Browse the websites and online stores NextGen Fusion has delivered for clients — filter by e-commerce, service, and custom projects.",
-  alternates: {
-    canonical: `${siteUrl}/work`,
-  },
-}
 
 export default function WorkPage() {
   return (

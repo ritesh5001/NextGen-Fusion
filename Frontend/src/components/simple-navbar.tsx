@@ -26,7 +26,7 @@ const hrefFor = (item: MenuItem) => (item.isPage ? item.href : `/#${item.href}`)
 
 const menuItems: MenuItem[] = [
   { name: "Home", href: "/", isPage: true, Icon: Home },
-  { name: "Services", href: "services", isPage: false, Icon: Wrench },
+  { name: "Services", href: "/services", isPage: true, Icon: Wrench },
   { name: "Store", href: "/store", isPage: true, Icon: Store },
   { name: "Blogs", href: "/blog", isPage: true, Icon: BookOpen },
   { name: "About", href: "about", isPage: false, Icon: User },

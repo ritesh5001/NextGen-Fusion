@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { siteUrl } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextgenfusion.in'
 
 export const metadata: Metadata = {
   title: 'License Agreement — NextGen Fusion Store',

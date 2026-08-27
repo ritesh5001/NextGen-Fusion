@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { offices } from "@/data/offices";
+import { serviceNavItems } from "@/data/services-nav";
 
 export default function Footer() {
   const [isClient, setIsClient] = useState(false);
@@ -12,7 +13,7 @@ export default function Footer() {
   const navigationLinks = [
     { name: "Home", href: "/#hero" },
     { name: "About", href: "/#about" },
-    { name: "Services", href: "/#services" },
+    { name: "Services", href: "/services" },
     { name: "Store", href: "/store" },
     { name: "Work", href: "/work" },
     { name: "Support & Plans", href: "/support" },
@@ -109,7 +110,7 @@ export default function Footer() {
               </div>
 
               {/* Right Content - Navigation & Social */}
-              <div className="grid sm:grid-cols-2 gap-8 lg:gap-12">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
                 {/* Navigation */}
                 <div>
                   <h3 className="text-lg font-semibold mb-6 text-white">
@@ -123,6 +124,25 @@ export default function Footer() {
                           className="text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Services — every service page gets a sitewide internal link */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-6 text-white">
+                    Services
+                  </h3>
+                  <ul className="space-y-4">
+                    {serviceNavItems.map((service) => (
+                      <li key={service.slug}>
+                        <a
+                          href={`/services/${service.slug}`}
+                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                        >
+                          {service.label}
                         </a>
                       </li>
                     ))}
@@ -247,6 +267,23 @@ export default function Footer() {
                           className="text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+
+                {/* Services — every service page gets a sitewide internal link */}
+                  <h3 className="text-lg font-semibold mb-4 mt-6 text-white">
+                    Services
+                  </h3>
+                  <ul className="space-y-3">
+                    {serviceNavItems.map((service) => (
+                      <li key={service.slug}>
+                        <a
+                          href={`/services/${service.slug}`}
+                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                        >
+                          {service.label}
                         </a>
                       </li>
                     ))}

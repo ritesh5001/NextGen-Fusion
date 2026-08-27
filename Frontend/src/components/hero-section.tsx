@@ -172,114 +172,71 @@ const HeroContent = () => {
         className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight mb-8"
         variants={animationVariants.sleek}
       >
-        {/* Mobile Layout */}
-        <div className="block sm:hidden">
-          <div className="flex flex-nowrap items-center justify-center w-full px-4 overflow-x-hidden">
-            <motion.div className="flex items-center flex-shrink-0" variants={animationVariants.sleek}>
-              <span className="whitespace-nowrap font-bold">Sleek</span>
-              <div className="relative mx-2 translate-y-1 overflow-hidden hero-icon">
-                <Image
-                  src="/images/man-hero.png"
-                  alt="Sleek"
-                  width={32}
-                  height={32}
-                  className="object-contain w-8 h-8"
-                />
-              </div>
-              <span className="whitespace-nowrap font-bold">, Fast</span>
-              <div className="relative ml-2 translate-y-1 overflow-hidden hero-icon">
-                <Image
-                  src="/images/eagle-hero.png"
-                  alt="Fast"
-                  width={32}
-                  height={32}
-                  className="object-contain w-8 h-8"
-                />
-              </div>
-            </motion.div>
-          </div>
-          <div className="flex flex-wrap items-end justify-center gap-2 mt-4">
-            <motion.span className="inline-block font-bold" variants={animationVariants.ghostText}>
-              {"Doesn't Ghost"}
-            </motion.span>
-            <motion.div className="relative -translate-y-1 inline-block hero-icon" variants={animationVariants.animeMobile}>
-              <Image
-                src="/images/ghost-hero.png"
-                alt="Doesn't Ghost"
-                width={32}
-                height={32}
-                className="object-contain w-8 h-8"
-              />
-            </motion.div>
-            <motion.span className="inline-block font-bold" variants={animationVariants.ghostText}>
-              You After 
-            </motion.span>
-            <motion.span 
-              className="inline-block font-bold bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent" 
-              style={{
-                backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
-              }}
-              variants={animationVariants.ghostText}
-            >
-              Launch
-            </motion.span>
-          </div>
+        {/* One layout, reflowed with CSS.
+            Previously mobile and desktop were two separate DOM trees inside the
+            same <h1>, so every word was rendered twice and Google extracted the
+            heading doubled. */}
+        <div className="flex flex-nowrap sm:flex-wrap items-center sm:items-end justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-6 px-4 sm:px-0 overflow-x-hidden">
+          <motion.span className="inline-block font-bold whitespace-nowrap" variants={animationVariants.sleek}>
+            Sleek
+          </motion.span>
+          <motion.div
+            className="relative translate-y-1 sm:-translate-y-5 inline-block hero-icon"
+            variants={animationVariants.sleek}
+          >
+            <Image
+              src="/images/man-hero.png"
+              alt=""
+              width={56}
+              height={56}
+              priority
+              className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
+            />
+          </motion.div>
+          <motion.span className="inline-block font-bold whitespace-nowrap" variants={animationVariants.and}>
+            , Fast
+          </motion.span>
+          <motion.div
+            className="relative translate-y-1 sm:-translate-y-5 inline-block hero-icon"
+            variants={animationVariants.fast}
+          >
+            <Image
+              src="/images/eagle-hero.png"
+              alt=""
+              width={56}
+              height={56}
+              priority
+              className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
+            />
+          </motion.div>
         </div>
 
-        {/* Tablet & Desktop Layout */}
-        <div className="hidden sm:block">
-          <div className="flex flex-wrap items-end justify-center gap-3 md:gap-4 lg:gap-6">
-            <motion.span className="inline-block font-bold" variants={animationVariants.sleek}>
-              Sleek
-            </motion.span>
-            <motion.div className="relative -translate-y-5 inline-block hero-icon" variants={animationVariants.sleek}>
-              <Image
-                src="/images/man-hero.png"
-                alt="Sleek"
-                width={56}
-                height={56}
-                className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
-              />
-            </motion.div>
-            <motion.span className="inline-block font-bold" variants={animationVariants.and}>
-              , Fast
-            </motion.span>
-            <motion.div className="relative -translate-y-5 inline-block hero-icon" variants={animationVariants.fast}>
-              <Image
-                src="/images/eagle-hero.png"
-                alt="Fast"
-                width={56}
-                height={56}
-                className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
-              />
-            </motion.div>
-          </div>
-          <div className="flex flex-nowrap items-center justify-center gap-2 md:gap-3 lg:gap-4 mt-4 whitespace-nowrap">
-            <motion.span className="inline-block font-bold" variants={animationVariants.ghostText}>
-              {"Doesn't Ghost"}
-            </motion.span>
-            <motion.div className="relative -translate-y-1 inline-block hero-icon" variants={animationVariants.anime}>
-              <Image
-                src="/images/ghost-hero.png"
-                alt="Doesn't Ghost"
-                width={56}
-                height={56}
-                className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
-              />
-            </motion.div>
-            <motion.span className="inline-block font-bold" variants={animationVariants.ghostText}>
-              You After 
-            </motion.span>
-            <motion.span 
-              className="inline-block font-bold bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent" 
-              style={{
-                backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
-              }}
-              variants={animationVariants.ghostText}
-            >
-              Launch
-            </motion.span>
-          </div>
+        <div className="flex flex-wrap sm:flex-nowrap items-end sm:items-center justify-center gap-2 md:gap-3 lg:gap-4 mt-4 sm:whitespace-nowrap">
+          <motion.span className="inline-block font-bold" variants={animationVariants.ghostText}>
+            {"Doesn't Ghost"}
+          </motion.span>
+          <motion.div className="relative -translate-y-1 inline-block hero-icon" variants={animationVariants.anime}>
+            <Image
+              src="/images/ghost-hero.png"
+              alt=""
+              width={56}
+              height={56}
+              priority
+              className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
+            />
+          </motion.div>
+          <motion.span className="inline-block font-bold" variants={animationVariants.ghostText}>
+            You After&nbsp;
+          </motion.span>
+          <motion.span
+            className="inline-block font-bold bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"
+            style={{
+              backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
+            }}
+            variants={animationVariants.ghostText}
+          >
+            Launch
+          </motion.span>
         </div>
       </motion.h1>
 

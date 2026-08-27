@@ -171,7 +171,7 @@ export default function ComparisonSection() {
                   >
                     <Image
                       src={getIconSrc("/images/Handsake.svg", "/images/handshake.png")}
-                      alt="Handshake"
+                      alt=""
                       width={56}
                       height={56}
                       className="rounded-lg object-cover w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"

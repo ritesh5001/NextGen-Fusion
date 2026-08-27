@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { serviceRoutes } from "@/components/services/service-data"
+import { siteUrl } from "@/lib/seo"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextgenfusion.in"
 
 export const metadata: Metadata = {
   title: "Services — Web, Ecommerce, SEO & Software",
