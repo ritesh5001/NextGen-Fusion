@@ -156,97 +156,82 @@ const HeroContent = () => {
         </div>
       </motion.div>
 
-      {/* Positioning line: who we help + what they get + hook */}
-      <motion.p
-        className="text-sm sm:text-base font-medium text-gray-500 max-w-2xl mx-auto mb-5"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.08, duration: 0.3 }}
-      >
-        Conversion-focused websites for growing D2C &amp; ecommerce brands — built fast, and we
-        don&apos;t ghost you after launch.
-      </motion.p>
-
-      {/* Heading with blur reveal from left to right */}
+      {/* H1 — carries search intent. "Websites", "online stores" and "after
+          launch" are terms buyers actually type; the stylised brand line moved
+          below it and is deliberately no longer a heading. */}
       <motion.h1
-        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight mb-8"
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-5 max-w-5xl mx-auto"
         variants={animationVariants.sleek}
       >
-        {/* One layout, reflowed with CSS.
-            Previously mobile and desktop were two separate DOM trees inside the
-            same <h1>, so every word was rendered twice and Google extracted the
-            heading doubled. */}
-        <div className="flex flex-nowrap sm:flex-wrap items-center sm:items-end justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-6 px-4 sm:px-0 overflow-x-hidden">
-          <motion.span className="inline-block font-bold whitespace-nowrap" variants={animationVariants.sleek}>
-            Sleek
-          </motion.span>
-          <motion.div
-            className="relative translate-y-1 sm:-translate-y-5 inline-block hero-icon"
-            variants={animationVariants.sleek}
-          >
-            <Image
-              src="/images/man-hero.png"
-              alt=""
-              width={56}
-              height={56}
-              priority
-              className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
-            />
-          </motion.div>
-          <motion.span className="inline-block font-bold whitespace-nowrap" variants={animationVariants.and}>
-            , Fast
-          </motion.span>
-          <motion.div
-            className="relative translate-y-1 sm:-translate-y-5 inline-block hero-icon"
-            variants={animationVariants.fast}
-          >
-            <Image
-              src="/images/eagle-hero.png"
-              alt=""
-              width={56}
-              height={56}
-              priority
-              className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
-            />
-          </motion.div>
-        </div>
-
-        <div className="flex flex-wrap sm:flex-nowrap items-end sm:items-center justify-center gap-2 md:gap-3 lg:gap-4 mt-4 sm:whitespace-nowrap">
-          <motion.span className="inline-block font-bold" variants={animationVariants.ghostText}>
-            {"Doesn't Ghost"}
-          </motion.span>
-          <motion.div className="relative -translate-y-1 inline-block hero-icon" variants={animationVariants.anime}>
-            <Image
-              src="/images/ghost-hero.png"
-              alt=""
-              width={56}
-              height={56}
-              priority
-              className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
-            />
-          </motion.div>
-          <motion.span className="inline-block font-bold" variants={animationVariants.ghostText}>
-            You After&nbsp;
-          </motion.span>
-          <motion.span
-            className="inline-block font-bold bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"
-            style={{
-              backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
-            }}
-            variants={animationVariants.ghostText}
-          >
-            Launch
-          </motion.span>
-        </div>
+        Websites &amp; Online Stores That Don&apos;t Get Abandoned{" "}
+        <span
+          className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"
+          style={{
+            backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
+          }}
+        >
+          After Launch
+        </span>
       </motion.h1>
+
+      {/* Brand signature — the original line, kept as decoration rather than a
+          heading so it no longer competes with the H1 for what this page is about. */}
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-8">
+        {/* Grouped so punctuation never wraps onto the start of a line. */}
+        <motion.span
+          className="inline-flex items-center gap-2 whitespace-nowrap"
+          variants={animationVariants.sleek}
+        >
+          Sleek
+          <Image
+            src="/images/man-hero.png"
+            alt=""
+            width={40}
+            height={40}
+            priority
+            className="object-contain w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 hero-icon"
+          />
+          ,
+        </motion.span>
+        <motion.span
+          className="inline-flex items-center gap-2 whitespace-nowrap"
+          variants={animationVariants.fast}
+        >
+          Fast
+          <Image
+            src="/images/eagle-hero.png"
+            alt=""
+            width={40}
+            height={40}
+            priority
+            className="object-contain w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 hero-icon"
+          />
+          ,
+        </motion.span>
+        <motion.span
+          className="inline-flex items-center gap-2 whitespace-nowrap"
+          variants={animationVariants.ghostText}
+        >
+          Doesn&apos;t Ghost
+          <Image
+            src="/images/ghost-hero.png"
+            alt=""
+            width={40}
+            height={40}
+            priority
+            className="object-contain w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 hero-icon"
+          />
+          You
+        </motion.span>
+      </div>
 
       {/* Subtitle — outcome, not feature list */}
       <motion.p
         className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-10"
         variants={animationVariants.subtitle}
       >
-        We design and build websites that turn visitors into enquiries and sales — then keep
-        improving them long after launch.
+        Conversion-focused websites for growing D2C and ecommerce brands across India and
+        worldwide — designed, built, and supported end to end.
       </motion.p>
 
       {/* CTA Buttons — one primary, one lighter secondary */}

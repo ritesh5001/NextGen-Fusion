@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { MessageCircle } from "lucide-react"
 import { useState, useEffect } from "react"
+import { trackEvent } from "@/lib/analytics"
 
 interface FloatingWhatsAppProps {
   phoneNumber?: string
@@ -27,6 +28,7 @@ export default function FloatingWhatsApp({
 
   const handleWhatsAppClick = () => {
     const encodedMessage = encodeURIComponent(message)
+    trackEvent("whatsapp_click", { source: "floating_button" })
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
     window.open(whatsappUrl, '_blank')
   }

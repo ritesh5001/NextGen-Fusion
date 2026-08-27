@@ -5,6 +5,7 @@ import { CheckCircle2, FileText, Loader2, Upload, X } from "lucide-react"
 import { apiService } from "@/lib/api"
 import { cn } from "@/lib/utils"
 import { jobOpenings } from "@/data/careers"
+import { trackEvent } from "@/lib/analytics"
 
 const MAX_RESUME_MB = 5
 const MAX_RESUME_BYTES = MAX_RESUME_MB * 1024 * 1024
@@ -99,6 +100,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         cover_note: String(data.get("cover_note") || "").trim(),
         resume,
       })
+      trackEvent("career_application_submit", { role_id: roleId })
       setSubmitted(true)
       form.reset()
       clearResume()

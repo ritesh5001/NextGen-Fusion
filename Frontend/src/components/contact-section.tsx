@@ -9,6 +9,7 @@ import PhoneInput from "./phone-input"
 import { apiService, ContactFormData } from "@/lib/api"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { offices } from "@/data/offices"
+import { trackEvent } from "@/lib/analytics"
 
 // Animation variants
 const containerVariants = {
@@ -201,6 +202,7 @@ export default function ContactSection() {
       }
 
       await apiService.submitContactForm(contactFormData)
+      trackEvent("contact_submit")
       setSubmitStatus('success')
       setCurrentStep(3) // Show success step
     } catch (error) {

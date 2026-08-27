@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { X, CalendarDays, PhoneCall, ArrowRight, CheckCircle2, Loader2 } from "lucide-react"
 import { API_BASE_URL } from "@/lib/api"
+import { trackEvent } from "@/lib/analytics"
 
 type BookingState = {
   open: boolean
@@ -29,6 +30,7 @@ const LENIS_SCROLL_LOCK_EVENT = "lenis-scroll-lock"
 
 export function openBookingModal(detail: Partial<BookingState> = {}) {
   if (typeof window === "undefined") return
+  trackEvent("book_call")
   window.dispatchEvent(new CustomEvent("open-booking-modal", { detail }))
 }
 

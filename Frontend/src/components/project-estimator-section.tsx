@@ -20,6 +20,7 @@ import { useMemo, useState, type ReactNode } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import { apiService, ProjectEstimatorData, ProjectEstimatorResponse } from "@/lib/api"
 import { computeBallpark, computeSupport, formatCurrency, PAYMENT_TERMS } from "@/lib/estimator-pricing"
+import { trackEvent } from "@/lib/analytics"
 
 const sectionVariants = {
   hidden: { opacity: 0 },
@@ -209,6 +210,7 @@ export default function ProjectEstimatorSection() {
     setError("")
     try {
       const response = await apiService.estimateProject(resolved)
+      trackEvent("estimator_submit", { project_type: resolved.projectType })
       setResult(response)
       setStep(3)
     } catch (err) {
