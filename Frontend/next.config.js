@@ -73,6 +73,8 @@ const nextConfig = {
       { source: '/api/bookings/:path*', destination: `${BACKEND_URL}/api/bookings/:path*` },
       { source: '/api/cron/:path*', destination: `${BACKEND_URL}/api/cron/:path*` },
       { source: '/api/store/:path*', destination: `${BACKEND_URL}/api/store/:path*` },
+      { source: '/api/blog-posts', destination: `${BACKEND_URL}/api/blog-posts` },
+      { source: '/api/blog-posts/:path*', destination: `${BACKEND_URL}/api/blog-posts/:path*` },
     ]
   },
   // Keep test files out of the production output trace.
