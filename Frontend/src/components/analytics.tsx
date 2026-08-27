@@ -1,17 +1,22 @@
 import Script from "next/script"
 
 /**
- * GA4 + Microsoft Clarity, both gated on env vars.
+ * GA4 measurement ID. Hardcoded on purpose: it is a public identifier that
+ * ships in the page source anyway, so putting it in env only adds a way for
+ * analytics to silently go missing in production.
+ */
+export const GA_MEASUREMENT_ID = "G-F54LGZJNLS"
+
+/**
+ * GA4 + Microsoft Clarity.
  *
- * Renders nothing until the IDs are set, so the site never ships a broken or
- * half-configured tag. Set these in production env to switch measurement on:
- *   NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+ * Clarity stays env-gated and renders nothing until its project ID is set:
  *   NEXT_PUBLIC_CLARITY_ID=xxxxxxxxxx
  *
  * Conversion events are fired via `trackEvent` in src/lib/analytics.ts.
  */
 export function Analytics() {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID
+  const gaId = GA_MEASUREMENT_ID
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID
 
   return (
