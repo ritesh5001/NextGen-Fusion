@@ -20,6 +20,14 @@ export async function middleware(req: NextRequest) {
   const normalizedPath = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/'
   const token = req.cookies.get(COOKIE_NAME)?.value
 
+  // ----- Dead WordPress RSS feeds -----
+  // The old site generated /feed/ for every page. They have no equivalent here,
+  // so redirecting them to a real page would be a soft 404. 410 Gone says
+  // "permanently removed" and gets them dropped from the index faster than 404.
+  if (normalizedPath === '/feed' || normalizedPath.endsWith('/feed')) {
+    return new NextResponse(null, { status: 410 })
+  }
+
   // ----- Client portal -----
   if (normalizedPath === '/portal' || normalizedPath.startsWith('/portal/')) {
     const publicPortalPaths = new Set([
@@ -54,5 +62,7 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/portal/:path*'],
+  // Feed paths are matched explicitly so middleware still does not run on
+  // ordinary page requests.
+  matcher: ['/admin/:path*', '/portal/:path*', '/feed', '/:path*/feed'],
 }

@@ -58,6 +58,9 @@ const nextConfig = {
       // authority they held was being discarded. Pointed at the section that
       // replaced them, not the homepage (Google reads that as a soft 404).
       { source: '/portfolio-item/:slug*', destination: '/work', permanent: true },
+      // Demo content from the old "agency9" WordPress theme. Portfolio-shaped
+      // slugs, so /work is the honest destination for anything that links here.
+      { source: '/agency9-:slug*', destination: '/work', permanent: true },
     ]
   },
   // Same-origin /api proxy to the Backend. Filesystem route handlers under
