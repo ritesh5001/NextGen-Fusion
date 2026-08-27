@@ -17,9 +17,10 @@ import {
 } from "lucide-react"
 import SimpleNavbar from "@/components/simple-navbar"
 import Footer from "@/components/footer"
+import { ApplicationForm } from "@/components/careers/application-form"
 import { cn } from "@/lib/utils"
 import {
-  applyMailto,
+  CAREERS_EMAIL,
   jobDepartments,
   jobOpenings,
   openApplicationMailto,
@@ -130,6 +131,14 @@ type DepartmentFilter = JobDepartment | "All"
 export default function CareersPage() {
   const [activeDepartment, setActiveDepartment] = useState<DepartmentFilter>("All")
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [selectedRoleId, setSelectedRoleId] = useState("")
+
+  // Preselect the role in the form, then bring the form into view. The form is
+  // keyed on this value so it remounts with the new default.
+  const applyForRole = (jobId: string) => {
+    setSelectedRoleId(jobId)
+    document.getElementById("apply")?.scrollIntoView({ behavior: "smooth" })
+  }
 
   const departments = useMemo<DepartmentFilter[]>(
     () => ["All", ...jobDepartments.filter((d) => jobOpenings.some((j) => j.department === d))],
@@ -187,12 +196,12 @@ export default function CareersPage() {
               View open roles
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
-            <a
-              href={openApplicationMailto()}
+            <Link
+              href="#apply"
               className="inline-flex items-center justify-center rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
             >
-              Send an open application
-            </a>
+              Apply now
+            </Link>
           </motion.div>
         </motion.div>
       </section>
@@ -379,13 +388,14 @@ export default function CareersPage() {
                         </div>
                       </div>
 
-                      <a
-                        href={applyMailto(job)}
+                      <button
+                        type="button"
+                        onClick={() => applyForRole(job.id)}
                         className="mt-6 inline-flex items-center justify-center rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
                       >
                         Apply for this role
                         <ArrowRight className="ml-2 h-4 w-4" />
-                      </a>
+                      </button>
                     </div>
                   )}
                 </motion.div>
@@ -425,34 +435,37 @@ export default function CareersPage() {
         </motion.div>
       </section>
 
-      {/* Open application CTA */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      {/* Application form */}
+      <section id="apply" className="py-16 px-4 sm:px-6 lg:px-8 scroll-mt-24">
         <motion.div
-          className="max-w-4xl mx-auto rounded-2xl bg-gray-900 px-6 py-14 text-center sm:px-12"
+          className="max-w-3xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <motion.h2
-            className="text-3xl sm:text-4xl font-bold text-white mb-4"
-            variants={itemVariants}
-          >
-            Nothing fits, but you want in?
-          </motion.h2>
-          <motion.p className="text-lg text-gray-300 max-w-2xl mx-auto" variants={itemVariants}>
-            Tell us what you do and show us something you have built. Good people are worth a role we
-            have not written yet.
-          </motion.p>
-          <motion.div className="mt-8" variants={itemVariants}>
+          <motion.div className="text-center mb-10" variants={itemVariants}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Apply now</h2>
+            <p className="text-lg text-gray-600">
+              Fill this in and attach your resume. We read every application and reply within a
+              week, either way.
+            </p>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <ApplicationForm key={selectedRoleId} defaultRoleId={selectedRoleId} />
+          </motion.div>
+
+          <motion.p className="mt-6 text-center text-sm text-gray-500" variants={itemVariants}>
+            Trouble with the form?{" "}
             <a
               href={openApplicationMailto()}
-              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-200"
+              className="font-medium text-gray-900 underline underline-offset-4"
             >
-              Send an open application
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </a>
-          </motion.div>
+              Email us at {CAREERS_EMAIL}
+            </a>{" "}
+            with your resume attached.
+          </motion.p>
         </motion.div>
       </section>
 

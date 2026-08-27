@@ -95,6 +95,28 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_
     information_source: string
   }
   
+export interface CareerApplicationData {
+  role_id: string
+  role_title: string
+  name: string
+  email: string
+  phone: string
+  location?: string
+  experience?: string
+  portfolio_url?: string
+  cover_note?: string
+  resume: File
+}
+
+export interface CareerApplicationResponse {
+  id: string
+  role_title: string
+  name: string
+  email: string
+  status: string
+  created_at: string
+}
+
 export interface ContactFormResponse {
   id: number
   name: string
@@ -509,6 +531,34 @@ export interface ProjectEstimatorResponse {
       console.error('Failed to submit contact form:', error)
       throw error
     }
+  }
+
+  async submitCareerApplication(
+    formData: CareerApplicationData,
+  ): Promise<CareerApplicationResponse> {
+    const body = new FormData()
+    body.append('role_id', formData.role_id)
+    body.append('role_title', formData.role_title)
+    body.append('name', formData.name)
+    body.append('email', formData.email)
+    body.append('phone', formData.phone)
+    if (formData.location) body.append('location', formData.location)
+    if (formData.experience) body.append('experience', formData.experience)
+    if (formData.portfolio_url) body.append('portfolio_url', formData.portfolio_url)
+    if (formData.cover_note) body.append('cover_note', formData.cover_note)
+    body.append('resume', formData.resume)
+
+    // No Content-Type header: the browser must set the multipart boundary itself.
+    const response = await fetch(`${API_BASE_URL}/career-applications`, {
+      method: 'POST',
+      body,
+    })
+
+    const result = await response.json().catch(() => ({}))
+    if (!response.ok) {
+      throw new Error(result?.error || `Application failed: ${response.status}`)
+    }
+    return result.data
   }
 
   async estimateProject(formData: ProjectEstimatorData): Promise<ProjectEstimatorResponse> {

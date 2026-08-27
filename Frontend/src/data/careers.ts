@@ -202,31 +202,6 @@ export const jobOpenings: JobOpening[] = [
   },
 ]
 
-/** Prefilled application email so a candidate never faces an empty compose window. */
-export function applyMailto(job: JobOpening): string {
-  const subject = `Application: ${job.title} (${job.location})`
-  const body = [
-    `Hi NextGen Fusion team,`,
-    ``,
-    `I would like to apply for the ${job.title} role.`,
-    ``,
-    `Name:`,
-    `Phone:`,
-    `Current location:`,
-    `Years of experience:`,
-    `Portfolio / GitHub / LinkedIn:`,
-    ``,
-    `Why I am a good fit:`,
-    ``,
-    ``,
-    `I have attached my resume.`,
-    ``,
-    `Thank you,`,
-  ].join("\n")
-
-  return `mailto:${CAREERS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-}
-
 /** Open application for candidates who do not match a listed role. */
 export function openApplicationMailto(): string {
   const subject = "Open application - NextGen Fusion"

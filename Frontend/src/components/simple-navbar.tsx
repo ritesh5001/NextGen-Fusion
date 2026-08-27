@@ -7,7 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
-import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, type LucideIcon } from "lucide-react"
+import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/components/booking-modal"
 
 type MenuItem = {
@@ -32,6 +32,7 @@ const menuItems: MenuItem[] = [
   { name: "About", href: "about", isPage: false, Icon: User },
   { name: "Contact", href: "contact", isPage: false, Icon: MessageCircle },
   { name: "Projects", href: "/work", isPage: true, Icon: Briefcase },
+  { name: "Careers", href: "/careers", isPage: true, Icon: Users },
 ]
 
 export default function SimpleNavbar() {
