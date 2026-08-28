@@ -246,7 +246,10 @@ export default function ServicesSection() {
           className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-0 divide-y divide-gray-100/50 sm:divide-y-0 sm:divide-x divide-gray-100/50"
           variants={containerVariants}
         >
-          {services.slice(0, 6).map((service, index) => {
+          {/* All twelve render: each card is a real <Link>, so this is the
+              homepage's internal-link signal for every service page. Slicing to
+              six left half of them with no link from the site's strongest page. */}
+          {services.map((service, index) => {
             const isActive = activeCard === index
             const href = serviceRoutes[service.title] ?? "#"
 

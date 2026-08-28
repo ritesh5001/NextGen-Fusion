@@ -98,15 +98,19 @@ const structuredData = {
       publisher: { "@id": `${siteUrl}/#organization` },
     },
     {
+      // Real page URLs only. Three of these pointed at homepage anchors, which
+      // named a section rather than a page Google could surface on its own.
       "@type": "SiteNavigationElement",
-      name: ["Home", "Services", "Blogs", "About", "Contact", "Projects"],
+      name: ["Home", "Services", "Work", "Store", "Blog", "Team", "Careers", "Support"],
       url: [
         `${siteUrl}/`,
-        `${siteUrl}/#services`,
-        `${siteUrl}/blog`,
-        `${siteUrl}/#about`,
-        `${siteUrl}/#contact`,
-        `${siteUrl}/work`,
+        `${siteUrl}/services/`,
+        `${siteUrl}/work/`,
+        `${siteUrl}/store/`,
+        `${siteUrl}/blog/`,
+        `${siteUrl}/team/`,
+        `${siteUrl}/careers/`,
+        `${siteUrl}/support/`,
       ],
     },
   ],
