@@ -8,7 +8,7 @@ const NAME = "Social Media Marketing Services"
 
 export const metadata: Metadata = buildMetadata({
   title: "Social Media Marketing Services",
-  description: "Social Media Marketing Services by NextGen Fusion — strategic content, community management, and paid amplification that builds brand authority and drives business results.",
+  description: "Strategic content, community management and paid amplification that build brand authority and drive measurable business results.",
   path: PATH,
   ogTitle: "Social Media Marketing Services | NextGen Fusion",
   ogDescription: "Build brand authority and convert followers into customers with strategic social media marketing.",

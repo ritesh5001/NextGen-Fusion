@@ -2,15 +2,16 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { serviceRoutes } from "@/components/services/service-data"
-import { siteUrl } from "@/lib/seo"
+import { JsonLd } from "@/components/json-ld"
+import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 
 
 export const metadata: Metadata = {
   title: "Services — Web, Ecommerce, SEO & Software",
   description:
-    "Explore NextGen Fusion's full range of services: website and ecommerce development, web design, SEO, PPC, social media, AI automation, software, API integration, and cloud solutions.",
+    "Website and ecommerce development, web design, SEO, PPC, social media, AI automation, software and cloud — all twelve services, explained.",
   alternates: {
-    canonical: `${siteUrl}/services`,
+    canonical: absoluteUrl("/services"),
   },
 }
 
@@ -44,8 +45,35 @@ const serviceDescriptions: Record<string, string> = {
 export default function ServicesPage() {
   const services = Object.entries(serviceRoutes)
 
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": `${absoluteUrl("/services")}#collection`,
+      url: absoluteUrl("/services"),
+      name: "Services — NextGen Fusion",
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      about: { "@id": ORGANIZATION_ID },
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: services.length,
+        itemListElement: services.map(([title, href], i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: title,
+          url: absoluteUrl(href),
+        })),
+      },
+    },
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Services", path: "/services" },
+    ]),
+  ]
+
   return (
     <section className="bg-white py-24 sm:py-32 px-4 sm:px-6 lg:px-8">
+      <JsonLd data={schema} />
       <div className="max-w-7xl mx-auto">
         <div className="mb-14 max-w-3xl">
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
@@ -61,6 +89,48 @@ export default function ServicesPage() {
             From conversion-focused websites to SEO, software, and AI automation — explore how we
             help growing brands turn traffic into enquiries and sales.
           </p>
+        </div>
+
+        {/* Hub copy. A category page with a heading and twelve cards ranks for
+            nothing; the twelve service pages are what we want to rank, and this
+            page's job is to route intent to the right one. */}
+        <div className="mb-14 grid max-w-5xl gap-8 md:grid-cols-2">
+          <div className="space-y-4 text-gray-600 leading-relaxed">
+            <p>
+              Twelve services, but most projects start as one of three
+              conversations. <strong className="font-semibold text-gray-900">You need a site
+              built</strong> — a new business, a rebrand, or an existing site that has become more
+              expensive to change than it was to make. That is website development, web design and,
+              if you sell online, ecommerce development.
+            </p>
+            <p>
+              <strong className="font-semibold text-gray-900">You have a site and it is not
+              producing anything.</strong> That is usually SEO first — technical structure and
+              speed before content — with PPC where you need enquiries this quarter rather than
+              next, and social media where the audience is already there and the funnel is not.
+            </p>
+          </div>
+          <div className="space-y-4 text-gray-600 leading-relaxed">
+            <p>
+              <strong className="font-semibold text-gray-900">You need something built that is
+              not a website.</strong> Internal software, an Android app, an integration between
+              systems that do not talk to each other, cloud infrastructure that stops falling over,
+              or automation that removes a job nobody should be doing manually.
+            </p>
+            <p>
+              Underneath all three is maintenance, which is the one nobody asks for and everybody
+              needs. If you are not sure which of these you are,{" "}
+              <Link href="/contact/" className="font-medium text-purple-600 hover:underline">
+                describe the problem
+              </Link>{" "}
+              rather than the solution and we will tell you — including when the answer is that you
+              do not need us. You can also look at{" "}
+              <Link href="/work/" className="font-medium text-purple-600 hover:underline">
+                what we have delivered
+              </Link>{" "}
+              to see which of these we do most.
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

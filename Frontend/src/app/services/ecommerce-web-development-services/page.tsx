@@ -8,7 +8,7 @@ const NAME = "E-commerce Web Development Services"
 
 export const metadata: Metadata = buildMetadata({
   title: "E-commerce Web Development Services",
-  description: "E-commerce Web Development Services by NextGen Fusion — high-converting online stores with optimized checkout, payment gateway integration, and SEO-ready architecture.",
+  description: "High-converting online stores with optimised checkout, payment gateway integration and SEO-ready architecture, on Shopify or custom.",
   path: PATH,
   ogTitle: "E-commerce Web Development Services | NextGen Fusion",
   ogDescription: "Build a high-converting online store with optimized checkout, multi-gateway payments, and mobile-first shopping experience.",

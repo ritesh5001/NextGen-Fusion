@@ -7,8 +7,8 @@ const PATH = "/services/cloud-solutions"
 const NAME = "Cloud Solutions"
 
 export const metadata: Metadata = buildMetadata({
-  title: "Cloud Solutions",
-  description: "Cloud Solutions by NextGen Fusion — scalable cloud architecture, migration, CI/CD pipelines, CDN setup, and infrastructure-as-code for reliable, cost-optimized deployments.",
+  title: "Cloud Solutions — Architecture, Migration & CI/CD",
+  description: "Scalable cloud architecture, migration, CI/CD pipelines, CDN setup and infrastructure-as-code for reliable, cost-optimised deployments.",
   path: PATH,
   ogTitle: "Cloud Solutions | NextGen Fusion",
   ogDescription: "Scalable, resilient cloud infrastructure with migration, CI/CD, and cost optimization from NextGen Fusion.",

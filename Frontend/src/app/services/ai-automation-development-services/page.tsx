@@ -8,7 +8,7 @@ const NAME = "AI Automation and AI Development Services"
 
 export const metadata: Metadata = buildMetadata({
   title: "AI Automation and AI Development Services",
-  description: "AI Automation and Development Services by NextGen Fusion — workflow automation, LLM integration, AI chatbots, and custom AI feature development for your business.",
+  description: "Workflow automation, LLM integration, AI chatbots and custom AI feature development, built into the systems you already run.",
   path: PATH,
   ogTitle: "AI Automation and AI Development Services | NextGen Fusion",
   ogDescription: "Automate workflows and build AI-powered features with LLM integration, smart assistants, and intelligent data pipelines.",

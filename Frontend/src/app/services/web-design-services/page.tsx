@@ -7,8 +7,8 @@ const PATH = "/services/web-design-services"
 const NAME = "Web Design Services"
 
 export const metadata: Metadata = buildMetadata({
-  title: "Web Design Services",
-  description: "Web Design Services by NextGen Fusion — conversion-focused, brand-aligned UI/UX design with responsive layouts, high-fidelity prototypes, and design systems.",
+  title: "Web Design Services — UI/UX for Brands in India",
+  description: "Conversion-focused, brand-aligned UI/UX design with responsive layouts, high-fidelity prototypes and a design system you can build on.",
   path: PATH,
   ogTitle: "Web Design Services | NextGen Fusion",
   ogDescription: "Modern, conversion-focused web design with responsive layouts and strong brand identity.",

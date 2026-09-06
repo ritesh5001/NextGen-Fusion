@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import { buildMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = buildMetadata({
-  title: "Careers",
+  title: "Careers — Open Roles in Lucknow, Mumbai & Remote",
   description:
-    "Join NextGen Fusion. We are hiring developers, designers, and marketers in Lucknow, Mumbai, and remote — full-stack, WordPress, React Native, UI/UX, SEO, paid ads, and content roles.",
+    "We are hiring developers, designers and marketers in Lucknow, Mumbai and remote — engineering, UI/UX, SEO, paid ads and content roles.",
   path: "/careers",
   ogTitle: "Careers at NextGen Fusion",
   ogDescription:

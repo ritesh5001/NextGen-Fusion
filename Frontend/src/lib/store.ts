@@ -30,6 +30,30 @@ export type StoreProduct = {
   created_at: string
 }
 
+/**
+ * Whether a product page carries enough unique content to deserve indexing.
+ *
+ * 46 of the site's 82 indexable URLs were store products averaging ~103 words of
+ * body copy at 85% vocabulary overlap with each other, all rendering a "No
+ * preview" placeholder and all missing the `image` that Product rich results
+ * require. Thin, templated commercial pages at that ratio drag the whole domain.
+ *
+ * Rather than a manual flag that goes stale, the gate reads the content itself:
+ * fill in a real description, a cover image and a feature list, and the page
+ * indexes itself on the next revalidate. Nothing to remember to switch on.
+ */
+export const STORE_INDEX_MIN_DESCRIPTION_CHARS = 600
+export const STORE_INDEX_MIN_FEATURES = 3
+
+export function isStoreProductIndexable(product: StoreProduct): boolean {
+  const descriptionLength = (product.description ?? '').replace(/\s+/g, ' ').trim().length
+  return (
+    Boolean(product.cover_image) &&
+    descriptionLength >= STORE_INDEX_MIN_DESCRIPTION_CHARS &&
+    (product.features?.length ?? 0) >= STORE_INDEX_MIN_FEATURES
+  )
+}
+
 export function formatInr(value: number): string {
   return `₹${(value ?? 0).toLocaleString('en-IN')}`
 }

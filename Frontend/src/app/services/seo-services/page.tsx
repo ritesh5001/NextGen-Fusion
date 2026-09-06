@@ -7,8 +7,8 @@ const PATH = "/services/seo-services"
 const NAME = "SEO Services"
 
 export const metadata: Metadata = buildMetadata({
-  title: "SEO Services",
-  description: "SEO Services by NextGen Fusion — technical SEO, keyword strategy, on-page optimization, and link building that builds compounding organic traffic and qualified leads.",
+  title: "SEO Services in Lucknow & Across India",
+  description: "Technical SEO, keyword strategy, on-page optimisation and link building that compound into organic traffic and qualified leads.",
   path: PATH,
   ogTitle: "SEO Services | NextGen Fusion",
   ogDescription: "Build organic visibility with technical SEO, keyword strategy, content optimization, and authority building.",

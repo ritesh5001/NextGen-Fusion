@@ -15,8 +15,6 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react"
-import SimpleNavbar from "@/components/simple-navbar"
-import Footer from "@/components/footer"
 import { ApplicationForm } from "@/components/careers/application-form"
 import { cn } from "@/lib/utils"
 import {
@@ -155,7 +153,6 @@ export default function CareersPage() {
 
   return (
     <div className="bg-white">
-      <SimpleNavbar />
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
@@ -468,8 +465,6 @@ export default function CareersPage() {
           </motion.p>
         </motion.div>
       </section>
-
-      <Footer />
     </div>
   )
 }

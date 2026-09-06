@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import BadgeSubtitle from "./badge-subtitle"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
+import { homeFaqs } from "@/data/home-faqs"
 
 // Animation variants
 const containerVariants = {
@@ -126,46 +127,7 @@ export default function FAQSection() {
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const faqs = [
-    {
-      question: "What industries do you serve?",
-      answer: "We work across various industries including technology, healthcare, finance, e-commerce, and more.",
-    },
-    {
-      question: "Can you work with startups or small businesses?",
-      answer: "We work with businesses of all sizes, from startups to established enterprises.",
-    },
-    {
-      question: "How do I get started with NextGen Fusion?",
-      answer:
-        "Simply reach out through our contact form or schedule a consultation call to discuss your project needs.",
-    },
-    {
-      question: "How much do your services cost?",
-      answer:
-        "Most marketing and ecommerce sites land between roughly $800 and $2,500 depending on pages, features, and design level, while larger custom or SaaS builds scale beyond that. Use our project estimator above for a tailored range in your currency — every quote is fixed and transparent, with no hidden costs.",
-    },
-    {
-      question: "How long does a project take?",
-      answer:
-        "Most websites are delivered in 2-3 weeks. Larger ecommerce, custom, or SaaS builds take longer, and we lock an exact timeline with you on the discovery call before any work starts.",
-    },
-    {
-      question: "What if I'm not satisfied with the results?",
-      answer:
-        "Every project includes review rounds at agreed milestones, so you sign off as we go and there are no surprises at launch. We keep iterating until the result matches the scope and your business goals.",
-    },
-    {
-      question: "Do you provide ongoing support after project completion?",
-      answer:
-        "Yes. We don't ghost you after launch. We offer monthly maintenance and growth packages covering updates, monitoring, fixes, and improvements.",
-    },
-    {
-      question: "What are the working hours of NextGen Fusion?",
-      answer:
-        "We typically work Monday to Friday, 9 AM to 6 PM IST. We're flexible and regularly accommodate clients across different time zones.",
-    },
-  ]
+  const faqs = homeFaqs
 
   const toggleFAQ = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index)
@@ -282,7 +244,7 @@ export default function FAQSection() {
                   <div className="flex items-center justify-between">
                     <motion.button 
                       onClick={handleBackClick} 
-                      className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                      className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-gray-100"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
@@ -308,7 +270,7 @@ export default function FAQSection() {
                     <div className="relative" ref={dropdownRef}>
                       <motion.button 
                         onClick={toggleDropdown} 
-                        className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                        className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-gray-100"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >

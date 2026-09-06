@@ -35,6 +35,36 @@ const nextConfig = {
       },
     ],
   },
+  // Next serves everything under /public with `max-age=0, must-revalidate`, so
+  // every logo, background and OG image was revalidated on every page view — and
+  // /_next/image inherits the upstream header, which made the optimiser's cache
+  // useless too. These are static assets; give them a real TTL.
+  async headers() {
+    return [
+      {
+        // Fonts are content-stable forever. Renaming is how you bust them.
+        source: '/fonts/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
+        // 30 days rather than a year: these are replaced in place occasionally
+        // (logo, team photos), and stale-while-revalidate keeps the swap cheap.
+        // Note: /_next/image sets its own Cache-Control and ignores rules
+        // declared here — `images.minimumCacheTTL` above governs that cache,
+        // and on Vercel the CDN TTL follows it.
+        source: '/images/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }],
+      },
+      {
+        source: '/og/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }],
+      },
+      {
+        source: '/favicon/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }],
+      },
+    ]
+  },
   async redirects() {
     return [
       // Canonical host. Both hostnames answered 200 with no redirect between
@@ -47,20 +77,27 @@ const nextConfig = {
         destination: 'https://www.nextgenfusion.in/:path*',
         permanent: true,
       },
+      // Our own nav says "Blogs" and "Projects" while the routes are /blog and
+      // /work, so those are the paths people type and directories link to. Both
+      // hard-404'd.
+      { source: '/blogs', destination: '/blog/', permanent: true },
+      { source: '/blogs/:slug*', destination: '/blog/:slug*/', permanent: true },
+      { source: '/projects', destination: '/work/', permanent: true },
+      { source: '/projects/:slug*', destination: '/work/:slug*/', permanent: true },
       // /portofolio/ was a misspelled, client-rendered duplicate of /work/.
       // Retired rather than repaired.
       // Item slugs never matched between the two sections (/portofolio/maribiz
       // vs /work/maribiz-ai), so per-slug mapping would manufacture 404s. The
       // listing is the honest equivalent.
-      { source: '/portofolio', destination: '/work', permanent: true },
-      { source: '/portofolio/:slug*', destination: '/work', permanent: true },
+      { source: '/portofolio', destination: '/work/', permanent: true },
+      { source: '/portofolio/:slug*', destination: '/work/', permanent: true },
       // Legacy WordPress permalinks from the previous site. These 404'd, so any
       // authority they held was being discarded. Pointed at the section that
       // replaced them, not the homepage (Google reads that as a soft 404).
-      { source: '/portfolio-item/:slug*', destination: '/work', permanent: true },
+      { source: '/portfolio-item/:slug*', destination: '/work/', permanent: true },
       // Demo content from the old "agency9" WordPress theme. Portfolio-shaped
       // slugs, so /work is the honest destination for anything that links here.
-      { source: '/agency9-:slug*', destination: '/work', permanent: true },
+      { source: '/agency9-:slug*', destination: '/work/', permanent: true },
     ]
   },
   // Same-origin /api proxy to the Backend. Filesystem route handlers under

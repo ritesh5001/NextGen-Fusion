@@ -5,10 +5,13 @@ import { apiService, type BlogPost } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import CTABanner from "@/components/cta-banner"
 import { BlogSearch } from "@/components/blog/blog-search"
+import { JsonLd } from "@/components/json-ld"
+import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 
 // Server-rendered so crawlers get the posts themselves, not a loading shell.
 // Revalidates hourly, so newly published posts appear without a redeploy.
 export const revalidate = 3600
+
 
 function formatDate(dateString: string) {
   if (!dateString) return ""
@@ -35,8 +38,31 @@ async function getPosts(): Promise<BlogPost[]> {
 export default async function BlogPage() {
   const posts = await getPosts()
 
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "@id": `${absoluteUrl("/blog")}#blog`,
+      url: absoluteUrl("/blog"),
+      name: "NextGen Fusion Blog",
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      publisher: { "@id": ORGANIZATION_ID },
+      blogPost: posts.map((post) => ({
+        "@type": "BlogPosting",
+        headline: post.title,
+        url: absoluteUrl(`/blog/${post.slug}`),
+        ...(post.published_at ? { datePublished: post.published_at } : {}),
+      })),
+    },
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blog" },
+    ]),
+  ]
+
   return (
     <div className="min-h-screen bg-white">
+      <JsonLd data={schema} />
       <main className="pt-32 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -97,7 +123,7 @@ export default async function BlogPage() {
                   </div>
 
                   <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 leading-tight">
-                    <Link href={`/blog/${post.slug}`} className="hover:text-purple-700">
+                    <Link href={`/blog/${post.slug}/`} className="hover:text-purple-700">
                       {post.title}
                     </Link>
                   </h2>
@@ -107,7 +133,7 @@ export default async function BlogPage() {
                   </p>
 
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={`/blog/${post.slug}/`}
                     className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-medium text-sm"
                     aria-label={`Read ${post.title}`}
                   >
@@ -133,9 +159,21 @@ export default async function BlogPage() {
           </div>
 
           {posts.length === 0 && (
-            <div className="text-center py-16">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">No blog posts yet</h2>
-              <p className="text-gray-600">Check back shortly — we publish twice a month.</p>
+            <div className="mx-auto max-w-2xl py-16 text-center">
+              <h2 className="mb-3 text-xl font-semibold text-gray-900">
+                Nothing published here yet
+              </h2>
+              <p className="text-gray-600">
+                We would rather leave this empty than fill it with filler. In the meantime, the{" "}
+                <Link href="/work/" className="font-medium text-purple-600 hover:underline">
+                  case studies
+                </Link>{" "}
+                cover the same ground with real projects behind them, and the{" "}
+                <Link href="/services/" className="font-medium text-purple-600 hover:underline">
+                  service pages
+                </Link>{" "}
+                answer most of what people write in asking about.
+              </p>
             </div>
           )}
 

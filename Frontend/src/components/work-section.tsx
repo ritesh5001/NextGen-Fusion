@@ -47,7 +47,8 @@ export default function WorkSection() {
             </motion.h2>
             <motion.div variants={item} whileHover={{ scale: 1.05 }}>
               <Link
-                href="/work"
+                href="/work/"
+                prefetch={false}
                 className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors group whitespace-nowrap"
               >
                 View all projects
@@ -67,12 +68,12 @@ export default function WorkSection() {
         >
           {featured.map((project) => (
             <motion.div key={project.slug} variants={item}>
-              <Link href={`/work/${project.slug}`} className="group block">
+              <Link href={`/work/${project.slug}/`} prefetch={false} className="group block">
                 {/* Image */}
                 <div className="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[16/10] mb-5 shadow-lg shadow-gray-200/60">
                   <Image
                     src={project.coverImage}
-                    alt={project.title}
+                    alt={`${project.title} — ${project.category} project by NextGen Fusion`}
                     fill
                     className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
                     sizes="(max-width: 1024px) 100vw, 50vw"

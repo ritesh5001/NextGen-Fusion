@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import { buildMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = buildMetadata({
-  title: "Our Team",
+  title: "Our Team — Developers, Designers & Marketers",
   description:
-    "Meet the NextGen Fusion team — the designers, developers, and marketers who build and ship websites, e-commerce stores, and digital products for businesses across India and worldwide.",
+    "Meet the developers, designers and marketers who build and ship every NextGen Fusion website, store and digital product.",
   path: "/team",
   ogTitle: "Meet the NextGen Fusion Team",
   ogDescription:

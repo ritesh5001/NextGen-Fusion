@@ -26,6 +26,10 @@ export type StaticProject = {
   coverImage: string;
   liveUrl: string;
   featured: boolean;
+  /** ISO date the case study was published. Feeds Article schema's
+   *  datePublished, which is omitted entirely when this is unset — so add it as
+   *  you write each one rather than backfilling a guess. */
+  publishedAt?: string;
 };
 
 export const staticProjects: StaticProject[] = [

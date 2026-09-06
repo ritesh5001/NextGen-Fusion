@@ -24,15 +24,18 @@ type MenuItem = {
  */
 const hrefFor = (item: MenuItem) => (item.isPage ? item.href : `/#${item.href}`)
 
+// Trailing slashes match the 308 the site enforces, so nav links resolve in one
+// hop. About and Contact were homepage fragments — fragments cannot rank, cannot
+// be linked to by directories and cannot carry their own schema.
 const menuItems: MenuItem[] = [
   { name: "Home", href: "/", isPage: true, Icon: Home },
-  { name: "Services", href: "/services", isPage: true, Icon: Wrench },
-  { name: "Store", href: "/store", isPage: true, Icon: Store },
-  { name: "Blogs", href: "/blog", isPage: true, Icon: BookOpen },
-  { name: "About", href: "about", isPage: false, Icon: User },
-  { name: "Contact", href: "contact", isPage: false, Icon: MessageCircle },
-  { name: "Projects", href: "/work", isPage: true, Icon: Briefcase },
-  { name: "Careers", href: "/careers", isPage: true, Icon: Users },
+  { name: "Services", href: "/services/", isPage: true, Icon: Wrench },
+  { name: "Store", href: "/store/", isPage: true, Icon: Store },
+  { name: "Blogs", href: "/blog/", isPage: true, Icon: BookOpen },
+  { name: "About", href: "/about/", isPage: true, Icon: User },
+  { name: "Contact", href: "/contact/", isPage: true, Icon: MessageCircle },
+  { name: "Projects", href: "/work/", isPage: true, Icon: Briefcase },
+  { name: "Careers", href: "/careers/", isPage: true, Icon: Users },
 ]
 
 export default function SimpleNavbar() {
@@ -110,7 +113,7 @@ export default function SimpleNavbar() {
               className="cursor-pointer"
               aria-label="NextGen Fusion — home"
             >
-              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={480} height={270} className="h-8 w-auto" />
+              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={128} height={72} sizes="128px" className="h-8 w-auto" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -200,7 +203,7 @@ export default function SimpleNavbar() {
       {/* Mobile Layout - Dihapus, hanya gunakan bottom navigation */}
 
       {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+      <div className="md:hidden fixed inset-x-0 bottom-0 z-50 max-w-full overflow-x-hidden">
         {/* Mobile Menu Dropdown - Di atas bottom nav */}
         <AnimatePresence>
           {isMobileMenuOpen && (
@@ -301,13 +304,13 @@ export default function SimpleNavbar() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.1, delay: 0.05 }}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex min-w-0 items-center justify-between gap-2">
             {/* Logo */}
             <div
               onClick={handleLogoClick}
-              className="cursor-pointer"
+              className="min-w-0 shrink cursor-pointer"
             >
-              <Image src="/images/site-logo.png" alt="Logo" width={480} height={270} className="h-5 w-auto" />
+              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={96} height={54} sizes="96px" className="h-5 w-auto" />
             </div>
 
             {/* Tombol Hamburger di kanan logo */}

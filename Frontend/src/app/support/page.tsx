@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import SubscribePlans from "@/components/subscribe-plans"
 import { API_BASE_URL } from "@/lib/api"
 import { subscriptionPlans, type SubscriptionPlan } from "@/lib/subscription-plans"
-import { siteUrl } from "@/lib/seo"
+import { absoluteUrl, siteUrl } from "@/lib/seo"
 
 
 // Plans are managed in the admin panel; fetch the live catalog (fallback to the
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description:
     "Ongoing website support, changes, and product-catalog access plans from NextGen Fusion. Subscribe securely with Razorpay.",
   alternates: {
-    canonical: `${siteUrl}/support`,
+    canonical: absoluteUrl("/support"),
   },
 }
 

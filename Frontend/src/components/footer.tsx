@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { offices } from "@/data/offices";
+import { CONTACT_EMAIL, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { serviceNavItems } from "@/data/services-nav";
+import { locationPages } from "@/data/locations";
 
 export default function Footer() {
   const [isClient, setIsClient] = useState(false);
@@ -10,15 +11,19 @@ export default function Footer() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+  // Trailing slashes are mandatory here. The site enforces them with a 308, so
+  // every slash-less footer href cost a redirect on all 82 pages of the site.
+  // About and Contact point at real pages now, not homepage fragments.
   const navigationLinks = [
-    { name: "Home", href: "/#hero" },
-    { name: "About", href: "/#about" },
-    { name: "Services", href: "/services" },
-    { name: "Store", href: "/store" },
-    { name: "Work", href: "/work" },
-    { name: "Support & Plans", href: "/support" },
-    { name: "Careers", href: "/careers" },
-    { name: "Contact", href: "/#contact" },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about/" },
+    { name: "Services", href: "/services/" },
+    { name: "Store", href: "/store/" },
+    { name: "Work", href: "/work/" },
+    { name: "Blog", href: "/blog/" },
+    { name: "Support & Plans", href: "/support/" },
+    { name: "Careers", href: "/careers/" },
+    { name: "Contact", href: "/contact/" },
   ];
 
   const socialLinks = [
@@ -29,9 +34,9 @@ export default function Footer() {
   ];
 
   const contactLinks = [
-    { name: "contact@nextgenfusion.in", href: "mailto:contact@nextgenfusion.in" },
+    { name: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
     { name: "WhatsApp chat", href: "https://wa.me/917348228167" },
-    { name: "+91 73482 28167", href: "tel:+917348228167" },
+    { name: PRIMARY_PHONE_DISPLAY, href: `tel:${PRIMARY_PHONE_E164}` },
   ];
 
   return (
@@ -65,7 +70,7 @@ export default function Footer() {
                   <div className="text-2xl lg:text-3xl font-medium">
                     <a
                       href="mailto:contact@nextgenfusion.in?subject=Project%20Enquiry%20-%20NextGen%20Fusion&body=Hi%20NextGen%20Fusion%20Team,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20call.%0A%0AThank%20you!"
-                      className="bg-gradient-to-r bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200 cursor-pointer"
+                      className="inline-block break-all py-1 bg-gradient-to-r bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200 cursor-pointer"
                       style={{
                         backgroundImage:
                           "linear-gradient(90deg, #F6F7FD 2%, #7D85EC 33%, #C79CFF 66%, #59F3FA 100%)",
@@ -99,8 +104,8 @@ export default function Footer() {
                         <strong>Managed by:</strong> {office.contact.name}
                       </p>
                       <a
-                        href={`tel:${office.contact.phone}`}
-                        className="text-xs text-gray-200 hover:text-white transition-colors duration-200"
+                        href={`tel:${office.contact.phoneE164}`}
+                        className="inline-block py-1 break-words text-xs text-gray-200 hover:text-white transition-colors duration-200"
                       >
                         {office.contact.phone}
                       </a>
@@ -121,7 +126,7 @@ export default function Footer() {
                       <li key={link.name}>
                         <a
                           href={link.href}
-                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                          className="inline-block py-1 break-words text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {link.name}
                         </a>
@@ -139,8 +144,8 @@ export default function Footer() {
                     {serviceNavItems.map((service) => (
                       <li key={service.slug}>
                         <a
-                          href={`/services/${service.slug}`}
-                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                          href={`/services/${service.slug}/`}
+                          className="inline-block py-1 break-words text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {service.label}
                         </a>
@@ -159,11 +164,29 @@ export default function Footer() {
                       <li key={link.name}>
                         <a
                           href={link.href}
-                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                          className="inline-block py-1 break-words text-gray-200 hover:text-white transition-colors duration-200"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Locations — city pages need the same sitewide internal
+                      link the service pages get, or they rank on nothing. */}
+                  <h3 className="text-lg font-semibold mb-6 mt-8 text-white">
+                    Locations
+                  </h3>
+                  <ul className="space-y-4">
+                    {locationPages.map((location) => (
+                      <li key={location.slug}>
+                        <a
+                          href={`/${location.slug}/`}
+                          className="inline-block py-1 break-words text-gray-200 hover:text-white transition-colors duration-200"
+                        >
+                          {location.serviceLabel} in {location.city}
                         </a>
                       </li>
                     ))}
@@ -177,7 +200,7 @@ export default function Footer() {
                       <li key={link.name}>
                         <a
                           href={link.href}
-                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                          className="inline-block break-all py-1 text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {link.name}
                         </a>
@@ -212,7 +235,7 @@ export default function Footer() {
               <div className="text-xl font-medium">
                 <a
                   href="mailto:contact@nextgenfusion.in?subject=Project%20Enquiry%20-%20NextGen%20Fusion&body=Hi%20NextGen%20Fusion%20Team,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0APlease%20let%20me%20know%20when%20we%20can%20schedule%20a%20call.%0A%0AThank%20you!"
-                  className="bg-gradient-to-r bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200 cursor-pointer"
+                  className="inline-block break-all py-1 bg-gradient-to-r bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200 cursor-pointer"
                   style={{
                     backgroundImage:
                       "linear-gradient(90deg, #F6F7FD 2%, #7D85EC 33%, #C79CFF 66%, #59F3FA 100%)",
@@ -241,8 +264,8 @@ export default function Footer() {
                       <strong>Managed by:</strong> {office.contact.name}
                     </p>
                     <a
-                      href={`tel:${office.contact.phone}`}
-                      className="text-xs text-gray-200 hover:text-white transition-colors duration-200"
+                      href={`tel:${office.contact.phoneE164}`}
+                      className="inline-block py-1 break-words text-xs text-gray-200 hover:text-white transition-colors duration-200"
                     >
                       {office.contact.phone}
                     </a>
@@ -253,9 +276,9 @@ export default function Footer() {
 
             {/* Navigation & Social Section */}
             <div className="border border-white/20 rounded-lg p-4 sm:p-6 bg-black/20 backdrop-blur-sm">
-              <div className="grid grid-cols-2 gap-8">
+              <div className="grid grid-cols-2 gap-6">
                 {/* Navigation */}
-                <div>
+                <div className="min-w-0">
                   <h3 className="text-lg font-semibold mb-4 text-white">
                     Navigation
                   </h3>
@@ -264,7 +287,7 @@ export default function Footer() {
                       <li key={link.name}>
                         <a
                           href={link.href}
-                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                          className="inline-block py-1 break-words text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {link.name}
                         </a>
@@ -280,8 +303,8 @@ export default function Footer() {
                     {serviceNavItems.map((service) => (
                       <li key={service.slug}>
                         <a
-                          href={`/services/${service.slug}`}
-                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                          href={`/services/${service.slug}/`}
+                          className="inline-block py-1 break-words text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {service.label}
                         </a>
@@ -291,7 +314,7 @@ export default function Footer() {
                 </div>
 
                 {/* Social & Contact */}
-                <div>
+                <div className="min-w-0">
                   <h3 className="text-lg font-semibold mb-4 text-white">
                     Social
                   </h3>
@@ -300,11 +323,29 @@ export default function Footer() {
                       <li key={link.name}>
                         <a
                           href={link.href}
-                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                          className="inline-block py-1 break-words text-gray-200 hover:text-white transition-colors duration-200"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Locations — city pages need the same sitewide internal
+                      link the service pages get, or they rank on nothing. */}
+                  <h3 className="text-lg font-semibold mb-4 mt-6 text-white">
+                    Locations
+                  </h3>
+                  <ul className="space-y-3">
+                    {locationPages.map((location) => (
+                      <li key={location.slug}>
+                        <a
+                          href={`/${location.slug}/`}
+                          className="inline-block py-1 break-words text-gray-200 hover:text-white transition-colors duration-200"
+                        >
+                          {location.serviceLabel} in {location.city}
                         </a>
                       </li>
                     ))}
@@ -318,7 +359,7 @@ export default function Footer() {
                       <li key={link.name}>
                         <a
                           href={link.href}
-                          className="text-gray-200 hover:text-white transition-colors duration-200"
+                          className="inline-block break-all py-1 text-gray-200 hover:text-white transition-colors duration-200"
                         >
                           {link.name}
                         </a>

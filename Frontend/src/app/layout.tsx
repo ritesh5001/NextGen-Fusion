@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { inter, interDisplay, trap } from "./fonts";
+import { inter, trap } from "./fonts";
 import "./globals.css";
 import "../styles/optimized-icons.css";
 import ConsoleEasterEgg from "@/components/console-easter-egg";
@@ -9,7 +9,8 @@ import LenisProvider from "@/components/lenis-provider";
 import LayoutChrome from "@/components/layout-chrome";
 import { Analytics } from "@/components/analytics";
 import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
-import { offices } from "@/data/offices";
+import { CONTACT_EMAIL, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
+import { serviceNavItems } from "@/data/services-nav";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -25,16 +26,17 @@ const structuredData = {
       // our own homepage told Google nothing, and pointing it at the www host
       // while `url` used the apex actively muddied canonicalisation.
       sameAs: ["https://www.instagram.com/nextgenfusion.devs/"],
-      contactPoint: [
-        {
-          "@type": "ContactPoint",
-          telephone: "+91-7348228167",
-          email: "contact@nextgenfusion.in",
-          contactType: "sales",
-          areaServed: "IN",
-          availableLanguage: ["English", "Hindi"],
-        },
-      ],
+      // One entry per number we publish. The footer listed two phone numbers
+      // while schema declared one, and NAP that disagrees with itself across
+      // surfaces is the fastest way to lose a local pack.
+      contactPoint: offices.map((office) => ({
+        "@type": "ContactPoint",
+        telephone: office.contact.phoneE164,
+        email: CONTACT_EMAIL,
+        contactType: office.contact.phoneE164 === PRIMARY_PHONE_E164 ? "sales" : "customer support",
+        areaServed: "IN",
+        availableLanguage: ["English", "Hindi"],
+      })),
       // NOTE: aggregateRating deliberately omitted. Google's structured-data
       // policy requires ratings to come from genuine, on-page user reviews;
       // shipping placeholder numbers risks a manual action. Re-add only with
@@ -54,13 +56,15 @@ const structuredData = {
         url: siteUrl,
         image: `${siteUrl}/images/site-logo.png`,
         parentOrganization: { "@id": `${siteUrl}/#organization` },
-        telephone: office.contact.phone,
-        email: "contact@nextgenfusion.in",
+        telephone: office.contact.phoneE164,
+        email: CONTACT_EMAIL,
         address: {
           "@type": "PostalAddress",
-          streetAddress: office.address,
-          addressLocality: office.city,
-          addressCountry: "IN",
+          ...(office.postal.street ? { streetAddress: office.postal.street } : {}),
+          addressLocality: office.postal.locality,
+          addressRegion: office.postal.region,
+          ...(office.postal.postalCode ? { postalCode: office.postal.postalCode } : {}),
+          addressCountry: office.postal.country,
         },
         geo: { "@type": "GeoCoordinates", latitude, longitude },
         areaServed: ["IN", "Worldwide"],
@@ -75,18 +79,14 @@ const structuredData = {
         ],
       };
     }),
-    ...[
-      "Website Development",
-      "E-commerce Web Development",
-      "Web Design",
-      "SEO Services",
-      "AI Automation & Development",
-      "Software Development",
-    ].map((service) => ({
+    // All twelve, read from the same list the nav, footer and sitemap use. Six
+    // were missing, so half the service pages had no Service node at all.
+    ...serviceNavItems.map((service) => ({
       "@type": "Service",
-      "@id": `${siteUrl}/#service-${service.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-      name: service,
-      serviceType: service,
+      "@id": `${siteUrl}/#service-${service.slug}`,
+      name: service.label,
+      serviceType: service.label,
+      url: `${siteUrl}/services/${service.slug}/`,
       provider: { "@id": `${siteUrl}/#organization` },
       areaServed: ["IN", "Worldwide"],
     })),
@@ -101,9 +101,10 @@ const structuredData = {
       // Real page URLs only. Three of these pointed at homepage anchors, which
       // named a section rather than a page Google could surface on its own.
       "@type": "SiteNavigationElement",
-      name: ["Home", "Services", "Work", "Store", "Blog", "Team", "Careers", "Support"],
+      name: ["Home", "About", "Services", "Work", "Store", "Blog", "Team", "Careers", "Support", "Contact"],
       url: [
         `${siteUrl}/`,
+        `${siteUrl}/about/`,
         `${siteUrl}/services/`,
         `${siteUrl}/work/`,
         `${siteUrl}/store/`,
@@ -111,6 +112,7 @@ const structuredData = {
         `${siteUrl}/team/`,
         `${siteUrl}/careers/`,
         `${siteUrl}/support/`,
+        `${siteUrl}/contact/`,
       ],
     },
   ],
@@ -252,7 +254,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-IN"
-      className={`${trap.variable} ${inter.variable} ${interDisplay.variable} font-sans`}
+      className={`${trap.variable} ${inter.variable} font-sans`}
     >
       <head>
         {/* Meta tags tambahan untuk compatibility */}

@@ -254,7 +254,7 @@ export default function ServicesSection() {
             const href = serviceRoutes[service.title] ?? "#"
 
             return (
-              <Link key={index} href={href} className="block">
+              <Link key={index} href={href} prefetch={false} className="block">
                 <motion.div
                   className="group relative p-4 sm:p-6 lg:p-8 cursor-pointer overflow-hidden transition-all duration-500"
                   variants={cardVariants}
@@ -312,7 +312,8 @@ export default function ServicesSection() {
         {/* View all services */}
         <motion.div className="mt-12 text-left" variants={textVariants}>
           <Link
-            href="/services"
+            href="/services/"
+            prefetch={false}
             className="inline-flex items-center gap-2 border border-gray-200 text-gray-700 hover:text-white hover:bg-gray-900 hover:border-gray-900 font-medium text-sm px-6 py-3 rounded-full transition-all duration-200"
           >
             View all services

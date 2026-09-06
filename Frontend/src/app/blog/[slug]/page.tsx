@@ -8,7 +8,7 @@ import Link from "next/link"
 import { apiService } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import ScrollToTop from "@/components/scroll-to-top"
-import { DEFAULT_OG_IMAGE, siteUrl } from "@/lib/seo"
+import { absoluteUrl, DEFAULT_OG_IMAGE, siteUrl } from "@/lib/seo"
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   try {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: blogPost.title,
     description: blogPost.excerpt,
     alternates: {
-      canonical: `${siteUrl}/blog/${blogPost.slug}`,
+      canonical: absoluteUrl(`/blog/${blogPost.slug}`),
     },
     openGraph: {
       title: `${blogPost.title} | NextGen Fusion`,

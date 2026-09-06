@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/seo";
 // layout's Open Graph — so the shared card said "Projects & Case Studies" while
 // Google showed "Our Work — Projects Delivered".
 export const metadata: Metadata = buildMetadata({
-  title: "Our Work — Projects Delivered",
+  title: "Our Work — Websites & Online Stores Delivered",
   description:
     "Browse the websites and online stores NextGen Fusion has delivered for clients — e-commerce, B2B marketplaces, HR tech, engineering, and AgriTech.",
   path: "/work",

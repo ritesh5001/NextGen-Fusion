@@ -272,52 +272,43 @@ const HeroContent = () => {
 // Main Hero Section Component
 export default function HeroSection() {
   return (
-    <div className="min-h-screen w-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Background Images */}
-      <div className="absolute inset-0 z-0">
+    <div className="min-h-screen w-full bg-white flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Background Images
+
+          One <Image> per side rather than a separate desktop/mobile pair: the
+          duplicated markup meant the LCP element (kanan.png) was lazy-loaded on
+          both breakpoints, so the browser deprioritised the exact resource that
+          defines LCP. `priority` plus a real `sizes` fixes that without shipping
+          the 600px render to phones. */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Left Background Image */}
-        <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 -translate-x-1/2 hidden sm:block">
-          <Image 
-            src="/images/kiri.png" 
-            alt="Left background" 
-            width={599.6} 
-            height={695.8} 
-            className="opacity-100"
-          />
-        </div>
-        
-        {/* Right Background Image */}
-        <div className="absolute right-1/4 top-1/2 transform -translate-y-1/2 translate-x-1/2 hidden sm:block">
-          <Image 
-            src="/images/kanan.png" 
-            alt="Right background" 
-            width={599} 
-            height={775.8} 
-            className="opacity-100"
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/4 sm:left-1/4 sm:-translate-x-1/2">
+          <Image
+            src="/images/kiri.png"
+            alt=""
+            aria-hidden="true"
+            width={600}
+            height={696}
+            priority
+            fetchPriority="high"
+            sizes="(max-width: 640px) 300px, 600px"
+            className="w-[300px] sm:w-[600px] h-auto opacity-60 sm:opacity-100"
           />
         </div>
 
-        {/* Mobile Background Images - Smaller */}
-        <div className="block sm:hidden">
-          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/4">
-            <Image 
-              src="/images/kiri.png" 
-              alt="Left background" 
-              width={300} 
-              height={350} 
-              className="opacity-60"
-            />
-          </div>
-          
-          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/4">
-            <Image 
-              src="/images/kanan.png" 
-              alt="Right background" 
-              width={300} 
-              height={388} 
-              className="opacity-60"
-            />
-          </div>
+        {/* Right Background Image — the measured LCP element */}
+        <div className="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/4 sm:right-1/4 sm:translate-x-1/2">
+          <Image
+            src="/images/kanan.png"
+            alt=""
+            aria-hidden="true"
+            width={599}
+            height={776}
+            priority
+            fetchPriority="high"
+            sizes="(max-width: 640px) 300px, 599px"
+            className="w-[300px] sm:w-[599px] h-auto opacity-60 sm:opacity-100"
+          />
         </div>
       </div>
 

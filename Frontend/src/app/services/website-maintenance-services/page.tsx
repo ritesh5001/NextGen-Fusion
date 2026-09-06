@@ -8,7 +8,7 @@ const NAME = "Website Maintenance Services"
 
 export const metadata: Metadata = buildMetadata({
   title: "Website Maintenance Services",
-  description: "Website Maintenance Services by NextGen Fusion — security updates, uptime monitoring, backup management, performance optimization, and bug resolution on a monthly basis.",
+  description: "Security updates, uptime monitoring, backups, performance optimisation and bug fixes on a monthly plan, with a named developer.",
   path: PATH,
   ogTitle: "Website Maintenance Services | NextGen Fusion",
   ogDescription: "Keep your website secure, fast, and reliable with proactive monthly maintenance from NextGen Fusion.",

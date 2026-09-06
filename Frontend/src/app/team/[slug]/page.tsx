@@ -3,9 +3,8 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import { ArrowLeft, Mail, Linkedin, ExternalLink } from "lucide-react"
-import SimpleNavbar from "@/components/simple-navbar"
-import Footer from "@/components/footer"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -169,27 +168,12 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
   const resolvedParams = await params
   const member = teamMembersData[resolvedParams.slug]
 
-  if (!member) {
-    return (
-      <div className="bg-white min-h-screen flex flex-col">
-        <SimpleNavbar />
-        <div className="flex-grow flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Team Member Not Found</h1>
-            <Link href="/team" className="text-blue-600 hover:underline flex items-center justify-center gap-2">
-              <ArrowLeft className="w-4 h-4" />
-              Back to Team
-            </Link>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    )
-  }
+  // Was a 200 page saying "not found" — a soft 404. notFound() returns a real
+  // 404 status so Google drops the URL instead of indexing an empty page.
+  if (!member) notFound()
 
   return (
     <div className="bg-white">
-      <SimpleNavbar />
 
       {/* Hero Banner */}
       <section className="pt-32 pb-8 px-4 sm:px-6 lg:px-8 bg-gray-50 border-b border-gray-100">
@@ -347,8 +331,6 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
           </motion.div>
         </motion.div>
       </section>
-
-      <Footer />
     </div>
   )
 }

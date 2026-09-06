@@ -70,7 +70,7 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
           {project.name}
         </p>
         <p className="truncate text-xs text-gray-400">{project.host}</p>
-        <span className="mt-1.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
+        <span className="mt-1.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
           {project.subcategory ?? CATEGORY_LABELS[project.category]}
         </span>
       </div>
@@ -157,7 +157,8 @@ export default function DeliveredWall({
             </div>
             {showViewAll && (
               <Link
-                href="/work"
+                href="/work/"
+                prefetch={false}
                 className="inline-flex shrink-0 items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
               >
                 See all {deliveredProjects.length} projects
@@ -208,7 +209,8 @@ export default function DeliveredWall({
         {hideHeader && showViewAll && (
           <div className="mt-10 text-center">
             <Link
-              href="/work"
+              href="/work/"
+              prefetch={false}
               className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-6 py-3 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
             >
               See all {deliveredProjects.length} projects delivered

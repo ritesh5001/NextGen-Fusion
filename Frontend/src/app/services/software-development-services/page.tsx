@@ -8,7 +8,7 @@ const NAME = "Software Development Services"
 
 export const metadata: Metadata = buildMetadata({
   title: "Software Development Services",
-  description: "Software Development Services by NextGen Fusion — custom SaaS platforms, internal tools, and business automation systems designed precisely for your operational needs.",
+  description: "Custom SaaS platforms, internal tools and business automation systems, designed precisely around how your operations actually run.",
   path: PATH,
   ogTitle: "Software Development Services | NextGen Fusion",
   ogDescription: "Custom software development for complex business workflows, SaaS products, and automation systems.",

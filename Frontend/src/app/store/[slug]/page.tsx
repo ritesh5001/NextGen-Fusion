@@ -3,9 +3,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Check, ExternalLink } from 'lucide-react'
-import { getStoreProduct } from '@/lib/store'
+import { getStoreProduct, isStoreProductIndexable } from '@/lib/store'
 import { BuyButton } from '@/components/store/buy-button'
-import { absoluteUrl, buildMetadata, siteUrl } from '@/lib/seo'
+import { absoluteUrl, breadcrumbSchema, buildMetadata, siteUrl } from '@/lib/seo'
 
 type PageProps = { params: Promise<{ slug: string }> }
 
@@ -23,6 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: product.summary || product.description?.slice(0, 160) || product.title,
     path: `/store/${product.slug}`,
     image: product.cover_image || undefined,
+    // Products without real copy, a cover image and a feature list stay out of
+    // the index until they have them. See isStoreProductIndexable().
+    noIndex: !isStoreProductIndexable(product),
   })
 }
 
@@ -52,14 +55,20 @@ export default async function StoreProductPage({ params }: PageProps) {
     },
   }
 
+  const breadcrumbs = breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Store', path: '/store' },
+    { name: product.title, path: `/store/${product.slug}` },
+  ])
+
   return (
     <main className="min-h-screen bg-white">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([productSchema, breadcrumbs]) }}
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-24 pb-24">
-        <Link href="/store" className="text-sm text-gray-500 hover:text-gray-900">
+        <Link href="/store/" className="text-sm text-gray-500 hover:text-gray-900">
           ← Back to store
         </Link>
 

@@ -7,8 +7,8 @@ const PATH = "/services/api-integration-services"
 const NAME = "API Integration Services"
 
 export const metadata: Metadata = buildMetadata({
-  title: "API Integration Services",
-  description: "API Integration Services by NextGen Fusion — reliable REST, GraphQL, and webhook integrations that connect your CRM, payments, and platforms into unified automated workflows.",
+  title: "API Integration Services — REST, GraphQL & Webhooks",
+  description: "Reliable REST, GraphQL and webhook integrations that connect your CRM, payments and platforms into one automated workflow.",
   path: PATH,
   ogTitle: "API Integration Services | NextGen Fusion",
   ogDescription: "Connect all your tools and eliminate manual data work with reliable API integrations.",

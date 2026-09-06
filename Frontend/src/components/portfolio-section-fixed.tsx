@@ -258,7 +258,7 @@ export default function PortfolioSection({ portfolios = [] }: { portfolios: Port
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href="/work" className="flex items-center gap-2 text-gray-800 hover:text-purple-600 font-medium transition-colors group">
+              <Link href="/work/" prefetch={false} className="flex items-center gap-2 text-gray-800 hover:text-purple-600 font-medium transition-colors group">
                 View all portfolio
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -305,7 +305,7 @@ export default function PortfolioSection({ portfolios = [] }: { portfolios: Port
                 onMouseEnter={() => setHoveredProject(project.id)}
                 onMouseLeave={() => setHoveredProject(null)}
               >
-                <Link href={project.link} className="block">
+                <Link href={project.link} prefetch={false} className="block">
                   <motion.div 
                     className={`relative rounded-2xl overflow-hidden ${project.imageHeight} w-full`}
                     variants={imageVariants}

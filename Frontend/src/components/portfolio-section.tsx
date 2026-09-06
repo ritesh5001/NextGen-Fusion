@@ -176,7 +176,7 @@ export default function PortfolioSection({
                 >
                   <Image
                     src={getIconSrc("/images/liv.svg", "/images/liv.png")}
-                    alt="Liv"
+                    alt="" aria-hidden="true"
                     width={56}
                     height={56}
                     className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
@@ -195,7 +195,7 @@ export default function PortfolioSection({
                 >
                   <Image
                     src={getIconSrc("/images/paint.svg", "/images/paint.png")}
-                    alt="Project"
+                    alt="" aria-hidden="true"
                     width={56}
                     height={56}
                     className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
@@ -212,7 +212,8 @@ export default function PortfolioSection({
               whileTap={{ scale: 0.95 }}
             >
               <Link
-                href="/work"
+                href="/work/"
+                prefetch={false}
                 className="flex items-center gap-2 text-gray-800 hover:text-purple-600 font-medium transition-colors group"
               >
                 View all portfolio
@@ -261,14 +262,14 @@ export default function PortfolioSection({
                 onMouseEnter={() => setHoveredProject(project.id)}
                 onMouseLeave={() => setHoveredProject(null)}
               >
-                <Link href={project.link} className="block">
+                <Link href={project.link} prefetch={false} className="block">
                   <motion.div
                     className={`relative rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/10] w-full`}
                     variants={imageVariants}
                   >
                     <Image
                       src={project.image}
-                      alt={project.title}
+                      alt={`${project.title} — website built by NextGen Fusion`}
                       width={600}
                       height={400}
                       className="w-full h-full object-cover"

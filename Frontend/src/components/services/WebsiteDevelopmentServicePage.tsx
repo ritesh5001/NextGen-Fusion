@@ -140,9 +140,26 @@ const sectionVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 }
 
+// This page renders its own layout rather than ServicePageTemplate, which is why
+// it was the only one of the twelve shipping visible FAQs with no FAQPage markup
+// behind them — and it is the most commercially important page on the site.
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: { "@type": "Answer", text: faq.answer },
+  })),
+}
+
 export default function WebsiteDevelopmentServicePage() {
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <main className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-24">
           <motion.section

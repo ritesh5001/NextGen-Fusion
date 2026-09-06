@@ -4,8 +4,6 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import SimpleNavbar from "@/components/simple-navbar"
-import Footer from "@/components/footer"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -65,7 +63,6 @@ const teamMembers = [
 export default function TeamPage() {
   return (
     <div className="bg-white">
-      <SimpleNavbar />
       
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
@@ -145,8 +142,6 @@ export default function TeamPage() {
           </div>
         </motion.div>
       </section>
-
-      <Footer />
     </div>
   )
 }

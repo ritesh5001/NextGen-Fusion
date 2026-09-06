@@ -21,7 +21,7 @@ export default function GlobalError({
           <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 -translate-x-1/2 opacity-10">
             <Image 
               src="/images/kiri.png" 
-              alt="Left background" 
+              alt="" aria-hidden="true" 
               width={400} 
               height={464} 
               className="opacity-50"
@@ -32,7 +32,7 @@ export default function GlobalError({
           <div className="absolute right-1/4 top-1/2 transform -translate-y-1/2 translate-x-1/2 opacity-10">
             <Image 
               src="/images/kanan.png" 
-              alt="Right background" 
+              alt="" aria-hidden="true" 
               width={400} 
               height={517} 
               className="opacity-50"

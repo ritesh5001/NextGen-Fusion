@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import ScrollToTop from "@/components/scroll-to-top";
 import { staticProjects, getProjectBySlug } from "@/lib/static-projects";
-import { siteUrl } from "@/lib/seo"
+import { JsonLd } from "@/components/json-ld";
+import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -31,10 +32,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const project = getProjectBySlug(slug);
   if (!project) return {};
   return {
-    title: `${project.title} — Case Study | NextGen Fusion`,
+    title: `${project.title} — Case Study`,
     description: project.shortDescription,
     alternates: {
-      canonical: `${siteUrl}/work/${project.slug}`,
+      canonical: absoluteUrl(`/work/${project.slug}`),
     },
     openGraph: {
       title: `${project.title} Case Study | NextGen Fusion`,
@@ -66,12 +67,40 @@ export default async function WorkDetailPage({ params }: PageProps) {
       ? allProjects[currentIndex + 1]
       : null;
 
+  // Case studies carried only the sitewide graph — nothing describing the page
+  // itself. Article is what makes them eligible to surface as their own result.
+  const caseStudySchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": `${absoluteUrl(`/work/${project.slug}`)}#article`,
+      headline: `${project.title} — Case Study`,
+      description: project.shortDescription,
+      articleSection: project.category,
+      url: absoluteUrl(`/work/${project.slug}`),
+      mainEntityOfPage: absoluteUrl(`/work/${project.slug}`),
+      image: [absoluteUrl(project.coverImage), ...project.images.map((src) => absoluteUrl(src))],
+      keywords: project.tags.join(", "),
+      author: { "@id": ORGANIZATION_ID },
+      publisher: { "@id": ORGANIZATION_ID },
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      about: { "@type": "Thing", name: project.title },
+      ...(project.publishedAt ? { datePublished: project.publishedAt } : {}),
+    },
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Work", path: "/work" },
+      { name: project.title, path: `/work/${project.slug}` },
+    ]),
+  ];
+
   const otherProjects = allProjects
     .filter((p) => p.slug !== slug)
     .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-white">
+      <JsonLd data={caseStudySchema} />
       {/* ── PAGE HEADER ── */}
       <header className="bg-white pt-20 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-10">
@@ -133,7 +162,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
             <div className="relative aspect-[16/9]">
               <Image
                 src={project.images[0]}
-                alt={`${project.title} — main screenshot`}
+                alt={`${project.title} — ${project.category}, homepage of the site we built`}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 90vw"
@@ -235,7 +264,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 <div className="relative aspect-[16/9]">
                   <Image
                     src={project.images[1]}
-                    alt={`${project.title} — screenshot 2`}
+                    alt={`${project.title} — interface detail from the ${project.category} build`}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 70vw"
@@ -289,7 +318,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 <div className="relative aspect-[16/9]">
                   <Image
                     src={project.images[2]}
-                    alt={`${project.title} — screenshot 3`}
+                    alt={`${project.title} — further interface detail from the ${project.category} build`}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 70vw"
@@ -452,7 +481,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                       <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
                         <Image
                           src={p.coverImage}
-                          alt={p.title}
+                          alt={`${p.title} — ${p.category} case study`}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                           sizes="48px"
@@ -507,7 +536,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
                     src={p.coverImage}
-                    alt={p.title}
+                    alt={`${p.title} — ${p.category} case study`}
                     fill
                     className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
                     sizes="(max-width: 640px) 100vw, 33vw"

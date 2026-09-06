@@ -7,7 +7,7 @@ const PATH = "/services/ppc-services"
 const NAME = "PPC Services"
 
 export const metadata: Metadata = buildMetadata({
-  title: "PPC Services",
+  title: "PPC & Google Ads Services in India",
   description: "PPC Services by NextGen Fusion — ROI-focused Google and Meta Ads campaigns with full conversion tracking, creative testing, and continuous optimization.",
   path: PATH,
   ogTitle: "PPC Services | NextGen Fusion",

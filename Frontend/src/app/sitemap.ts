@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next"
 import { absoluteUrl } from "@/lib/seo"
 import { staticProjects } from "@/lib/static-projects"
 import { apiService } from "@/lib/api"
-import { getStoreProducts } from "@/lib/store"
+import { getStoreProducts, isStoreProductIndexable } from "@/lib/store"
 import { serviceSlugs } from "@/data/services-nav"
+import { locationSlugs } from "@/data/locations"
 
 // Revalidate hourly so newly published blog posts, store products and
 // portfolio entries show up without a redeploy.
@@ -23,10 +24,11 @@ export const revalidate = 3600
  */
 const STATIC_LAST_MODIFIED: Record<string, string> = {
   "/": "2026-08-14",
+  "/about": "2026-09-06",
+  "/contact": "2026-09-06",
   "/services": "2026-08-14",
   "/work": "2026-08-14",
   "/blog": "2026-08-27",
-  "/showcase": "2026-08-14",
   "/team": "2026-08-14",
   "/careers": "2026-08-27",
   "/store": "2026-08-14",
@@ -36,6 +38,7 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
 }
 
 const SERVICES_LAST_MODIFIED = "2026-08-14"
+const LOCATIONS_LAST_MODIFIED = "2026-09-06"
 
 type Entry = MetadataRoute.Sitemap[number]
 
@@ -50,6 +53,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries: MetadataRoute.Sitemap = [
     ...Object.entries(STATIC_LAST_MODIFIED).map(([path, date]) => entry(path, date)),
     ...serviceSlugs.map((slug) => entry(`/services/${slug}`, SERVICES_LAST_MODIFIED)),
+    // City landing pages — the query shape every page-one competitor ranks with.
+    ...locationSlugs.map((slug) => entry(`/${slug}`, LOCATIONS_LAST_MODIFIED)),
     ...staticProjects.map((p) => entry(`/work/${p.slug}`, SERVICES_LAST_MODIFIED)),
   ]
 
@@ -70,7 +75,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getStoreProducts()
       .then((products) =>
         products
-          .filter((product) => product.slug)
+          // Only products that pass the content gate — the rest are noindexed at
+          // the page level and have no business in the sitemap either.
+          .filter((product) => product.slug && isStoreProductIndexable(product))
           .map((product) => entry(`/store/${product.slug}`, product.created_at || new Date())),
       )
       .catch(() => [] as MetadataRoute.Sitemap),
