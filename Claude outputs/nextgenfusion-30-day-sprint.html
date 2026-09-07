@@ -1,0 +1,541 @@
+<title>Thirty Day Sprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@700;900&family=Karla:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#EAEBEE; --surface:#FFFFFF; --surface-2:#F4F5F7; --surface-3:#DEE0E5;
+  --ink:#16181D; --ink-2:#343841; --muted:#5D6470; --faint:#8A919D;
+  --line:#CBCFD7; --line-soft:#E4E6EB;
+  --red:#A81E14; --red-soft:#F8E4E2;
+  --code:#1D4F8C; --code-soft:#E0EAF6;
+  --done:#15633C; --done-soft:#DFEFE6;
+  --time:#8A5209; --time-soft:#F7EBD9;
+  --shadow:0 1px 2px rgba(22,24,29,.07), 0 12px 32px -26px rgba(22,24,29,.55);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0A0B0E; --surface:#14161B; --surface-2:#191C22; --surface-3:#232730;
+  --ink:#E8EAEE; --ink-2:#C4C9D2; --muted:#959CA9; --faint:#6F7783;
+  --line:#282D36; --line-soft:#1E222A;
+  --red:#F08379; --red-soft:#2B1614;
+  --code:#84AEE8; --code-soft:#141F31;
+  --done:#5BC98E; --done-soft:#0F2419;
+  --time:#DFA45E; --time-soft:#2A1E10;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 32px -26px rgba(0,0,0,.9);
+}}
+:root[data-theme="dark"]{
+  --ground:#0A0B0E; --surface:#14161B; --surface-2:#191C22; --surface-3:#232730;
+  --ink:#E8EAEE; --ink-2:#C4C9D2; --muted:#959CA9; --faint:#6F7783;
+  --line:#282D36; --line-soft:#1E222A;
+  --red:#F08379; --red-soft:#2B1614;
+  --code:#84AEE8; --code-soft:#141F31;
+  --done:#5BC98E; --done-soft:#0F2419;
+  --time:#DFA45E; --time-soft:#2A1E10;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 32px -26px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:Karla,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.58; -webkit-font-smoothing:antialiased}
+.wrap{max-width:900px; margin:0 auto; padding:0 22px 90px}
+h1,h2,h3{font-family:Chivo,Karla,sans-serif; margin:0; text-wrap:balance}
+.mono{font-family:"Roboto Mono",ui-monospace,Menlo,monospace}
+
+.mast{padding:52px 0 20px}
+.kick{font-family:"Roboto Mono",monospace; font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--faint); display:flex; gap:11px; flex-wrap:wrap}
+.kick b{color:var(--red); font-weight:500}
+h1{font-size:clamp(31px,5.2vw,50px); font-weight:900; letter-spacing:-.036em;
+  line-height:1.02; margin:16px 0 13px}
+.dek{font-size:18px; color:var(--ink-2); max-width:60ch; margin:0}
+
+.truth{margin:28px 0 0; padding:20px 23px; background:var(--surface); border:1px solid var(--line);
+  border-left:3px solid var(--red); box-shadow:var(--shadow)}
+.truth p{margin:0 0 11px; max-width:66ch} .truth p:last-child{margin-bottom:0}
+.truth.fix{border-left-color:var(--done)}
+strong{font-weight:700}
+
+.prog{margin:24px 0 0; display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.prog .bar{flex:1; min-width:180px; height:8px; background:var(--surface-3); position:relative}
+.prog .bar i{position:absolute; inset:0 auto 0 0; background:var(--done); display:block;
+  transition:width .25s ease}
+.prog .txt{font-family:"Roboto Mono",monospace; font-size:12.5px; color:var(--muted);
+  font-variant-numeric:tabular-nums; white-space:nowrap}
+.prog .sync{font-family:"Roboto Mono",monospace; font-size:10.5px; color:var(--faint);
+  letter-spacing:.06em}
+
+h2.lane{font-size:19px; font-weight:900; letter-spacing:-.024em; margin:48px 0 0;
+  padding-bottom:10px; border-bottom:2px solid var(--ink);
+  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+h2.lane .n{font-family:"Roboto Mono",monospace; font-size:11px; font-weight:400;
+  letter-spacing:.12em; text-transform:uppercase; padding:3px 9px}
+h2.lane .n.you{background:var(--red-soft); color:var(--red)}
+h2.lane .n.cc{background:var(--code-soft); color:var(--code)}
+.lane-note{font-size:14.5px; color:var(--muted); margin:12px 0 0; max-width:68ch}
+
+h3.blk{font-family:"Roboto Mono",monospace; font-size:11px; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin:26px 0 10px}
+
+.list{border:1px solid var(--line); background:var(--surface)}
+.task{display:grid; grid-template-columns:42px 1fr; border-bottom:1px solid var(--line-soft);
+  cursor:pointer}
+.task:last-child{border-bottom:none}
+.task:hover{background:var(--surface-2)}
+.task .box{display:flex; align-items:flex-start; justify-content:center; padding:18px 0 0}
+.task .box span{width:18px; height:18px; border:1.5px solid var(--line);
+  display:flex; align-items:center; justify-content:center; font-size:11px; color:transparent;
+  background:var(--surface); flex:none}
+.task .c{padding:15px 19px 16px 0; min-width:0}
+.task h4{font-family:Chivo,sans-serif; font-size:16px; font-weight:700; letter-spacing:-.012em;
+  line-height:1.32; display:flex; gap:9px; align-items:baseline; flex-wrap:wrap; margin:0 0 3px}
+.task .t{font-family:"Roboto Mono",monospace; font-size:9.5px; letter-spacing:.08em;
+  text-transform:uppercase; background:var(--time-soft); color:var(--time); padding:2px 7px;
+  white-space:nowrap; font-weight:500}
+.task .blocks{font-family:"Roboto Mono",monospace; font-size:9.5px; letter-spacing:.08em;
+  text-transform:uppercase; background:var(--code-soft); color:var(--code); padding:2px 7px;
+  white-space:nowrap; font-weight:500}
+.task .why{font-size:14.5px; color:var(--ink-2); margin:0; max-width:62ch}
+.task.on .box span{background:var(--done); border-color:var(--done); color:#fff}
+.task.on h4{color:var(--muted); text-decoration:line-through; text-decoration-thickness:1.5px}
+.task.on .why{color:var(--faint)}
+.task:focus-visible{outline:2px solid var(--red); outline-offset:-2px}
+
+/* prompt */
+.pbox{border:1px solid var(--line); background:var(--surface); margin-top:16px}
+.phead{display:flex; align-items:center; gap:12px; padding:13px 18px;
+  border-bottom:1px solid var(--line); background:var(--surface-2); flex-wrap:wrap}
+.phead .lbl{font-family:"Roboto Mono",monospace; font-size:10.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--muted); flex:1; min-width:150px}
+.phead button{font-family:"Roboto Mono",monospace; font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; background:var(--code); color:#fff; border:none; padding:8px 15px;
+  cursor:pointer; font-weight:500}
+.phead button:hover{opacity:.88}
+.phead button:focus-visible{outline:2px solid var(--ink); outline-offset:2px}
+pre.prompt{margin:0; padding:18px; font-family:"Roboto Mono",monospace; font-size:11.5px;
+  line-height:1.62; overflow-x:auto; max-height:430px; overflow-y:auto; white-space:pre-wrap;
+  word-break:break-word; color:var(--ink-2); background:var(--surface)}
+
+.out{border:1px solid var(--line); background:var(--surface); margin-top:14px}
+.orow{display:grid; grid-template-columns:1fr auto; gap:14px; padding:11px 19px;
+  border-bottom:1px solid var(--line-soft); font-size:15px; align-items:baseline}
+.orow:last-child{border-bottom:none}
+.orow .v{font-family:"Roboto Mono",monospace; font-size:10.5px; letter-spacing:.07em;
+  text-transform:uppercase; white-space:nowrap; font-weight:500}
+.v.yes{color:var(--done)} .v.mby{color:var(--time)} .v.no{color:var(--red)}
+
+code{font-family:"Roboto Mono",monospace; font-size:.85em; background:var(--surface-3);
+  padding:1px 5px; color:var(--ink)}
+.note{margin-top:46px; padding-top:20px; border-top:1px solid var(--line);
+  font-size:13px; color:var(--muted); max-width:74ch}
+.note h4{font-family:"Roboto Mono",monospace; font-size:10px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--faint); margin:0 0 8px; font-weight:400}
+.note p{margin:0 0 8px}
+a{color:var(--red)}
+@media (max-width:600px){
+  .wrap{padding:0 15px 70px}
+  .task{grid-template-columns:34px 1fr} .task .c{padding:13px 14px 14px 0}
+  .truth{padding:16px 15px} pre.prompt{font-size:10.5px; padding:13px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<script type="application/json" id="s">{"done":{}}</script>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick"><span>30-day sprint</span><span>·</span><b class="mono">nextgenfusion.in</b>
+    <span>·</span><span>two lanes</span></div>
+  <h1>Ten things only you can do. Seven things Claude Code can do while you do them.</h1>
+  <p class="dek">Split so the two lanes run in parallel — and the whole code lane ships from one
+  prompt at the bottom of this page.</p>
+</header>
+
+<div class="truth fix">
+  <p><strong>First — two corrections to my own audit.</strong> I read your codebase this morning and
+  two of the things I flagged were my measurement error, not your bugs.</p>
+  <p><strong>Image optimisation was never broken.</strong> <code>/_next/image</code> returns
+  <code>image/avif</code> when the request carries a real browser <code>Accept</code> header — my
+  test <code>fetch()</code> sent <code>Accept: */*</code>, so Next correctly handed back PNG. Your
+  <code>next.config.js</code> has <code>formats: ['image/webp','image/avif']</code> and a 31-day
+  <code>minimumCacheTTL</code>. Nothing to fix.</p>
+  <p><strong>BreadcrumbList was there all along.</strong> It ships in a second JSON-LD block as
+  <code>[Service, BreadcrumbList]</code>. My parser only read <code>@graph</code> and top-level
+  <code>@type</code>, so an array-form block came back empty. Your logo <code>sizes</code> are set
+  correctly too. Sorry — that's three items I sent you chasing that were already done.</p>
+</div>
+
+<div class="truth">
+  <p><strong>The constraint that shapes everything below.</strong> Google has to crawl, index, then
+  observe before it moves you. That is weeks. Page one for "best web development company in Lucknow"
+  is a month 4–6 outcome even executed perfectly.</p>
+  <p><strong>What is genuinely fast:</strong> a verified Google Business Profile can surface in the
+  map pack in 1–3 weeks, and the map pack renders <em>above</em> organic. Justdial, Sulekha and
+  IndiaMART send enquiries within days with no ranking involved. Your 74 past clients can each carry
+  a footer credit link. None of those need code.</p>
+  <p><strong>And if you need paying clients this week rather than this month:</strong> run Google Ads
+  on "web development company lucknow" at a small daily cap — calls within 24 hours. Ads cover the
+  gap while this sprint builds the thing that makes ads optional.</p>
+</div>
+
+<div class="prog">
+  <span class="bar"><i id="pbar" style="width:0%"></i></span>
+  <span class="txt" id="ptxt">0 of 17 done</span>
+  <span class="sync" id="psync"></span>
+</div>
+
+<!-- ================= LANE A ================= -->
+<h2 class="lane"><span class="n you">Lane A</span> You — no code involved</h2>
+<p class="lane-note">Accounts, emails, phone calls and decisions. Claude Code cannot do any of this,
+and it is where nearly all the speed lives. Start here today.</p>
+
+<h3 class="blk">Day 1–2 · about 5 hours</h3>
+<div class="list">
+  <div class="task" data-id="a1" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Create and verify Google Business Profile — both offices <span class="t">2 hrs</span></h4>
+      <p class="why">Fastest organic lever you have. Category "Website designer". Name, address and
+      phone identical to <code>src/data/offices.ts</code> — mismatched NAP is what kills local pack
+      placement.</p></div>
+  </div>
+  <div class="task" data-id="a2" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>List on Justdial, Sulekha and IndiaMART <span class="t">2 hrs</span></h4>
+      <p class="why">Enquiries land on your phone within days and do not depend on ranking anywhere.
+      Fastest actual lead source on this page.</p></div>
+  </div>
+  <div class="task" data-id="a3" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Verify Search Console and Bing Webmaster Tools <span class="t">30 min</span></h4>
+      <p class="why">Until this exists you cannot tell if any of the next 29 days worked. Use DNS
+      verification so no code change is needed.</p></div>
+  </div>
+  <div class="task" data-id="a7" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Decide your real price bands and pick 3 local clients for proof
+      <span class="t">1 hr</span> <span class="blocks">unblocks lane B</span></h4>
+      <p class="why"><code>src/data/locations.ts</code> already has <code>priceBand</code>,
+      <code>priceNote</code> and <code>localProof</code> fields, deliberately left blank because only
+      you know the true numbers — the template renders those sections the moment they're filled.
+      Write down three tiers and three named Lucknow clients with one outcome each. The code lane
+      stalls without this.</p></div>
+  </div>
+</div>
+
+<h3 class="blk">Day 3–7 · about 1.5 days</h3>
+<div class="list">
+  <div class="task" data-id="b1" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Email all 74 past clients asking for a footer credit link <span class="t">1 day</span></h4>
+      <p class="why">Highest-leverage thing you will ever do for this domain, and no competitor can
+      copy it. Vary the anchor — mostly "NextGen Fusion" and plain URL, exact-match under one in ten.
+      Half saying yes is 35 real links.</p></div>
+  </div>
+  <div class="task" data-id="b3" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Ask 5 clients for a Google review <span class="t">1 hr</span></h4>
+      <p class="why">Main lever on map-pack position. Space them out — two to four a month. Twenty in
+      one week looks bought and gets filtered.</p></div>
+  </div>
+  <div class="task" data-id="a6" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Create Clutch, GoodFirms and LinkedIn company profiles
+      <span class="t">4 hrs</span> <span class="blocks">unblocks lane B</span></h4>
+      <p class="why">Clutch and GoodFirms rank on page one for the national queries, so a listing
+      puts you there without owning a page. Search your brand today and a Colorado Facebook page
+      outranks you. Send the profile URLs to the code lane for <code>sameAs</code>.</p></div>
+  </div>
+</div>
+
+<h3 class="blk">Week 2–4 · content + upkeep</h3>
+<div class="list">
+  <div class="task" data-id="e1" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Publish "Website development cost in India 2026" <span class="t">1 day</span></h4>
+      <p class="why">Goes in through your admin dashboard, not the repo — posts come from the
+      backend API. 2,400 words, three rupee tables, 6-question FAQ, two cited sources, internal
+      links to <code>/pricing/</code>. That format is what ranks page one for cost queries today.</p></div>
+  </div>
+  <div class="task" data-id="e2" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Publish "Shopify vs WooCommerce for Indian D2C brands" <span class="t">1 day</span></h4>
+      <p class="why">Use real TatVivah numbers. Nobody else writing this post has actually migrated a
+      store — that is the part a competitor cannot fake.</p></div>
+  </div>
+  <div class="task" data-id="d2" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Chase the footer links that haven't gone live <span class="t">2 hrs</span></h4>
+      <p class="why">About half who agree won't have done it. One follow-up typically doubles what
+      actually ships.</p></div>
+  </div>
+  <div class="task" data-id="d4" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Post on both GBP profiles weekly, add 3 more reviews <span class="t">30 min/wk</span></h4>
+      <p class="why">Dormant profiles rank badly. A photo of work shipped that week is enough —
+      cheapest recurring item here.</p></div>
+  </div>
+</div>
+
+<!-- ================= LANE B ================= -->
+<h2 class="lane"><span class="n cc">Lane B</span> Claude Code — one prompt, seven changes</h2>
+<p class="lane-note">All of this is in <code>Frontend/</code>. Your codebase is in good shape — much
+of what's needed is filling data files whose rendering code already exists, not building features.
+Tick these as the PR lands.</p>
+
+<div class="list">
+  <div class="task" data-id="c1" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Fill <code>priceBand</code>, <code>priceNote</code> and <code>localProof</code> for all 4 city pages</h4>
+      <p class="why">Needs your numbers from Lane A. The template already renders these sections
+      conditionally — this is pure data entry into <code>src/data/locations.ts</code>.</p></div>
+  </div>
+  <div class="task" data-id="c2" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Expand the Lucknow entry from ~1,050 to ~2,000 words</h4>
+      <p class="why">More <code>sections</code>, 8 <code>faqs</code> instead of the current set, full
+      street address and pincode in the body copy. The incumbent runs ~4,800 words — you don't need
+      to match it, you need to stop being a quarter of it.</p></div>
+  </div>
+  <div class="task" data-id="c3" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Build the <code>/pricing/</code> route</h4>
+      <p class="why">Reuses <code>src/lib/estimator-pricing.ts</code>, which already exports
+      <code>computeBallpark</code>, <code>PAYMENT_TERMS</code>, <code>ECOMMERCE_INCLUDED</code> and
+      <code>formatCurrency</code>. Add <code>Offer</code> schema and a FAQ block.</p></div>
+  </div>
+  <div class="task" data-id="c4" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Store products: <code>noindex, nofollow</code> → <code>noindex, follow</code></h4>
+      <p class="why">One-line change in <code>buildMetadata</code>. Right now internal link equity
+      dead-ends at 46 pages instead of flowing back through them.</p></div>
+  </div>
+  <div class="task" data-id="c5" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Expand the 4 commercial service pages toward 1,400+ words</h4>
+      <p class="why">Currently 638–715. Add pricing bands, three embedded case studies with named
+      clients, three testimonials, and grow the FAQ to 8 questions.</p></div>
+  </div>
+  <div class="task" data-id="c6" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Extend <code>sameAs</code> with the new profile URLs</h4>
+      <p class="why">Currently Instagram only, in <code>src/app/layout.tsx</code>. Needs the URLs
+      from Lane A.</p></div>
+  </div>
+  <div class="task" data-id="c7" tabindex="0" role="checkbox" aria-checked="false">
+    <div class="box"><span>✓</span></div>
+    <div class="c"><h4>Add <code>priority</code> to the navbar logo</h4>
+      <p class="why">Small: it's above the fold in <code>simple-navbar.tsx</code> and still
+      <code>loading="lazy"</code>. Its <code>sizes</code> are already correct.</p></div>
+  </div>
+</div>
+
+<h3 class="blk">The prompt — paste into Claude Code at the repo root</h3>
+<div class="pbox">
+  <div class="phead">
+    <span class="lbl">Fill the ALL-CAPS placeholders with your real numbers first</span>
+    <button id="copyBtn" type="button">Copy prompt</button>
+  </div>
+  <pre class="prompt" id="promptText">You are working in the NextGen Fusion repo. All work is in `Frontend/` — a Next.js 15 App Router app with `trailingSlash: true`, deployed on Vercel.
+
+Read these before changing anything, and reuse what already exists rather than writing new helpers:
+- `src/lib/seo.ts` — exports `siteUrl`, `SITE_NAME`, `absoluteUrl()`, `buildMetadata()`, `ORGANIZATION_ID`, `breadcrumbSchema()`, `serviceSchema()`, `articleSchema()`
+- `src/components/json-ld.tsx` — the `JsonLd` server component used to emit schema
+- `src/components/location-page-template.tsx` — renders every city page; already emits FAQPage + BreadcrumbList schema
+- `src/data/locations.ts` — the `LocationPage` type and the four city-page entries
+- `src/lib/estimator-pricing.ts` — `computeBallpark()`, `computeSupport()`, `PAYMENT_TERMS`, `ECOMMERCE_INCLUDED`, `formatCurrency()`
+- `src/data/offices.ts` — the two offices, the single source of NAP truth
+- `next.config.js` — image formats and cache headers are already correct; do not touch them
+
+Do these seven tasks. Keep the existing code style. Do not install packages. Do not invent facts — every number and client name below comes from me, and if something is missing, leave that field out rather than guessing.
+
+TASK 1 — Fill the deliberately-blank city data in `src/data/locations.ts`
+For all four entries set:
+  priceBand: "PASTE_YOUR_REAL_RANGE"        e.g. "₹45,000 – ₹1,80,000"
+  priceNote: "PASTE_ONE_LINE_CAVEAT"        e.g. "Most brochure sites land near the lower end; Shopify builds near the middle."
+  localProof: [
+    { client: "CLIENT_1_NAME", detail: "ONE_SENTENCE_OUTCOME" },
+    { client: "CLIENT_2_NAME", detail: "ONE_SENTENCE_OUTCOME" },
+    { client: "CLIENT_3_NAME", detail: "ONE_SENTENCE_OUTCOME" },
+  ]
+Use Lucknow clients for the three Lucknow pages and Mumbai clients for the Mumbai page. If I have not given you a name for a slot, omit that entry — never invent one.
+
+TASK 2 — Deepen the Lucknow entry
+`website-development-company-in-lucknow` is ~1,050 words of body copy; the page ranking above us is ~4,800. Take it to roughly 2,000 by adding to `sections` and `faqs`:
+- Full street address and pincode inside the body copy, not only the footer
+- A "what a website costs in Lucknow" section built from the priceBand above
+- A "hiring locally vs a Delhi/NCR agency" section
+- Three short case-study paragraphs, each linking to the matching `/work/<slug>/` page
+- Grow `faqs` to 8 entries covering timeline, cost, ownership of code, hosting, revisions, support after launch, working remotely, and payment terms
+Apply the same treatment more briefly to the other three city entries (target ~1,400 words each). Every added sentence must be specific to that city — if a paragraph would read identically for any city, cut it. Do not create new city pages.
+
+TASK 3 — Build `/pricing/`
+New route `src/app/pricing/page.tsx`:
+- Import the real numbers from `src/lib/estimator-pricing.ts`; do not hardcode duplicates
+- Three tiers with what is and is not included, plus `PAYMENT_TERMS` and the support plans from `computeSupport`
+- An 8-question FAQ with `FAQPage` schema
+- `Offer` schema with `priceCurrency: "INR"` and a `priceRange`, linked to `ORGANIZATION_ID`
+- `BreadcrumbList` via `breadcrumbSchema()`, metadata via `buildMetadata()`
+- Add the route to `src/app/sitemap.ts`
+- Link to it from the services hub, the footer, and every city page
+
+TASK 4 — Store products should pass link equity
+Store product pages currently emit `noindex, nofollow`. In `src/lib/seo.ts`, `buildMetadata`'s `noIndex` branch sets `robots: { index: false, follow: false }`. Change it so `follow` stays `true` — `robots: { index: false, follow: true }`. Verify no caller depended on nofollow.
+
+TASK 5 — Deepen four service pages
+`website-development-services`, `ecommerce-web-development-services`, `web-design-services`, `seo-services` are 638–715 words of body copy. Take each toward 1,400+ by adding:
+- A pricing-band section that links to `/pricing/`
+- Three case studies with named clients, each linking to its `/work/<slug>/` page
+- Three testimonials — leave the section out entirely if I have not supplied real quotes
+- Grow the FAQ to 8 questions
+- Add "industries we serve" and cross-links to the relevant city pages
+`website-development-services` is the priority; it is the thinnest and the most commercially important.
+
+TASK 6 — Extend `sameAs`
+In `src/app/layout.tsx` the Organization node lists only Instagram. Add these, exactly as given, and no others:
+  PASTE_LINKEDIN_URL
+  PASTE_CLUTCH_URL
+  PASTE_GOODFIRMS_URL
+  PASTE_GBP_LUCKNOW_URL
+  PASTE_GBP_MUMBAI_URL
+Also add `foundingDate` and `numberOfEmployees` if I have given you those; skip them if not.
+
+TASK 7 — Navbar logo
+In `src/components/simple-navbar.tsx` the logo `<Image>` is above the fold but still lazy-loaded. Add `priority`. Its `sizes` values are already correct — leave them alone.
+
+When done:
+- Run the build and fix any type errors
+- Report the before/after body word count for every page you touched, counting only rendered body text, excluding nav, header, footer and JSON-LD
+- List any placeholder I left unfilled, and confirm you omitted rather than invented those sections
+- Do not commit or push; leave the changes staged for me to review</pre>
+</div>
+
+<!-- ================= OUTCOMES ================= -->
+<h2 class="lane"><span class="n you">Day 30</span> What this actually produces</h2>
+<div class="out">
+  <div class="orow"><span>Enquiries from Justdial / IndiaMART / Sulekha</span><span class="v yes">likely</span></div>
+  <div class="orow"><span>Visible in the map pack for local queries</span><span class="v yes">likely</span></div>
+  <div class="orow"><span>15–35 new referring domains from client footers</span><span class="v yes">likely</span></div>
+  <div class="orow"><span>First cost-query impressions in Search Console</span><span class="v yes">likely</span></div>
+  <div class="orow"><span>On page one via Clutch / GoodFirms for national terms</span><span class="v mby">possible</span></div>
+  <div class="orow"><span>Lucknow page inside the top 20 organic</span><span class="v mby">possible</span></div>
+  <div class="orow"><span>Page one for "best web development company in Lucknow"</span><span class="v no">no — month 4–6</span></div>
+  <div class="orow"><span>Anything for "web development company in India"</span><span class="v no">no — that's a year</span></div>
+</div>
+
+<div class="note">
+  <h4>One thing to hold onto</h4>
+  <p>Impressions move first, positions second, clicks last. Around day 20 it will feel like nothing
+  is happening — check Search Console impressions, not rankings. If impressions are climbing it is
+  working, and the worst move is to stop and restart with a different plan.</p>
+  <p>Codebase details here are from reading <code>Frontend/</code> on your Mac this morning.
+  Timings are judgement from the live SERP, not forecasts — nobody can promise a position for a
+  query. Lane A is the fastest-returning work available to this domain right now, which is why it
+  sits above the code.</p>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var stateEl = document.getElementById('s');
+  var state; try { state = JSON.parse(stateEl.textContent) || {}; } catch(e){ state = {}; }
+  if (!state.done || typeof state.done !== 'object') state.done = {};
+
+  var LS = 'ngf-sprint-v1';
+  try {
+    var local = JSON.parse(localStorage.getItem(LS) || 'null');
+    if (local && local.done) for (var k in local.done) if (local.done[k]) state.done[k] = true;
+  } catch(e){}
+
+  var tasks = [].slice.call(document.querySelectorAll('.task'));
+  var bar = document.getElementById('pbar');
+  var txt = document.getElementById('ptxt');
+  var sync = document.getElementById('psync');
+  var artifact = null, readOnly = false, timer = null;
+
+  function paint(){
+    var n = 0;
+    tasks.forEach(function(t){
+      var on = !!state.done[t.dataset.id];
+      t.classList.toggle('on', on);
+      t.setAttribute('aria-checked', on ? 'true' : 'false');
+      if (on) n++;
+    });
+    bar.style.width = Math.round(n / tasks.length * 100) + '%';
+    txt.textContent = n + ' of ' + tasks.length + ' done';
+  }
+  function saveLocal(){
+    try { localStorage.setItem(LS, JSON.stringify({done: state.done})); } catch(e){}
+  }
+  function schedulePublish(){
+    if (readOnly || !artifact) return;
+    if (timer) clearTimeout(timer);
+    sync.textContent = 'saving…';
+    timer = setTimeout(doPublish, 1500);
+  }
+  async function doPublish(){
+    try {
+      var res = await fetch(location.href, {cache: 'no-store'});
+      var src = await res.text();
+      if (!/^\s*<!doctype/i.test(src)) { sync.textContent = 'saved on this device'; return; }
+      var payload = JSON.stringify({done: state.done}).replace(/</g, '\\u003c');
+      var next = src.replace(
+        /(<script type="application\/json" id="s">)[\s\S]*?(<\/script>)/,
+        function(_, a, b){ return a + payload + b; }
+      );
+      if (next === src) { sync.textContent = 'saved on this device'; return; }
+      await artifact.publish(next);
+      sync.textContent = 'saved';
+    } catch (err) {
+      var code = err && err.code;
+      if (code === 'conflict') return;
+      if (code === 'not_writer' || code === 'not_granted' || code === 'not_declared') {
+        readOnly = true; sync.textContent = 'view only'; return;
+      }
+      sync.textContent = 'saved on this device';
+    }
+  }
+  function toggle(t){
+    var id = t.dataset.id;
+    if (state.done[id]) delete state.done[id]; else state.done[id] = true;
+    paint(); saveLocal(); schedulePublish();
+  }
+  tasks.forEach(function(t){
+    t.addEventListener('click', function(){ toggle(t); });
+    t.addEventListener('keydown', function(e){
+      if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); toggle(t); }
+    });
+  });
+  paint();
+
+  var btn = document.getElementById('copyBtn');
+  var pre = document.getElementById('promptText');
+  btn.addEventListener('click', async function(){
+    var text = pre.textContent;
+    var ok = false;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text); ok = true;
+      }
+    } catch(e){}
+    if (!ok) {
+      try {
+        var r = document.createRange(); r.selectNodeContents(pre);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        ok = document.execCommand('copy');
+      } catch(e){}
+    }
+    btn.textContent = ok ? 'Copied' : 'Select & copy';
+    setTimeout(function(){ btn.textContent = 'Copy prompt'; }, 2200);
+  });
+
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('artifact').then(function(a){
+      artifact = a;
+      if (!a) sync.textContent = 'saved on this device';
+    }).catch(function(){ sync.textContent = 'saved on this device'; });
+  } else {
+    sync.textContent = 'saved on this device';
+  }
+})();
+</script>
