@@ -113,7 +113,7 @@ export default function SimpleNavbar() {
               className="cursor-pointer"
               aria-label="NextGen Fusion — home"
             >
-              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={128} height={72} sizes="128px" className="h-8 w-auto" />
+              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={128} height={72} sizes="128px" priority className="h-8 w-auto" />
             </Link>
 
             {/* Desktop Navigation */}

@@ -15,7 +15,17 @@
 
 export type LocationFaq = { question: string; answer: string }
 
-export type LocationSection = { heading: string; body: string[] }
+export type LocationLink = { label: string; href: string }
+
+export type LocationSection = {
+  heading: string
+  body: string[]
+  /** Rendered as a row of links under the paragraphs. */
+  links?: LocationLink[]
+}
+
+/** A real delivered project, linked to its case study at /work/<slug>/. */
+export type LocationCaseStudy = { slug: string; title: string; body: string }
 
 export type LocationPage = {
   slug: string
@@ -28,6 +38,8 @@ export type LocationPage = {
   h1: string
   intro: string[]
   sections: LocationSection[]
+  /** Named builds with a case study behind them. Section skipped when empty. */
+  caseStudies: LocationCaseStudy[]
   faqs: LocationFaq[]
   /** e.g. "₹45,000 – ₹1,80,000". Section is skipped while undefined. */
   priceBand?: string
@@ -107,6 +119,46 @@ export const locationPages: LocationPage[] = [
           "We are a fit when the site has a job to do, somebody owns the outcome, and you intend to still be running it in three years.",
         ],
       },
+      {
+        heading: "Where we are in Lucknow",
+        body: [
+          "The Lucknow team works out of the city and takes meetings here by arrangement; the registered address we publish is the Mumbai office, and both are listed in full on the contact page. If you want to sit across a table before committing a budget, say so in the first email and we will arrange it rather than pushing you onto a video call.",
+          "In practice most Lucknow projects run as one meeting in person at the start and written updates after that. Weekly calls are available and rarely wanted — a written update you can forward to a partner or a bank is more useful than a half hour nobody minuted.",
+        ],
+      },
+      {
+        heading: "What a website costs in Lucknow",
+        body: [
+          "The honest answer is that the city has two price points and almost nothing in between. A template brochure site goes for the price of a mid-range phone. A Delhi or Bangalore agency doing genuinely custom work starts several times higher and bills at metro rates. Businesses here routinely pay the first price, get what it buys, and then pay the second price eighteen months later to have it done properly.",
+          "We publish our bands rather than holding them for a call, because most enquiries lost on price would have been lost after three meetings anyway. What moves a Lucknow project up its band is the same everywhere: how many custom features are in scope, how many systems have to talk to each other, and — most often — how ready your content and photography are.",
+          "Terms are the same on every project regardless of size: 50% advance to start, 50% at payment-gateway integration. No separate design fee, no per-revision charge inside the agreed scope.",
+        ],
+        links: [{ label: "See the full price bands", href: "/pricing/" }],
+      },
+      {
+        heading: "Hiring in Lucknow versus a Delhi or NCR agency",
+        body: [
+          "Lucknow is close enough to Delhi that NCR agencies pitch here constantly, and for some work they are the right answer — if you need a thirty-person team, a media buying desk and a brand film in the same quarter, hire one. Most businesses in this city do not need that and pay for it anyway.",
+          "What you are actually buying from an NCR agency at the mid-market end is an account manager in Gurugram and production somewhere else. The distance is not the problem; the layer is. Every question about your catalogue goes through someone who has to ask a developer and come back. That is fine until something breaks during a sale.",
+          "The case for hiring here is narrower and more honest: you get the person who writes the code, at a cost base that is two small offices rather than a floor in Cyber City, and you can put a face to the invoice. The case against is real too — we are four people, we cannot staff a project that needs fifteen, and we say so rather than subcontracting it quietly. Ask any Lucknow shop pitching you the same question and watch whether the answer is specific.",
+        ],
+      },    ],
+    caseStudies: [
+      {
+        slug: "hcbengineering",
+        title: "HCB Engineering",
+        body: "A government-licensed electrical contractor with twenty years of work behind it and no digital presence to match. The build put service pages against each vertical — commercial, residential, specialty — so prospects self-qualify before they call, and it puts the licences and certifications where a procurement officer looks first. This is the shape most Uttar Pradesh contracting and manufacturing businesses need: credibility and scope, not a storefront.",
+      },
+      {
+        slug: "samaraha",
+        title: "Samaraha",
+        body: "A textiles brand selling direct. The work here was catalogue structure and merchandising rather than visual novelty — getting a large, seasonal range into categories a buyer can actually navigate on a phone. Relevant to the sizeable share of Lucknow businesses that hold real inventory and have been selling it through WhatsApp and a marketplace listing.",
+      },
+      {
+        slug: "thegrafftee",
+        title: "The Grafftee",
+        body: "An HR and recruitment firm whose reputation was built entirely on word of mouth, losing enterprise enquiries to competitors with better websites. The site had to carry the full breadth of services and convert high-intent visitors into demo bookings. The same problem turns up across Lucknow's professional services — established, well-regarded locally, invisible to anyone searching.",
+      },
     ],
     faqs: [
       {
@@ -128,6 +180,36 @@ export const locationPages: LocationPage[] = [
         question: "Who owns the code and the accounts?",
         answer:
           "You do, from day one — domain, hosting, repository, analytics and payment gateway all registered in your name. We work inside your accounts rather than holding them.",
+      },
+      {
+        question: "What does a website cost, roughly?",
+        answer:
+          "We publish the bands rather than making you ask. What moves a project within its band is the number of custom features, the number of integrations, and how ready your content is — a build where copy and photography arrive on day one is meaningfully cheaper than one still waiting on them in week six.",
+      },
+      {
+        question: "Who pays for hosting, and whose account is it in?",
+        answer:
+          "You pay for it and it is in your name — domain, hosting, repository, analytics and payment gateway, all registered to you from day one. We work inside your accounts. Any Lucknow developer who registers your domain in their own name is holding leverage, not providing a service.",
+      },
+      {
+        question: "How many revisions do I get?",
+        answer:
+          "Review rounds at agreed milestones, and we keep iterating until the result matches the signed scope. What costs extra is new scope — a page or feature that was not in the agreement — and we tell you that before doing the work rather than in the final invoice.",
+      },
+      {
+        question: "What happens after launch, and what does it cost?",
+        answer:
+          "Every build comes with a defined support arrangement rather than a handshake: updates, uptime monitoring, backups and a named developer to call. Basic support runs yearly; a plan that includes ongoing changes is priced by build type. The plans and their prices are on the pricing page.",
+      },
+      {
+        question: "Can we work together entirely remotely?",
+        answer:
+          "Yes, and most projects do after the first meeting. Day to day the work runs on shared documents and a written weekly update. Clients outside Uttar Pradesh — and in the UK, Italy and the Gulf — have run start to finish this way.",
+      },
+      {
+        question: "What are the payment terms?",
+        answer:
+          "50% advance to start and 50% at payment-gateway integration, the same on every project regardless of size. There is no separate design fee and no charge for the pre-launch performance, analytics and Search Console checks.",
       },
     ],
     localProof: [],
@@ -200,6 +282,38 @@ export const locationPages: LocationPage[] = [
           "If we did not build your site, we work directly with whoever did — and we would rather do that than take a retainer where nothing we recommend ever ships.",
         ],
       },
+      {
+        heading: "What SEO costs here, and what the cheap version buys",
+        body: [
+          "Lucknow has a floor price for SEO that is roughly the cost of a phone bill, and at that price the work is directory submissions and a ranking report. It is not fraud exactly — those things do happen — it is just that none of them touch the reasons the site is not ranking.",
+          "We price SEO as engineering time because that is what it is: changes made in the codebase, not described in a PDF. The build bands on our pricing page give you the shape of what technical work costs; a retainer is scoped against the audit rather than sold as a fixed package, because a site that needs its architecture rebuilt and a site that needs content are different amounts of work at the same monthly fee.",
+        ],
+        links: [{ label: "How we price work", href: "/pricing/" }],
+      },
+      {
+        heading: "Hiring in Lucknow versus a Delhi or NCR agency",
+        body: [
+          "NCR agencies sell SEO into Lucknow heavily, and the pitch is usually national keyword coverage. For a business whose customers are within thirty kilometres, national coverage is the wrong product — you are paying for competitive terms you will not win against budgets you cannot match, while the Google Business Profile that would actually generate calls sits half-completed.",
+          "The specific advantage of working with someone here is not cultural, it is operational: we can look at your Business Profile, your reviews and the citations that name your address, and correct them against a real address we can verify. Getting name, address and phone consistent across every listing is unglamorous and it is frequently the single biggest lever for a Lucknow business.",
+          "Where an NCR or metro agency genuinely wins: national content programmes, digital PR at scale, and link acquisition budgets. If that is the brief, hire one — and we will say so.",
+        ],
+      },    ],
+    caseStudies: [
+      {
+        slug: "thegrafftee",
+        title: "The Grafftee",
+        body: "A recruitment firm with a strong offline reputation that simply did not appear when enterprise buyers searched. The fix was structural before it was editorial — giving each service a page that could rank, and linking them so the commercially important ones were not buried three clicks deep. That burial is the single most common fault we find on Lucknow sites.",
+      },
+      {
+        slug: "krushidoctor",
+        title: "Krushi Doctor",
+        body: "An AgriTech store selling into a specific, searchable niche. Narrow categories with genuine search intent behind them are exactly where a smaller business can outrank a larger one, and Uttar Pradesh's agricultural supply businesses sit on more of these than they realise.",
+      },
+      {
+        slug: "newsaraswatisareecentre",
+        title: "New Saraswati Saree Centre",
+        body: "A textiles retailer moving online. Product and category structure is SEO work as much as merchandising work — get the taxonomy wrong and every product page competes with its own category. Directly relevant to the saree, chikankari and ethnic wear businesses this city has in volume.",
+      },
     ],
     faqs: [
       {
@@ -221,6 +335,26 @@ export const locationPages: LocationPage[] = [
         question: "Can you work on a site you did not build?",
         answer:
           "Yes, and most of our SEO clients are exactly that. We start with an audit so you can see what state it is in before committing to a retainer.",
+      },
+      {
+        question: "What does an SEO retainer cost?",
+        answer:
+          "It is scoped against the audit rather than sold as a fixed monthly package, because a site needing its architecture rebuilt and a site needing content are different amounts of work. The build bands on our pricing page show what technical time costs; the audit tells us how much of it your site needs.",
+      },
+      {
+        question: "Who owns the accounts and the data?",
+        answer:
+          "You do. Analytics, Search Console, Google Business Profile and any tooling stay registered in your name and we work inside them. An agency that holds your Search Console access is holding the evidence of its own work hostage.",
+      },
+      {
+        question: "What do I actually receive each month?",
+        answer:
+          "A short written note of what changed on the site, what moved, and what is queued next — with the commits and page changes behind it. No forty-page automated export. You should be able to tell someone else what we did last month.",
+      },
+      {
+        question: "Do you have to be in Lucknow to do this?",
+        answer:
+          "For the technical and content work, no — that runs remotely and we do it for clients well outside Uttar Pradesh. For the local pack specifically, being able to verify your address, photograph the premises and correct citations against something real is a genuine advantage, which is why the local half of this is easier when we are in the same city.",
       },
     ],
     localProof: [],
@@ -296,6 +430,39 @@ export const locationPages: LocationPage[] = [
           "That ongoing tuning is what our support plans are for. A store is an operating system for a business, not a project that ends.",
         ],
       },
+      {
+        heading: "What a store costs to build in Lucknow",
+        body: [
+          "A Shopify or WooCommerce store put together from a theme sits at the bottom of our range and is genuinely the right answer for a first catalogue — you are paying for setup and configuration, not engineering. A custom-coded store starts an order of magnitude higher because it is a different product, and most Lucknow businesses should not buy it until the template one is provably the constraint.",
+          "Where budgets here go wrong is not the build. It is the running cost nobody quoted: gateway charges of roughly two percent a transaction, platform fees, and the returns from cash on delivery, which quietly eat more margin than all of it. We put those numbers in front of you before you commit, and the build bands are published rather than held for a call.",
+          "Terms are 50% advance to start and 50% at payment-gateway integration — which for a store means you are paying the balance at the point the thing can actually take money.",
+        ],
+        links: [{ label: "See the price bands", href: "/pricing/" }],
+      },
+      {
+        heading: "Hiring in Lucknow versus a Delhi or NCR agency",
+        body: [
+          "Ethnic wear, chikankari, sarees, jewellery and food are the categories this city actually sells, and they share a problem an NCR agency will not feel: the catalogue is large, seasonal, photographed inconsistently, and often lives in a WhatsApp thread rather than a spreadsheet. Getting it into a store is mostly a logistics job, and it goes faster when someone can sit in your shop and look at the stock.",
+          "One of our team shoots product and lifestyle imagery, which for a Lucknow brand launching direct is frequently the difference between six weeks and four months. That is not a service an out-of-state agency will fly in for at this budget.",
+          "Where an NCR agency wins: large paid-media budgets and multi-market rollouts. If that is where you are, hire one.",
+        ],
+      },    ],
+    caseStudies: [
+      {
+        slug: "tatvivahtrends",
+        title: "TatVivah Trends",
+        body: "A multi-vendor wedding ethnic wear marketplace — sherwanis, kurtas and bridal sets filtered by occasion, with a three-thousand-product catalogue, Razorpay checkout and a returns and trust system built in. Wedding ethnic wear is one of the categories Lucknow genuinely competes in nationally, and this is what the full version of it looks like.",
+      },
+      {
+        slug: "samaraha",
+        title: "Samaraha",
+        body: "A textiles brand going direct. The work was catalogue architecture and mobile merchandising — a large seasonal range structured so a buyer on a mid-range phone can navigate it. This is the shape most Lucknow textile businesses need first, and it is not a design problem.",
+      },
+      {
+        slug: "sitaravastram",
+        title: "Sitara Vastram",
+        body: "A fashion storefront where the constraint was speed and product discovery rather than bespoke logic. A useful reference point if you are weighing a template build against a custom one: plenty of catalogues are served properly by the cheaper answer.",
+      },
     ],
     faqs: [
       {
@@ -317,6 +484,26 @@ export const locationPages: LocationPage[] = [
         question: "Will my store be fast enough for Google?",
         answer:
           "Core Web Vitals are part of the pre-launch checklist, not an afterthought. We measure on a throttled mobile connection because that is the condition Google grades you on.",
+      },
+      {
+        question: "Who owns the store, the domain and the payment gateway?",
+        answer:
+          "You do, from day one — domain, hosting, repository, analytics and the gateway account all in your name. We work inside your accounts. This matters more for a store than for a brochure site, because the gateway account is tied to your GST and bank details and should never sit with a developer.",
+      },
+      {
+        question: "How many revisions are included?",
+        answer:
+          "Review rounds at agreed milestones through design and build, and we keep iterating until it matches the signed scope. New scope — an extra integration, a feature that was not in the agreement — is quoted before we build it.",
+      },
+      {
+        question: "What are the payment terms?",
+        answer:
+          "50% advance to start, 50% at payment-gateway integration. For a store that means the balance falls due at the point it can take a real order, not at some arbitrary midpoint.",
+      },
+      {
+        question: "Can you run the store for us remotely after launch?",
+        answer:
+          "Yes — sale configurations, courier integrations, catalogue growth and the performance regressions that come with all of it are exactly what the support plans cover, and none of it needs us in the room. The parts that benefit from being in Lucknow are the catalogue audit and the photography.",
       },
     ],
     localProof: [],
@@ -390,6 +577,37 @@ export const locationPages: LocationPage[] = [
           "We are a fit when the site has a commercial job to do and somebody owns whether it does it.",
         ],
       },
+      {
+        heading: "Where we are in Mumbai",
+        body: [
+          "The office is at GNM/95/347, Ground Floor, Banwari Compound, Mahim Rly Stn (E), Mahim, Mumbai 400016 — two minutes from Mahim station on the Western line, which makes it reachable from Bandra, Dadar and Andheri without a cab. Meetings by appointment; the map is on the contact page.",
+          "For Mumbai clients we generally do the kickoff in person and everything after that remotely, because a standing weekly call across this city costs somebody ninety minutes of travel and produces less than a written update does. If you would rather work face to face throughout, say so early — it changes how we schedule, not whether we can do it.",
+        ],
+      },
+      {
+        heading: "What a build costs against Mumbai agency rates",
+        body: [
+          "A Lower Parel or BKC agency is carrying rent, an account layer and a new-business team, and all three are in the quote whether or not they touch your project. We carry two small offices and no account layer, and the difference lands in the number rather than in the quality of the build.",
+          "What is worth comparing is not the headline figure. It is what happens after: how many revisions are included, who owns the repository, what support costs monthly, and how fast somebody answers when the gateway fails during a Saturday sale. Our bands are published, and the terms are 50% advance to start and 50% at payment-gateway integration on every project regardless of size.",
+        ],
+        links: [{ label: "See the full price bands", href: "/pricing/" }],
+      },    ],
+    caseStudies: [
+      {
+        slug: "maribiz-ai",
+        title: "MariBiz.ai",
+        body: "A B2B marketplace for maritime procurement — an RFQ engine, vendor verification, port-based service discovery and quote comparison for ship operators sourcing everything from spare parts to hull cleaning. Built for an industry Mumbai runs: if your business touches the port, shipping or maritime services, this is the closest reference on our list to your problem.",
+      },
+      {
+        slug: "hcbengineering",
+        title: "HCB Engineering",
+        body: "A government-licensed electrical contractor with twenty years behind it and no site to match. Service pages per vertical so prospects self-qualify, with licences and certifications placed where a procurement officer looks first — the pattern most Mumbai contracting, engineering and industrial services firms need.",
+      },
+      {
+        slug: "clickngreet",
+        title: "ClickNGreet",
+        body: "A gifting storefront where the work was product discovery and a checkout that holds up under occasion-driven traffic spikes. Relevant to Mumbai's consumer and D2C businesses, where demand is concentrated into a handful of weeks a year and the site either survives them or does not.",
+      },
     ],
     faqs: [
       {
@@ -411,6 +629,26 @@ export const locationPages: LocationPage[] = [
         question: "How long does a project take?",
         answer:
           "Three to five weeks for a structured brochure site, six to ten for ecommerce, measured from content sign-off rather than from the contract date.",
+      },
+      {
+        question: "Who owns the code, the domain and the hosting?",
+        answer:
+          "You do, from day one — all registered in your name, with us working inside your accounts. A large share of our Mumbai enquiries are businesses that cannot get repository or hosting access back from a previous agency, which is precisely why we set it up this way.",
+      },
+      {
+        question: "How many revisions are included?",
+        answer:
+          "Review rounds at agreed milestones, iterating until the build matches the signed scope. New scope is quoted before it is built. There is no per-revision charge inside the agreement, which is a line worth checking in any Mumbai agency contract you are comparing us against.",
+      },
+      {
+        question: "What does support cost after launch?",
+        answer:
+          "Support is a recurring plan billed separately from the build, covering updates, uptime monitoring, backups and a named developer. Basic cover is annual; a plan including ongoing changes is priced by build type. The figures are on the pricing page.",
+      },
+      {
+        question: "What are the payment terms?",
+        answer:
+          "50% advance to start and 50% at payment-gateway integration, on every project regardless of size. No separate design fee, and no charge for the pre-launch performance, analytics and Search Console checks.",
       },
     ],
     localProof: [],

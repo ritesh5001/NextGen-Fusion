@@ -115,8 +115,55 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                   {paragraph}
                 </p>
               ))}
+              {section.links && section.links.length > 0 && (
+                <div className="mt-5 flex flex-wrap gap-3">
+                  {section.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="inline-block rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-900 transition-colors hover:border-gray-900"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
+
+          {page.caseStudies.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+                Three builds, and what they took
+              </h2>
+              <p className="mt-4 leading-relaxed text-gray-600">
+                Full write-ups, not logos. These are chosen for how close they sit to the problems
+                {" "}
+                {page.city} businesses bring us — we have not tagged them by the client&apos;s city.
+              </p>
+              <div className="mt-6 space-y-6">
+                {page.caseStudies.map((study) => (
+                  <div key={study.slug} className="rounded-2xl border border-gray-200 p-6">
+                    <h3 className="text-lg font-bold text-gray-900">
+                      <Link
+                        href={`/work/${study.slug}/`}
+                        className="inline-block py-1 hover:underline"
+                      >
+                        {study.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-2 leading-relaxed text-gray-600">{study.body}</p>
+                    <Link
+                      href={`/work/${study.slug}/`}
+                      className="mt-3 inline-block py-1 text-sm font-medium text-purple-600 hover:underline"
+                    >
+                      Read the {study.title} case study
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {page.priceBand && (
             <div className="mb-12 rounded-2xl bg-gray-50 p-6">
@@ -191,6 +238,14 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                   className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
                 >
                   Projects we&apos;ve delivered
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/pricing/"
+                  className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                >
+                  What a build costs
                 </Link>
               </li>
               <li>

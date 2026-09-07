@@ -119,7 +119,12 @@ export default function ServicesPage() {
             </p>
             <p>
               Underneath all three is maintenance, which is the one nobody asks for and everybody
-              needs. If you are not sure which of these you are,{" "}
+              needs. Every one of them is quoted from the same rate card, and the bands are
+              published on the{" "}
+              <Link href="/pricing/" className="font-medium text-purple-600 hover:underline">
+                pricing page
+              </Link>{" "}
+              rather than held back for a call. If you are not sure which of these you are,{" "}
               <Link href="/contact/" className="font-medium text-purple-600 hover:underline">
                 describe the problem
               </Link>{" "}

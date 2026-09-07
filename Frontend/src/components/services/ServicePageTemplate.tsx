@@ -37,6 +37,32 @@ export interface ServiceCaseStudy {
   name: string
   niche: string
   summary: string
+  /** Case-study slug under /work/. When set, the card links to the write-up. */
+  slug?: string
+}
+
+/** A longer prose section for the detail a bullet list cannot carry. */
+export interface ServiceDeepDive {
+  heading: string
+  body: string[]
+}
+
+/** Optional published price band, linking to /pricing/ for the real numbers. */
+export interface ServicePricing {
+  heading: string
+  body: string[]
+}
+
+export interface ServiceIndustries {
+  heading: string
+  intro: string
+  items: string[]
+}
+
+/** Cross-links to the city landing pages this service is sold on. */
+export interface ServiceLocationLink {
+  slug: string
+  label: string
 }
 
 export interface ServiceTestimonial {
@@ -67,7 +93,12 @@ export interface ServicePageData {
   benefits: ServiceBenefit[]
   technologies: string[]
   caseStudies: ServiceCaseStudy[]
+  /** Rendered only when non-empty — never ship unattributed quotes. */
   testimonials: ServiceTestimonial[]
+  deepDive?: ServiceDeepDive
+  pricing?: ServicePricing
+  industries?: ServiceIndustries
+  locationLinks?: ServiceLocationLink[]
   faqs: ServiceFaq[]
   ctaTitle: string
   ctaDescription: string
@@ -290,15 +321,33 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                     <Rocket className="h-3.5 w-3.5" />
                     Case Preview
                   </div>
-                  <h3 className="mt-4 text-2xl font-bold text-gray-900">{project.name}</h3>
+                  <h3 className="mt-4 text-2xl font-bold text-gray-900">
+                    {project.slug ? (
+                      <Link href={`/work/${project.slug}/`} className="inline-block py-1 hover:underline">
+                        {project.name}
+                      </Link>
+                    ) : (
+                      project.name
+                    )}
+                  </h3>
                   <p className="mt-1 text-sm font-medium text-gray-500">{project.niche}</p>
                   <p className="mt-4 text-gray-600 leading-relaxed">{project.summary}</p>
+                  {project.slug && (
+                    <Link
+                      href={`/work/${project.slug}/`}
+                      className="mt-4 inline-block py-1 text-sm font-semibold text-[#2B35AB] hover:underline"
+                    >
+                      Read the {project.name} case study
+                    </Link>
+                  )}
                 </div>
               ))}
             </div>
           </motion.section>
 
-          {/* Testimonials */}
+          {/* Testimonials — rendered only when real quotes exist. An empty array
+              removes the section rather than shipping anonymous filler. */}
+          {data.testimonials.length > 0 && (
           <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Testimonials</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">What Clients Say About Our {data.badge}</h2>
@@ -306,12 +355,81 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
               {data.testimonials.map((testimonial) => (
                 <div key={testimonial.author} className="rounded-2xl border border-gray-100 p-6 bg-white shadow-sm">
                   <Sparkles className="h-5 w-5 text-[#8A38F5]" />
-                  <p className="mt-4 text-gray-700 leading-relaxed">"{testimonial.quote}"</p>
+                  <p className="mt-4 text-gray-700 leading-relaxed">&ldquo;{testimonial.quote}&rdquo;</p>
                   <p className="mt-4 text-sm font-semibold text-gray-900">{testimonial.author}</p>
                 </div>
               ))}
             </div>
           </motion.section>
+          )}
+
+          {/* Deep dive */}
+          {data.deepDive && (
+            <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+              <BadgeSubtitle>In practice</BadgeSubtitle>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.deepDive.heading}</h2>
+              <div className="mt-6 space-y-4">
+                {data.deepDive.body.map((paragraph) => (
+                  <p key={paragraph} className="text-gray-600 leading-relaxed">{paragraph}</p>
+                ))}
+              </div>
+            </motion.section>
+          )}
+
+          {/* Pricing band */}
+          {data.pricing && (
+            <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+              <BadgeSubtitle>Pricing</BadgeSubtitle>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.pricing.heading}</h2>
+              <div className="mt-6 space-y-4">
+                {data.pricing.body.map((paragraph) => (
+                  <p key={paragraph} className="text-gray-600 leading-relaxed">{paragraph}</p>
+                ))}
+              </div>
+              <Link
+                href="/pricing/"
+                className="mt-6 inline-block rounded-full border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
+              >
+                See the full price bands
+              </Link>
+            </motion.section>
+          )}
+
+          {/* Industries */}
+          {data.industries && (
+            <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+              <BadgeSubtitle>Industries</BadgeSubtitle>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.industries.heading}</h2>
+              <p className="mt-4 text-gray-600 leading-relaxed">{data.industries.intro}</p>
+              <ul className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {data.industries.items.map((item) => (
+                  <li key={item} className="rounded-xl border border-gray-100 bg-white px-5 py-4 text-gray-700 shadow-sm">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.section>
+          )}
+
+          {/* City pages */}
+          {data.locationLinks && data.locationLinks.length > 0 && (
+            <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+              <BadgeSubtitle>Where we work</BadgeSubtitle>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Looking for this service in your city?</h2>
+              <ul className="mt-6 grid sm:grid-cols-2 gap-3">
+                {data.locationLinks.map((location) => (
+                  <li key={location.slug}>
+                    <Link
+                      href={`/${location.slug}/`}
+                      className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                    >
+                      {location.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.section>
+          )}
 
           {/* FAQ */}
           <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>

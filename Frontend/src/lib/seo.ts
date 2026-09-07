@@ -73,7 +73,10 @@ export function buildMetadata({
     title,
     description,
     alternates: { canonical: url },
-    ...(noIndex ? { robots: { index: false, follow: false } } : {}),
+    // index:false keeps the page out of the SERP; follow:true still lets the
+    // links on it pass equity. Store product pages link into /store/ and the
+    // service pages, and nofollow was throwing that away for no benefit.
+    ...(noIndex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title: ogTitle ?? title,
       description: ogDescription ?? description,

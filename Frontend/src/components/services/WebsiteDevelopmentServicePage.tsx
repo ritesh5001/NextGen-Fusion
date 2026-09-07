@@ -11,7 +11,6 @@ import {
   Rocket,
   Search,
   ShieldCheck,
-  Sparkles,
   TrendingUp,
   Users,
 } from "lucide-react"
@@ -111,27 +110,42 @@ const faqs = [
   {
     question: "How long does a Website Development Services project take?",
     answer:
-      "Typical delivery ranges from 3 to 8 weeks depending on scope, integrations, and content readiness.",
+      "Three to five weeks for a structured brochure site and six to ten for something with commerce or custom logic, measured from content sign-off rather than from the contract date. The variable is almost never the code — it is how quickly copy and photography arrive.",
+  },
+  {
+    question: "What does a website cost?",
+    answer:
+      "A template build on WordPress or Shopify sits at the bottom of our range; a custom-coded build is an order of magnitude higher because it is a different product. We publish the bands rather than holding them for a call — what moves a project within its band is the number of custom features, the number of integrations, and how ready your content is.",
+  },
+  {
+    question: "Who owns the code, the domain and the hosting?",
+    answer:
+      "You do, from day one. Domain, hosting, repository, analytics and payment gateway are all registered in your name and we work inside your accounts. Nothing has to be handed over if you leave, because none of it was ever ours.",
   },
   {
     question: "Do you provide SEO with Website Development Services?",
     answer:
-      "Yes. Every project includes technical SEO foundations and can be extended with ongoing SEO growth support.",
+      "Technical SEO foundations are part of every build rather than an upsell: titles, descriptions, heading structure, internal links, schema, a sitemap, and Search Console and analytics connected and verified before launch. Ongoing SEO growth work is a separate engagement.",
+  },
+  {
+    question: "How many revisions are included?",
+    answer:
+      "Review rounds at agreed milestones, and we keep iterating until the result matches the signed scope. What is charged extra is new scope — a page or feature that was not in the agreement — and we tell you that before doing the work, not in the final invoice.",
   },
   {
     question: "Can you redesign our current website without losing rankings?",
     answer:
-      "Absolutely. We handle migration planning, redirects, metadata continuity, and performance-safe rollout.",
+      "Yes. Migration planning, redirect mapping, metadata continuity and a performance-safe rollout. A redesign that loses rankings is almost always a redirect problem rather than a design one, and it is the step most rebuilds skip.",
   },
   {
-    question: "Will the website be easy for our team to update?",
+    question: "What happens after launch, and what does it cost?",
     answer:
-      "Yes. We build maintainable structures and provide admin-friendly workflows for content and updates.",
+      "Every build comes with a defined support arrangement rather than a handshake — updates, uptime monitoring, backups and a named developer to call. It is billed separately from the build as a recurring plan; the figures are on the pricing page.",
   },
   {
-    question: "Do you offer post-launch support and maintenance?",
+    question: "What are the payment terms?",
     answer:
-      "Yes, we provide Website Maintenance Services including monitoring, updates, security patches, and enhancements.",
+      "50% advance to start and 50% at payment-gateway integration, the same on every project regardless of size. There is no separate design fee, no per-revision charge inside the agreed scope, and no charge for the pre-launch performance, analytics and Search Console checks.",
   },
 ]
 
@@ -319,17 +333,25 @@ export default function WebsiteDevelopmentServicePage() {
           <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Portfolio Preview</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Recent Website Development Use Cases</h2>
-            <div className="mt-8 grid md:grid-cols-2 gap-6">
+            <div className="mt-8 grid md:grid-cols-2 gap-6 lg:grid-cols-3">
               {[
                 {
-                  name: "Tatvivah",
-                  niche: "Premium Ethnic Wear E-commerce",
-                  summary: "Built a premium storefront experience with category-first navigation, trust-focused product pages, and conversion-oriented checkout flow.",
+                  slug: "tatvivahtrends",
+                  name: "TatVivah Trends",
+                  niche: "Multi-vendor wedding ethnic wear",
+                  summary: "A three-thousand-product marketplace with occasion-based filtering, Razorpay checkout, gift cards and a returns and trust system — built so multiple vendors could sell into one storefront without the catalogue becoming unusable on a phone.",
                 },
                 {
-                  name: "MariBiz",
-                  niche: "Global Marine Marketplace",
-                  summary: "Designed and engineered a lead-focused platform with structured RFQ intake, supplier trust framing, and scalable service discovery journeys.",
+                  slug: "maribiz-ai",
+                  name: "MariBiz.ai",
+                  niche: "B2B maritime marketplace",
+                  summary: "An RFQ engine, vendor verification, port-based service discovery and quote comparison for ship operators sourcing everything from spare parts to hull cleaning. The kind of model where a platform gets in the way and custom is the honest answer.",
+                },
+                {
+                  slug: "hcbengineering",
+                  name: "HCB Engineering",
+                  niche: "Engineering and contracting",
+                  summary: "A government-licensed electrical contractor with twenty years behind it and no site to match. Service pages per vertical so prospects self-qualify, with licences and certifications placed where a procurement officer looks first.",
                 },
               ].map((project) => (
                 <div key={project.name} className="rounded-2xl border border-gray-100 p-7 bg-white shadow-sm">
@@ -337,39 +359,144 @@ export default function WebsiteDevelopmentServicePage() {
                     <Rocket className="h-3.5 w-3.5" />
                     Case Preview
                   </div>
-                  <h3 className="mt-4 text-2xl font-bold text-gray-900">{project.name}</h3>
+                  <h3 className="mt-4 text-2xl font-bold text-gray-900">
+                    <Link href={`/work/${project.slug}/`} className="inline-block py-1 hover:underline">
+                      {project.name}
+                    </Link>
+                  </h3>
                   <p className="mt-1 text-sm font-medium text-gray-500">{project.niche}</p>
                   <p className="mt-4 text-gray-600 leading-relaxed">{project.summary}</p>
+                  <Link
+                    href={`/work/${project.slug}/`}
+                    className="mt-4 inline-block py-1 text-sm font-semibold text-[#2B35AB] hover:underline"
+                  >
+                    Read the {project.name} case study
+                  </Link>
                 </div>
               ))}
             </div>
           </motion.section>
 
+          {/* In practice */}
           <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
-            <BadgeSubtitle>Testimonials</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">What Clients Say About Our Website Development Services</h2>
-            <div className="mt-8 grid md:grid-cols-3 gap-5">
-              {[
-                {
-                  quote: "Their Website Development Services gave us a premium web presence and a clear increase in qualified leads.",
-                  author: "Founder, D2C Fashion Brand",
-                },
-                {
-                  quote: "Fast delivery, clean execution, and great communication. The new site feels built for growth.",
-                  author: "Director, Marine Services Firm",
-                },
-                {
-                  quote: "They understood both design and conversion. The website now performs as a real sales asset.",
-                  author: "Marketing Head, B2B Company",
-                },
-              ].map((testimonial) => (
-                <div key={testimonial.author} className="rounded-2xl border border-gray-100 p-6 bg-white shadow-sm">
-                  <Sparkles className="h-5 w-5 text-[#8A38F5]" />
-                  <p className="mt-4 text-gray-700 leading-relaxed">“{testimonial.quote}”</p>
-                  <p className="mt-4 text-sm font-semibold text-gray-900">{testimonial.author}</p>
-                </div>
-              ))}
+            <BadgeSubtitle>In practice</BadgeSubtitle>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">
+              How a build actually runs
+            </h2>
+            <div className="mt-6 space-y-4">
+              <p className="text-gray-600 leading-relaxed">
+                It starts with a written scope, not a meeting. Send us what the business does, who
+                buys from it and what the site has to achieve, and you get back a page describing
+                what we would build, what it would cost and how long it would take. If the number
+                does not work, you have spent one email finding that out instead of three calls.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                From there the sequence is fixed: structure and content plan, design of the
+                templates that matter, build, content load, then a pre-launch pass covering
+                performance, mobile layout, analytics and Search Console. That last step is the one
+                most rebuilds skip, and it is why so many of the sites we are asked to rescue lost
+                their rankings on the day they launched.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                Choosing the platform is the most expensive decision in the project and it is made
+                in week one. Next.js where the site needs speed, custom logic or a large content
+                structure. WordPress where a non-technical team has to publish daily and the site is
+                content-led. Shopify where the priority is merchandising and payments rather than
+                bespoke behaviour. We tell you which one your project is, with the reasoning, before
+                you commit — getting this wrong is recoverable only by starting again.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                Then the part nobody sells: what happens in month four. Every build ships with a
+                defined support arrangement rather than a handshake, and the developer who wrote the
+                code is the one who answers. An agency that has not thought about month four is
+                telling you exactly what month four will look like.
+              </p>
             </div>
+          </motion.section>
+
+          {/* Pricing */}
+          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+            <BadgeSubtitle>Pricing</BadgeSubtitle>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">What a website costs</h2>
+            <div className="mt-6 space-y-4">
+              <p className="text-gray-600 leading-relaxed">
+                A template build on WordPress or Shopify sits at the bottom of our range — you are
+                paying for setup, configuration and content rather than engineering, and for plenty
+                of businesses that is genuinely the right purchase. A custom-coded build starts an
+                order of magnitude higher because it is a different product, and you should not buy
+                it until the template version is provably the constraint.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                What moves a project within its band is the number of custom features, the number of
+                systems that have to talk to each other, and how ready your content is. A build
+                where copy and photography arrive on day one is meaningfully cheaper than one still
+                waiting on them in week six.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                Terms are the same on every project regardless of size: 50% advance to start, 50% at
+                payment-gateway integration. No separate design fee, no per-revision charge inside
+                the agreed scope, and no charge for the pre-launch performance, analytics and Search
+                Console checks.
+              </p>
+            </div>
+            <Link
+              href="/pricing/"
+              className="mt-6 inline-block rounded-full border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
+            >
+              See the full price bands
+            </Link>
+          </motion.section>
+
+          {/* Industries */}
+          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+            <BadgeSubtitle>Industries</BadgeSubtitle>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Industries we build for</h2>
+            <p className="mt-4 text-gray-600 leading-relaxed">
+              The common thread is not a sector, it is a situation: the site has a commercial job to
+              do, and somebody owns whether it does it. These are the ones we see most.
+            </p>
+            <ul className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {[
+                "D2C and ecommerce brands",
+                "Manufacturers and industrial suppliers",
+                "Engineering and contracting firms",
+                "Professional and B2B services",
+                "Marketplaces and B2B platforms",
+                "Institutes and education",
+                "Clinics and healthcare practices",
+                "Hospitality and food",
+                "Renewable energy and infrastructure",
+              ].map((industry) => (
+                <li key={industry} className="rounded-xl border border-gray-100 bg-white px-5 py-4 text-gray-700 shadow-sm">
+                  {industry}
+                </li>
+              ))}
+            </ul>
+          </motion.section>
+
+          {/* City pages */}
+          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+            <BadgeSubtitle>Where we work</BadgeSubtitle>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">
+              Looking for website development in your city?
+            </h2>
+            <ul className="mt-6 grid sm:grid-cols-2 gap-3">
+              {[
+                { slug: "website-development-company-in-lucknow", label: "Website development company in Lucknow" },
+                { slug: "website-development-company-in-mumbai", label: "Website development company in Mumbai" },
+                { slug: "ecommerce-development-company-in-lucknow", label: "Ecommerce development company in Lucknow" },
+                { slug: "seo-services-in-lucknow", label: "SEO services in Lucknow" },
+              ].map((location) => (
+                <li key={location.slug}>
+                  <Link
+                    href={`/${location.slug}/`}
+                    className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                  >
+                    {location.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </motion.section>
 
           <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
