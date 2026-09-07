@@ -83,7 +83,11 @@ const nextConfig = {
       { source: '/blogs', destination: '/blog/', permanent: true },
       { source: '/blogs/:slug*', destination: '/blog/:slug*/', permanent: true },
       { source: '/projects', destination: '/work/', permanent: true },
-      { source: '/projects/:slug*', destination: '/work/:slug*/', permanent: true },
+      // The pattern must not match /public/projects/<slug>/screenshot-N.png —
+      // those are the case-study images, and a bare `:slug*` swallowed them,
+      // 404ing every screenshot on /work/. Only match paths with no file
+      // extension.
+      { source: '/projects/:slug((?!.*\\.).*)', destination: '/work/:slug/', permanent: true },
       // /portofolio/ was a misspelled, client-rendered duplicate of /work/.
       // Retired rather than repaired.
       // Item slugs never matched between the two sections (/portofolio/maribiz

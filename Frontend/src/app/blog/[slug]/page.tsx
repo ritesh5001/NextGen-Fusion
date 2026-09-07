@@ -8,7 +8,8 @@ import Link from "next/link"
 import { apiService } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import ScrollToTop from "@/components/scroll-to-top"
-import { absoluteUrl, DEFAULT_OG_IMAGE, siteUrl } from "@/lib/seo"
+import { JsonLd } from "@/components/json-ld"
+import { absoluteUrl, articleSchema, assetUrl, breadcrumbSchema, DEFAULT_OG_IMAGE, siteUrl } from "@/lib/seo"
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   try {
@@ -107,8 +108,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       return `${minutes} min read`
     }
 
+    // The page shipped with only the sitewide graph — nothing telling Google
+    // this is an article, who wrote it or when. articleSchema() already existed
+    // in lib/seo.ts and was unused.
+    const postSchema = [
+      articleSchema({
+        title: blogPost.title,
+        description: blogPost.excerpt || blogPost.title,
+        path: `/blog/${blogPost.slug}`,
+        image: blogPost.cover_image ? assetUrl(blogPost.cover_image) : undefined,
+        publishedTime: blogPost.published_at || undefined,
+        modifiedTime: blogPost.updated_at || blogPost.published_at || undefined,
+        authorName: blogPost.author || undefined,
+      }),
+      breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Blog", path: "/blog" },
+        { name: blogPost.title, path: `/blog/${blogPost.slug}` },
+      ]),
+    ]
+
     return (
       <div className="min-h-screen bg-white">
+        <JsonLd data={postSchema} />
 
         {/* Header Section */}
         <header className="pt-32 pb-12 bg-gradient-to-br from-gray-50 to-white">

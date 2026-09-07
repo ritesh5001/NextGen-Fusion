@@ -29,6 +29,15 @@ export function absoluteUrl(path = "/"): string {
   return `${siteUrl}${withSlash}`
 }
 
+/**
+ * Absolute URL for a static asset. Unlike `absoluteUrl()` this must NOT append a
+ * trailing slash — `/og/x.png/` is a 404, and schema image URLs have to resolve.
+ */
+export function assetUrl(path: string): string {
+  if (/^https?:\/\//i.test(path)) return path
+  return `${siteUrl}/${path.replace(/^\/+/, "")}`
+}
+
 type BuildMetadataInput = {
   title: string
   description: string
@@ -161,8 +170,13 @@ export function articleSchema({
     description,
     url: absoluteUrl(path),
     mainEntityOfPage: absoluteUrl(path),
-    image: image ? [image] : [absoluteUrl(DEFAULT_OG_IMAGE)],
-    author: { "@type": "Organization", name: authorName, "@id": ORGANIZATION_ID },
+    image: [assetUrl(image ?? DEFAULT_OG_IMAGE)],
+    // A named human is a Person. Typing them as Organization and reusing the
+    // company's @id told Google the byline and the publisher were one entity.
+    author:
+      authorName === SITE_NAME
+        ? { "@id": ORGANIZATION_ID }
+        : { "@type": "Person", name: authorName },
     publisher: { "@id": ORGANIZATION_ID },
     ...(publishedTime ? { datePublished: publishedTime } : {}),
     ...(modifiedTime ? { dateModified: modifiedTime } : {}),
