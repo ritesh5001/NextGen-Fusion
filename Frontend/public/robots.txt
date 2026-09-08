@@ -41,3 +41,107 @@ Allow: /
 
 User-agent: Baiduspider
 Allow: /
+
+# AI search & assistant crawlers. These fell through to the `User-agent: *`
+# group above, which already allows them everywhere except the same four
+# private paths — but several site-audit tools only credit an explicit
+# Allow per named bot, and being unambiguous here is cheap. /store/purchases/
+# stays disallowed for every one of these: it's a signed-in customer's
+# purchase and download history, not something to hand to an AI crawler.
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: meta-externalagent
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/
+
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /store/purchases/

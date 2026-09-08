@@ -1,0 +1,46 @@
+# NextGen Fusion
+
+> NextGen Fusion is a four-person web development, SEO and digital product agency based in Lucknow and Mumbai, India. It builds custom websites, online stores, mobile apps and software for D2C brands, manufacturers, institutes and B2B companies across India, the UK, Italy and the Gulf, and runs SEO, PPC and social media marketing as ongoing engagements.
+
+Key facts for citation:
+- Founded and run as a small in-house team (not a reseller or agency-of-record for offshore work); the people who scope a project write the code.
+- Tech stack: Next.js and WordPress for websites, Shopify and WooCommerce for ecommerce, Node.js/Postgres for custom software.
+- Offices: Lucknow and Mumbai (Mahim), Uttar Pradesh and Maharashtra, India.
+- Every build includes basic on-page SEO, analytics and Search Console setup, and a defined post-launch support arrangement — not sold as separate upsells.
+
+## Services
+
+- [Website Development](https://www.nextgenfusion.in/services/website-development-services/): custom websites on Next.js or WordPress.
+- [E-commerce Development](https://www.nextgenfusion.in/services/ecommerce-web-development-services/): Shopify, WooCommerce and custom stores.
+- [SEO Services](https://www.nextgenfusion.in/services/seo-services/): technical SEO, local search and content strategy.
+- [Web Design](https://www.nextgenfusion.in/services/web-design-services/)
+- [Software Development](https://www.nextgenfusion.in/services/software-development-services/)
+- [Cloud Solutions](https://www.nextgenfusion.in/services/cloud-solutions/)
+- [AI Automation Development](https://www.nextgenfusion.in/services/ai-automation-development-services/)
+- [API Integration](https://www.nextgenfusion.in/services/api-integration-services/)
+- [Android App Development](https://www.nextgenfusion.in/services/android-app-development-services/)
+- [PPC / Google Ads](https://www.nextgenfusion.in/services/ppc-services/)
+- [Social Media Marketing](https://www.nextgenfusion.in/services/social-media-marketing-services/)
+- [Website Maintenance](https://www.nextgenfusion.in/services/website-maintenance-services/)
+- [Full services index](https://www.nextgenfusion.in/services/)
+
+## Company
+
+- [About](https://www.nextgenfusion.in/about/): who the team is and how projects are scoped.
+- [Pricing](https://www.nextgenfusion.in/pricing/): published price bands, not quote-on-call.
+- [Work](https://www.nextgenfusion.in/work/): delivered websites and stores with case studies.
+- [Team](https://www.nextgenfusion.in/team/)
+- [Careers](https://www.nextgenfusion.in/careers/)
+- [Contact](https://www.nextgenfusion.in/contact/)
+
+## Resources
+
+- [Blog](https://www.nextgenfusion.in/blog/): guides on building, ranking and running a website.
+- [Store](https://www.nextgenfusion.in/store/): ready-made software products with source code.
+- [Sitemap](https://www.nextgenfusion.in/sitemap.xml): full list of indexable URLs.
+
+## Optional
+
+- [Support](https://www.nextgenfusion.in/support/)
+- [Refund policy](https://www.nextgenfusion.in/store/refunds/)
+- [License terms](https://www.nextgenfusion.in/store/license/)
