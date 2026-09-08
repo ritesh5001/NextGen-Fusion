@@ -152,7 +152,7 @@ export default function DeliveredWall({
                 )}
               </HeadingTag>
               <p className="mt-3 max-w-2xl text-gray-500">
-                {subheading ?? `${deliveredProjects.length}+ live websites and stores built and shipped for real businesses.`}
+                {subheading ?? "Live websites and stores built and shipped for real businesses."}
               </p>
             </div>
             {showViewAll && (
@@ -161,7 +161,7 @@ export default function DeliveredWall({
                 prefetch={false}
                 className="inline-flex shrink-0 items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
               >
-                See all {deliveredProjects.length} projects
+                See all projects
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             )}
@@ -172,7 +172,7 @@ export default function DeliveredWall({
           <div className="mb-8 space-y-4">
             <div className="flex flex-wrap gap-2">
               <Chip active={activeCat === "all"} onClick={() => { setActiveCat("all"); setActiveSub("all") }}>
-                All ({deliveredProjects.length})
+                All
               </Chip>
               {presentCats.map((c) => (
                 <Chip
@@ -180,7 +180,7 @@ export default function DeliveredWall({
                   active={activeCat === c}
                   onClick={() => { setActiveCat(c); setActiveSub("all") }}
                 >
-                  {CATEGORY_LABELS[c]} ({deliveredProjects.filter((p) => p.category === c).length})
+                  {CATEGORY_LABELS[c]}
                 </Chip>
               ))}
             </div>
@@ -192,7 +192,7 @@ export default function DeliveredWall({
                 </Chip>
                 {presentSubs.map((s) => (
                   <Chip key={s} active={activeSub === s} onClick={() => setActiveSub(s)}>
-                    {s} ({deliveredProjects.filter((p) => p.subcategory === s).length})
+                    {s}
                   </Chip>
                 ))}
               </div>
@@ -213,7 +213,7 @@ export default function DeliveredWall({
               prefetch={false}
               className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-6 py-3 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
             >
-              See all {deliveredProjects.length} projects delivered
+              See all projects delivered
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>

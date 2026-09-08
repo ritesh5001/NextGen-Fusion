@@ -3,13 +3,11 @@ import CTABanner from "@/components/cta-banner"
 import DeliveredWall from "@/components/delivered-wall"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
-import { deliveredProjects } from "@/lib/delivered-projects"
 import { staticProjects } from "@/lib/static-projects"
 
 const PATH = "/work"
 
 export default function WorkPage() {
-  const deliveredCount = deliveredProjects.length
   const featured = staticProjects.slice(0, 6)
 
   const schema = [
@@ -47,7 +45,7 @@ export default function WorkPage() {
         <section className="mx-auto max-w-7xl px-6 pb-4">
           <p className="text-sm font-medium uppercase tracking-wide text-purple-600">Our work</p>
           <h1 className="mt-3 max-w-4xl text-4xl font-bold leading-tight text-gray-900 sm:text-5xl">
-            {deliveredCount} sites delivered, and the stories behind them
+            Sites we&apos;ve delivered, and the stories behind them
           </h1>
           <div className="mt-6 grid gap-8 lg:grid-cols-2">
             <div className="space-y-4 text-lg leading-relaxed text-gray-600">
@@ -66,14 +64,9 @@ export default function WorkPage() {
             </div>
             <div className="space-y-4 text-lg leading-relaxed text-gray-600">
               <p>
-                {staticProjects.length} of these have full case studies: what the client came with,
-                what we recommended and why, what got built, and what it changed. They are the most
-                useful thing on this site if you are trying to judge whether we would be any good at
-                your project — considerably more useful than a logo wall.
-              </p>
-              <p>
-                The rest link straight through to the live site. Click any of them and judge the
-                work directly; that is the point of publishing them.
+                Some of these have full case studies — what the client came with, what we
+                recommended and why, what got built, and what it changed. The rest link straight
+                through to the live site; click any of them and judge the work directly.
               </p>
               <p className="text-base">
                 Looking for a specific capability instead?{" "}

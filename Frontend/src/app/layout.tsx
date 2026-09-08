@@ -225,11 +225,23 @@ export const metadata: Metadata = {
     "msapplication-config": "/favicon/browserconfig.xml",
   },
 
-  // Verification tags (add when you have them)
+  // Verification tags. Google is already verified via the two HTML files in
+  // /public, which is fragile — either file disappearing in a cleanup
+  // silently de-verifies the property with no alert. This meta tag is a
+  // second, code-reviewed verification path that can't be deleted by
+  // accident the way a file in /public can. Get the token from Search
+  // Console > Settings > Ownership verification > HTML tag (it will NOT
+  // match the filename token) and set it as
+  // NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION. Bing Webmaster Tools issues its own
+  // token the same way for NEXT_PUBLIC_BING_SITE_VERIFICATION — worth adding
+  // since robots.txt already explicitly welcomes Bingbot.
   verification: {
-    // google: 'your-google-verification-code',
-    // yandex: 'your-yandex-verification-code',
-    // yahoo: 'your-yahoo-verification-code',
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
+      : {}),
   },
 
   // Robots

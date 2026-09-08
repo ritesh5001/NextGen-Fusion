@@ -4,6 +4,7 @@ import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { requireInternalAuth } from '../middleware/auth'
 import { sendProductDeliveryEmail } from '../lib/email'
 import { downloadSecret, buildDownloadUrl } from '../lib/store-download'
+import { pingIndexNow } from '../lib/indexnow'
 
 const router = Router()
 
@@ -129,6 +130,7 @@ router.post('/store-products', requireInternalAuth, async (req, res) => {
       }
       throw error
     }
+    if (data?.is_active && data.slug) pingIndexNow([`/store/${data.slug}/`])
     res.status(201).json({ data })
   } catch (error) {
     logRouteError('store-products:create', error)
@@ -158,6 +160,7 @@ router.patch('/store-products/:id', requireInternalAuth, async (req, res) => {
       }
       throw error
     }
+    if (data?.is_active && data.slug) pingIndexNow([`/store/${data.slug}/`])
     res.json({ data })
   } catch (error) {
     logRouteError('store-products:update', error)

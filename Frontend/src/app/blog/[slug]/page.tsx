@@ -10,6 +10,7 @@ import { normalizeImagePath } from "@/lib/utils"
 import ScrollToTop from "@/components/scroll-to-top"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, articleSchema, assetUrl, breadcrumbSchema, DEFAULT_OG_IMAGE, siteUrl } from "@/lib/seo"
+import { categorySlug, relatedPosts } from "@/lib/blog"
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   try {
@@ -24,9 +25,12 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
         return []
   }
 }
-// Mengubah ke SSR mode
-export const dynamicParams = true  // Mengizinkan parameter dinamis untuk SSR
-export const dynamic = 'force-dynamic'  // Menggunakan SSR
+// Statically generated from generateStaticParams() above, then revalidated
+// hourly — a post published between rebuilds still resolves on first request
+// via dynamicParams, but every subsequent hit is served from cache instead of
+// paying a full backend round-trip.
+export const dynamicParams = true
+export const revalidate = 3600
 
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -76,6 +80,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
     const previous = currentIndex > 0 ? activeBlogPosts[currentIndex - 1] : null
     const next = currentIndex < activeBlogPosts.length - 1 ? activeBlogPosts[currentIndex + 1] : null
+    // Same-category posts first, so "related" is a topical link rather than
+    // whichever three posts happen to sort next.
+    const related = relatedPosts(activeBlogPosts, blogPost)
 
     const handleShare = async () => {
       if (navigator.share && blogPost) {
@@ -184,9 +191,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
               {/* Category Badge */}
               <div className="flex justify-center mb-4">
-                <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium">
-                  {blogPost.category || 'Article'}
-                </span>
+                {blogPost.category ? (
+                  <Link
+                    href={`/blog/category/${categorySlug(blogPost.category)}/`}
+                    className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-200"
+                  >
+                    {blogPost.category}
+                  </Link>
+                ) : (
+                  <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium">
+                    Article
+                  </span>
+                )}
               </div>
 
               {/* Title */}
@@ -305,13 +321,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
               </div>
 
               {/* Related Posts */}
-              {activeBlogPosts.length > 1 && (
+              {related.length > 0 && (
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
                   <h3 className="font-semibold text-gray-900 mb-4">Related Posts</h3>
                   <div className="space-y-4">
-                    {activeBlogPosts
-                      .filter((post: any) => post.id !== blogPost.id)
-                      .slice(0, 3)
+                    {related
                       .map((relatedPost: any) => (
                         <Link
                           key={relatedPost.id}

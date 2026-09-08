@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
+import { pingIndexNow } from '../lib/indexnow'
 
 const router = Router()
 
@@ -153,6 +154,7 @@ router.post('/admin/blog-posts', requireAuth, async (req, res) => {
       })
       return
     }
+    if (data?.is_active && data.slug) pingIndexNow([`/blog/${data.slug}/`])
     res.status(201).json({ data })
   } catch (err) {
     logRouteError('blog:create', err)
@@ -184,6 +186,7 @@ router.patch('/admin/blog-posts/:id', requireAuth, async (req, res) => {
       res.status(500).json({ error: error.message })
       return
     }
+    if (data?.is_active && data.slug) pingIndexNow([`/blog/${data.slug}/`])
     res.json({ data })
   } catch (err) {
     logRouteError('blog:update', err)

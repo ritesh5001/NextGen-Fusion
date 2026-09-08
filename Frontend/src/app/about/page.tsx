@@ -5,7 +5,6 @@ import { JsonLd } from "@/components/json-ld"
 import CTABanner from "@/components/cta-banner"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import { offices } from "@/data/offices"
-import { deliveredProjects } from "@/lib/delivered-projects"
 import { staticProjects } from "@/lib/static-projects"
 
 const PATH = "/about"
@@ -13,7 +12,7 @@ const PATH = "/about"
 export const metadata: Metadata = buildMetadata({
   title: "About NextGen Fusion — the team behind the work",
   description:
-    "Who we are, how we work, and why we don't disappear after launch. A four-person product team in Lucknow and Mumbai with 74 sites delivered.",
+    "Who we are, how we work, and why we don't disappear after launch. A four-person product team in Lucknow and Mumbai.",
   path: PATH,
 })
 
@@ -68,7 +67,6 @@ const principles = [
 ]
 
 export default function AboutPage() {
-  const deliveredCount = deliveredProjects.length
   const caseStudyCount = staticProjects.length
 
   const schema = [
@@ -121,14 +119,7 @@ export default function AboutPage() {
             the people who built it are gone. That is the gap the company exists to close.
           </p>
 
-          <dl className="mt-12 grid gap-6 sm:grid-cols-3">
-            <div className="rounded-2xl border border-gray-200 p-6">
-              <dt className="text-sm font-medium text-gray-500">Sites delivered</dt>
-              <dd className="mt-2 text-4xl font-bold text-gray-900">{deliveredCount}</dd>
-              <p className="mt-2 text-sm text-gray-600">
-                Live and in production, across ecommerce, B2B and institutional clients.
-              </p>
-            </div>
+          <dl className="mt-12 grid gap-6 sm:grid-cols-2">
             <div className="rounded-2xl border border-gray-200 p-6">
               <dt className="text-sm font-medium text-gray-500">Written case studies</dt>
               <dd className="mt-2 text-4xl font-bold text-gray-900">{caseStudyCount}</dd>

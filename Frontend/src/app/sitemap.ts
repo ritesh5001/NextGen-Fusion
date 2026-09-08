@@ -5,6 +5,7 @@ import { apiService } from "@/lib/api"
 import { getStoreProducts, isStoreProductIndexable } from "@/lib/store"
 import { serviceSlugs } from "@/data/services-nav"
 import { locationSlugs } from "@/data/locations"
+import { activeCategorySlugs } from "@/lib/blog"
 
 // Revalidate hourly so newly published blog posts, store products and
 // portfolio entries show up without a redeploy.
@@ -39,7 +40,7 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
 }
 
 const SERVICES_LAST_MODIFIED = "2026-08-14"
-const LOCATIONS_LAST_MODIFIED = "2026-09-06"
+const LOCATIONS_LAST_MODIFIED = "2026-09-08"
 
 type Entry = MetadataRoute.Sitemap[number]
 
@@ -61,15 +62,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Remote content is best-effort: a Backend hiccup must not fail the build or
   // serve an empty sitemap, so each source degrades to "skip this section".
-  const [blogEntries, storeEntries] = await Promise.all([
-    apiService
-      .getActiveBlogPosts()
-      .then((posts) =>
-        posts.map((post) =>
-          entry(`/blog/${post.slug}`, post.updated_at || post.published_at || new Date()),
-        ),
-      )
-      .catch(() => [] as MetadataRoute.Sitemap),
+  const [blogPosts, storeEntries] = await Promise.all([
+    apiService.getActiveBlogPosts().catch(() => [] as Awaited<ReturnType<typeof apiService.getActiveBlogPosts>>),
     // 47 product pages that render server-side with full metadata and were
     // absent from the sitemap entirely — the highest commercial-intent URLs
     // on the site had no path in.
@@ -84,5 +78,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .catch(() => [] as MetadataRoute.Sitemap),
   ])
 
-  return [...staticEntries, ...blogEntries, ...storeEntries]
+  const blogEntries = blogPosts.map((post) =>
+    entry(`/blog/${post.slug}`, post.updated_at || post.published_at || new Date()),
+  )
+  // Category archives — same freshness signal as /blog itself, since they're
+  // just a filtered view of the same posts.
+  const blogCategoryEntries = activeCategorySlugs(blogPosts).map((slug) =>
+    entry(`/blog/category/${slug}`, STATIC_LAST_MODIFIED["/blog"]),
+  )
+
+  return [...staticEntries, ...blogEntries, ...blogCategoryEntries, ...storeEntries]
 }

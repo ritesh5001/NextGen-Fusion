@@ -2,8 +2,11 @@
  * City landing pages.
  *
  * Every result on page one for "web development company in Lucknow" ranks with a
- * dedicated city URL; we had none. These are the four highest-intent
- * combinations of service × office.
+ * dedicated city URL; we had none. These are the highest-intent combinations
+ * of service × office — three per city, matching the service lines each
+ * office actually sells. Mumbai started one page deep while Lucknow had all
+ * three; keep them at parity going forward rather than adding a new city
+ * before both existing ones are complete.
  *
  * BEFORE PUBLISHING — two fields are deliberately left blank because they state
  * facts only you can confirm:
@@ -657,7 +660,289 @@ export const locationPages: LocationPage[] = [
       { slug: "ecommerce-web-development-services", label: "E-commerce Web Development" },
       { slug: "seo-services", label: "SEO Services" },
     ],
-    relatedLocations: ["website-development-company-in-lucknow"],
+    relatedLocations: ["seo-services-in-mumbai", "ecommerce-development-company-in-mumbai"],
+  },
+  {
+    slug: "seo-services-in-mumbai",
+    city: "Mumbai",
+    serviceLabel: "SEO Services",
+    title: "SEO Services in Mumbai",
+    metaTitle: "SEO Services in Mumbai",
+    metaDescription:
+      "Technical SEO, local search and content strategy for Mumbai businesses — run from our Mahim office by the same team that builds the site.",
+    h1: "SEO services in Mumbai",
+    intro: [
+      "Most SEO retainers sold in this city are reporting products: rankings land in a spreadsheet, a handful of directory listings get built, and nothing about the site itself changes — which is where the actual problem almost always is.",
+      "We run SEO as engineering work from the Mahim office: site structure, page speed, internal linking, schema and content, changed in the codebase rather than described in a monthly PDF.",
+    ],
+    sections: [
+      {
+        heading: "Where local rankings are actually won",
+        body: [
+          "For a Mumbai business competing on local intent, three things decide the outcome and none of them are keyword density: a Google Business Profile that is complete and actively maintained, name-address-phone details that match exactly everywhere they appear, and a page on your own site that genuinely targets the city or suburb rather than repeating the service page with the place name swapped in.",
+          "That third one is where nearly every local site fails in a city this size — Bandra, Andheri, Lower Parel and BKC are different searches with different intent, and a find-and-replace page reads as one to Google and to the person on it. Ours are written per location, which is slower and works.",
+        ],
+      },
+      {
+        heading: "What we do first",
+        body: [
+          "The first month is a technical pass and nothing else: crawl the whole site, fix what is blocking indexing, fix what is slow, correct the structured data, rebuild the internal linking, and set up the measurement so the following months can be judged. On most sites we take over this alone moves things, because nothing has ever been done properly at that layer.",
+          "Content and authority work follows once the foundation holds. Doing it in the other order is how retainers run for a year with nothing to show.",
+        ],
+      },
+      {
+        heading: "What you get monthly",
+        body: [
+          "A short written note of what changed on the site, what moved, and what is queued next — with the actual commits and page changes behind it. No 40-page automated export.",
+          "We would rather you could tell us what we did last month than be handed a document you will not read.",
+        ],
+      },
+      {
+        heading: "What the first ninety days look like",
+        body: [
+          "Weeks one to four: a full technical audit and the fixes that come out of it. Crawl and indexing errors, page speed, mobile layout faults, duplicate and thin pages, broken internal links, missing or wrong structured data, and a canonical strategy that actually holds. This is unglamorous and it is where the compounding starts.",
+          "Weeks five to eight: architecture. Which pages should exist, which should be merged, which should be removed, and how they link to one another. Most sites we take on have their commercial pages buried three clicks deep with no internal links pointing at them, which is a way of telling Google they do not matter.",
+          "Weeks nine to twelve: content and local signals. The pages that were missing get written, Google Business Profile gets completed and maintained, and directory listings get built with name, address and phone matching exactly. Only then does link acquisition make sense — pointing authority at a site that is not structurally sound wastes it.",
+        ],
+      },
+      {
+        heading: "What we will not do",
+        body: [
+          "No purchased links, no private blog networks, no expired-domain redirects. These still work briefly and then stop working permanently, and recovering from a manual action costs more than the rankings were worth.",
+          "No AI-generated bulk content published under your name. No fake reviews, and no review-gating schemes that violate Google's policies. No guarantee of a specific ranking position, because nobody can honestly give one.",
+          "If a competing proposal promises any of the above, that is the reason it is cheaper.",
+        ],
+      },
+      {
+        heading: "How this connects to the rest of the site",
+        body: [
+          "SEO retained separately from the people who can change the site is the single most common reason it fails. We build and maintain sites too, which means a recommendation and its implementation are the same conversation rather than two vendors blaming each other.",
+          "If we did not build your site, we work directly with whoever did — and we would rather do that than take a retainer where nothing we recommend ever ships.",
+        ],
+      },
+      {
+        heading: "What SEO costs against Mumbai agency rates",
+        body: [
+          "A Lower Parel or BKC agency is carrying rent, an account layer and a new-business team, and all three sit inside the retainer whether or not they touch your rankings. At the low end of the market the retainer buys directory submissions and a monthly report — neither one moves a technical problem.",
+          "We price SEO as engineering time because that is what it is: changes made in the codebase, not described in a PDF. The build bands on our pricing page give you the shape of what technical work costs; a retainer is scoped against the audit rather than sold as a fixed package, because a site that needs its architecture rebuilt and a site that needs content are different amounts of work at the same monthly fee.",
+        ],
+        links: [{ label: "How we price work", href: "/pricing/" }],
+      },
+      {
+        heading: "Where we are in Mumbai",
+        body: [
+          "The office is at GNM/95/347, Ground Floor, Banwari Compound, Mahim Rly Stn (E), Mahim, Mumbai 400016 — two minutes from Mahim station on the Western line. For the technical and content work, being in the city is not required and we run that remotely for clients well outside Mumbai too. For the local pack specifically, being able to verify your address, photograph the premises and correct citations against something real is a genuine advantage, which is why the local half of this is easier when we are in the same city.",
+        ],
+      },
+    ],
+    caseStudies: [
+      {
+        slug: "thegrafftee",
+        title: "The Grafftee",
+        body: "A recruitment firm with a strong offline reputation that simply did not appear when enterprise buyers searched. The fix was structural before it was editorial — giving each service a page that could rank, and linking them so the commercially important ones were not buried three clicks deep. That burial is the single most common fault we find on sites in this size of city.",
+      },
+      {
+        slug: "hcbengineering",
+        title: "HCB Engineering",
+        body: "A government-licensed electrical contractor with twenty years of work behind it and no digital presence to match. The build put service pages against each vertical — commercial, residential, specialty — so a procurement officer can self-qualify and find the licences and certifications where they look first. Directly relevant to Mumbai's contracting, engineering and industrial services firms.",
+      },
+      {
+        slug: "krushidoctor",
+        title: "Krushi Doctor",
+        body: "An AgriTech store selling into a specific, searchable niche. Narrow categories with genuine search intent behind them are exactly where a smaller business can outrank a larger one — a useful reference for any Mumbai business selling into a specialised B2B or trade category rather than a broad consumer market.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How long before SEO shows results?",
+        answer:
+          "Technical fixes can move things in weeks. Competitive commercial rankings in a market this size take six to twelve months of consistent work. Anyone promising page one in thirty days is either bidding on your brand name or selling you something else.",
+      },
+      {
+        question: "Do you need access to my website's code?",
+        answer:
+          "Yes, or to whoever maintains it. SEO that cannot change the site is limited to advice, and advice nobody implements is the most common reason retainers fail.",
+      },
+      {
+        question: "Do you handle Google Business Profile?",
+        answer:
+          "Yes — setup, verification, category selection, service areas, photos and review responses. For a local business it is frequently a larger lever than anything on the website itself.",
+      },
+      {
+        question: "Can you work on a site you did not build?",
+        answer:
+          "Yes, and most of our SEO clients are exactly that. We start with an audit so you can see what state it is in before committing to a retainer.",
+      },
+      {
+        question: "What does an SEO retainer cost?",
+        answer:
+          "It is scoped against the audit rather than sold as a fixed monthly package, because a site needing its architecture rebuilt and a site needing content are different amounts of work. The build bands on our pricing page show what technical time costs; the audit tells us how much of it your site needs.",
+      },
+      {
+        question: "Who owns the accounts and the data?",
+        answer:
+          "You do. Analytics, Search Console, Google Business Profile and any tooling stay registered in your name and we work inside them. An agency that holds your Search Console access is holding the evidence of its own work hostage.",
+      },
+      {
+        question: "Do you have to be in Mumbai to do this?",
+        answer:
+          "For the technical and content work, no — that runs remotely and we do it for clients well outside the city. For the local pack specifically, being able to verify your address, photograph the premises and correct citations against something real is a genuine advantage, which is why the local half of this is easier when we are in the same city.",
+      },
+    ],
+    localProof: [],
+    relatedServices: [
+      { slug: "seo-services", label: "SEO Services" },
+      { slug: "ppc-services", label: "PPC & Google Ads" },
+      { slug: "social-media-marketing-services", label: "Social Media Marketing" },
+    ],
+    relatedLocations: [
+      "website-development-company-in-mumbai",
+      "ecommerce-development-company-in-mumbai",
+    ],
+  },
+  {
+    slug: "ecommerce-development-company-in-mumbai",
+    city: "Mumbai",
+    serviceLabel: "E-commerce Development",
+    title: "Ecommerce Development Company in Mumbai",
+    metaTitle: "Ecommerce Development Company in Mumbai",
+    metaDescription:
+      "Shopify, WooCommerce and custom online stores for Mumbai businesses — payments, shipping, catalogue and the post-launch support that keeps them selling.",
+    h1: "Ecommerce development company in Mumbai",
+    intro: [
+      "We build online stores for brands in Mumbai from our Mahim office — fashion, gifting, beauty, food and B2B businesses selling direct for the first time or moving off a marketplace.",
+      "Ecommerce is where the gap between a site that works and a site that merely exists is widest, because every defect has a rupee value attached to it.",
+    ],
+    sections: [
+      {
+        heading: "Shopify, WooCommerce or custom",
+        body: [
+          "Shopify if you are selling a manageable catalogue and want to stop thinking about infrastructure. It costs more monthly and less in attention, and its checkout converts better than almost anything you would build.",
+          "WooCommerce if you already run WordPress, publish a lot of content, or need pricing and tax logic Shopify will not bend to. It costs less monthly and considerably more in maintenance — which is a real cost, not a hypothetical one.",
+          "Custom, usually on Next.js, when the model is genuinely unusual: multi-vendor marketplaces, B2B quoting, made-to-order configurators. We have built all three, and we will talk you out of it if your project is not one of them.",
+        ],
+      },
+      {
+        heading: "The parts that decide whether a store sells",
+        body: [
+          "Product photography and copy, first — a store with thin listings will underperform regardless of how it is built, and this is where most launches slip. Then checkout: Razorpay or equivalent, correctly configured, with COD rules and shipping zones that match how you actually fulfil.",
+          "Then speed on a mid-range Android phone on a 4G connection, which is what your customers are actually on. We test on that, not on a desktop over office wifi.",
+        ],
+      },
+      {
+        heading: "After the store is live",
+        body: [
+          "A store needs more ongoing attention than a brochure site: gateway changes, courier integrations, sale configurations, catalogue growth, and the performance regressions that come with all of it. Our support plans cover that with a named developer rather than a ticket queue.",
+          "We also connect analytics and search console properly at launch, so the first month of real traffic is measured rather than lost.",
+        ],
+      },
+      {
+        heading: "What launching actually requires from you",
+        body: [
+          "A product list with real names, real descriptions and real prices. Photography — ideally on a consistent background, at consistent scale. Your GST details, shipping origin, and the courier or aggregator you intend to use. A returns policy you are willing to honour, written down.",
+          "Almost every delayed ecommerce launch we have seen was delayed by this list, not by development. We ask for it in week one specifically so the delay happens early and visibly rather than late and expensively.",
+        ],
+      },
+      {
+        heading: "Payments, shipping and the things that break",
+        body: [
+          "Razorpay, PayU or Cashfree for domestic; the choice mostly comes down to settlement timing and the categories they will underwrite. International selling adds currency display, duty messaging and a different fraud profile, and we will tell you honestly whether it is worth switching on at launch.",
+          "Cash on delivery is where most Indian stores lose money quietly: without an RTO rule, a partial-prepaid nudge or a pincode restriction, the returns eat the margin. We configure those at launch rather than after the first bad month.",
+          "Shipping zones, weight slabs and free-shipping thresholds get set to match how you actually fulfil, and get tested with real orders before anything goes public.",
+        ],
+      },
+      {
+        heading: "After the first hundred orders",
+        body: [
+          "The work changes shape. Catalogue growth slows the site down. Apps accumulate and start conflicting. Sale configurations need building and unwinding. Reviews, wishlists and abandoned-cart flows become worth adding — and each one adds script weight that has to be paid for in speed somewhere.",
+          "That ongoing tuning is what our support plans are for. A store is an operating system for a business, not a project that ends.",
+        ],
+      },
+      {
+        heading: "What a store costs against Mumbai agency rates",
+        body: [
+          "A Shopify or WooCommerce store put together from a theme sits at the bottom of our range and is genuinely the right answer for a first catalogue — you are paying for setup and configuration, not engineering. A custom-coded store starts an order of magnitude higher because it is a different product, and most businesses should not buy it until the template one is provably the constraint.",
+          "Where budgets in this city go wrong is not the build. It is the running cost nobody quoted: gateway charges of roughly two percent a transaction, platform fees, and the returns from cash on delivery, which quietly eat more margin than all of it. We put those numbers in front of you before you commit, and the build bands are published rather than held for a call.",
+          "Terms are 50% advance to start and 50% at payment-gateway integration — which for a store means you are paying the balance at the point the thing can actually take money.",
+        ],
+        links: [{ label: "See the price bands", href: "/pricing/" }],
+      },
+      {
+        heading: "Where we are in Mumbai",
+        body: [
+          "The office is at GNM/95/347, Ground Floor, Banwari Compound, Mahim Rly Stn (E), Mahim, Mumbai 400016 — two minutes from Mahim station on the Western line, reachable from Bandra, Dadar and Andheri without a cab. For a store launch we will usually want to see product and packaging in person once; day to day after that runs remotely on shared documents and a written weekly update.",
+        ],
+      },
+    ],
+    caseStudies: [
+      {
+        slug: "clickngreet",
+        title: "ClickNGreet",
+        body: "A gifting storefront where the work was product discovery and a checkout that holds up under occasion-driven traffic spikes. Directly relevant to Mumbai's consumer and D2C businesses, where demand concentrates into a handful of weeks a year and the site either survives them or does not.",
+      },
+      {
+        slug: "tatvivahtrends",
+        title: "TatVivah Trends",
+        body: "A multi-vendor wedding ethnic wear marketplace — sherwanis, kurtas and bridal sets filtered by occasion, with a three-thousand-product catalogue, Razorpay checkout and a returns and trust system built in. A useful reference for any Mumbai fashion or gifting brand weighing what a full marketplace build actually involves versus a single-vendor store.",
+      },
+      {
+        slug: "maribiz-ai",
+        title: "MariBiz.ai",
+        body: "A B2B marketplace for maritime procurement — an RFQ engine, vendor verification, port-based service discovery and quote comparison for ship operators. Built for an industry Mumbai runs: relevant to any business selling B2B into shipping, trading or industrial supply chains rather than direct to a consumer.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What does an online store cost to run monthly?",
+        answer:
+          "Beyond our support plan: platform fees if you are on Shopify, payment gateway charges of roughly 2% per transaction, domain and any apps you add. We list these before you commit so there are no surprises in month two.",
+      },
+      {
+        question: "Can you migrate my store from another platform?",
+        answer:
+          "Yes — products, customers, orders and URL structure. The URL redirects are the part people forget, and skipping them discards the search visibility the old store had earned.",
+      },
+      {
+        question: "Will my store be fast enough for Google?",
+        answer:
+          "Core Web Vitals are part of the pre-launch checklist, not an afterthought. We measure on a throttled mobile connection because that is the condition Google grades you on.",
+      },
+      {
+        question: "Who owns the store, the domain and the payment gateway?",
+        answer:
+          "You do, from day one — domain, hosting, repository, analytics and the gateway account all in your name. We work inside your accounts. This matters more for a store than for a brochure site, because the gateway account is tied to your GST and bank details and should never sit with a developer.",
+      },
+      {
+        question: "How many revisions are included?",
+        answer:
+          "Review rounds at agreed milestones through design and build, and we keep iterating until it matches the signed scope. New scope — an extra integration, a feature that was not in the agreement — is quoted before we build it.",
+      },
+      {
+        question: "What are the payment terms?",
+        answer:
+          "50% advance to start, 50% at payment-gateway integration. For a store that means the balance falls due at the point it can take a real order, not at some arbitrary midpoint.",
+      },
+      {
+        question: "Can you run the store for us remotely after launch?",
+        answer:
+          "Yes — sale configurations, courier integrations, catalogue growth and the performance regressions that come with all of it are exactly what the support plans cover, and none of it needs us in the room. The part that benefits from being in Mumbai is the initial product and packaging review.",
+      },
+      {
+        question: "Do you have an office in Mumbai?",
+        answer:
+          "Yes — Banwari Compound, Mahim (E), near Mahim railway station. Meetings by appointment; the address and map are on our contact page.",
+      },
+    ],
+    localProof: [],
+    relatedServices: [
+      { slug: "ecommerce-web-development-services", label: "E-commerce Web Development" },
+      { slug: "website-development-services", label: "Website Development Services" },
+      { slug: "seo-services", label: "SEO Services" },
+    ],
+    relatedLocations: [
+      "website-development-company-in-mumbai",
+      "seo-services-in-mumbai",
+    ],
   },
 ]
 

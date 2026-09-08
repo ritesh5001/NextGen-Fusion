@@ -2,13 +2,11 @@
 
 import { motion } from "framer-motion"
 import { staticProjects } from "@/lib/static-projects"
-import { deliveredProjects } from "@/lib/delivered-projects"
 
 // TODO: Replace placeholder logos/stats with real client logos and verified numbers.
 const clientNames = staticProjects.slice(0, 6).map((p) => p.title)
 
 const stats = [
-  { metric: `${deliveredProjects.length}+`, label: "Projects delivered" },
   { metric: "3,226+", label: "Vendors powered" }, // TODO: confirm aggregate
   { metric: "0", label: "Clients ghosted" },
   { metric: "100%", label: "Mobile-optimized builds" },
@@ -59,7 +57,7 @@ export default function SocialProofSection() {
 
         {/* Hard numbers */}
         <motion.div
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-6"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
