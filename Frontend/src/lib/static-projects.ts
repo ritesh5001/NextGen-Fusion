@@ -122,6 +122,76 @@ export const staticProjects: StaticProject[] = [
     featured: true,
   },
   {
+    slug: "deetoo",
+    domain: "deetoo.in",
+    title: "DeeToo",
+    shortDescription:
+      "Mobile accessories store built per device, not \"fits most\" — cases, glass and chargers organised by brand, series and exact model.",
+    description:
+      "Built a WooCommerce store for DeeToo covering cases, tempered glass, camera protectors, cables, adapters, earbuds, power banks and car accessories across twelve phone brands and their series — Samsung Galaxy S/A/M/F/Z, iPhone 12 through 16, OnePlus, Nothing, Xiaomi, Poco, Realme, Oppo, Vivo and Motorola. Catalogue navigation runs brand-first then series, so a buyer filters straight to their exact model instead of a generic accessories grid. Combo bundles, a WhatsApp model-lookup concierge, and a published 7-day replacement policy round out the buying experience.",
+    challenge:
+      "The founder's own complaint was the reason DeeToo exists: buying a phone case online and finding the camera cutout in the wrong place. Most accessories are sold as one-size-fits-many — cutouts miss, buttons stick, glass leaves gaps at the edges — and the customer pays twice, once for the wrong product and once for the right one.",
+    approach:
+      "We built per device rather than per category. Each model gets its own product page, its own fit claims and its own combo pricing, reached through brand-then-series navigation rather than a single flat catalogue a buyer has to search through. For anyone still unsure, a WhatsApp flow asks for the phone model directly and points them to the right listing rather than leaving them to guess from a dropdown.",
+    keyFeatures: [
+      {
+        title: "Brand-Then-Series Navigation",
+        description:
+          "Twelve phone brands broken into their real series — Galaxy S/A/M/F/Z, iPhone by generation, OnePlus Nord vs flagship — so browsing narrows to the exact model fast.",
+      },
+      {
+        title: "Per-Model Product Pages",
+        description:
+          "Every case, glass and lens protector is listed against a specific phone model rather than a generic \"universal fit\" claim.",
+      },
+      {
+        title: "Combo Bundle Merchandising",
+        description:
+          "3-in-1 and 2-in-1 combo pricing (case, glass, cable) merchandised as its own shoppable category with its own discount logic.",
+      },
+      {
+        title: "WhatsApp Model Concierge",
+        description:
+          "A dedicated \"not sure which accessory fits your phone\" flow into WhatsApp, so uncertain buyers get a direct answer instead of abandoning the search.",
+      },
+      {
+        title: "7-Day Replacement Policy",
+        description:
+          "A published, no-argument replacement policy for defective or wrong-fit items, built as a real policy page rather than a support-ticket promise.",
+      },
+      {
+        title: "COD & Pan-India Delivery",
+        description:
+          "Cash on delivery with no minimum order value alongside free shipping on every order, matching how India's accessories buyers actually check out.",
+      },
+    ],
+    techStack: ["WordPress", "WooCommerce", "PHP", "MySQL"],
+    results: [
+      { metric: "12", label: "Brands Catalogued" },
+      { metric: "8", label: "Product Categories" },
+      { metric: "7-Day", label: "Replacement Policy" },
+      { metric: "Pan-India", label: "COD Delivery" },
+    ],
+    role: "Full-Stack Developer",
+    category: "E-Commerce / Mobile Accessories",
+    tags: [
+      "WooCommerce Development",
+      "Per-Device Product Catalog",
+      "Multi-Brand E-Commerce",
+      "Combo & Bundle Merchandising",
+      "Mobile Accessories Retail",
+    ],
+    images: [
+      "/projects/deetoo/screenshot-1.png",
+      "/projects/deetoo/screenshot-2.png",
+      "/projects/deetoo/screenshot-3.png",
+    ],
+    coverImage: "/projects/deetoo/screenshot-1.png",
+    liveUrl: "https://deetoo.in",
+    featured: false,
+    publishedAt: "2026-09-13",
+  },
+  {
     slug: "maribiz-ai",
     domain: "MariBiz.ai",
     title: "MariBiz.ai",
@@ -514,6 +584,193 @@ export const staticProjects: StaticProject[] = [
     featured: false,
   },
   {
+    slug: "nextmentor",
+    domain: "nextmentor.com",
+    title: "NEXTmentor",
+    shortDescription:
+      "Subscription video-mentorship platform streaming business, sales and leadership courses from globally recognised trainers.",
+    description:
+      "Built the course platform for NEXTmentor — a Vietnamese subscription streaming service carrying video courses from internationally recognised business trainers including Blair Singer, on subjects spanning sales mastery, team leadership, presentation skills and applied AI. The catalogue runs to 30+ courses averaging 15 lessons each, playable across desktop, TV and mobile through a members-only area separate from the public marketing site, with downloadable workbooks and a tiered monthly, half-yearly and annual membership structure.",
+    challenge:
+      "Vietnamese professionals and entrepreneurs wanting access to established international business mentors had no single, localised platform carrying that catalogue in one place — content was scattered across individual course sites, each with its own login, its own player and its own billing.",
+    approach:
+      "We built one catalogue and one membership around it: courses organised by mentor rather than buried in a generic list, a separate members subdomain so the learning experience isn't competing with marketing-site page weight, and a tiered plan structure so a learner can commit month to month before buying a year upfront.",
+    keyFeatures: [
+      {
+        title: "Mentor-Led Course Catalogue",
+        description:
+          "30+ courses organised by instructor rather than topic alone, so a learner can follow a specific mentor's full curriculum.",
+      },
+      {
+        title: "Dedicated Members Platform",
+        description:
+          "A separate members.nextmentor.com application handling playback, progress and account access apart from the public marketing site.",
+      },
+      {
+        title: "Cross-Device Streaming",
+        description:
+          "Course video plays on desktop, TV and mobile, with downloadable workbooks and guides for offline study.",
+      },
+      {
+        title: "Tiered Membership Plans",
+        description:
+          "Monthly, half-yearly and annual membership options, so commitment level is the learner's choice rather than a single all-or-nothing price.",
+      },
+      {
+        title: "Free Trial-Lesson Capture",
+        description:
+          "An email-gated trial lesson from the catalogue's most popular courses, used as the primary top-of-funnel conversion path.",
+      },
+    ],
+    techStack: ["WordPress", "Elementor", "Membership & LMS Platform", "Video Streaming Infrastructure"],
+    results: [
+      { metric: "30+", label: "Courses Live" },
+      { metric: "15", label: "Avg. Lessons per Course" },
+      { metric: "10 min", label: "Avg. Lesson Length" },
+    ],
+    role: "Full-Stack Developer",
+    category: "EdTech / Online Learning Platform",
+    tags: [
+      "Membership & LMS Development",
+      "Video Streaming Platform",
+      "Subscription Billing",
+      "Multi-Mentor Course Catalog",
+    ],
+    images: ["/projects/nextmentor/screenshot-1.png"],
+    coverImage: "/projects/nextmentor/screenshot-1.png",
+    liveUrl: "https://nextmentor.com",
+    featured: false,
+    publishedAt: "2026-09-13",
+  },
+  {
+    slug: "vashtaraheaven",
+    domain: "vashtaraheaven.com",
+    title: "Vashtara Heaven",
+    shortDescription:
+      "Multi-vendor kidswear marketplace on Shopify — denim co-ords and printed sets for girls and boys, dispatched direct from each designer.",
+    description:
+      "Built a Shopify storefront for Vashtara Heaven, a multi-vendor kids' fashion marketplace carrying denim co-ord sets, printed tees and dungarees for girls and boys. Products are sourced from independent designer studios and dispatched directly from each one, so the store had to make that shipping model legible to a buyer up front rather than let it surface as a surprise at delivery. Free shipping above ₹499, cash on delivery nationwide and a 7-day return window on ready-to-wear items are set out before checkout, not discovered after.",
+    challenge:
+      "As a multi-vendor marketplace, items from different designer studios ship separately and arrive in separate packages — a pattern that reads as a broken order if a buyer isn't told about it in advance. The store needed to make that model a selling point rather than a support ticket.",
+    approach:
+      "We built the storefront around Girls and Boys as the two primary categories, with the multi-vendor dispatch model explained directly in the FAQ and policy pages rather than buried in terms and conditions, and a return and COD policy stated on every product page so trust is established before the buyer reaches checkout.",
+    keyFeatures: [
+      {
+        title: "Girls / Boys Category Structure",
+        description:
+          "Two primary navigation paths carrying the full catalogue, with New Arrivals and Best Sellers collections cutting across both.",
+      },
+      {
+        title: "Multi-Vendor Dispatch Model",
+        description:
+          "Products ship directly from each designer's studio; the FAQ explains this up front so separate-package deliveries read as intentional, not broken.",
+      },
+      {
+        title: "Free Shipping Threshold",
+        description:
+          "Free delivery above ₹499 communicated as a persistent site-wide banner rather than a checkout-page surprise.",
+      },
+      {
+        title: "7-Day Return Window",
+        description:
+          "Ready-to-wear items carry a clear 7-day return policy; custom-tailored pieces are marked non-returnable at the product level.",
+      },
+      {
+        title: "Cash on Delivery Nationwide",
+        description:
+          "COD available across most Indian pin codes, with the handling fee disclosed at checkout rather than added silently.",
+      },
+    ],
+    techStack: ["Shopify", "Shopify Liquid", "Shopify Payments"],
+    results: [
+      { metric: "₹499", label: "Free-Shipping Threshold" },
+      { metric: "7-Day", label: "Return Window" },
+      { metric: "Multi-Vendor", label: "Dispatch Model" },
+      { metric: "Nationwide", label: "COD Coverage" },
+    ],
+    role: "Full-Stack Developer",
+    category: "E-Commerce / Kidswear",
+    tags: [
+      "Shopify Development",
+      "Multi-Vendor Marketplace",
+      "Kidswear E-Commerce",
+      "COD & Fulfilment Logic",
+    ],
+    images: [
+      "/projects/vashtaraheaven/screenshot-1.png",
+      "/projects/vashtaraheaven/screenshot-2.png",
+      "/projects/vashtaraheaven/screenshot-3.png",
+    ],
+    coverImage: "/projects/vashtaraheaven/screenshot-1.png",
+    liveUrl: "https://www.vashtaraheaven.com",
+    featured: false,
+    publishedAt: "2026-09-13",
+  },
+  {
+    slug: "ladyscootytrainer",
+    domain: "ladyscootytrainer.com",
+    title: "Lady Scooty Trainer",
+    shortDescription:
+      "Booking platform for a women-only scooty training service across Delhi NCR — free-consultation funnel, course pages and CSR partnerships.",
+    description:
+      "Built the website for Lady Scooty Trainer (LST Delhi), a women-only scooty training service run by professional female trainers across Delhi, Noida, Ghaziabad, Gurgaon, Dwarka and Rohini. The site centres on a free-consultation booking form that captures location, prior riding experience and preferred time slot, backed by two structured course pages — a 7-day basic programme and a 5-day advance programme — plus a separate track for corporate and CSR mobility partnerships.",
+    challenge:
+      "Women wanting to learn scooty riding in Delhi NCR had few options built specifically around their comfort — most driving instruction is male-led and generic, and the barrier for a genuine beginner is often confidence rather than access to a vehicle.",
+    approach:
+      "We built the funnel around a single low-friction action: a free consultation form asking only what's needed to match a learner to the right trainer and course. Trust signals — verified Google review counts, a 4.9 average rating, service-area coverage — sit above the fold rather than buried in a testimonials section nobody scrolls to.",
+    keyFeatures: [
+      {
+        title: "Free Consultation Booking Form",
+        description:
+          "Captures location, prior riding experience and preferred time slot, routed straight to a callback rather than a generic contact form.",
+      },
+      {
+        title: "Two-Tier Course Structure",
+        description:
+          "Separate landing pages for the 7-Day Basic programme (complete beginners) and the 5-Day Advance programme (road confidence), each with its own curriculum breakdown.",
+      },
+      {
+        title: "Corporate & CSR Partnership Track",
+        description:
+          "A dedicated section for organisations running women-mobility, workforce training or CSR programmes, distinct from the individual-learner funnel.",
+      },
+      {
+        title: "Verified Review Trust Signals",
+        description:
+          "Google review count and average rating surfaced directly on the homepage rather than linked out, alongside named, location-tagged testimonials.",
+      },
+      {
+        title: "Service-Area Coverage Map",
+        description:
+          "Explicit listing of every Delhi NCR area served, so a prospective learner can confirm coverage before filling out the form.",
+      },
+    ],
+    techStack: ["WordPress", "PHP", "MySQL", "WhatsApp Business API"],
+    results: [
+      { metric: "5,000+", label: "Women Trained" },
+      { metric: "1,046+", label: "Verified Google Reviews" },
+      { metric: "4.9", label: "Average Google Rating" },
+      { metric: "6", label: "Delhi NCR Service Areas" },
+    ],
+    role: "Full-Stack Developer",
+    category: "Service / Women's Mobility Training",
+    tags: [
+      "Lead Generation Website",
+      "Booking Funnel Design",
+      "Local Service Business",
+      "CSR Partnership Pages",
+    ],
+    images: [
+      "/projects/ladyscootytrainer/screenshot-1.png",
+      "/projects/ladyscootytrainer/screenshot-2.png",
+      "/projects/ladyscootytrainer/screenshot-3.png",
+    ],
+    coverImage: "/projects/ladyscootytrainer/screenshot-1.png",
+    liveUrl: "https://ladyscootytrainer.com",
+    featured: false,
+    publishedAt: "2026-09-13",
+  },
+  {
     slug: "newsaraswatisareecentre",
     domain: "newsaraswatisareecentre.in",
     title: "New Saraswati Saree Centre",
@@ -665,6 +922,70 @@ export const staticProjects: StaticProject[] = [
     coverImage: "/projects/saurally/screenshot-1.png",
     liveUrl: "https://saurally.com",
     featured: false,
+  },
+  {
+    slug: "sidcobharat",
+    domain: "sidcobharat.org",
+    title: "SIDCO — Small Industries Development Council Organization",
+    shortDescription:
+      "Outreach and application platform connecting small-scale industry workers to PMEGP government schemes, free skills training and welfare support.",
+    description:
+      "Built the outreach site for SIDCO, a council that connects small-scale industry workers to PMEGP and allied central government schemes, free skills training in sewing, embroidery, weaving and painting, and healthcare and education support for workers' families. The site runs an application form capturing candidate details, district and state, structured pages for each programme — the Employment Generation Programme, a Self Help Group scheme, Village Industries Fairs, an Election Survey Project running 250+ survey executives across India, and a Name Board Survey Project — plus a prominent fraud warning, since PMEGP-adjacent scams are common enough that the Council addresses it directly on the homepage.",
+    challenge:
+      "Government schemes for small-scale industry workers exist, but the council's own framing is blunt about why they don't reach people: development has stayed concentrated in cities, and \"corruption and laxity\" have meant workers not receiving timely support or training. Compounding that, the PMEGP scheme space attracts fraudulent job-fee scams that erode trust before an organisation doing real outreach can even make contact.",
+    approach:
+      "We built the site to do two things at once — make applying genuinely easy (a single form: name, mobile, district, state, optional document upload) and make the fraud warning impossible to miss, placed on the homepage itself rather than buried in a footer disclaimer. Each programme area got its own explained section rather than a single \"our services\" paragraph, since PMEGP guidance, training, education and survey work are different asks with different audiences.",
+    keyFeatures: [
+      {
+        title: "Scheme Application Form",
+        description:
+          "Candidate name, mobile, district, state and an optional single-PDF document upload, built to be fillable in under a minute.",
+      },
+      {
+        title: "Fraud Warning Notice",
+        description:
+          "A dedicated, unmissable notice stating SIDCO is not a government job and never asks for payment — placed on the homepage rather than a policy page.",
+      },
+      {
+        title: "Five Structured Programme Pages",
+        description:
+          "Employment Generation Programme (PMEGP), Self Help Group Scheme, Village Industries Fair, Election Survey Project and Name Board Survey Project, each explained on its own terms.",
+      },
+      {
+        title: "Election Survey Project Detail",
+        description:
+          "A programme page covering statistical voting-trend analysis run through 250+ survey executives deployed across India.",
+      },
+      {
+        title: "Impact Counters",
+        description:
+          "Families supported, skill-programme beneficiaries, homes for the elderly and insurance beneficiaries, tracked as live figures rather than a static claim.",
+      },
+    ],
+    techStack: ["WordPress", "PHP", "MySQL"],
+    results: [
+      { metric: "5", label: "Government Schemes Covered" },
+      { metric: "250+", label: "Election Survey Executives" },
+      { metric: "4", label: "Skills Trained: Sewing, Embroidery, Weaving, Painting" },
+      { metric: "2", label: "Offices: Gurugram & Bangalore" },
+    ],
+    role: "Full-Stack Developer",
+    category: "Institutional / Government Scheme Outreach",
+    tags: [
+      "WordPress Development",
+      "Government Scheme Application Portal",
+      "Nonprofit & Institutional Websites",
+      "Lead Capture & Verification Forms",
+    ],
+    images: [
+      "/projects/sidcobharat/screenshot-1.png",
+      "/projects/sidcobharat/screenshot-2.png",
+      "/projects/sidcobharat/screenshot-3.png",
+    ],
+    coverImage: "/projects/sidcobharat/screenshot-1.png",
+    liveUrl: "https://sidcobharat.org",
+    featured: false,
+    publishedAt: "2026-09-13",
   },
   {
     slug: "sitaravastram",

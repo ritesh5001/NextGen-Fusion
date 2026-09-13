@@ -81,8 +81,16 @@ export default function WorkPage() {
               </p>
             </div>
           </div>
+        </section>
 
-          <div className="mt-10 rounded-2xl border border-gray-200 p-6">
+        <DeliveredWall
+          showFilters
+          heading="Every project we've shipped"
+          subheading="Filter by category, or click any card to visit the live site."
+        />
+
+        <div className="mx-auto max-w-7xl px-6 pb-16">
+          <div className="rounded-2xl border border-gray-200 p-6">
             <h2 className="text-lg font-bold text-gray-900">Case studies</h2>
             <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((project) => (
@@ -98,16 +106,8 @@ export default function WorkPage() {
               ))}
             </ul>
           </div>
-        </section>
 
-        <DeliveredWall
-          showFilters
-          heading="Every project we've shipped"
-          subheading="Filter by category, or click any card to visit the live site."
-        />
-
-        <div className="mx-auto max-w-7xl px-6 pb-16">
-          <CTABanner />
+          <CTABanner className="mt-8" />
         </div>
       </main>
     </div>
