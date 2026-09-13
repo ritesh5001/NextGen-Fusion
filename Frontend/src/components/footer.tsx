@@ -56,9 +56,13 @@ export default function Footer() {
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Desktop Layout */}
           <div className="hidden lg:block">
-            <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
+            {/* 3+2+7: the right block nests its own 3-column grid (Navigation,
+                Services, Social/Locations), so it needs roughly double the
+                track width of Ideas/Offices or those three columns cram into
+                a third of the row and every multi-word link wraps three deep. */}
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-8">
               {/* Left Content */}
-              <div className="space-y-8">
+              <div className="lg:col-span-3 space-y-8">
                 <div>
                   <h2 className="text-4xl lg:text-5xl font-bold leading-tight mb-4 text-white">
                     Ideas are good.
@@ -80,15 +84,11 @@ export default function Footer() {
                       contact@nextgenfusion.in
                     </a>
                   </div>
-
-                  <p className="text-gray-200 text-sm">
-                    Built by the Talented and Creative Crew
-                  </p>
                 </div>
               </div>
 
               {/* Middle Column - Offices */}
-              <div>
+              <div className="lg:col-span-2">
                 <h3 className="text-lg font-semibold mb-6 text-white">
                   Our Offices
                 </h3>
@@ -116,7 +116,7 @@ export default function Footer() {
               </div>
 
               {/* Right Content - Navigation & Social */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+              <div className="lg:col-span-7 grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
                 {/* Navigation */}
                 <div>
                   <h3 className="text-lg font-semibold mb-6 text-white">
@@ -372,10 +372,7 @@ export default function Footer() {
             </div>
 
             {/* Footer Text */}
-            <div className="text-center space-y-2">
-              <p className="text-gray-200 text-sm">
-                Built by the Talented and Creative Crew
-              </p>
+            <div className="text-center">
               <p className="text-gray-200 text-sm">
                 © 2026 NextGen Fusion. All rights reserved.
               </p>
