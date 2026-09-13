@@ -40,6 +40,7 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   // ── Custom apps / tools ──────────────────────────────────────────────
   "webscraperhub.com": ["custom"],
   "terrestrialyt.com": ["custom"],
+  "nextmentor.com": ["custom"],
   // ── Service-based businesses ─────────────────────────────────────────
   "riteshgiri.dev": ["service"],
   "3am-assignments.com": ["service"],
@@ -62,6 +63,8 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "atharavelectroplaters.com": ["service"],
   "bholawelding.com": ["service"],
   "chikusmile.com": ["service"],
+  "sidcobharat.org": ["service"],
+  "ladyscootytrainer.com": ["service"],
   // ── E-commerce: Fashion & Clothing ───────────────────────────────────
   "rumaneroyale.com": ["ecommerce", "Fashion & Clothing"],
   "royalvaster.co.uk": ["ecommerce", "Fashion & Clothing"],
@@ -89,6 +92,7 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "vostra.in": ["ecommerce", "Fashion & Clothing"],
   "luntra.co.in": ["ecommerce", "Fashion & Clothing"],
   "unitexfashion.in": ["ecommerce", "Fashion & Clothing"],
+  "vashtaraheaven.com": ["ecommerce", "Fashion & Clothing"],
   // ── E-commerce: Jewelry ──────────────────────────────────────────────
   "slowy.in": ["ecommerce", "Jewelry"],
   "sweetyonline.com": ["ecommerce", "Jewelry"],
@@ -133,6 +137,7 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "kenstto.com": ["ecommerce", "Other"],
   "khyationlinemart.in": ["ecommerce", "Other"],
   "hmsbrothers.com": ["ecommerce", "Other"],
+  "deetoo.in": ["ecommerce", "Other"],
   "orangelilies.com": ["ecommerce", "Beauty & Wellness"],
 }
 
@@ -141,6 +146,11 @@ const NAME_OVERRIDES: Record<string, string> = {
   "thegrafftee.com": "The Grafftee",
   "tatvivahtrends.com": "TatVivah Trends",
   "tatvivah.in": "TatVivah",
+  "deetoo.in": "DeeToo",
+  "vashtaraheaven.com": "Vashtara Heaven",
+  "sidcobharat.org": "SIDCO",
+  "ladyscootytrainer.com": "Lady Scooty Trainer",
+  "nextmentor.com": "NEXTmentor",
   "clickngreet.in": "ClickNGreet",
   "krushidoctor.com": "Krushi Doctor",
   "hcbengineering.in": "HCB Engineering",
