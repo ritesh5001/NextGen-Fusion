@@ -47,10 +47,19 @@ export default function WorkPage() {
           <h1 className="mt-3 max-w-4xl text-4xl font-bold leading-tight text-gray-900 sm:text-5xl">
             Sites we&apos;ve delivered, and the stories behind them
           </h1>
-          <div className="mt-6 grid gap-8 lg:grid-cols-2">
+        </section>
+
+        <DeliveredWall
+          showFilters
+          heading="Every project we've shipped"
+          subheading="Filter by category, or click any card to visit the live site."
+        />
+
+        <div className="mx-auto max-w-7xl px-6 pb-16">
+          <div className="grid gap-8 lg:grid-cols-2">
             <div className="space-y-4 text-lg leading-relaxed text-gray-600">
               <p>
-                Everything below is live and in production. Most of it is ecommerce — ethnic wear,
+                Everything above is live and in production. Most of it is ecommerce — ethnic wear,
                 jewellery, beauty, food and home brands selling direct — alongside B2B sites for
                 manufacturers and engineering firms, and platforms for institutes and marketplaces.
               </p>
@@ -81,16 +90,8 @@ export default function WorkPage() {
               </p>
             </div>
           </div>
-        </section>
 
-        <DeliveredWall
-          showFilters
-          heading="Every project we've shipped"
-          subheading="Filter by category, or click any card to visit the live site."
-        />
-
-        <div className="mx-auto max-w-7xl px-6 pb-16">
-          <div className="rounded-2xl border border-gray-200 p-6">
+          <div className="mt-10 rounded-2xl border border-gray-200 p-6">
             <h2 className="text-lg font-bold text-gray-900">Case studies</h2>
             <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((project) => (
