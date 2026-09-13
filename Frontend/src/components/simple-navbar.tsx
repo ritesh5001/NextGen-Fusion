@@ -202,8 +202,14 @@ export default function SimpleNavbar() {
 
       {/* Mobile Layout - Dihapus, hanya gunakan bottom navigation */}
 
-      {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed inset-x-0 bottom-0 z-50 max-w-full overflow-x-hidden">
+      {/* Mobile Bottom Navigation.
+          No overflow-x-hidden here: the menu dropdown is an absolutely
+          positioned child sitting above this container's own (short) box.
+          Setting overflow on only one axis forces the browser to compute the
+          other axis as `auto` instead of `visible` (CSS Overflow spec), which
+          silently clipped the dropdown out of view — the menu opened (state
+          toggled fine) but never rendered on screen. */}
+      <div className="md:hidden fixed inset-x-0 bottom-0 z-50 max-w-full">
         {/* Mobile Menu Dropdown - Di atas bottom nav */}
         <AnimatePresence>
           {isMobileMenuOpen && (
