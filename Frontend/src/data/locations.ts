@@ -3,10 +3,12 @@
  *
  * Every result on page one for "web development company in Lucknow" ranks with a
  * dedicated city URL; we had none. These are the highest-intent combinations
- * of service × office — three per city, matching the service lines each
- * office actually sells. Mumbai started one page deep while Lucknow had all
- * three; keep them at parity going forward rather than adding a new city
- * before both existing ones are complete.
+ * of service × office. Lucknow carries eight — website development, SEO,
+ * ecommerce, digital marketing, web design, mobile app development, software
+ * development and PPC/Google Ads — covering every "<service> company in
+ * Lucknow" query with real search volume. Mumbai carries three (website
+ * development, SEO, ecommerce); bring it to the same depth before adding a
+ * third city rather than spreading thinner.
  *
  * BEFORE PUBLISHING — two fields are deliberately left blank because they state
  * facts only you can confirm:
@@ -516,6 +518,519 @@ export const locationPages: LocationPage[] = [
       { slug: "seo-services", label: "SEO Services" },
     ],
     relatedLocations: ["website-development-company-in-lucknow", "seo-services-in-lucknow"],
+  },
+  {
+    slug: "digital-marketing-company-in-lucknow",
+    city: "Lucknow",
+    serviceLabel: "Digital Marketing",
+    title: "Digital Marketing Company in Lucknow",
+    metaTitle: "Digital Marketing Company in Lucknow",
+    metaDescription:
+      "SEO, Google Ads and social media run as one connected program for Lucknow businesses — planned around which channel actually fits, not sold as a bundle.",
+    h1: "Digital marketing company in Lucknow",
+    intro: [
+      "\"Digital marketing\" in this city usually means one person managing your Instagram and calling it a strategy. We run SEO, Google Ads and social media as three distinct disciplines that report into one plan, and we will tell you plainly which one or two your business actually needs before selling you all three.",
+      "The starting question is never \"which package.\" It is where your buyers already are when they decide to look for you — search, a feed, or neither, because the sale happens on a phone call after someone sees your van.",
+    ],
+    sections: [
+      {
+        heading: "Which channel actually fits",
+        body: [
+          "Search intent — SEO and Google Ads — wins when someone types what they need: \"electrical contractor Lucknow,\" \"chikankari wholesale.\" You are answering a question that already exists. Social — Instagram, Facebook — wins when nobody was looking, and you have to earn the attention with something worth stopping for: a product, a result, a face people trust.",
+          "Most Lucknow businesses need search first, because the demand already exists and is currently going to a competitor with a worse product and a better Google Business Profile. Social is where you build the brand once search is bringing in enquiries you can actually handle.",
+        ],
+      },
+      {
+        heading: "How the three connect",
+        body: [
+          "SEO is compounding and slow — the technical and content work in month one starts paying back in month four and keeps paying for years. Google Ads is immediate and stops the day you stop paying — useful for filling a pipeline gap while SEO builds, or for a launch that cannot wait six months. Social is the trust layer underneath both — the profile a search or ad click lands on before someone calls.",
+          "Run separately, these fight each other for budget and attention. Run as one program, the ad spend tells you which keywords actually convert before you invest months ranking for them organically, and the organic content becomes the social posts instead of a separate production job.",
+        ],
+      },
+      {
+        heading: "The Lucknow market, honestly",
+        body: LUCKNOW_CONTEXT,
+      },
+      {
+        heading: "What a month looks like",
+        body: [
+          "One team, one report. Not an SEO PDF from one vendor, an Ads screenshot from another, and a content calendar from a third, none of which agree on what actually moved. You get what changed on the site, what the ad spend returned, what published on social, and what all three are doing next month — because a channel that is not converting gets less budget, not more excuses.",
+        ],
+      },
+      {
+        heading: "What we will not do",
+        body: [
+          "No guaranteed follower counts, no purchased engagement, no \"we'll dominate every platform\" pitch for a four-person team that cannot actually staff that. No ranking guarantees, no fake reviews, no ad account access we do not hand back if the relationship ends. If a competing agency's number looks too good against the budget, ask what it does not include.",
+        ],
+      },
+      {
+        heading: "What digital marketing costs here",
+        body: [
+          "There is no single \"digital marketing\" price — SEO is scoped against a technical audit, Google Ads is priced as management fee plus ad spend you control directly, and social is priced by content volume. What we will not do is quote a bundled number before knowing which channels your business actually needs; that is how agencies sell a Facebook package to a business whose customers are all searching Google.",
+        ],
+        links: [{ label: "See the service-level price bands", href: "/pricing/" }],
+      },
+      {
+        heading: "Hiring in Lucknow versus a Delhi or NCR agency",
+        body: [
+          "NCR digital marketing agencies pitch national campaign experience and a bigger creative team, which is real if you are launching a brand nationally. For a Lucknow business whose customer is within the city or the state, that scale is mostly overhead — you are paying for a media buying desk built for national budgets, sized down to yours.",
+          "What working locally gets you specifically: someone who can photograph the storefront, verify the Business Profile against a real address, and understand that \"digital marketing\" for a saree wholesaler and a B2B engineering firm are not the same service wearing different creative.",
+        ],
+      },
+    ],
+    caseStudies: [
+      {
+        slug: "thegrafftee",
+        title: "The Grafftee",
+        body: "A recruitment firm with a strong offline reputation and zero digital visibility. The fix ran across search and content together — pages built to rank, linked so the commercially important ones were not buried, with the site itself doing the work a paid campaign would otherwise have to buy every month.",
+      },
+      {
+        slug: "krushidoctor",
+        title: "Krushi Doctor",
+        body: "An AgriTech store in a narrow, genuinely-searched niche. This is where organic and paid work best together — the ad spend confirms which specific product searches convert before committing months to ranking for them for free.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Do I need SEO, Google Ads, or both?",
+        answer:
+          "It depends on whether the demand for what you sell already exists in search. If people are already typing what you offer into Google, start there — SEO if you can wait for it to compound, Ads if you need enquiries now. If the demand does not exist yet and you are creating it, that is a social and brand conversation, not a search one.",
+      },
+      {
+        question: "Can you manage just one channel instead of all three?",
+        answer:
+          "Yes — most engagements start with one. We will recommend which, and say plainly if we think a second channel is premature rather than upselling it because it is available.",
+      },
+      {
+        question: "Who owns the ad accounts and analytics?",
+        answer:
+          "You do, from day one — Google Ads, Meta Business Manager, Analytics and Search Console all registered in your name. We work inside your accounts, so nothing stops working the day a relationship ends.",
+      },
+      {
+        question: "How is a digital marketing retainer priced?",
+        answer:
+          "Per channel, against what that channel actually needs — an SEO audit, an Ads management scope, a content volume. We do not sell a flat \"digital marketing package\" price before knowing which of the three your business needs and how much of each.",
+      },
+      {
+        question: "How long before we see results?",
+        answer:
+          "Ads: traffic from day one, meaningful CPA data in four to eight weeks. SEO: technical fixes can move things in weeks, competitive rankings take six to twelve months. Social: brand-building is ongoing and rarely the fastest channel — treat it as the trust layer, not the growth lever.",
+      },
+      {
+        question: "Do you handle the ad spend or just management?",
+        answer:
+          "Management fee is separate from ad spend, and the spend runs through an account in your name so you can see exactly where every rupee goes. We do not mark up media spend.",
+      },
+    ],
+    localProof: [],
+    relatedServices: [
+      { slug: "seo-services", label: "SEO Services" },
+      { slug: "ppc-services", label: "PPC & Google Ads" },
+      { slug: "social-media-marketing-services", label: "Social Media Marketing" },
+    ],
+    relatedLocations: ["seo-services-in-lucknow", "google-ads-ppc-company-in-lucknow"],
+  },
+  {
+    slug: "web-designing-company-in-lucknow",
+    city: "Lucknow",
+    serviceLabel: "Web Design",
+    title: "Web Designing Company in Lucknow",
+    metaTitle: "Web Designing Company in Lucknow",
+    metaDescription:
+      "Web design in Lucknow that starts from page structure and conversion path, not a moodboard — design systems, not one-off homepage mockups.",
+    h1: "Web designing company in Lucknow",
+    intro: [
+      "\"Web designing company\" and \"website development company\" get searched differently in this city but usually mean the same enquiry: a site that looks credible and gets someone to act. We design and build together, so a design decision never turns out to be unbuildable in week six.",
+      "Design here starts from what has to be on a page for someone who arrived from a search result and has not read anything else — not from a homepage moodboard that looks resolved and falls apart once real content goes in.",
+    ],
+    sections: [
+      {
+        heading: "What design work actually covers",
+        body: [
+          "Every template the site needs, not a homepage and a promise. The homepage is the easiest screen in any project and the least representative of whether the site works — the category page, the enquiry form, the empty and error states nobody remembers to draw are what decide it.",
+          "You get a design system with it — type scale, spacing rhythm, colour tokens, component states — so the site can be extended two years from now without drifting into a dozen slightly different buttons.",
+        ],
+      },
+      {
+        heading: "The Lucknow market, honestly",
+        body: LUCKNOW_CONTEXT,
+      },
+      {
+        heading: "Design without a build attached",
+        body: [
+          "Rarely, and we will say when it is a bad idea. Handing a design file to another development team usually costs more in translation than it saves — decisions that look free in Figma turn out to be expensive in code, and the person who has to build it was not in the room when they were made.",
+        ],
+      },
+      {
+        heading: "What is actually included",
+        body: [
+          "Responsive layouts checked on real devices, not a resized browser window. Brand-aligned visual identity — colours, typography, UI components — that reflects your market position rather than a generic template. Conversion-focused layouts: CTA placement and trust signals engineered to drive action, not just look finished.",
+          "Design is not billed as a separate line item — it sits inside the build price, because a design nobody builds is worth nothing and splitting the two is how projects end up with a beautiful homepage and eleven templates nobody drew.",
+        ],
+      },
+      {
+        heading: "What a Lucknow web design project costs",
+        body: [
+          "What moves a project within its band is the number of distinct templates, not the number of pages — thirty pages sharing four templates is a smaller job than eight pages that all look different. No separate design fee and no per-revision charge inside the agreed scope.",
+        ],
+        links: [{ label: "See the full price bands", href: "/pricing/" }],
+      },
+      {
+        heading: "Hiring in Lucknow versus a Delhi or NCR agency",
+        body: [
+          "NCR design studios sell a portfolio of polished consumer brands, which is real if that is your market. Most Lucknow businesses buying a website are B2B, institutional or retail — the design job is credibility and clarity, not novelty, and a design agency optimising for awards over enquiries is solving the wrong problem for this market.",
+        ],
+      },
+    ],
+    caseStudies: [
+      {
+        slug: "tatvivahtrends",
+        title: "TatVivah Trends",
+        body: "Occasion-based navigation — haldi, mehendi, sangeet — rather than a generic category tree, because that is how the buyer actually thinks. Design work that changed the information architecture, not just the surface.",
+      },
+      {
+        slug: "thegrafftee",
+        title: "The Grafftee",
+        body: "A firm with a strong offline reputation and no digital presence to match. The design problem was communicating the full breadth of services without burying the one a visitor came for, then converting to a demo booking.",
+      },
+      {
+        slug: "saurally",
+        title: "Saurally Solar",
+        body: "A considered-purchase category where the visitor is researching before buying. The design had to carry technical specification and trust signals at the same time without reading like a datasheet.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Do you only design, or do you also build the site?",
+        answer:
+          "We do both, and recommend against splitting them. A design handed to a separate development team loses decisions in translation, and the person building it was not in the room when the design choices were made.",
+      },
+      {
+        question: "What do you deliver?",
+        answer:
+          "Design of every template the site needs — not a homepage mockup and a promise — plus a design system with type scale, spacing, colour tokens and component states, so the site can be extended without drifting.",
+      },
+      {
+        question: "How many design revisions are included?",
+        answer:
+          "Review rounds at agreed milestones, iterating until the design matches the signed scope. New scope — an extra template, a section that was not in the agreement — is quoted before it is built.",
+      },
+      {
+        question: "Do you do logos and brand identity?",
+        answer:
+          "We do not take brand-only engagements with no build attached. We will work with your existing identity, or with a brand designer you bring, and say honestly when the identity is the actual problem.",
+      },
+      {
+        question: "Will the design work on mobile?",
+        answer:
+          "It is checked on real devices rather than a resized browser, and on a mid-range Android over a throttled connection — the condition most Lucknow visitors are actually in.",
+      },
+      {
+        question: "What does design cost separately from the build?",
+        answer:
+          "Nothing — it is not billed as a line item. The build bands on the pricing page already include design, and there is no per-revision charge inside the agreed scope.",
+      },
+    ],
+    localProof: [],
+    relatedServices: [
+      { slug: "web-design-services", label: "Web Design Services" },
+      { slug: "website-development-services", label: "Website Development Services" },
+      { slug: "website-maintenance-services", label: "Website Maintenance Services" },
+    ],
+    relatedLocations: [
+      "website-development-company-in-lucknow",
+      "digital-marketing-company-in-lucknow",
+    ],
+  },
+  {
+    slug: "mobile-app-development-company-in-lucknow",
+    city: "Lucknow",
+    serviceLabel: "Mobile App Development",
+    title: "Mobile App Development Company in Lucknow",
+    metaTitle: "Mobile App Development Company in Lucknow",
+    metaDescription:
+      "Native Android app development for Lucknow businesses — field operations, customer engagement and internal tools, built and supported by the team that writes the code.",
+    h1: "Mobile app development company in Lucknow",
+    intro: [
+      "We build native Android applications for Lucknow businesses that need to run field operations, engage customers directly, or extend a web platform onto a phone — Kotlin and Jetpack Compose, not a wrapped website pretending to be an app.",
+      "We are specific about scope here: our strength is native Android. For iOS or cross-platform, we will scope a React Native approach separately and say so up front rather than taking on native iOS work we are not set up to support properly.",
+    ],
+    sections: [
+      {
+        heading: "What we actually build",
+        body: [
+          "Field operations apps — offline-first data capture, GPS tracking, real-time sync when connectivity returns — for businesses running technicians, delivery staff or sales teams outside an office. Customer-facing apps — ordering, loyalty, push notifications, payment integration — for D2C and retail brands that have outgrown a WhatsApp catalogue.",
+          "What we do not build: a WebView wrapped around your website and shipped to the Play Store as an \"app.\" That approach saves a few weeks and costs you every advantage a native app was supposed to deliver — speed, offline behaviour, and a Play Store listing that does not get flagged.",
+        ],
+      },
+      {
+        heading: "The Lucknow market, honestly",
+        body: LUCKNOW_CONTEXT,
+      },
+      {
+        heading: "Why native, not cross-platform, by default",
+        body: [
+          "Most Lucknow businesses building their first app are targeting Android almost exclusively — it is the overwhelming majority device here. Native Kotlin gets you better performance, smaller battery and memory footprint, and full access to Android's APIs without a cross-platform framework's compromises. If you genuinely need iOS from day one, that changes the calculus and we will scope React Native honestly rather than force a native Android build to also serve iOS badly.",
+        ],
+      },
+      {
+        heading: "What is included",
+        body: [
+          "UX wireframes and a working prototype before native development starts, so the flow is validated cheaply before it is expensive to change. Firebase-powered push notifications, analytics and crash reporting. Play Store submission — listing, screenshots, compliance — managed end to end, not handed back to you as homework.",
+          "Testing across a genuinely fragmented device and OS-version landscape, not just the one phone the build happened to run on.",
+        ],
+      },
+      {
+        heading: "What an Android app costs in Lucknow",
+        body: [
+          "Custom-coded app and backend work starts at a meaningfully higher band than a website, because it is different engineering — native mobile plus the API layer behind it. The build bands on our pricing page cover the software side of this; the same terms apply — 50% advance to start, 50% at the milestone the app can actually do its job.",
+        ],
+        links: [{ label: "See the price bands", href: "/pricing/" }],
+      },
+      {
+        heading: "Hiring in Lucknow versus a Delhi or NCR agency",
+        body: [
+          "NCR mobile shops will quote you a cross-platform build by default because it is faster to staff across iOS and Android at once — reasonable if you genuinely need both platforms from launch. If your users are almost entirely on Android, that is often paying for a compromise you do not need. Ask any agency quoting cross-platform whether native Android was even considered, and why not.",
+        ],
+      },
+    ],
+    caseStudies: [],
+    faqs: [
+      {
+        question: "Do you build iOS apps too?",
+        answer:
+          "Our core strength is native Android, which covers the large majority of users in this market. For iOS or cross-platform needs, we scope a React Native approach separately — we do not take on native iOS work.",
+      },
+      {
+        question: "How long does an Android app take to build?",
+        answer:
+          "Typically six to fourteen weeks depending on feature complexity, API dependencies and design scope. A field-operations app with offline sync sits at the longer end; a simple ordering app at the shorter.",
+      },
+      {
+        question: "Will you handle the Play Store submission?",
+        answer:
+          "Yes — store listing, screenshots and the compliance requirements around them, managed as part of the build rather than handed back to you.",
+      },
+      {
+        question: "Can you take over an existing Android app?",
+        answer:
+          "Yes. We audit the codebase first, then plan an improvement or rebuild roadmap based on what that audit finds, the same way we do for websites we are asked to rescue.",
+      },
+      {
+        question: "Do you provide maintenance after launch?",
+        answer:
+          "Yes — Android version updates, bug fixes and feature additions, covered by the same kind of support arrangement every build ships with. Nobody on our client list has been handed a repository and left to it.",
+      },
+      {
+        question: "Who owns the source code and the Play Store listing?",
+        answer:
+          "You do, from day one — source code, Play Store developer account and Firebase project all registered in your name. We work inside your accounts.",
+      },
+    ],
+    localProof: [],
+    relatedServices: [
+      { slug: "android-app-development-services", label: "Android App Development" },
+      { slug: "api-integration-services", label: "API Integration" },
+      { slug: "software-development-services", label: "Software Development" },
+    ],
+    relatedLocations: ["software-company-in-lucknow", "website-development-company-in-lucknow"],
+  },
+  {
+    slug: "software-company-in-lucknow",
+    city: "Lucknow",
+    serviceLabel: "Software Development",
+    title: "Software Company in Lucknow",
+    metaTitle: "Software Company in Lucknow",
+    metaDescription:
+      "Custom software for Lucknow businesses whose workflow does not fit off-the-shelf tools — internal platforms, integrations and SaaS builds, engineered and supported in-house.",
+    h1: "Software company in Lucknow",
+    intro: [
+      "We build custom software for Lucknow businesses running operations that off-the-shelf tools almost fit but never quite do — job scheduling, inventory that spans a shop and a WhatsApp order book, systems that need to talk to a payment gateway and a courier API and a spreadsheet nobody wants to give up.",
+      "This is a smaller, more deliberate part of what we do than websites — we take on custom software when a generic tool genuinely cannot do the job, not as a default sell.",
+    ],
+    sections: [
+      {
+        heading: "What we actually mean by \"custom software\"",
+        body: [
+          "Internal operational tools: job scheduling, technician tracking, invoice generation, inventory that unifies channels currently living in separate silos. Third-party integrations: connecting a CRM, ERP, payment gateway or communication tool that do not talk to each other today. SaaS products: a platform you are building as your actual business, not an internal tool — multi-tenant architecture, subscription billing, the full stack.",
+        ],
+      },
+      {
+        heading: "The Lucknow market, honestly",
+        body: LUCKNOW_CONTEXT,
+      },
+      {
+        heading: "How a software project actually starts",
+        body: [
+          "A discovery phase before a line of code, not after the quote. Stakeholder interviews, process mapping, requirement documentation — because the single most expensive mistake in a software project is building the wrong thing precisely. Unclear requirements get a paid discovery sprint first, specifically to de-risk the build phase before committing to it.",
+        ],
+      },
+      {
+        heading: "What is included",
+        body: [
+          "System architecture documented before development starts, not discovered mid-build. Full-stack delivery — frontend, backend, database, API — as one cohesive system rather than pieces handed to different vendors. Testing across functional, performance and security dimensions, and a deployment pipeline with monitoring and rollback, not a manual upload to a server nobody documented.",
+          "You own all source code and receive technical documentation and handover materials — this is not held hostage the way it sometimes is with software built by a solo freelancer who then goes quiet.",
+        ],
+      },
+      {
+        heading: "What custom software costs in Lucknow",
+        body: [
+          "This sits at the top of our range because it is different engineering from a website — architecture, integrations and testing that a template cannot shortcut. MVPs run six to twelve weeks; full production systems three to nine months depending on scope. The same terms apply as everywhere else: 50% advance to start, 50% at the agreed delivery milestone.",
+        ],
+        links: [{ label: "See the price bands", href: "/pricing/" }],
+      },
+      {
+        heading: "Hiring in Lucknow versus a Delhi or NCR agency",
+        body: [
+          "NCR software consultancies staff larger teams and can absorb bigger, longer engagements — genuinely the right call for a project needing fifteen engineers. For most Lucknow businesses the actual constraint is not team size, it is whether the person who understood your process in the discovery call is still the one writing the code three months later. We are small enough that the answer is always yes.",
+        ],
+      },
+    ],
+    caseStudies: [
+      {
+        slug: "maribiz-ai",
+        title: "MariBiz.ai",
+        body: "A global B2B marine procurement marketplace — an RFQ engine, vendor verification, port-based service discovery and quote comparison, built as genuine software rather than a themed storefront. The closest reference on our list for what a full custom platform actually involves.",
+      },
+      {
+        slug: "thegrafftee",
+        title: "The Grafftee",
+        body: "Beyond the site itself, this build included a demo booking system and CRM integration — the operational software underneath a marketing site that most \"web design\" projects never touch.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How do you handle unclear or evolving requirements?",
+        answer:
+          "A paid discovery sprint first — stakeholder interviews, process mapping and documented edge cases — specifically to de-risk the build phase before committing to it. Unclear requirements are the most expensive thing to discover mid-build.",
+      },
+      {
+        question: "Do you build MVPs or only full production systems?",
+        answer:
+          "Both, with clear architectural continuity between the two — an MVP built to validate an idea should not need throwing away if the idea works.",
+      },
+      {
+        question: "What technology stack do you use?",
+        answer:
+          "We are technology-agnostic and recommend the stack that fits the requirement. Our primary depth is Node.js, Python, TypeScript, React and PostgreSQL.",
+      },
+      {
+        question: "How long does a custom software project take?",
+        answer:
+          "MVPs: six to twelve weeks. Full production systems: three to nine months depending on scope and integration complexity.",
+      },
+      {
+        question: "Do we receive the source code and documentation?",
+        answer:
+          "Yes — all source code plus technical documentation and handover materials are yours. This is not held back after delivery.",
+      },
+      {
+        question: "Can you integrate with our existing CRM, ERP or payment systems?",
+        answer:
+          "Yes — this is a large share of what custom software work actually is: making systems that do not currently talk to each other work together reliably.",
+      },
+    ],
+    localProof: [],
+    relatedServices: [
+      { slug: "software-development-services", label: "Software Development" },
+      { slug: "api-integration-services", label: "API Integration" },
+      { slug: "cloud-solutions", label: "Cloud Solutions" },
+    ],
+    relatedLocations: [
+      "mobile-app-development-company-in-lucknow",
+      "website-development-company-in-lucknow",
+    ],
+  },
+  {
+    slug: "google-ads-ppc-company-in-lucknow",
+    city: "Lucknow",
+    serviceLabel: "PPC & Google Ads",
+    title: "Google Ads & PPC Company in Lucknow",
+    metaTitle: "Google Ads & PPC Company in Lucknow",
+    metaDescription:
+      "Google Ads and Meta Ads management for Lucknow businesses, with conversion tracking set up before a rupee is spent — reported on cost per lead, not impressions.",
+    h1: "Google Ads & PPC company in Lucknow",
+    intro: [
+      "We run Google Search, Display and Meta Ads for Lucknow businesses that need qualified traffic now rather than in six months, with conversion tracking wired up before the first rupee is spent — not discovered to be missing three months into the retainer.",
+      "PPC is the channel we recommend when the demand already exists in search and you cannot wait for SEO to compound, or when a specific launch or sale needs traffic on a deadline.",
+    ],
+    sections: [
+      {
+        heading: "What we do before spending your budget",
+        body: [
+          "Full conversion tracking — GA4, Google Tag Manager, Meta Pixel — implemented and verified before a campaign goes live. Running ads without this means paying for clicks you cannot connect to actual enquiries, which is how a Lucknow business ends up unable to say whether its ad spend worked.",
+        ],
+      },
+      {
+        heading: "The Lucknow market, honestly",
+        body: LUCKNOW_CONTEXT,
+      },
+      {
+        heading: "Where the budget actually goes wrong here",
+        body: [
+          "Broad match keywords burning spend on searches with no commercial intent. No negative keyword list, so the campaign pays for \"free\" and \"jobs\" searches alongside genuine buyers. A landing page that does not match what the ad promised, killing conversion after the click has already been paid for. All three are cheap to fix and routinely left unfixed by agencies billing a flat monthly fee regardless of performance.",
+        ],
+      },
+      {
+        heading: "What is included",
+        body: [
+          "Campaign structure built for quality score and relevance from the start, not patched after launch. Weekly bid adjustments, negative keyword management and audience refinement — not a set-and-forget campaign checked once a month. Landing page recommendations so ad intent and page content actually match, because a mismatched landing page is the most common reason a technically well-run campaign still underperforms.",
+        ],
+      },
+      {
+        heading: "What PPC management costs",
+        body: [
+          "Management fee is separate from ad spend, and the spend itself runs through an account in your name — you see exactly where every rupee goes, and we do not mark it up. For meaningful data and optimisation cycles, a minimum monthly ad spend in the ₹40,000–₹80,000 range alongside the management fee is where campaigns start producing usable signal.",
+        ],
+        links: [{ label: "See the service price bands", href: "/pricing/" }],
+      },
+      {
+        heading: "Hiring in Lucknow versus a Delhi or NCR agency",
+        body: [
+          "NCR performance-marketing agencies run bigger budgets and can justify a dedicated analyst on your account — real if your monthly spend is in the lakhs. At the budget most Lucknow businesses start with, that overhead usually means your account is one of forty a junior manager is rotating through. Ask directly how many accounts your manager runs; the answer tells you more than the pitch deck does.",
+        ],
+      },
+    ],
+    caseStudies: [],
+    faqs: [
+      {
+        question: "What budget do I need to start?",
+        answer:
+          "For meaningful data and optimisation cycles, we recommend a minimum monthly ad spend of roughly ₹40,000–₹80,000 alongside the management fee. Below that, campaigns rarely gather enough data to optimise properly.",
+      },
+      {
+        question: "How long before I see results?",
+        answer:
+          "Traffic from day one. Optimisation cycles that meaningfully improve cost per acquisition typically take four to eight weeks of data collection.",
+      },
+      {
+        question: "Do you manage Google Ads, Meta Ads, or both?",
+        answer:
+          "Both, combined or individually, depending on where your buyers actually are — search intent favours Google, discovery and retargeting favour Meta.",
+      },
+      {
+        question: "Do you create the ad creative?",
+        answer:
+          "Yes — ad copy, headlines and creative briefs are included. High-production video or photography is scoped separately.",
+      },
+      {
+        question: "Who owns the ad account?",
+        answer:
+          "You do — the account is registered in your name and we work inside it. We do not run campaigns through an agency-owned account you cannot take with you.",
+      },
+      {
+        question: "What do I receive each month?",
+        answer:
+          "A clear report on spend, cost per lead and what changed in the campaign — not a screenshot of impressions and clicks with no connection to actual enquiries.",
+      },
+    ],
+    localProof: [],
+    relatedServices: [
+      { slug: "ppc-services", label: "PPC & Google Ads" },
+      { slug: "seo-services", label: "SEO Services" },
+      { slug: "social-media-marketing-services", label: "Social Media Marketing" },
+    ],
+    relatedLocations: ["digital-marketing-company-in-lucknow", "seo-services-in-lucknow"],
   },
   {
     slug: "website-development-company-in-mumbai",

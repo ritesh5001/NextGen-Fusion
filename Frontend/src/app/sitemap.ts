@@ -40,7 +40,7 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
 }
 
 const SERVICES_LAST_MODIFIED = "2026-08-14"
-const LOCATIONS_LAST_MODIFIED = "2026-09-08"
+const LOCATIONS_LAST_MODIFIED = "2026-09-13"
 
 type Entry = MetadataRoute.Sitemap[number]
 

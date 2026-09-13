@@ -113,7 +113,7 @@ export default function SimpleNavbar() {
               className="cursor-pointer"
               aria-label="NextGen Fusion — home"
             >
-              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={128} height={72} sizes="128px" priority className="h-8 w-auto" />
+              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={128} height={72} priority className="h-8 w-auto" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -310,7 +310,7 @@ export default function SimpleNavbar() {
               onClick={handleLogoClick}
               className="min-w-0 shrink cursor-pointer"
             >
-              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={96} height={54} sizes="96px" className="h-5 w-auto" />
+              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={96} height={54} className="h-5 w-auto" />
             </div>
 
             {/* Tombol Hamburger di kanan logo */}

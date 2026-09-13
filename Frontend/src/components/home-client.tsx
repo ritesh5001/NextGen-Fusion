@@ -12,7 +12,6 @@ const ComparisonSection = dynamic(() => import("@/components/comparison-section"
 const ServicesSection = dynamic(() => import("@/components/services-section"))
 const ProcessSection = dynamic(() => import("@/components/process-section"))
 const StackMarqueeSection = dynamic(() => import("@/components/stack-marquee-section"))
-const TestimonialsSection = dynamic(() => import("@/components/testimonials-section"))
 const FAQSection = dynamic(() => import("@/components/faq-section"))
 const ContactSection = dynamic(() => import("@/components/contact-section"))
 const ProjectEstimatorSection = dynamic(() => import("@/components/project-estimator-section"))
@@ -39,7 +38,6 @@ export default function HomeClient() {
       <div id="about">
         <AboutUsSection />
       </div>
-      <TestimonialsSection />
       <div id="project-estimator">
         <ProjectEstimatorSection />
       </div>
