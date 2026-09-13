@@ -102,6 +102,20 @@ const nextConfig = {
       // Demo content from the old "agency9" WordPress theme. Portfolio-shaped
       // slugs, so /work is the honest destination for anything that links here.
       { source: '/agency9-:slug*', destination: '/work/', permanent: true },
+      // More of the same WordPress theme, reported as 404 in Search Console
+      // (Sep 2026). Taxonomy archives and demo pages, mapped to the section that
+      // replaced each rather than rebuilt: the originals were theme filler with
+      // no content worth recreating, and pages built only to catch old URLs
+      // would be thin doorways.
+      { source: '/portfolio-types/:slug*', destination: '/work/', permanent: true },
+      { source: '/portfolio-category/:slug*', destination: '/work/', permanent: true },
+      { source: '/case-study', destination: '/work/', permanent: true },
+      { source: '/case-studies', destination: '/work/', permanent: true },
+      { source: '/offer', destination: '/pricing/', permanent: true },
+      { source: '/offers', destination: '/pricing/', permanent: true },
+      { source: '/category/:slug*', destination: '/blog/', permanent: true },
+      { source: '/tag/:slug*', destination: '/blog/', permanent: true },
+      { source: '/author/:slug*', destination: '/about/', permanent: true },
     ]
   },
   // Same-origin /api proxy to the Backend. Filesystem route handlers under
