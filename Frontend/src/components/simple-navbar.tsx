@@ -29,12 +29,12 @@ const hrefFor = (item: MenuItem) => (item.isPage ? item.href : `/#${item.href}`)
 // be linked to by directories and cannot carry their own schema.
 const menuItems: MenuItem[] = [
   { name: "Home", href: "/", isPage: true, Icon: Home },
+  { name: "Projects", href: "/work/", isPage: true, Icon: Briefcase },
   { name: "Services", href: "/services/", isPage: true, Icon: Wrench },
   { name: "Store", href: "/store/", isPage: true, Icon: Store },
   { name: "Blogs", href: "/blog/", isPage: true, Icon: BookOpen },
   { name: "About", href: "/about/", isPage: true, Icon: User },
   { name: "Contact", href: "/contact/", isPage: true, Icon: MessageCircle },
-  { name: "Projects", href: "/work/", isPage: true, Icon: Briefcase },
   { name: "Careers", href: "/careers/", isPage: true, Icon: Users },
 ]
 
