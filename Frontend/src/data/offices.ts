@@ -62,3 +62,18 @@ export const offices: Office[] = [
 export const PRIMARY_PHONE_E164 = "+917348228167"
 export const PRIMARY_PHONE_DISPLAY = "+91 73482 28167"
 export const CONTACT_EMAIL = "contact@nextgenfusion.in"
+
+/**
+ * Official brand profiles. One list feeds Organization.sameAs and the footer,
+ * so a new listing is added once and shows up in both.
+ *
+ * Other companies trade as "NextGen Fusion" (a US Inc, a Colorado Facebook page),
+ * so each verified profile here is how Google ties the name to this agency.
+ * Add the URL only once the profile is live, and keep the name, address and
+ * phone on it identical to `offices` above. Next to add: Google Business
+ * Profile, LinkedIn, Clutch, GoodFirms, DesignRush, TechBehemoths, JustDial,
+ * IndiaMART, Crunchbase.
+ */
+export const brandProfiles: { label: string; href: string }[] = [
+  { label: "Instagram", href: "https://www.instagram.com/nextgenfusion.devs/" },
+]

@@ -9,16 +9,16 @@ import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo"
 export const metadata: Metadata = {
   // The root layout's `%s | NextGen Fusion` template does not apply to the root
   // segment, so the brand has to be spelled out here.
-  title: "NextGen Fusion — Web Development, SEO & Digital Product Agency",
+  title: "Website Development Company in Lucknow & India | NextGen Fusion",
   description:
-    "NextGen Fusion builds websites, SEO campaigns, mobile apps, software, and digital products for businesses that want measurable growth.",
+    "Website development company in Lucknow building fast Next.js, WordPress and Shopify websites and online stores for businesses across Uttar Pradesh and India, with SEO and support after launch.",
   alternates: {
     canonical: `${siteUrl}/`,
   },
   openGraph: {
-    title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
+    title: "Website Development Company in Lucknow & India | NextGen Fusion",
     description:
-      "Websites, SEO campaigns, mobile apps, software, and digital products built for measurable business growth.",
+      "Websites and online stores built in Lucknow for businesses across India, and supported after launch.",
     url: `${siteUrl}/`,
     siteName: "NextGen Fusion",
     locale: "en_IN",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
+    title: "Website Development Company in Lucknow & India | NextGen Fusion",
     description:
-      "Websites, SEO campaigns, mobile apps, software, and digital products built for measurable business growth.",
+      "Websites and online stores built in Lucknow for businesses across India, and supported after launch.",
     images: [DEFAULT_OG_IMAGE],
   },
 }

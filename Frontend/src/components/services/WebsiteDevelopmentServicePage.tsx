@@ -188,8 +188,8 @@ export default function WebsiteDevelopmentServicePage() {
             <div className="relative z-10 max-w-4xl">
               <BadgeSubtitle>Website Development Services</BadgeSubtitle>
               <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
-                Website Development Services Built for Growth,
-                <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"> Performance, and Conversions</span>
+                Website Development Services in India
+                <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"> Built for Growth</span>
               </h1>
               <p className="mt-6 text-lg text-gray-600 leading-relaxed max-w-3xl">
                 We build high-performance, SEO-optimized websites that help businesses generate better leads,

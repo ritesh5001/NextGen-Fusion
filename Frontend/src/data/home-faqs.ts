@@ -8,26 +8,66 @@
  * Keep the answers here in step with the opening hours in `offices.ts` and the
  * Organization schema in `app/layout.tsx` — they are the same claim in three places.
  */
+import type { ProjectEstimatorData } from "@/lib/api"
+import { computeBallpark } from "@/lib/estimator-pricing"
+
 export type HomeFaq = { question: string; answer: string }
+
+const baseForm: ProjectEstimatorData = {
+  name: "",
+  email: "",
+  phone: "",
+  companyName: "",
+  projectType: "landing-page",
+  buildType: "wordpress",
+  ecommercePackage: "standard",
+  features: [],
+  timeline: "3-months",
+  pageCount: "1-5",
+  designLevel: "clean",
+  contentReadiness: "ready",
+  maintenance: "none",
+  integrations: [],
+  goals: "",
+  notes: "",
+}
+
+// Always INR, never the estimator's locale-dependent formatter: this text is
+// rendered on the server and in FAQPage schema, and the homepage was quoting
+// dollars to an Indian audience.
+const inr = (value: number) => `₹${value.toLocaleString("en-IN")}`
+
+function band(lower: Partial<ProjectEstimatorData>, upper: Partial<ProjectEstimatorData>) {
+  const min = computeBallpark({ ...baseForm, ...lower }).cost.min
+  const max = computeBallpark({ ...baseForm, ...upper }).cost.max
+  return `${inr(min)}–${inr(max)}`
+}
+
+// Same configurations as the tiers on /pricing/, so the two cannot disagree.
+const launchBand = band({}, { pageCount: "6-15" })
+const storeBand = band(
+  { projectType: "ecommerce", buildType: "custom" },
+  { projectType: "ecommerce", buildType: "custom", ecommercePackage: "extra-premium" },
+)
 
 export const homeFaqs: HomeFaq[] = [
   {
     question: "What industries do you serve?",
-    answer: "We work across various industries including technology, healthcare, finance, e-commerce, and more.",
+    answer:
+      "Mostly ecommerce and D2C retail — ethnic and wedding wear, sarees and textiles, kidswear, gifting, solar products and agri-inputs — plus engineering contractors, an ed-tech learning platform, HR-tech SaaS and a maritime B2B marketplace. Every one of those has a full case study on our Work page.",
   },
   {
     question: "Can you work with startups or small businesses?",
-    answer: "We work with businesses of all sizes, from startups to established enterprises.",
+    answer: `Yes — most of our clients are founder-led businesses, and we work with them from our Lucknow and Mumbai offices. A WordPress or Shopify site starts at ${launchBand}, so a first website does not need an enterprise budget, and you own the domain, hosting and code from day one.`,
   },
   {
     question: "How do I get started with NextGen Fusion?",
     answer:
-      "Simply reach out through our contact form or schedule a consultation call to discuss your project needs.",
+      "Send us a short brief through the contact form, WhatsApp or a booked call: what the business sells, who buys from it and what the site has to do. You get back a written scope with one price and one delivery window. Work starts on a 50% advance.",
   },
   {
-    question: "How much do your services cost?",
-    answer:
-      "Most marketing and ecommerce sites land between roughly $800 and $2,500 depending on pages, features, and design level, while larger custom or SaaS builds scale beyond that. Use our project estimator above for a tailored range in your currency — every quote is fixed and transparent, with no hidden costs.",
+    question: "How much does website development cost in India?",
+    answer: `WordPress or Shopify business websites start at ${launchBand}. Custom-coded online stores run ${storeBand}, and custom platforms or web apps are quoted from the same rate card. Full bands are on our pricing page, and the project estimator gives a tailored range in about two minutes — every quote is fixed, with no hidden costs.`,
   },
   {
     question: "How long does a project take?",

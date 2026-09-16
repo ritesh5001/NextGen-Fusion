@@ -17,6 +17,30 @@ import ScrollToTop from "@/components/scroll-to-top";
 import { staticProjects, getProjectBySlug } from "@/lib/static-projects";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import type { StaticProject } from "@/lib/static-projects";
+
+// The service page and Lucknow page each build type is sold on. Case studies
+// are the strongest proof on the site; linking them to the money pages passes
+// that relevance on instead of leaving it stranded on /work/.
+function relatedPagesFor(project: StaticProject) {
+  const category = project.category.toLowerCase();
+  if (category.startsWith("e-commerce")) {
+    return [
+      { href: "/services/ecommerce-web-development-services/", label: "E-commerce Development Services" },
+      { href: "/ecommerce-development-company-in-lucknow/", label: "Ecommerce Development Company in Lucknow" },
+    ];
+  }
+  if (category.includes("saas") || category.includes("marketplace")) {
+    return [
+      { href: "/services/software-development-services/", label: "Software Development Services" },
+      { href: "/software-company-in-lucknow/", label: "Software Company in Lucknow" },
+    ];
+  }
+  return [
+    { href: "/services/website-development-services/", label: "Website Development Services in India" },
+    { href: "/website-development-company-in-lucknow/", label: "Website Development Company in Lucknow" },
+  ];
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -32,13 +56,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const project = getProjectBySlug(slug);
   if (!project) return {};
   return {
-    title: `${project.title} — Case Study`,
+    // Absolute: /work/layout.tsx sets a plain string title, which cancels the
+    // root template, so the brand suffix never made it onto case studies.
+    title: { absolute: `${project.seoTitle} | NextGen Fusion` },
     description: project.shortDescription,
     alternates: {
       canonical: absoluteUrl(`/work/${project.slug}`),
     },
     openGraph: {
-      title: `${project.title} Case Study | NextGen Fusion`,
+      title: `${project.seoTitle} | NextGen Fusion`,
       description: project.shortDescription,
       url: `${siteUrl}/work/${project.slug}`,
       siteName: "NextGen Fusion",
@@ -47,7 +73,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} Case Study | NextGen Fusion`,
+      title: `${project.seoTitle} | NextGen Fusion`,
       description: project.shortDescription,
       images: [project.coverImage],
     },
@@ -74,7 +100,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
       "@context": "https://schema.org",
       "@type": "Article",
       "@id": `${absoluteUrl(`/work/${project.slug}`)}#article`,
-      headline: `${project.title} — Case Study`,
+      headline: project.seoTitle,
       description: project.shortDescription,
       articleSection: project.category,
       url: absoluteUrl(`/work/${project.slug}`),
@@ -440,6 +466,26 @@ export default async function WorkDetailPage({ params }: PageProps) {
                     ))}
                   </div>
                 </div>
+              </div>
+
+              {/* Service and city pages this build sits under */}
+              <div>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+                  Related Services
+                </p>
+                <ul className="space-y-2">
+                  {relatedPagesFor(project).map((page) => (
+                    <li key={page.href}>
+                      <Link
+                        href={page.href}
+                        className="inline-flex items-start gap-1.5 py-1 text-sm font-semibold text-gray-800 hover:text-purple-600 transition-colors"
+                      >
+                        <ArrowRight className="w-3.5 h-3.5 flex-shrink-0 mt-1" />
+                        {page.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* CTA Card */}

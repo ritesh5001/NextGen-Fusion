@@ -5,10 +5,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowLeft, Home } from "lucide-react"
 
-// Pastikan halaman ini dirender sebagai client component
-export const dynamic = 'force-dynamic'
-
-export default function NotFound() {
+export function NotFoundView() {
   useEffect(() => {
     // Fungsi untuk menyembunyikan navbar, footer, dan WhatsApp float button
     const hideElements = () => {

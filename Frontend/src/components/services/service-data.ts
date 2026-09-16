@@ -2,8 +2,8 @@ import type { ServicePageData } from "./ServicePageTemplate"
 
 export const ecommerceServiceData: ServicePageData = {
   badge: "E-commerce Web Development Services",
-  heroTitle: "E-commerce Web Development Services That",
-  heroTitleHighlight: "Drive Sales, Reduce Cart Abandonment, and Scale Revenue",
+  heroTitle: "E-commerce Development Services",
+  heroTitleHighlight: "That Drive Sales",
   heroDescription:
     "We build high-converting online stores with optimized product discovery, frictionless checkout, and deep integrations that help your business sell more — every single day.",
   aboutIcon: 'shopping-cart',
@@ -107,8 +107,8 @@ export const ecommerceServiceData: ServicePageData = {
 
 export const androidServiceData: ServicePageData = {
   badge: "Android App Development Services",
-  heroTitle: "Android App Development Services Built for",
-  heroTitleHighlight: "Performance, Retention, and Long-Term Growth",
+  heroTitle: "Android App Development Services",
+  heroTitleHighlight: "Built for Retention",
   heroDescription:
     "We build robust, scalable Android applications with smooth native performance, seamless API connectivity, and user experiences that keep customers coming back.",
   aboutIcon: 'smartphone',
@@ -174,8 +174,8 @@ export const androidServiceData: ServicePageData = {
 
 export const webDesignServiceData: ServicePageData = {
   badge: "Web Design Services",
-  heroTitle: "Web Design Services That Convert Visitors Into",
-  heroTitleHighlight: "Customers Through Clarity, Trust, and Visual Excellence",
+  heroTitle: "Web Design Services",
+  heroTitleHighlight: "That Turn Visitors Into Customers",
   heroDescription:
     "We design modern, conversion-focused web experiences with clear information hierarchy, responsive layouts, and strong visual branding that make your business look and perform its best.",
   aboutIcon: 'monitor-smartphone',
@@ -277,8 +277,8 @@ export const webDesignServiceData: ServicePageData = {
 
 export const aiServiceData: ServicePageData = {
   badge: "AI Automation and AI Development Services",
-  heroTitle: "AI Automation Services That Eliminate Manual Work and",
-  heroTitleHighlight: "Unlock Intelligent, Scalable Business Operations",
+  heroTitle: "AI Automation Services",
+  heroTitleHighlight: "That Remove Manual Work",
   heroDescription:
     "We build AI-powered automation systems, intelligent assistants, and custom AI features that help your team work faster, make smarter decisions, and scale without proportionally increasing headcount.",
   aboutIcon: 'bot',
@@ -344,8 +344,8 @@ export const aiServiceData: ServicePageData = {
 
 export const seoServiceData: ServicePageData = {
   badge: "SEO Services",
-  heroTitle: "SEO Services That Build Organic Visibility and",
-  heroTitleHighlight: "Deliver Compounding, Long-Term Traffic Growth",
+  heroTitle: "SEO Services",
+  heroTitleHighlight: "for Compounding Organic Growth",
   heroDescription:
     "We improve your search rankings through technical SEO, strategic keyword targeting, content optimization, and authority building — turning Google into a reliable, predictable source of qualified leads.",
   aboutIcon: 'search',
@@ -447,8 +447,8 @@ export const seoServiceData: ServicePageData = {
 
 export const ppcServiceData: ServicePageData = {
   badge: "PPC Services",
-  heroTitle: "PPC Services That Maximize Return on Every",
-  heroTitleHighlight: "Dollar Spent on Paid Advertising",
+  heroTitle: "PPC & Google Ads Services",
+  heroTitleHighlight: "That Make Every Rupee Count",
   heroDescription:
     "We run high-intent, ROI-focused paid campaigns across Google and Meta that bring qualified traffic, lower your cost per acquisition, and generate measurable business results from day one.",
   aboutIcon: 'megaphone',
@@ -487,7 +487,7 @@ export const ppcServiceData: ServicePageData = {
   ],
   benefits: [
     { icon: 'zap', title: "Immediate Traffic", text: "PPC delivers qualified visitors from day one — no waiting for organic growth." },
-    { icon: 'bar-chart-3', title: "Full ROAS Visibility", text: "Every dollar tracked from ad click to conversion with clear attribution." },
+    { icon: 'bar-chart-3', title: "Full ROAS Visibility", text: "Every rupee tracked from ad click to conversion with clear attribution." },
     { icon: 'trending-up', title: "Lower CPA Over Time", text: "Continuous optimization drives cost per acquisition down month over month." },
     { icon: 'search', title: "Competitive Intelligence", text: "Campaign data reveals what messaging and offers resonate best with your market." },
   ],
@@ -508,14 +508,14 @@ export const ppcServiceData: ServicePageData = {
     { question: "Do you create ad creatives?", answer: "Yes. Ad copy, headlines, and creative briefs are included. High-production video or photography requires separate scope." },
     { question: "What does PPC management include monthly?", answer: "Bid management, negative keyword maintenance, creative testing, audience optimization, and a full performance report every month." },
   ],
-  ctaTitle: "Ready to Make Every Advertising Dollar Count?",
+  ctaTitle: "Ready to Make Every Rupee of Ad Spend Count?",
   ctaDescription: "Let's build a PPC strategy that targets the right buyers, converts efficiently, and gives you complete visibility into your ad ROI.",
 }
 
 export const socialMediaServiceData: ServicePageData = {
   badge: "Social Media Marketing Services",
-  heroTitle: "Social Media Marketing Services That Build Brand Authority and",
-  heroTitleHighlight: "Turn Followers Into Paying Customers",
+  heroTitle: "Social Media Marketing Services",
+  heroTitleHighlight: "That Win Customers",
   heroDescription:
     "We create and execute strategic social media programs that grow your brand presence, build community trust, and generate real business results through consistent, platform-native content.",
   aboutIcon: 'megaphone',
@@ -581,8 +581,8 @@ export const socialMediaServiceData: ServicePageData = {
 
 export const maintenanceServiceData: ServicePageData = {
   badge: "Website Maintenance Services",
-  heroTitle: "Website Maintenance Services That Keep Your Site",
-  heroTitleHighlight: "Secure, Fast, and Performing at Its Best — Always",
+  heroTitle: "Website Maintenance Services",
+  heroTitleHighlight: "for a Fast, Secure Site",
   heroDescription:
     "We proactively monitor, update, and maintain your website so you never have to worry about security vulnerabilities, broken features, or performance degradation affecting your business.",
   aboutIcon: 'settings',
@@ -648,8 +648,8 @@ export const maintenanceServiceData: ServicePageData = {
 
 export const softwareServiceData: ServicePageData = {
   badge: "Software Development Services",
-  heroTitle: "Software Development Services That Build the Systems",
-  heroTitleHighlight: "Your Business Needs to Operate, Scale, and Compete",
+  heroTitle: "Software Development Services",
+  heroTitleHighlight: "Built Around How You Operate",
   heroDescription:
     "We design and develop custom software solutions — from internal tools and SaaS platforms to business automation systems — tailored precisely to your processes and growth requirements.",
   aboutIcon: 'code-2',
@@ -715,8 +715,8 @@ export const softwareServiceData: ServicePageData = {
 
 export const apiServiceData: ServicePageData = {
   badge: "API Integration Services",
-  heroTitle: "API Integration Services That Connect Your Tools and",
-  heroTitleHighlight: "Eliminate the Manual Work Between Disconnected Systems",
+  heroTitle: "API Integration Services",
+  heroTitleHighlight: "That Connect Your Tools",
   heroDescription:
     "We design and implement reliable API integrations that make your platforms, CRMs, payment systems, and third-party tools work together seamlessly — turning data silos into unified business workflows.",
   aboutIcon: 'plug',
@@ -782,8 +782,8 @@ export const apiServiceData: ServicePageData = {
 
 export const cloudServiceData: ServicePageData = {
   badge: "Cloud Solutions",
-  heroTitle: "Cloud Solutions That Give Your Business Scalable,",
-  heroTitleHighlight: "Resilient, and Cost-Efficient Infrastructure",
+  heroTitle: "Cloud Solutions",
+  heroTitleHighlight: "for Scalable, Cost-Efficient Infrastructure",
   heroDescription:
     "We design, deploy, and manage cloud infrastructure that scales with your growth, keeps your applications reliable, and optimizes your hosting costs — without requiring deep DevOps expertise in-house.",
   aboutIcon: 'cloud',

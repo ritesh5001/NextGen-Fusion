@@ -34,8 +34,11 @@ export type LocationCaseStudy = { slug: string; title: string; body: string }
 
 export type LocationPage = {
   slug: string
+  /** Matches an `offices[].city` entry: the office this page is served from. */
   city: "Lucknow" | "Mumbai"
-  /** Matches an `offices[].city` entry. */
+  /** Region the page targets when wider than the office city, e.g. a state hub
+   *  served from the Lucknow office. Defaults to `city`. */
+  area?: string
   serviceLabel: string
   title: string
   metaTitle: string
@@ -223,7 +226,139 @@ export const locationPages: LocationPage[] = [
       { slug: "web-design-services", label: "Web Design Services" },
       { slug: "website-maintenance-services", label: "Website Maintenance Services" },
     ],
-    relatedLocations: ["seo-services-in-lucknow", "ecommerce-development-company-in-lucknow"],
+    relatedLocations: [
+      "website-development-company-in-uttar-pradesh",
+      "seo-services-in-lucknow",
+      "ecommerce-development-company-in-lucknow",
+    ],
+  },
+  {
+    slug: "website-development-company-in-uttar-pradesh",
+    city: "Lucknow",
+    area: "Uttar Pradesh",
+    serviceLabel: "Website Development",
+    title: "Website Development Company in Uttar Pradesh",
+    metaTitle: "Website Development Company in Uttar Pradesh",
+    metaDescription:
+      "Lucknow-based website development company for Uttar Pradesh — websites and online stores for businesses in Kanpur, Noida, Varanasi, Prayagraj and across UP.",
+    h1: "Website development company in Uttar Pradesh",
+    intro: [
+      "NextGen Fusion is a web development team based in Lucknow, building websites and online stores for businesses across Uttar Pradesh — manufacturers and traders, textile and ethnic-wear brands, institutes, clinics and service firms that need a site to bring in enquiries and orders.",
+      "Working from the state capital means most of UP is a train ride away rather than a flight. We scope in writing, meet in person when it genuinely helps, and run the rest of the project on written updates, so where in the state you are changes very little about how the work gets done.",
+    ],
+    sections: [
+      {
+        heading: "Why hire a team inside Uttar Pradesh",
+        body: [
+          "Businesses in UP are usually offered two options: a local template shop or an NCR agency billing Gurugram rates. The first rarely builds anything that sells; the second puts an account manager between you and the people doing the work.",
+          "We are a small in-house team. The developer who scopes your project writes the code and is the person you reach after launch. You get metro-level engineering at a cost base that is two small offices, and a team that understands how businesses here actually buy and sell — COD, WhatsApp enquiries, GST invoices, and customers who shop almost entirely on their phones.",
+        ],
+      },
+      {
+        heading: "Kanpur: manufacturers, traders and B2B suppliers",
+        body: [
+          "Kanpur runs on manufacturing and wholesale — leather, textiles, chemicals and engineering goods. For most of these businesses the buyer is a procurement team or a distributor, and the website's job is credibility: product ranges, certifications, capacity and an enquiry form that reaches the right person.",
+          "That is a catalogue-and-enquiry build, not a storefront. It is the same shape as the engineering contractor site in our case studies below, where service pages let prospects qualify themselves before they call.",
+        ],
+      },
+      {
+        heading: "Noida and Ghaziabad: NCR businesses competing with Delhi",
+        body: [
+          "Businesses in Noida and Ghaziabad compete for the same customers as Delhi and Gurugram, and search results do not care which side of the border you are on. The site has to be fast, measurable and built to generate leads — usually connected to a CRM, a booking flow or a payment gateway.",
+          "That is where our Next.js work fits: speed and custom logic a template cannot give. Our Lady Scooty Trainer build, for a training service operating across Delhi, Noida and Ghaziabad, is a booking funnel of exactly this kind.",
+        ],
+      },
+      {
+        heading: "Varanasi and Prayagraj: textiles, hospitality and education",
+        body: [
+          "Banarasi silk and handloom, hotels and guest houses built around tourism, coaching institutes and schools — these businesses sell on trust and on visuals, and many already sell through WhatsApp and marketplace listings.",
+          "A proper online store with a structured catalogue, Razorpay, shipping zones and COD rules moves that trade onto a channel the business owns. It is the same work behind the silk saree and textile stores in our portfolio. For institutes, the job is simpler and just as important: course pages, fee details and an admission enquiry that does not disappear into a shared inbox.",
+        ],
+      },
+      {
+        heading: "Lucknow and the rest of the state",
+        body: [
+          "Our office is in Lucknow, so projects in the city get the most in-person time, and we have dedicated pages for each service we sell here. Businesses in Agra, Meerut, Bareilly, Gorakhpur, Aligarh and elsewhere in UP work with us the same way as Kanpur or Varanasi clients: a written scope, one in-person or video meeting at the start, and written weekly updates after that.",
+        ],
+        links: [
+          { label: "Website development in Lucknow", href: "/website-development-company-in-lucknow/" },
+          { label: "Ecommerce development in Lucknow", href: "/ecommerce-development-company-in-lucknow/" },
+          { label: "SEO services in Lucknow", href: "/seo-services-in-lucknow/" },
+          { label: "Web designing in Lucknow", href: "/web-designing-company-in-lucknow/" },
+        ],
+      },
+      {
+        heading: "What we build on",
+        body: [
+          "Next.js when the site needs speed, custom logic or a large content structure. WordPress when a non-technical team needs to publish often and the site is content-led. Shopify or WooCommerce when the priority is merchandising and payments.",
+          "We tell you which one your project needs, and why, before you commit. Choosing the wrong platform is the most expensive mistake in a web project, and it is almost always made in the first week.",
+        ],
+      },
+      {
+        heading: "What a website costs in Uttar Pradesh",
+        body: [
+          "We publish our price bands instead of holding them for a sales call, and they are the same whether you are in Lucknow, Kanpur or Noida. What moves a project up its band is the number of custom features, the number of systems that have to connect, and how ready your content and photography are.",
+          "Terms are the same on every project: 50% advance to start, 50% at payment-gateway integration. No separate design fee and no per-revision charge inside the agreed scope.",
+        ],
+        links: [{ label: "See the full price bands", href: "/pricing/" }],
+      },
+    ],
+    caseStudies: [
+      {
+        slug: "hcbengineering",
+        title: "HCB Engineering",
+        body: "A government-licensed electrical contractor with twenty years of work and no digital presence to match. Service pages for each vertical let prospects qualify themselves, and licences and certifications sit where a procurement officer looks first — the shape most UP manufacturing and contracting businesses need.",
+      },
+      {
+        slug: "samaraha",
+        title: "Samaraha",
+        body: "A premium silk saree store with advanced filtering and secure checkout. The work was catalogue structure and merchandising — getting a large, seasonal range into categories a buyer can navigate on a phone, which is the problem every textile seller moving off WhatsApp runs into.",
+      },
+      {
+        slug: "ladyscootytrainer",
+        title: "Lady Scooty Trainer",
+        body: "A booking platform for a women-only scooty training service operating across Delhi, Noida and Ghaziabad. The site is built around a free-consultation form that captures location, riding experience and preferred time slot, and routes it straight to a callback.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Do you work with businesses outside Lucknow?",
+        answer:
+          "Yes. Most of our projects run remotely after the first meeting, for clients across Uttar Pradesh, the rest of India, and abroad. The Lucknow office matters if you want to meet in person; it does not limit who we work with.",
+      },
+      {
+        question: "Can we meet in person if we are in Kanpur, Varanasi or Noida?",
+        answer:
+          "Ask in your first message. For projects where a face-to-face meeting at the start genuinely helps, we will tell you whether we can arrange it. After that, the work runs on shared documents and a written weekly update you can forward to a partner.",
+      },
+      {
+        question: "How long does a website take?",
+        answer:
+          "A structured business website is typically three to five weeks from content sign-off. An online store with catalogue, payments and shipping runs six to ten weeks. The variable is almost never the code — it is how quickly copy and photography arrive.",
+      },
+      {
+        question: "Do prices change depending on the city?",
+        answer:
+          "No. The same published rate card applies across Uttar Pradesh and the rest of India. What changes the price is scope, integrations and content readiness, not your address.",
+      },
+      {
+        question: "Who owns the website, domain and hosting?",
+        answer:
+          "You do, from day one — domain, hosting, repository, analytics and payment gateway are all registered in your name, and we work inside your accounts.",
+      },
+      {
+        question: "What happens after launch?",
+        answer:
+          "Every build includes a defined support arrangement: updates, uptime monitoring, backups and a named developer to contact. Plans that include ongoing changes are priced by build type and listed on the pricing page.",
+      },
+    ],
+    localProof: [],
+    relatedServices: [
+      { slug: "website-development-services", label: "Website Development Services" },
+      { slug: "ecommerce-web-development-services", label: "E-commerce Web Development" },
+      { slug: "seo-services", label: "SEO Services" },
+    ],
+    relatedLocations: ["website-development-company-in-lucknow", "ecommerce-development-company-in-lucknow"],
   },
   {
     slug: "seo-services-in-lucknow",

@@ -151,7 +151,12 @@ const HeroContent = () => {
             <div className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></div>
             <div className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></div>
           </div>
-          <span className="text-xs font-medium text-gray-700">Available for work</span>
+          {/* The H1 is brand copy with no location in it; this line carries the
+              query the homepage is meant to rank for. */}
+          <p className="text-xs font-medium text-gray-700">
+            Website development company in Lucknow, India
+            <span className="hidden sm:inline text-gray-500"> · Available for work</span>
+          </p>
         </div>
       </motion.div>
 

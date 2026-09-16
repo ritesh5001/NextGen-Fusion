@@ -9,8 +9,7 @@ import LenisProvider from "@/components/lenis-provider";
 import LayoutChrome from "@/components/layout-chrome";
 import { Analytics } from "@/components/analytics";
 import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
-import { CONTACT_EMAIL, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
-import { serviceNavItems } from "@/data/services-nav";
+import { brandProfiles, CONTACT_EMAIL, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -25,7 +24,7 @@ const structuredData = {
       // sameAs is for profiles that corroborate the entity elsewhere. Listing
       // our own homepage told Google nothing, and pointing it at the www host
       // while `url` used the apex actively muddied canonicalisation.
-      sameAs: ["https://www.instagram.com/nextgenfusion.devs/"],
+      sameAs: brandProfiles.map((profile) => profile.href),
       // One entry per number we publish. The footer listed two phone numbers
       // while schema declared one, and NAP that disagrees with itself across
       // surfaces is the fastest way to lose a local pack.
@@ -79,17 +78,9 @@ const structuredData = {
         ],
       };
     }),
-    // All twelve, read from the same list the nav, footer and sitemap use. Six
-    // were missing, so half the service pages had no Service node at all.
-    ...serviceNavItems.map((service) => ({
-      "@type": "Service",
-      "@id": `${siteUrl}/#service-${service.slug}`,
-      name: service.label,
-      serviceType: service.label,
-      url: `${siteUrl}/services/${service.slug}/`,
-      provider: { "@id": `${siteUrl}/#organization` },
-      areaServed: ["IN", "Worldwide"],
-    })),
+    // Service nodes live on their own service and city pages, not here: twelve
+    // of them on every URL (privacy pages included) blurred which page is about
+    // which service. SiteNavigationElement was dropped too — Google ignores it.
     {
       "@type": "WebSite",
       "@id": `${siteUrl}/#website`,
@@ -97,31 +88,13 @@ const structuredData = {
       name: "NextGen Fusion",
       publisher: { "@id": `${siteUrl}/#organization` },
     },
-    {
-      // Real page URLs only. Three of these pointed at homepage anchors, which
-      // named a section rather than a page Google could surface on its own.
-      "@type": "SiteNavigationElement",
-      name: ["Home", "About", "Services", "Work", "Store", "Blog", "Team", "Careers", "Support", "Contact"],
-      url: [
-        `${siteUrl}/`,
-        `${siteUrl}/about/`,
-        `${siteUrl}/services/`,
-        `${siteUrl}/work/`,
-        `${siteUrl}/store/`,
-        `${siteUrl}/blog/`,
-        `${siteUrl}/team/`,
-        `${siteUrl}/careers/`,
-        `${siteUrl}/support/`,
-        `${siteUrl}/contact/`,
-      ],
-    },
   ],
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
+    default: "Website Development Company in Lucknow & India | NextGen Fusion",
     template: "%s | NextGen Fusion",
   },
   description:
@@ -131,9 +104,8 @@ export const metadata: Metadata = {
   publisher: "NextGen Fusion",
   category: "technology",
   applicationName: "NextGen Fusion",
-  alternates: {
-    canonical: "/",
-  },
+  // No site-wide canonical. Inherited by every route that did not set its own,
+  // it told Google the 404 page was the homepage. Each page sets its own.
 
   icons: {
     icon: [
@@ -202,7 +174,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: siteUrl,
     siteName: "NextGen Fusion",
-    title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
+    title: "Website Development Company in Lucknow & India | NextGen Fusion",
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: OG_IMAGES,
@@ -211,7 +183,7 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "NextGen Fusion - Web Development, SEO & Digital Product Agency",
+    title: "Website Development Company in Lucknow & India | NextGen Fusion",
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: [DEFAULT_OG_IMAGE],

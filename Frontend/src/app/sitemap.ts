@@ -24,7 +24,7 @@ export const revalidate = 3600
  * below derive their dates from real content timestamps instead.
  */
 const STATIC_LAST_MODIFIED: Record<string, string> = {
-  "/": "2026-08-14",
+  "/": "2026-09-16",
   "/about": "2026-09-06",
   "/contact": "2026-09-06",
   "/pricing": "2026-09-07",
@@ -39,8 +39,8 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
   "/store/refunds": "2026-08-14",
 }
 
-const SERVICES_LAST_MODIFIED = "2026-08-14"
-const LOCATIONS_LAST_MODIFIED = "2026-09-13"
+const SERVICES_LAST_MODIFIED = "2026-09-16"
+const LOCATIONS_LAST_MODIFIED = "2026-09-16"
 
 type Entry = MetadataRoute.Sitemap[number]
 

@@ -4,15 +4,15 @@ import { JsonLd } from "@/components/json-ld"
 import { breadcrumbSchema, buildMetadata, serviceSchema } from "@/lib/seo"
 
 const PATH = "/services/website-development-services"
-const NAME = "Website Development Services"
+const NAME = "Website Development Services in India"
 
 export const metadata: Metadata = buildMetadata({
-  title: "Website Development Services",
-  description: "High-performance, SEO-ready, conversion-focused websites built on Next.js, WordPress or Shopify — and supported after launch.",
+  title: "Website Development Services in India",
+  description: "Website development services in India — high-performance, SEO-ready websites built on Next.js, WordPress or Shopify by our Lucknow team, and supported after launch.",
   path: PATH,
-  ogTitle: "Website Development Services | NextGen Fusion",
+  ogTitle: "Website Development Services in India | NextGen Fusion",
   ogDescription: "Get conversion-focused Website Development Services with strategy, design, development, and SEO built for growth.",
-  twitterTitle: "Website Development Services | NextGen Fusion",
+  twitterTitle: "Website Development Services in India | NextGen Fusion",
   twitterDescription: "Modern Website Development Services for businesses that want performance, rankings, and higher conversion rates.",
 })
 

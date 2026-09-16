@@ -12,6 +12,9 @@ export type StaticProject = {
   slug: string;
   domain: string;
   title: string;
+  /** <title> for the case study: client, platform and what was built. The
+   *  " | NextGen Fusion" suffix is appended by the case-study page. */
+  seoTitle: string;
   shortDescription: string;
   description: string;
   challenge: string;
@@ -37,6 +40,7 @@ export const staticProjects: StaticProject[] = [
     slug: "tatvivahtrends",
     domain: "tatvivahtrends.com",
     title: "TatVivah Trends",
+    seoTitle: "TatVivah Trends: Next.js Wedding Wear Marketplace",
     shortDescription:
       "Premium ethnic wedding wear marketplace with 3000+ products, verified sellers, and occasion-based filtering.",
     description:
@@ -125,6 +129,7 @@ export const staticProjects: StaticProject[] = [
     slug: "deetoo",
     domain: "deetoo.in",
     title: "DeeToo",
+    seoTitle: "DeeToo: WooCommerce Store for Mobile Accessories",
     shortDescription:
       "Mobile accessories store built per device, not \"fits most\" — cases, glass and chargers organised by brand, series and exact model.",
     description:
@@ -195,6 +200,7 @@ export const staticProjects: StaticProject[] = [
     slug: "maribiz-ai",
     domain: "MariBiz.ai",
     title: "MariBiz.ai",
+    seoTitle: "MariBiz.ai: Maritime B2B Procurement Marketplace",
     shortDescription:
       "Global marine procurement marketplace connecting 3,226+ vendors with shipowners across 121 service categories.",
     description:
@@ -283,6 +289,7 @@ export const staticProjects: StaticProject[] = [
     slug: "thegrafftee",
     domain: "thegrafftee.com",
     title: "The Grafftee",
+    seoTitle: "The Grafftee: Next.js HR & Recruitment Platform",
     shortDescription:
       "Comprehensive HR & talent acquisition platform for India's leading recruitment and workforce solutions company.",
     description:
@@ -361,6 +368,7 @@ export const staticProjects: StaticProject[] = [
     slug: "hcbengineering",
     domain: "hcbengineering.in",
     title: "HCB Engineering",
+    seoTitle: "HCB Engineering: WordPress Site for a Contractor",
     shortDescription:
       "Professional website for a government-licensed electrical contracting company with 20+ years of experience.",
     description:
@@ -433,6 +441,7 @@ export const staticProjects: StaticProject[] = [
     slug: "clickngreet",
     domain: "clickngreet.in",
     title: "ClickNGreet",
+    seoTitle: "ClickNGreet: WooCommerce Personalised Gift Store",
     shortDescription:
       "Personalized gift shop and marketplace with 20+ product categories and pan-India shipping.",
     description:
@@ -510,6 +519,7 @@ export const staticProjects: StaticProject[] = [
     slug: "samaraha",
     domain: "samaraha.com",
     title: "Samaraha",
+    seoTitle: "Samaraha: WooCommerce Store for Silk Sarees",
     shortDescription:
       "Sophisticated e-commerce platform for premium traditional silk sarees with advanced filtering and secure checkout.",
     description:
@@ -587,6 +597,7 @@ export const staticProjects: StaticProject[] = [
     slug: "nextmentor",
     domain: "nextmentor.com",
     title: "NEXTmentor",
+    seoTitle: "NEXTmentor: WordPress Video Mentorship Platform",
     shortDescription:
       "Subscription video-mentorship platform streaming business, sales and leadership courses from globally recognised trainers.",
     description:
@@ -646,6 +657,7 @@ export const staticProjects: StaticProject[] = [
     slug: "vashtaraheaven",
     domain: "vashtaraheaven.com",
     title: "Vashtara Heaven",
+    seoTitle: "Vashtara Heaven: Shopify Kidswear Marketplace",
     shortDescription:
       "Multi-vendor kidswear marketplace on Shopify — denim co-ords and printed sets for girls and boys, dispatched direct from each designer.",
     description:
@@ -710,6 +722,7 @@ export const staticProjects: StaticProject[] = [
     slug: "ladyscootytrainer",
     domain: "ladyscootytrainer.com",
     title: "Lady Scooty Trainer",
+    seoTitle: "Lady Scooty Trainer: WordPress Booking Website",
     shortDescription:
       "Booking platform for a women-only scooty training service across Delhi NCR — free-consultation funnel, course pages and CSR partnerships.",
     description:
@@ -774,6 +787,7 @@ export const staticProjects: StaticProject[] = [
     slug: "newsaraswatisareecentre",
     domain: "newsaraswatisareecentre.in",
     title: "New Saraswati Saree Centre",
+    seoTitle: "New Saraswati Saree Centre: WooCommerce Store",
     shortDescription:
       "Handwoven textile marketplace with 40+ products, multi-gateway payments, and festive collection pages.",
     description:
@@ -850,6 +864,7 @@ export const staticProjects: StaticProject[] = [
     slug: "saurally",
     domain: "saurally.com",
     title: "Saurally Solar",
+    seoTitle: "Saurally Solar: WooCommerce Store for Solar Products",
     shortDescription:
       "Renewable energy e-commerce platform with 40+ solar products, comparison tools, and multi-gateway payments.",
     description:
@@ -927,6 +942,7 @@ export const staticProjects: StaticProject[] = [
     slug: "sidcobharat",
     domain: "sidcobharat.org",
     title: "SIDCO — Small Industries Development Council Organization",
+    seoTitle: "SIDCO: WordPress Scheme Outreach Platform",
     shortDescription:
       "Outreach and application platform connecting small-scale industry workers to PMEGP government schemes, free skills training and welfare support.",
     description:
@@ -991,6 +1007,7 @@ export const staticProjects: StaticProject[] = [
     slug: "sitaravastram",
     domain: "sitaravastram.com",
     title: "Sitara Vastram",
+    seoTitle: "Sitara Vastram: WooCommerce Ethnic Wear Store",
     shortDescription:
       "Premium limited-piece ethnic wear store with style video integration and WhatsApp business support.",
     description:
@@ -1068,6 +1085,7 @@ export const staticProjects: StaticProject[] = [
     slug: "terrestrialyt",
     domain: "terrestrialyt.com",
     title: "TerrestrialYT",
+    seoTitle: "TerrestrialYT: WooCommerce Gaming & Anime Merch Store",
     shortDescription:
       "Gaming and anime merchandise store with product variations, Discord integration, and global shipping.",
     description:
@@ -1146,6 +1164,7 @@ export const staticProjects: StaticProject[] = [
     slug: "krushidoctor",
     domain: "krushidoctor.com",
     title: "Krushi Doctor",
+    seoTitle: "Krushi Doctor: WooCommerce AgriTech Store",
     shortDescription:
       "Agricultural guidance platform serving 1.2 lakh+ farmers with 100+ products and crop PDF guides.",
     description:
@@ -1224,6 +1243,7 @@ export const staticProjects: StaticProject[] = [
     slug: "kalamohini",
     domain: "kalamohini.in",
     title: "Kalamohini by Aditya",
+    seoTitle: "Kalamohini: WooCommerce Artisan Ethnic Wear Store",
     shortDescription:
       "Hand-crafted tissue-silk sets with intricate mirror-work — premium artisan ethnic wear store.",
     description:
@@ -1296,6 +1316,7 @@ export const staticProjects: StaticProject[] = [
     slug: "mahhika",
     domain: "mahhika.com",
     title: "Mahhika",
+    seoTitle: "Mahhika: WooCommerce Wedding Fashion Store",
     shortDescription:
       "Indian wedding fashion e-commerce platform with premium saree and ethnic wear collections.",
     description:

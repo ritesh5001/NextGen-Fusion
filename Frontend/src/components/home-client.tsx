@@ -17,7 +17,6 @@ const ContactSection = dynamic(() => import("@/components/contact-section"))
 const ProjectEstimatorSection = dynamic(() => import("@/components/project-estimator-section"))
 const WorkSection = dynamic(() => import("@/components/work-section"))
 const DeliveredWall = dynamic(() => import("@/components/delivered-wall"))
-const CTABanner = dynamic(() => import("@/components/cta-banner"))
 
 export default function HomeClient() {
   return (
@@ -45,7 +44,8 @@ export default function HomeClient() {
       <div id="faq">
         <FAQSection />
       </div>
-      <CTABanner className="py-16" />
+      {/* No CTABanner here: it repeated the contact section's "Time to Stop
+          Scrolling" H2 directly above the section itself. */}
       <div id="contact">
         <ContactSection />
       </div>

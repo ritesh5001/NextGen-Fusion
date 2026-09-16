@@ -9,37 +9,44 @@ import { getLocationPage, type LocationPage } from "@/data/locations"
 function schemaFor(page: LocationPage) {
   const office = offices.find((o) => o.city === page.city)
   const url = absoluteUrl(`/${page.slug}`)
+  const area = page.area ?? page.city
 
   return [
     {
       "@context": "https://schema.org",
       "@type": "Service",
       "@id": `${url}#service`,
-      name: `${page.serviceLabel} in ${page.city}`,
+      name: `${page.serviceLabel} in ${area}`,
       serviceType: page.serviceLabel,
       url,
       // The office node, not the Organization: this page is about work delivered
       // from a specific place, and that node carries the address and geo.
       provider: { "@id": `${siteUrl}/#office-${page.city.toLowerCase()}` },
-      areaServed: {
-        "@type": "City",
-        name: page.city,
-        ...(office
-          ? {
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: office.postal.locality,
-                addressRegion: office.postal.region,
-                addressCountry: office.postal.country,
-              },
-            }
-          : {}),
-      },
+      areaServed: page.area
+        ? {
+            "@type": "State",
+            name: page.area,
+            ...(office ? { address: { "@type": "PostalAddress", addressRegion: office.postal.region, addressCountry: office.postal.country } } : {}),
+          }
+        : {
+            "@type": "City",
+            name: page.city,
+            ...(office
+              ? {
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: office.postal.locality,
+                    addressRegion: office.postal.region,
+                    addressCountry: office.postal.country,
+                  },
+                }
+              : {}),
+          },
       ...(office
         ? {
             hasOfferCatalog: {
               "@type": "OfferCatalog",
-              name: `${page.serviceLabel} — ${page.city}`,
+              name: `${page.serviceLabel} — ${area}`,
               itemListElement: page.relatedServices.map((service) => ({
                 "@type": "Offer",
                 itemOffered: {
@@ -64,13 +71,14 @@ function schemaFor(page: LocationPage) {
     },
     breadcrumbSchema([
       { name: "Home", path: "/" },
-      { name: `${page.serviceLabel} in ${page.city}`, path: `/${page.slug}` },
+      { name: `${page.serviceLabel} in ${area}`, path: `/${page.slug}` },
     ]),
   ]
 }
 
 export function LocationPageTemplate({ page }: { page: LocationPage }) {
   const office = offices.find((o) => o.city === page.city)
+  const area = page.area ?? page.city
 
   return (
     <>
@@ -78,7 +86,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
       <main className="min-h-screen bg-white">
         <section className="mx-auto max-w-4xl px-4 pt-28 pb-12 sm:px-6 lg:px-8">
           <p className="text-sm font-medium uppercase tracking-wide text-purple-600">
-            {page.city}
+            {area}
           </p>
           <h1 className="mt-3 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl">
             {page.h1}
@@ -139,7 +147,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
               <p className="mt-4 leading-relaxed text-gray-600">
                 Full write-ups, not logos. These are chosen for how close they sit to the problems
                 {" "}
-                {page.city} businesses bring us — we have not tagged them by the client&apos;s city.
+                {area} businesses bring us — we have not tagged them by the client&apos;s city.
               </p>
               <div className="mt-6 space-y-6">
                 {page.caseStudies.map((study) => (
@@ -168,7 +176,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
           {page.priceBand && (
             <div className="mb-12 rounded-2xl bg-gray-50 p-6">
               <h2 className="text-2xl font-bold text-gray-900">
-                What this costs in {page.city}
+                What this costs in {area}
               </h2>
               <p className="mt-3 text-3xl font-bold text-gray-900">{page.priceBand}</p>
               {page.priceNote && <p className="mt-3 text-gray-600">{page.priceNote}</p>}
@@ -178,7 +186,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
           {page.localProof.length > 0 && (
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-                Work delivered in and around {page.city}
+                Work delivered in and around {area}
               </h2>
               <ul className="mt-5 space-y-4">
                 {page.localProof.map((item) => (
