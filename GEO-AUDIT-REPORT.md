@@ -320,6 +320,78 @@ All 57 sitemap URLs returned **200**. Every page carries a title, meta descripti
 
 ---
 
+## Remediation Status (2026-09-18)
+
+Everything below was implemented, built, type-checked and verified against
+rendered HTML on branch `geo-audit-fixes` (commit `e79a69b`). 17 tests pass.
+
+### Fixed in code
+
+| ID | Finding | Verification |
+|---|---|---|
+| H1 | Homepage FAQ answers absent from DOM | Answers now present with scripts stripped |
+| C4 | Trailing-slash schema image URLs | `…/ritesh-giri.png`, no redirect; coverImage deduped (3 images, was 4) |
+| H2 | 24 unattributed testimonials + 16 unlinked portfolio cards | 0 remain on all 12 service pages |
+| H8 | No `Person` schema on `/team/` | `Person` + `ProfilePage` + `CollectionPage` emitted |
+| H9 | Founder had three job titles | Single source in `src/data/team.ts`; byline reads the real role |
+| H10 | Orphaned, invalid `/pricing/` `Offer` | Now `Service` + `hasOfferCatalog`, `priceRange` dropped |
+| H5 | `/store/purchases/` indexable + robots-disallowed | `noindex, follow`, own canonical, Disallow removed |
+| H7 | Five security headers absent | All five present; HSTS + `includeSubDomains` |
+| M6 | Case studies inherited the services `lastmod` | Own constant; `/team/*` added to sitemap |
+| M8–M10 | Thin Organization, shared office URLs | Enriched; each office has its own city-page URL |
+| M11 | No `JobPosting` on `/careers/` | `CollectionPage` + `ItemList` live; `JobPosting` gated on real dates |
+| M13 | "No IndexNow" | Key file already existed and was live; submit script added, 57 URLs accepted (HTTP 202) |
+| M14 | `llms.txt` omitted city pages and case studies | Now generated from site data — 59 links, plus a disambiguation paragraph |
+| L1 | Glued words in extracted headings | 0 remain across 6 components |
+| L2 | Hero counter missing its number | Derived from data — renders "18" |
+| L7 | Single-item homepage breadcrumb | Removed; `WebPage` node added |
+| L9 | "30+ production web applications" vs 18 case studies | Claim corrected |
+
+### Found while fixing, not in the original audit
+
+**All four `/team/<slug>/` pages declared `canonical: /team/`** — telling Google
+every profile was a duplicate of the index. Combined with their absence from the
+sitemap and their lack of `Person` markup, four pages of genuine expertise signal
+were invisible. Fixed with a dedicated layout; each profile now has its own
+canonical, title and Person node.
+
+### Findings that proved false on verification
+
+- **M4 — "No `srcset` anywhere."** Incorrect. React emits the attribute as
+  `srcSet`; a case-sensitive grep for `srcset=` returned zero. 81 of 82 images on
+  `/work/` carry a full 256w–3840w ladder with correct `sizes`, on the live site
+  as well. There is no 4.6× mobile waste.
+- **M5 — "CLS risk, 3 of 82 images have width."** Largely incorrect. 79 of those
+  82 use `next/image` `fill`, which is absolutely positioned inside a
+  fixed-aspect container and carries no width/height by design. It cannot shift
+  layout.
+- **C5 — "~30 store products ineligible for Product rich results."** Overstated.
+  Products without a cover image are already `noindex` via
+  `isStoreProductIndexable()`, so they cannot earn rich results regardless. The
+  real defect was a relative `image` path, now absolute.
+
+### Still open — needs facts only you have
+
+1. **Privacy policy, terms of service, cookie policy (C1).** Still 404. Writing
+   these needs your legal entity name, GSTIN, grievance-officer contact and
+   data-retention practice.
+2. **`/store/refunds/` and `/store/license/` placeholders (C2).** Still live.
+   `[7]`, `[5]` and `[2]` are commitments about your refund window and response
+   times — your numbers, not mine to invent.
+3. **The timeline and ₹4,000–₹7,000 contradictions (H3).** Four pages give
+   different answers. Decide the canonical set and it propagates.
+4. **Off-site entity work (C3).** LinkedIn company page, Google Business Profiles,
+   GoodFirms/Clutch listings. Nothing on-site moves Brand Authority off 8/100.
+5. **The four team LinkedIn URLs.** Guessed slugs; LinkedIn blocks verification
+   (HTTP 999). Confirm each, then move it into `verifiedProfiles` in
+   `src/data/team.ts` and it flows into `sameAs` automatically.
+6. **`datePosted` / `validThrough` for the 8 open roles (M11).** Fill them in
+   `src/data/careers.ts` and `JobPosting` markup turns on by itself.
+7. **Case-study outcome metrics (M1)** and the remaining 8 service-page rewrites
+   (M2) — content work requiring client data and your voice.
+
+---
+
 ## Methodology Note
 
 Findings were produced by five parallel specialist analyses and independently re-verified by the orchestrator before inclusion. Three subagent claims were corrected during verification:
@@ -328,4 +400,10 @@ Findings were produced by five parallel specialist analyses and independently re
 2. A claim that all 28 "Case Preview" cards are invented — **partly false**; 12 name real clients on the 4 rewritten pages. Only the 16 on untouched pages are unattributed.
 3. Conflicting sitemap `lastmod` readings — resolved by direct count: 43 of 57 share `2026-09-16`.
 
-A claim that the homepage has zero `<table>` elements was also corrected: it has one. Where this report states a fact, it was confirmed against the live site or the repository.
+A claim that the homepage has zero `<table>` elements was also corrected: it has one.
+
+Three further subagent findings were disproved during remediation and are
+documented under "Findings that proved false on verification" above: the
+`srcset` claim (M4), the CLS/width claim (M5) and the store `Product` severity
+(C5). Where this report states a fact, it was confirmed against the live site or
+the repository.
