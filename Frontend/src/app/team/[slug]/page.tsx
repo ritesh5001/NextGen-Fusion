@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Mail, Linkedin, ExternalLink } from "lucide-react"
+import { getTeamMember } from "@/data/team"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -56,7 +57,7 @@ const teamMembersData: Record<string, TeamMemberData> = {
       "Performance Optimization"
     ],
     achievements: [
-      "Built and deployed 30+ production web applications",
+      "Lead developer on the delivered builds written up in our case studies",
       "Expert in modern JavaScript ecosystem (React, Next.js, Node.js)",
       "Architected scalable backend systems serving thousands of users",
       "End-to-end ownership from design to delivery"
@@ -166,11 +167,24 @@ const teamMembersData: Record<string, TeamMemberData> = {
 
 export default async function TeamMemberPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params
-  const member = teamMembersData[resolvedParams.slug]
+  const extras = teamMembersData[resolvedParams.slug]
+  const canonical = getTeamMember(resolvedParams.slug)
 
   // Was a 200 page saying "not found" — a soft 404. notFound() returns a real
   // 404 status so Google drops the URL instead of indexing an empty page.
-  if (!member) notFound()
+  if (!extras || !canonical) notFound()
+
+  // Identity always wins from the canonical source; this page only owns the
+  // rich extras (experience, skills, achievements). Roles used to be declared
+  // separately here and had drifted from /about/.
+  const member = {
+    ...extras,
+    name: canonical.name,
+    role: canonical.role,
+    image: canonical.image,
+    email: canonical.email,
+    linkedinUrl: canonical.linkedinUrl ?? extras.linkedinUrl,
+  }
 
   return (
     <div className="bg-white">

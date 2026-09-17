@@ -152,15 +152,12 @@ export const androidServiceData: ServicePageData = {
     { icon: 'clock-3', title: "Faster Time-to-Market", text: "Structured milestones and parallel workstreams reduce launch timelines." },
   ],
   technologies: ["Kotlin", "Jetpack Compose", "Android SDK", "Firebase", "REST APIs", "Room Database", "Retrofit", "Hilt", "Google Play Console", "Crashlytics", "Figma"],
-  caseStudies: [
-    { name: "Field Operations App", niche: "B2B Service Management", summary: "Built a native Android app for field technicians with offline-first data capture, GPS tracking, and real-time sync when connectivity returns." },
-    { name: "Consumer Engagement App", niche: "D2C Retail", summary: "Developed a customer loyalty and ordering app with push notifications, product catalog, and Razorpay payment integration." },
-  ],
-  testimonials: [
-    { quote: "The app performs flawlessly across different Android devices. Our field team loves it.", author: "Operations Head, Service Company" },
-    { quote: "They delivered on schedule and the quality was significantly better than our previous vendor.", author: "Founder, Consumer App Startup" },
-    { quote: "The push notification system they built doubled our week-2 retention rate.", author: "Product Manager, D2C Brand" },
-  ],
+  // Only delivered, linkable work belongs here. Entries without a
+  // /work/ slug described projects that are not in the portfolio.
+  caseStudies: [],
+  // Testimonials are omitted until we have real, attributable quotes
+  // (name, role and company). The section does not render while empty.
+  testimonials: [],
   faqs: [
     { question: "Do you build cross-platform apps too?", answer: "Our core strength is native Android. For cross-platform needs, we can scope React Native solutions separately." },
     { question: "How long does Android app development take?", answer: "Typically 6–14 weeks depending on feature complexity, API dependencies, and design scope." },
@@ -322,15 +319,12 @@ export const aiServiceData: ServicePageData = {
     { icon: 'bar-chart-3', title: "Measurable ROI", text: "Every automation is tied to quantifiable time or cost savings from day one." },
   ],
   technologies: ["OpenAI GPT-4", "Claude API", "Gemini", "LangChain", "Python", "n8n", "Zapier", "Make", "FastAPI", "Supabase", "Pinecone", "Qdrant", "Node.js"],
-  caseStudies: [
-    { name: "Agency Content Pipeline", niche: "Digital Marketing Agency", summary: "Built an AI-powered content generation and review pipeline that reduced content production time by 70% while maintaining brand voice consistency." },
-    { name: "Customer Support Automation", niche: "E-commerce Platform", summary: "Deployed an AI assistant that resolved 60% of routine support tickets automatically, freeing the human team for complex escalations." },
-  ],
-  testimonials: [
-    { quote: "The AI workflow they built saves our team roughly 15 hours per week. It paid for itself in the first month.", author: "Operations Manager, Marketing Agency" },
-    { quote: "Their LLM integration added a genuinely useful AI feature to our product without slowing down our roadmap.", author: "CTO, SaaS Startup" },
-    { quote: "The automation they built handles our data processing end-to-end. We haven't manually touched a spreadsheet since.", author: "Head of Analytics, E-commerce Brand" },
-  ],
+  // Only delivered, linkable work belongs here. Entries without a
+  // /work/ slug described projects that are not in the portfolio.
+  caseStudies: [],
+  // Testimonials are omitted until we have real, attributable quotes
+  // (name, role and company). The section does not render while empty.
+  testimonials: [],
   faqs: [
     { question: "Do I need a large dataset to use AI?", answer: "Not always. Many AI features can be built using pre-trained models with minimal custom data. We assess this during discovery." },
     { question: "Which AI models do you work with?", answer: "We work with OpenAI, Anthropic Claude, Google Gemini, and open-source models depending on your accuracy, cost, and privacy requirements." },
@@ -492,15 +486,12 @@ export const ppcServiceData: ServicePageData = {
     { icon: 'search', title: "Competitive Intelligence", text: "Campaign data reveals what messaging and offers resonate best with your market." },
   ],
   technologies: ["Google Ads", "Meta Ads Manager", "Google Analytics 4", "Google Tag Manager", "Meta Pixel", "Semrush", "Unbounce", "Hotjar"],
-  caseStudies: [
-    { name: "B2B Lead Generation", niche: "Professional Services", summary: "Restructured Google Search campaigns with tighter match types and negative keywords, reducing cost per lead by 45% while maintaining lead volume." },
-    { name: "D2C E-commerce", niche: "Consumer Products", summary: "Built a full-funnel Meta Ads strategy with awareness, retargeting, and catalog campaigns that achieved a 4.2x ROAS within 60 days." },
-  ],
-  testimonials: [
-    { quote: "Our Google Ads were burning money before they restructured everything. CPA dropped by 40% in the first month.", author: "Founder, Professional Services Firm" },
-    { quote: "They set up proper tracking from day one and now we finally know which campaigns are actually driving revenue.", author: "E-commerce Director" },
-    { quote: "Consistent, transparent reporting and real results. This is what PPC should look like.", author: "Marketing Head, B2B Company" },
-  ],
+  // Only delivered, linkable work belongs here. Entries without a
+  // /work/ slug described projects that are not in the portfolio.
+  caseStudies: [],
+  // Testimonials are omitted until we have real, attributable quotes
+  // (name, role and company). The section does not render while empty.
+  testimonials: [],
   faqs: [
     { question: "What budget do I need to start PPC?", answer: "For meaningful data and optimization cycles, we recommend a minimum monthly ad spend of around $500-$1,000 alongside our management fee." },
     { question: "How long before I see PPC results?", answer: "You will see traffic from day one. Optimization cycles that improve CPA typically take 4–8 weeks of data collection." },
@@ -559,15 +550,12 @@ export const socialMediaServiceData: ServicePageData = {
     { icon: 'search', title: "Audience Insights", text: "Social analytics reveal what your market cares about and responds to." },
   ],
   technologies: ["Meta Business Suite", "Instagram", "LinkedIn", "YouTube", "Canva Pro", "Later", "Buffer", "Hootsuite", "Meta Ads Manager", "CapCut"],
-  caseStudies: [
-    { name: "Agency Brand Growth", niche: "Digital Services Agency", summary: "Built a LinkedIn and Instagram content program from scratch that grew followers 5x in 3 months and generated 20+ inbound inquiries directly from social." },
-    { name: "D2C Product Brand", niche: "Consumer Lifestyle", summary: "Managed a content-heavy Instagram and YouTube presence with consistent weekly content, growing engagement rate from 1.2% to 4.8% over 4 months." },
-  ],
-  testimonials: [
-    { quote: "Our LinkedIn presence went from zero to generating real inbound leads. Social finally works for us.", author: "CEO, B2B Services Company" },
-    { quote: "Consistent content, great creative quality, and they actually understand our brand voice.", author: "Marketing Manager, D2C Brand" },
-    { quote: "The strategy shift they made doubled our engagement rate. We used to post randomly — now there is a real system.", author: "Founder, Consumer Brand" },
-  ],
+  // Only delivered, linkable work belongs here. Entries without a
+  // /work/ slug described projects that are not in the portfolio.
+  caseStudies: [],
+  // Testimonials are omitted until we have real, attributable quotes
+  // (name, role and company). The section does not render while empty.
+  testimonials: [],
   faqs: [
     { question: "Which platforms do you manage?", answer: "Instagram, LinkedIn, Facebook, YouTube, and X (Twitter). We recommend platforms based on your audience and goals." },
     { question: "How many posts per month are included?", answer: "Typically 12–20 posts per platform per month depending on the package. Custom volume can be scoped." },
@@ -626,15 +614,12 @@ export const maintenanceServiceData: ServicePageData = {
     { icon: 'bar-chart-3', title: "Full Visibility", text: "Monthly reports keep you informed of your website's health without technical jargon." },
   ],
   technologies: ["Cloudflare", "Vercel", "AWS", "Sentry", "UptimeRobot", "GitHub Actions", "Lighthouse", "WP Engine", "UpdraftPlus", "Wordfence"],
-  caseStudies: [
-    { name: "E-commerce Client", niche: "D2C Online Store", summary: "Caught and resolved a SQL injection vulnerability during a routine security scan before it could be exploited. Performance optimization improved LCP by 35%." },
-    { name: "Corporate Website", niche: "B2B Professional Services", summary: "Maintained 99.9% uptime over 12 months, handled 3 major dependency updates without downtime, and resolved 15 bugs that were affecting lead form submissions." },
-  ],
-  testimonials: [
-    { quote: "We sleep better knowing they are watching our website. Three issues caught and fixed before we even knew about them.", author: "Managing Director, Professional Services Firm" },
-    { quote: "Maintenance used to eat our developer's time. Now that is handled and she focuses on new features.", author: "CTO, SaaS Company" },
-    { quote: "The monthly report is clear, honest, and tells us exactly what was done and why.", author: "Marketing Head, E-commerce Brand" },
-  ],
+  // Only delivered, linkable work belongs here. Entries without a
+  // /work/ slug described projects that are not in the portfolio.
+  caseStudies: [],
+  // Testimonials are omitted until we have real, attributable quotes
+  // (name, role and company). The section does not render while empty.
+  testimonials: [],
   faqs: [
     { question: "What does a monthly maintenance package include?", answer: "Security updates, uptime monitoring, backups, performance checks, bug fix hours, and a monthly health report." },
     { question: "How quickly are bugs fixed?", answer: "Critical issues within 4 hours, standard bugs within 48 hours, minor issues within the next maintenance cycle." },
@@ -693,15 +678,12 @@ export const softwareServiceData: ServicePageData = {
     { icon: 'clock-3', title: "Long-term Maintainability", text: "Clean code and documentation reduce future maintenance cost significantly." },
   ],
   technologies: ["Node.js", "Python", "TypeScript", "React", "Next.js", "PostgreSQL", "MongoDB", "Redis", "Docker", "Kubernetes", "AWS", "GitHub Actions", "Terraform"],
-  caseStudies: [
-    { name: "Operations Management Platform", niche: "Field Service Company", summary: "Built a custom job scheduling, technician tracking, and invoice generation platform that replaced 4 separate tools and saved 20 hours of admin work per week." },
-    { name: "SaaS Product MVP", niche: "B2B Startup", summary: "Designed and developed a full SaaS platform from scratch — multi-tenant architecture, subscription billing, user management, and API — launched in 10 weeks." },
-  ],
-  testimonials: [
-    { quote: "The software they built does exactly what our business needs. No compromises, no workarounds.", author: "CEO, Field Service Company" },
-    { quote: "Our SaaS MVP was delivered on budget and on schedule. The architecture they chose has scaled without issues.", author: "Founder, B2B SaaS Startup" },
-    { quote: "Finally a development team that asks the right questions before starting to code.", author: "COO, Operations-Heavy Business" },
-  ],
+  // Only delivered, linkable work belongs here. Entries without a
+  // /work/ slug described projects that are not in the portfolio.
+  caseStudies: [],
+  // Testimonials are omitted until we have real, attributable quotes
+  // (name, role and company). The section does not render while empty.
+  testimonials: [],
   faqs: [
     { question: "How do you handle complex or unclear requirements?", answer: "We run a paid discovery sprint first to clarify requirements, document edge cases, and de-risk the full development phase." },
     { question: "Do you build MVPs or full production systems?", answer: "Both. We scope MVPs for validation and full-scale systems for established businesses, with clear architectural continuity between the two." },
@@ -760,15 +742,12 @@ export const apiServiceData: ServicePageData = {
     { icon: 'trending-up', title: "Scalable Workflows", text: "Automated integrations handle volume growth without additional manual effort." },
   ],
   technologies: ["REST APIs", "GraphQL", "Webhooks", "OAuth 2.0", "Node.js", "Python", "Postman", "HubSpot API", "Salesforce API", "Stripe API", "Razorpay", "Zapier", "n8n"],
-  caseStudies: [
-    { name: "CRM-ERP Integration", niche: "Manufacturing Company", summary: "Integrated HubSpot CRM with a legacy ERP system, syncing customer records, order status, and invoice data in real time — eliminating 10 hours of weekly manual data entry." },
-    { name: "Payment & Inventory Sync", niche: "E-commerce Business", summary: "Connected Razorpay, Shopify, and a custom inventory system with real-time webhooks, reducing order processing errors by 90%." },
-  ],
-  testimonials: [
-    { quote: "The CRM integration they built eliminated hours of manual work and the data is always accurate now.", author: "Operations Manager, Manufacturing Company" },
-    { quote: "They handled a complex three-way integration that two previous vendors failed to deliver. Clean, reliable, and well-documented.", author: "CTO, E-commerce Platform" },
-    { quote: "The webhook monitoring they set up catches failures before they become customer-facing problems.", author: "Head of Engineering, SaaS Product" },
-  ],
+  // Only delivered, linkable work belongs here. Entries without a
+  // /work/ slug described projects that are not in the portfolio.
+  caseStudies: [],
+  // Testimonials are omitted until we have real, attributable quotes
+  // (name, role and company). The section does not render while empty.
+  testimonials: [],
   faqs: [
     { question: "Can you integrate any API?", answer: "Any system with a documented REST, GraphQL, or webhook interface. We also work with SOAP and legacy protocols where needed." },
     { question: "What if the API does not have the data we need?", answer: "We explore alternatives: custom extraction, screen scraping where permitted, or database-level integration if appropriate." },
@@ -827,15 +806,12 @@ export const cloudServiceData: ServicePageData = {
     { icon: 'clock-3', title: "Maximum Reliability", text: "Multi-AZ deployments and automated recovery eliminate single points of failure." },
   ],
   technologies: ["AWS", "Google Cloud", "Vercel", "Cloudflare", "Docker", "Kubernetes", "Terraform", "GitHub Actions", "Datadog", "PagerDuty", "Nginx", "Let's Encrypt"],
-  caseStudies: [
-    { name: "SaaS Platform Migration", niche: "B2B Software", summary: "Migrated a monolithic application to a containerized microservices architecture on AWS, reducing infrastructure costs 35% and achieving 99.95% uptime in the first quarter." },
-    { name: "E-commerce Scale Infrastructure", niche: "D2C Brand", summary: "Designed auto-scaling infrastructure for a high-traffic sale event, handling 10x normal traffic without performance degradation or additional manual intervention." },
-  ],
-  testimonials: [
-    { quote: "Our infrastructure costs dropped 30% and we have not had a downtime incident since they redesigned our cloud setup.", author: "CTO, B2B SaaS Company" },
-    { quote: "The CI/CD pipeline they built has transformed how our team deploys. What took 2 hours now takes 8 minutes.", author: "Engineering Lead, Product Startup" },
-    { quote: "They handled a complex migration with zero downtime. It was seamless and exactly what we needed.", author: "COO, E-commerce Platform" },
-  ],
+  // Only delivered, linkable work belongs here. Entries without a
+  // /work/ slug described projects that are not in the portfolio.
+  caseStudies: [],
+  // Testimonials are omitted until we have real, attributable quotes
+  // (name, role and company). The section does not render while empty.
+  testimonials: [],
   faqs: [
     { question: "Which cloud providers do you work with?", answer: "Primarily AWS and Google Cloud, plus Vercel and Cloudflare for edge and frontend deployments." },
     { question: "Can you reduce our current cloud bill?", answer: "Typically yes. We start with a cost audit and identify right-sizing, reserved instance, and architecture changes that reduce costs 20–40%." },

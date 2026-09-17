@@ -42,6 +42,37 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // Baseline security headers on every document. Only HSTS was present,
+        // and audit tooling plus AI-visibility scoring both read these as
+        // trust signals.
+        //
+        // Deliberately NOT set here:
+        //  - Content-Security-Policy. This site runs GTM, Razorpay checkout,
+        //    Google Maps iframes and framer-motion's inline styles; a policy
+        //    written without testing each of those breaks checkout silently.
+        //    Ship it separately, Report-Only first, with a report endpoint.
+        //  - HSTS `preload`. Submitting to the preload list is effectively
+        //    irreversible and locks every future subdomain to HTTPS. Add it
+        //    deliberately, not as a side effect of a headers pass.
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+          },
+          {
+            // includeSubDomains is safe today: no subdomain of
+            // nextgenfusion.in currently resolves. Re-check before adding one
+            // that cannot serve HTTPS.
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains',
+          },
+        ],
+      },
+      {
         // Fonts are content-stable forever. Renaming is how you bust them.
         source: '/fonts/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],

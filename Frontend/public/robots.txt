@@ -3,7 +3,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 # Sitemap
 Sitemap: https://www.nextgenfusion.in/sitemap.xml
@@ -25,7 +24,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: Googlebot-Image
 Allow: /
@@ -43,105 +41,95 @@ User-agent: Baiduspider
 Allow: /
 
 # AI search & assistant crawlers. These fell through to the `User-agent: *`
-# group above, which already allows them everywhere except the same four
+# group above, which already allows them everywhere except the same three
 # private paths — but several site-audit tools only credit an explicit
-# Allow per named bot, and being unambiguous here is cheap. /store/purchases/
-# stays disallowed for every one of these: it's a signed-in customer's
-# purchase and download history, not something to hand to an AI crawler.
+# Allow per named bot, and being unambiguous here is cheap.
+#
+# /store/purchases/ is deliberately NOT disallowed any more. It is an email
+# form, not a customer's purchase history — nothing personal renders without
+# a token — and disallowing it meant crawlers could never read its noindex,
+# so the URL stayed indexable with the homepage's title. It now carries
+# `noindex, follow` at the page level, which is the directive that works.
 User-agent: GPTBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: Claude-User
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: Claude-SearchBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: anthropic-ai
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: Perplexity-User
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: Amazonbot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: meta-externalagent
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/
 
 User-agent: DuckAssistBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
-Disallow: /store/purchases/

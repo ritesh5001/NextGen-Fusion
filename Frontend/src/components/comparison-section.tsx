@@ -163,7 +163,7 @@ export default function ComparisonSection() {
                 variants={textVariants}
               >
                 <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <span>Why</span>
+                  <span>Why</span>{" "}
                   <motion.div 
                     className="relative inline-block"
                     variants={iconVariants}
@@ -186,6 +186,7 @@ export default function ComparisonSection() {
                     Partner
                   </span>
                 </div>
+                {" "}
                 <div>with Us?</div>
               </motion.h2>
             </motion.div>

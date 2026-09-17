@@ -12,6 +12,10 @@ export interface Office {
     country: string
   }
   coordinates: string
+  /** City landing page for this office. Each ProfessionalService node needs its
+   *  own `url`: both pointing at the homepage let Google collapse two locations
+   *  into one entity, which is the opposite of why we publish two. */
+  landingPath: string
   contact: {
     name: string
     /** Display form, with spaces. */
@@ -32,6 +36,7 @@ export const offices: Office[] = [
       country: "IN",
     },
     coordinates: "26.8467, 80.9462",
+    landingPath: "/website-development-company-in-lucknow/",
     contact: {
       name: "Team Lucknow",
       phone: "+91 73482 28167",
@@ -50,6 +55,7 @@ export const offices: Office[] = [
       country: "IN",
     },
     coordinates: "19.0408, 72.8260",
+    landingPath: "/website-development-company-in-mumbai/",
     contact: {
       name: "Mohd Mustejab Ansari",
       phone: "+91 77158 21892",

@@ -8,6 +8,7 @@ import Link from "next/link"
 import { apiService } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import ScrollToTop from "@/components/scroll-to-top"
+import { getTeamMemberByName } from "@/data/team"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, articleSchema, assetUrl, breadcrumbSchema, DEFAULT_OG_IMAGE, siteUrl } from "@/lib/seo"
 import { categorySlug, relatedPosts } from "@/lib/blog"
@@ -110,6 +111,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       })
     }
 
+    // Resolve the byline to a real person so the visible bio, the photo and
+    // the Person node in schema all describe the same entity.
+    const authorMember = getTeamMemberByName(blogPost.author)
+
     const formatReadTime = (minutes: number | null) => {
       if (!minutes) return "5 min read"
       return `${minutes} min read`
@@ -127,6 +132,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         publishedTime: blogPost.published_at || undefined,
         modifiedTime: blogPost.updated_at || blogPost.published_at || undefined,
         authorName: blogPost.author || undefined,
+        authorSlug: authorMember?.slug,
       }),
       breadcrumbSchema([
         { name: "Home", path: "/" },
@@ -288,16 +294,41 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
               <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-100 rounded-2xl p-6 mb-6 shadow-sm">
                 <h3 className="font-semibold text-gray-900 mb-4">About the Author</h3>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">
-                    {blogPost.author.charAt(0).toUpperCase()}
-                  </div>
+                  {authorMember ? (
+                    <Image
+                      src={authorMember.image}
+                      alt={`${authorMember.name}, ${authorMember.role} at NextGen Fusion`}
+                      width={56}
+                      height={56}
+                      className="w-14 h-14 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                      {blogPost.author.charAt(0).toUpperCase()}
+                    </div>
+                  )}
                   <div>
-                    <p className="font-medium text-gray-900 text-lg">{blogPost.author}</p>
-                    <p className="text-sm text-gray-600">Content Writer</p>
+                    <p className="font-medium text-gray-900 text-lg">
+                      {authorMember ? (
+                        <Link href={`/team/${authorMember.slug}/`} className="hover:underline">
+                          {authorMember.name}
+                        </Link>
+                      ) : (
+                        blogPost.author
+                      )}
+                    </p>
+                    {/* The real job title, from the canonical team source. The
+                        authority of a post like the WooCommerce write-up rests
+                        entirely on the author being the person who did the work. */}
+                    <p className="text-sm text-gray-600">
+                      {authorMember ? authorMember.role : "NextGen Fusion"}
+                    </p>
                   </div>
                 </div>
                 <div className="text-sm text-gray-700 leading-relaxed">
-                  Passionate about sharing insights on technology, design, and digital innovation.
+                  {authorMember
+                    ? authorMember.bio
+                    : "Written by the NextGen Fusion team in Lucknow and Mumbai."}
                 </div>
               </div>
 

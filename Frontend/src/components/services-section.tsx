@@ -214,7 +214,7 @@ export default function ServicesSection() {
             variants={textVariants}
           >
             <div className="flex flex-wrap items-center gap-3 md:gap-4">
-              <span>What We</span>
+              <span>What We</span>{" "}
               <motion.div
                 className="relative inline-block mx-1"
                 variants={iconVariants}

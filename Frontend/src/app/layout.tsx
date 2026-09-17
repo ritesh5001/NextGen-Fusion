@@ -10,17 +10,69 @@ import LayoutChrome from "@/components/layout-chrome";
 import { Analytics } from "@/components/analytics";
 import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
 import { brandProfiles, CONTACT_EMAIL, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
+import { personId, team, TEAM_SIZE } from "@/data/team";
+import { serviceNavItems } from "@/data/services-nav";
 
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      // Declared once, referenced by @id from Organization and both offices, so
+      // the logo is a resolvable ImageObject with dimensions rather than three
+      // copies of a bare URL string.
+      "@type": "ImageObject",
+      "@id": `${siteUrl}/#logo`,
+      url: `${siteUrl}/images/site-logo.png`,
+      contentUrl: `${siteUrl}/images/site-logo.png`,
+      caption: "NextGen Fusion",
+    },
+    {
       "@type": "Organization",
       "@id": `${siteUrl}/#organization`,
       name: "NextGen Fusion",
+      // Several other companies trade as "NextGen Fusion" and the bare token
+      // reads as nuclear fusion to a language model. The qualified alternate
+      // name gives retrieval something disambiguating to match on.
+      alternateName: "NextGen Fusion — Web Development Agency, Lucknow",
       url: siteUrl,
+      description:
+        "Web development, ecommerce and SEO studio in Lucknow and Mumbai, India. Builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps and custom software for D2C brands, manufacturers, institutes and B2B companies, with published pricing and post-launch support.",
       // Google requires a raster logo; the SVG here was silently ignored.
-      logo: `${siteUrl}/images/site-logo.png`,
+      logo: { "@id": `${siteUrl}/#logo` },
+      image: { "@id": `${siteUrl}/#logo` },
+      email: CONTACT_EMAIL,
+      telephone: PRIMARY_PHONE_E164,
+      numberOfEmployees: { "@type": "QuantitativeValue", value: TEAM_SIZE },
+      // What the studio demonstrably works in. Feeds entity understanding for
+      // "who does X in Lucknow" style retrieval.
+      knowsAbout: serviceNavItems.map((service) => service.label),
+      knowsLanguage: ["en", "hi"],
+      areaServed: [
+        { "@type": "Country", name: "India" },
+        { "@type": "Place", name: "Worldwide" },
+      ],
+      // The registered postal address is the Mumbai office; Lucknow has no
+      // street-level address we publish.
+      address: (() => {
+        const registered = offices.find((office) => office.postal.street) ?? offices[0];
+        return {
+          "@type": "PostalAddress",
+          ...(registered.postal.street ? { streetAddress: registered.postal.street } : {}),
+          addressLocality: registered.postal.locality,
+          addressRegion: registered.postal.region,
+          ...(registered.postal.postalCode ? { postalCode: registered.postal.postalCode } : {}),
+          addressCountry: registered.postal.country,
+        };
+      })(),
+      location: offices.map((office) => ({
+        "@id": `${siteUrl}/#office-${office.city.toLowerCase()}`,
+      })),
+      // Bare @id references. The full Person nodes are defined on /about/ and
+      // on each /team/<slug>/ profile; repeating them on every page would put
+      // four biographies into the markup of every URL on the site.
+      founder: team
+        .filter((member) => member.isFounder)
+        .map((member) => ({ "@id": personId(member.slug, siteUrl) })),
       // sameAs is for profiles that corroborate the entity elsewhere. Listing
       // our own homepage told Google nothing, and pointing it at the www host
       // while `url` used the apex actively muddied canonicalisation.
@@ -52,8 +104,10 @@ const structuredData = {
         "@type": "ProfessionalService",
         "@id": `${siteUrl}/#office-${office.city.toLowerCase()}`,
         name: `NextGen Fusion — ${office.city}`,
-        url: siteUrl,
-        image: `${siteUrl}/images/site-logo.png`,
+        // Its own city page, not the homepage. Two LocalBusiness nodes sharing
+        // one url is how Google ends up merging two offices into one location.
+        url: `${siteUrl}${office.landingPath}`,
+        image: { "@id": `${siteUrl}/#logo` },
         parentOrganization: { "@id": `${siteUrl}/#organization` },
         telephone: office.contact.phoneE164,
         email: CONTACT_EMAIL,
@@ -86,7 +140,12 @@ const structuredData = {
       "@id": `${siteUrl}/#website`,
       url: siteUrl,
       name: "NextGen Fusion",
+      description:
+        "Websites, online stores, apps and SEO for businesses in India — built in Lucknow and Mumbai.",
+      inLanguage: "en-IN",
       publisher: { "@id": `${siteUrl}/#organization` },
+      // No potentialAction/SearchAction: there is no on-site search endpoint,
+      // and declaring one that 404s is worse than declaring none.
     },
   ],
 };

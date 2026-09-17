@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { Check, ExternalLink } from 'lucide-react'
 import { getStoreProduct, isStoreProductIndexable } from '@/lib/store'
 import { BuyButton } from '@/components/store/buy-button'
-import { absoluteUrl, breadcrumbSchema, buildMetadata, siteUrl } from '@/lib/seo'
+import { absoluteUrl, assetUrl, breadcrumbSchema, buildMetadata, siteUrl } from '@/lib/seo'
 
 type PageProps = { params: Promise<{ slug: string }> }
 
@@ -43,7 +43,11 @@ export default async function StoreProductPage({ params }: PageProps) {
     description: product.summary || product.description?.slice(0, 300) || product.title,
     sku: product.slug,
     category: product.category || 'Software',
-    image: product.cover_image ? [product.cover_image] : undefined,
+    // Absolute, always. A relative path here is not a resolvable image URL, and
+    // schema image values are fetched independently of the page. Products with
+    // no cover image are noindexed by isStoreProductIndexable(), so an absent
+    // image only ever occurs on a page that is already out of the index.
+    image: product.cover_image ? [assetUrl(product.cover_image)] : undefined,
     brand: { '@type': 'Brand', name: 'NextGen Fusion' },
     offers: {
       '@type': 'Offer',

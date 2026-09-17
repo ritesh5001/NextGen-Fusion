@@ -209,7 +209,7 @@ export default function FAQSection() {
                     className="object-contain w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
                   />
                 </motion.div>
-              </div>
+              </div>{" "}
                 <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
                   the answers
                 </span>
@@ -329,6 +329,9 @@ export default function FAQSection() {
                       {/* Question */}
                       <motion.button
                         onClick={() => toggleFAQ(index)}
+                        id={`faq-question-${index}`}
+                        aria-expanded={activeIndex === index}
+                        aria-controls={`faq-answer-${index}`}
                         className="w-full flex items-start gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200/50 hover:border-gray-300/50 transition-all text-left group shadow-sm"
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
@@ -347,22 +350,26 @@ export default function FAQSection() {
                         <span className="text-xs sm:text-sm font-medium text-gray-900 leading-relaxed">{faq.question}</span>
                       </motion.button>
 
-                      {/* Answer */}
-                      <AnimatePresence>
-                        {activeIndex === index && (
-                          <motion.div
-                            variants={answerVariants}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
-                            className="overflow-hidden"
-                          >
-                            <div className="bg-blue-500/90 backdrop-blur-sm text-white p-3 rounded-xl ml-7 shadow-sm">
-                              <p className="text-xs sm:text-sm leading-relaxed">{faq.answer}</p>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      {/* Answer.
+                          Always mounted, never conditionally rendered. Collapsing
+                          with `height: 0` keeps the text in the server HTML, where
+                          AI fetchers that read rendered markup rather than JSON-LD
+                          (Perplexity, ChatGPT search, Claude) can actually see it.
+                          A `{activeIndex === index && ...}` guard here shipped a
+                          homepage FAQ with eight questions and zero answers. */}
+                      <motion.div
+                        id={`faq-answer-${index}`}
+                        role="region"
+                        aria-labelledby={`faq-question-${index}`}
+                        variants={answerVariants}
+                        initial={false}
+                        animate={activeIndex === index ? "visible" : "hidden"}
+                        className="overflow-hidden"
+                      >
+                        <div className="bg-blue-500/90 backdrop-blur-sm text-white p-3 rounded-xl ml-7 shadow-sm">
+                          <p className="text-xs sm:text-sm leading-relaxed">{faq.answer}</p>
+                        </div>
+                      </motion.div>
                     </motion.div>
                   ))}
                 </motion.div>

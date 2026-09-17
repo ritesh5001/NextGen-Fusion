@@ -148,8 +148,8 @@ export default function AboutUsSection() {
                   Hello
                 </span>
                 <span>. We are</span>
-              </div>
-              <span className="text-gray-900">NextGen</span>
+              </div>{" "}
+              <span className="text-gray-900">NextGen</span>{" "}
               <br />
               <span className="text-gray-900">Fusion</span>
             </motion.h2>

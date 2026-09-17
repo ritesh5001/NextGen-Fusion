@@ -3,7 +3,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { JsonLd } from "@/components/json-ld"
 import CTABanner from "@/components/cta-banner"
-import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { absoluteUrl, assetUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { personId, team } from "@/data/team"
 import { offices } from "@/data/offices"
 import { staticProjects } from "@/lib/static-projects"
 
@@ -16,36 +17,6 @@ export const metadata: Metadata = buildMetadata({
   path: PATH,
 })
 
-const team = [
-  {
-    slug: "ritesh-giri",
-    name: "Ritesh Kumar Giri",
-    role: "Founder & Full Stack Developer",
-    image: "/member/ritesh-giri.png",
-    bio: "Owns technical architecture across every project — Next.js and Shopify front ends, Node and Postgres back ends, and the deployment pipelines that keep them up. Writes the estimate you receive and is on the call when it is delivered.",
-  },
-  {
-    slug: "sajal-singh",
-    name: "Sajal Singh",
-    role: "Co-Founder, Full Stack Developer & Cinematographer",
-    image: "/member/sajal-singh.jpeg",
-    bio: "Splits time between building product surfaces and shooting the photography and video that fills them. The reason our ecommerce clients get a store and the imagery to merchandise it.",
-  },
-  {
-    slug: "mohammad-iqbal",
-    name: "Mohammad Iqbal",
-    role: "Full Stack & Android Developer",
-    image: "/member/mohammad-iqbal.png",
-    bio: "Builds the Android apps and the API layers that connect storefronts to CRMs, payment gateways and internal tooling. Handles most of our integration work.",
-  },
-  {
-    slug: "vivek-gautam",
-    name: "Vivek Gautam",
-    role: "SEO & Social Media Marketing",
-    image: "/member/vivek-gautam.jpeg",
-    bio: "Runs technical SEO, keyword strategy and content planning. Joins projects before launch rather than after, so site structure and internal linking are right the first time.",
-  },
-]
 
 const principles = [
   {
@@ -82,16 +53,30 @@ export default function AboutPage() {
       about: { "@id": ORGANIZATION_ID },
       mainEntity: {
         "@id": ORGANIZATION_ID,
-        employee: team.map((member) => ({
-          "@type": "Person",
-          name: member.name,
-          jobTitle: member.role,
-          url: absoluteUrl(`/team/${member.slug}`),
-          image: absoluteUrl(member.image),
-          worksFor: { "@id": ORGANIZATION_ID },
-        })),
+        employee: team.map((member) => ({ "@id": personId(member.slug, siteUrl) })),
       },
     },
+    // Full Person nodes, keyed by the same @id the profile pages and blog
+    // bylines use, so one author resolves to one entity across the site.
+    ...team.map((member) => ({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": personId(member.slug, siteUrl),
+      name: member.name,
+      givenName: member.givenName,
+      familyName: member.familyName,
+      jobTitle: member.role,
+      description: member.bio,
+      url: absoluteUrl(`/team/${member.slug}`),
+      image: assetUrl(member.image),
+      email: member.email,
+      worksFor: { "@id": ORGANIZATION_ID },
+      knowsAbout: member.knowsAbout,
+      knowsLanguage: ["en", "hi"],
+      // Only profiles confirmed to belong to this person. An unverified sameAs
+      // pointing at a stranger is worse than none.
+      ...(member.verifiedProfiles.length ? { sameAs: member.verifiedProfiles } : {}),
+    })),
     breadcrumbSchema([
       { name: "Home", path: "/" },
       { name: "About", path: PATH },

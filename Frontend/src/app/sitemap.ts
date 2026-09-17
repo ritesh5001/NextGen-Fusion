@@ -6,6 +6,7 @@ import { getStoreProducts, isStoreProductIndexable } from "@/lib/store"
 import { serviceSlugs } from "@/data/services-nav"
 import { locationSlugs } from "@/data/locations"
 import { activeCategorySlugs } from "@/lib/blog"
+import { team } from "@/data/team"
 
 // Revalidate hourly so newly published blog posts, store products and
 // portfolio entries show up without a redeploy.
@@ -41,6 +42,10 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
 
 const SERVICES_LAST_MODIFIED = "2026-09-16"
 const LOCATIONS_LAST_MODIFIED = "2026-09-16"
+// Case studies are edited on their own cadence; they were inheriting the
+// services date and claiming an edit they had not had.
+const WORK_LAST_MODIFIED = "2026-08-14"
+const TEAM_LAST_MODIFIED = "2026-08-14"
 
 type Entry = MetadataRoute.Sitemap[number]
 
@@ -57,7 +62,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...serviceSlugs.map((slug) => entry(`/services/${slug}`, SERVICES_LAST_MODIFIED)),
     // City landing pages — the query shape every page-one competitor ranks with.
     ...locationSlugs.map((slug) => entry(`/${slug}`, LOCATIONS_LAST_MODIFIED)),
-    ...staticProjects.map((p) => entry(`/work/${p.slug}`, SERVICES_LAST_MODIFIED)),
+    ...staticProjects.map((p) => entry(`/work/${p.slug}`, WORK_LAST_MODIFIED)),
+    // Team profiles were absent from the sitemap entirely while also declaring
+    // /team/ as their canonical — between the two, four pages of real
+    // expertise signal were invisible to search and to AI crawlers.
+    ...team.map((member) => entry(`/team/${member.slug}`, TEAM_LAST_MODIFIED)),
   ]
 
   // Remote content is best-effort: a Backend hiccup must not fail the build or

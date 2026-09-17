@@ -40,10 +40,10 @@ export default function CTABanner({
         >
           <div className={compact ? "relative px-6 sm:px-12 py-6 sm:py-8 text-left" : "relative px-8 sm:px-12 py-8 text-left"}>
             <h2 className={compact ? "text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 leading-tight" : "text-2xl sm:text-3xl font-bold text-white mb-3 leading-tight"}>
-              <span className="block">Time to Stop Scrolling,</span>
+              <span className="block">Time to Stop Scrolling,</span>{" "}
               <span className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mt-1">
                 <span className="flex items-center gap-2">
-                  <b className="font-bold">Let&apos;s</b>
+                  <b className="font-bold">Let&apos;s</b>{" "}
                   <BannerIcon 
                     src={getIconSrc("/images/hand.svg", "/images/hand.png")} 
                     alt="Hand" 
@@ -52,7 +52,7 @@ export default function CTABanner({
                   <span className="bg-gradient-to-r from-[#8A38F5] via-[#13CBD4] to-[#2B35AB] bg-clip-text text-transparent font-bold">
                     Book a meeting
                   </span>
-                </span>
+                </span>{" "}
                 <b className="font-bold">and discuss it!</b>
               </span>
             </h2>

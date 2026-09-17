@@ -310,16 +310,18 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
             </div>
           </motion.section>
 
-          {/* Case Studies */}
+          {/* Case Studies. Same rule as testimonials: only delivered, linkable
+              work, and the section disappears rather than padding itself. */}
+          {data.caseStudies.length > 0 && (
           <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
-            <BadgeSubtitle>Portfolio Preview</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Recent {data.badge} Use Cases</h2>
+            <BadgeSubtitle>Selected work</BadgeSubtitle>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Recent {data.badge} Projects</h2>
             <div className="mt-8 grid md:grid-cols-2 gap-6">
               {data.caseStudies.map((project) => (
                 <div key={project.name} className="rounded-2xl border border-gray-100 p-7 bg-white shadow-sm">
                   <div className="inline-flex items-center gap-2 rounded-full bg-[#2B35AB]/10 px-3 py-1 text-xs font-semibold text-[#2B35AB]">
                     <Rocket className="h-3.5 w-3.5" />
-                    Case Preview
+                    Case study
                   </div>
                   <h3 className="mt-4 text-2xl font-bold text-gray-900">
                     {project.slug ? (
@@ -344,6 +346,7 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
               ))}
             </div>
           </motion.section>
+          )}
 
           {/* Testimonials — rendered only when real quotes exist. An empty array
               removes the section rather than shipping anonymous filler. */}

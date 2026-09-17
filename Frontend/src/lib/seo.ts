@@ -154,6 +154,7 @@ export function articleSchema({
   publishedTime,
   modifiedTime,
   authorName = SITE_NAME,
+  authorSlug,
 }: {
   title: string
   description: string
@@ -162,6 +163,8 @@ export function articleSchema({
   publishedTime?: string
   modifiedTime?: string
   authorName?: string
+  /** Team slug, when the byline resolves to a real person on /team/. */
+  authorSlug?: string
 }) {
   return {
     "@context": "https://schema.org",
@@ -173,10 +176,15 @@ export function articleSchema({
     image: [assetUrl(image ?? DEFAULT_OG_IMAGE)],
     // A named human is a Person. Typing them as Organization and reusing the
     // company's @id told Google the byline and the publisher were one entity.
+    // When the byline matches a team member, reference their canonical Person
+    // @id instead of minting a fresh name-only node on every post — that is
+    // what connects a byline to a job title, an employer and a profile page.
     author:
       authorName === SITE_NAME
         ? { "@id": ORGANIZATION_ID }
-        : { "@type": "Person", name: authorName },
+        : authorSlug
+          ? { "@id": `${siteUrl}/team/${authorSlug}/#person` }
+          : { "@type": "Person", name: authorName },
     publisher: { "@id": ORGANIZATION_ID },
     ...(publishedTime ? { datePublished: publishedTime } : {}),
     ...(modifiedTime ? { dateModified: modifiedTime } : {}),

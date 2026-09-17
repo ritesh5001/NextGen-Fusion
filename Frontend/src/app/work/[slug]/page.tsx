@@ -16,7 +16,7 @@ import {
 import ScrollToTop from "@/components/scroll-to-top";
 import { staticProjects, getProjectBySlug } from "@/lib/static-projects";
 import { JsonLd } from "@/components/json-ld";
-import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { absoluteUrl, assetUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import type { StaticProject } from "@/lib/static-projects";
 
 // The service page and Lucknow page each build type is sold on. Case studies
@@ -105,7 +105,12 @@ export default async function WorkDetailPage({ params }: PageProps) {
       articleSection: project.category,
       url: absoluteUrl(`/work/${project.slug}`),
       mainEntityOfPage: absoluteUrl(`/work/${project.slug}`),
-      image: [absoluteUrl(project.coverImage), ...project.images.map((src) => absoluteUrl(src))],
+      // assetUrl, not absoluteUrl: trailing-slashed image URLs 308-redirect and
+      // validators treat redirecting structured-data images as unfetchable.
+      // Deduped because coverImage is normally also images[0].
+      image: Array.from(new Set([project.coverImage, ...project.images])).map((src) =>
+        assetUrl(src),
+      ),
       keywords: project.tags.join(", "),
       author: { "@id": ORGANIZATION_ID },
       publisher: { "@id": ORGANIZATION_ID },

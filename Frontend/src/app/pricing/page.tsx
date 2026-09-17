@@ -207,24 +207,48 @@ const FAQS = [
 export default function PricingPage() {
   const schema = [
     {
+      // Was a bare top-level Offer. An Offer with no `itemOffered` is not a
+      // valid standalone entity — Google has nothing to attach the price to and
+      // discards it — and `priceRange` is a LocalBusiness property, not an Offer
+      // one. A Service carrying an OfferCatalog is the shape that actually
+      // describes "these are our published bands".
       "@context": "https://schema.org",
-      "@type": "Offer",
-      "@id": `${absoluteUrl(PATH)}#offer`,
+      "@type": "Service",
+      "@id": `${absoluteUrl(PATH)}#service`,
       name: "Website, ecommerce and custom software development",
+      serviceType: "Web and software development",
+      description:
+        "Published price bands for NextGen Fusion builds. Fixed scope, one price, one delivery window.",
       url: absoluteUrl(PATH),
-      priceCurrency: "INR",
-      priceRange: `₹${overallMin.toLocaleString("en-IN")}–₹${overallMax.toLocaleString("en-IN")}`,
-      availability: "https://schema.org/InStock",
-      areaServed: ["IN", "Worldwide"],
-      seller: { "@id": ORGANIZATION_ID },
-      offeredBy: { "@id": ORGANIZATION_ID },
-      priceSpecification: priced.map((tier) => ({
-        "@type": "PriceSpecification",
-        name: tier.name,
-        priceCurrency: "INR",
-        minPrice: tier.min,
-        maxPrice: tier.max,
-      })),
+      provider: { "@id": ORGANIZATION_ID },
+      areaServed: [
+        { "@type": "Country", name: "India" },
+        { "@type": "Place", name: "Worldwide" },
+      ],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "NextGen Fusion build bands",
+        itemListElement: priced.map((tier) => ({
+          "@type": "Offer",
+          name: tier.name,
+          description: tier.who,
+          url: absoluteUrl(PATH),
+          availability: "https://schema.org/InStock",
+          itemOffered: {
+            "@type": "Service",
+            name: `${tier.name} — website and software build`,
+            serviceType: "Web and software development",
+            provider: { "@id": ORGANIZATION_ID },
+          },
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            priceCurrency: "INR",
+            minPrice: tier.min,
+            maxPrice: tier.max,
+            valueAddedTaxIncluded: false,
+          },
+        })),
+      },
     },
     {
       "@context": "https://schema.org",

@@ -244,9 +244,9 @@ export default function ContactSection() {
           >
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4">
               <span>Time to Stop Scrolling,</span>
-            </div>
+            </div>{" "}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-1 sm:mt-2">
-              <span>Let&apos;s</span>
+              <span>Let&apos;s</span>{" "}
               <motion.div 
                 className="relative inline-block mx-1"
                 variants={iconVariants}
@@ -262,7 +262,7 @@ export default function ContactSection() {
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-400 bg-clip-text text-transparent">
                 Discuss
               </span>
-            </div>
+            </div>{" "}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-1 sm:mt-2">
               <span>and Cook It Up!</span>
             </div>

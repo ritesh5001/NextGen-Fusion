@@ -12,6 +12,20 @@ export interface JobOpening {
   summary: string
   responsibilities: string[]
   requirements: string[]
+  /**
+   * ISO date the role was actually opened (YYYY-MM-DD), and the date the
+   * listing stops being true.
+   *
+   * JobPosting schema — and therefore Google Jobs — requires a real
+   * `datePosted`, and drops listings whose `validThrough` has passed or is
+   * missing. Both are deliberately optional here and deliberately unset: a
+   * guessed hiring date is a false factual claim, and a stale one gets the
+   * whole domain's postings demoted. Fill these two fields on a role and it
+   * starts emitting JobPosting markup automatically; leave them and the role
+   * still renders on the page, just without structured data.
+   */
+  postedOn?: string
+  validThrough?: string
 }
 
 export const CAREERS_EMAIL = "contact@nextgenfusion.in"
