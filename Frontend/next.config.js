@@ -42,6 +42,17 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // Vercel keeps every deployment reachable on a *.vercel.app hostname,
+        // and those served `index, follow` — a fully crawlable second copy of
+        // the whole site. The canonical tag points at www, which is enough for
+        // Google, but LLM retrieval pipelines handle canonicals poorly and
+        // will happily treat the preview host as an independent source, which
+        // splits the entity we are otherwise working hard to consolidate.
+        source: '/:path*',
+        has: [{ type: 'host', value: '(?<previewHost>.*)\\.vercel\\.app' }],
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+      {
         // Baseline security headers on every document. Only HSTS was present,
         // and audit tooling plus AI-visibility scoring both read these as
         // trust signals.
