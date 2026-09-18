@@ -85,7 +85,11 @@ const structuredData = {
         telephone: office.contact.phoneE164,
         email: CONTACT_EMAIL,
         contactType: office.contact.phoneE164 === PRIMARY_PHONE_E164 ? "sales" : "customer support",
-        areaServed: "IN",
+        // Matches Organization.areaServed. "IN" alone contradicted the
+        // Worldwide claim one node above it — telling Google and every AI
+        // system simultaneously that the studio serves the world and can only
+        // be contacted from India.
+        areaServed: ["IN", "Worldwide"],
         availableLanguage: ["English", "Hindi"],
       })),
       // NOTE: aggregateRating deliberately omitted. Google's structured-data

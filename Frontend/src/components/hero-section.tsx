@@ -11,7 +11,11 @@ type AnimationVariants = Record<string, Variants>
 // Animation variants
 const heroVariants: AnimationVariants = {
   container: {
-    hidden: { opacity: 0 },
+    // Starts visible. `hidden: { opacity: 0 }` here meant the entire hero —
+    // headline included — painted nothing until framer-motion hydrated, which
+    // on mobile was ~4.5s of pure render delay. Children still stagger; the
+    // stagger does not depend on the parent being transparent first.
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -164,9 +168,12 @@ const HeroContent = () => {
       {/* H1 — carries search intent. "Websites", "online stores" and "after
           launch" are terms buyers actually type; the stylised brand line moved
           below it and is deliberately no longer a heading. */}
-      <motion.h1
+      {/* Deliberately a plain <h1>, not motion.h1. This is the LCP element on
+          mobile; giving it an entrance animation meant LCP could not fire until
+          hydration finished, pinning it at 5.4s while FCP was 1.5s. Static
+          markup lets it paint with the document. */}
+      <h1
         className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-5 max-w-5xl mx-auto"
-        variants={animationVariants.sleek}
       >
         Websites &amp; Online Stores That Don&apos;t Get Abandoned{" "}
         <span
@@ -177,7 +184,7 @@ const HeroContent = () => {
         >
           After Launch
         </span>
-      </motion.h1>
+      </h1>
 
       {/* Brand signature — the original line, kept as decoration rather than a
           heading so it no longer competes with the H1 for what this page is about. */}
@@ -280,37 +287,38 @@ export default function HeroSection() {
     <div className="min-h-screen w-full bg-white flex items-center justify-center px-4 relative overflow-hidden">
       {/* Background Images
 
-          One <Image> per side rather than a separate desktop/mobile pair: the
-          duplicated markup meant the LCP element (kanan.png) was lazy-loaded on
-          both breakpoints, so the browser deprioritised the exact resource that
-          defines LCP. `priority` plus a real `sizes` fixes that without shipping
-          the 600px render to phones. */}
+          One <Image> per side rather than a separate desktop/mobile pair, so
+          phones don't download the 600px render.
+
+          Deliberately NOT `priority` / `fetchPriority="high"`. These are
+          aria-hidden decorative flourishes at opacity-60 on mobile. Promoting
+          them made kanan.png *become* the LCP element — mobile LCP measured
+          6.5s, of which 4.5s was render delay waiting on hydration, for an
+          image carrying no content. Leaving them at default priority hands LCP
+          back to the hero headline, which is plain text already present in the
+          server-rendered HTML and can paint without waiting for any image. */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Left Background Image */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/4 sm:left-1/4 sm:-translate-x-1/2">
+        <div className="hidden sm:block absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/4 sm:left-1/4 sm:-translate-x-1/2">
           <Image
             src="/images/kiri.png"
             alt=""
             aria-hidden="true"
             width={600}
             height={696}
-            priority
-            fetchPriority="high"
             sizes="(max-width: 640px) 300px, 600px"
             className="w-[300px] sm:w-[600px] h-auto opacity-60 sm:opacity-100"
           />
         </div>
 
-        {/* Right Background Image — the measured LCP element */}
-        <div className="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/4 sm:right-1/4 sm:translate-x-1/2">
+        {/* Right Background Image */}
+        <div className="hidden sm:block absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/4 sm:right-1/4 sm:translate-x-1/2">
           <Image
             src="/images/kanan.png"
             alt=""
             aria-hidden="true"
             width={599}
             height={776}
-            priority
-            fetchPriority="high"
             sizes="(max-width: 640px) 300px, 599px"
             className="w-[300px] sm:w-[599px] h-auto opacity-60 sm:opacity-100"
           />

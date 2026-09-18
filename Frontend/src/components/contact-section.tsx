@@ -281,7 +281,12 @@ export default function ContactSection() {
           <div 
             className="relative rounded-lg overflow-hidden flex-1 w-full flex flex-col p-8 gap-7 text-white"
             style={{
-              backgroundImage: 'url(/images/contactdesc.png)',
+              // WebP, not the original PNG. As a CSS background this never
+              // passes through /_next/image, so it skipped the AVIF pipeline
+              // every other image on the site gets — and at 288 KB it was the
+              // single largest request on the homepage, bigger than any JS
+              // chunk. The WebP is 14 KB for the same 476x580 artwork.
+              backgroundImage: 'url(/images/contactdesc.webp)',
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'top',
