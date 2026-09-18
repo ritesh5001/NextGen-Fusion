@@ -148,7 +148,7 @@ export const locationPages: LocationPage[] = [
         body: [
           "Lucknow is close enough to Delhi that NCR agencies pitch here constantly, and for some work they are the right answer — if you need a thirty-person team, a media buying desk and a brand film in the same quarter, hire one. Most businesses in this city do not need that and pay for it anyway.",
           "What you are actually buying from an NCR agency at the mid-market end is an account manager in Gurugram and production somewhere else. The distance is not the problem; the layer is. Every question about your catalogue goes through someone who has to ask a developer and come back. That is fine until something breaks during a sale.",
-          "The case for hiring here is narrower and more honest: you get the person who writes the code, at a cost base that is two small offices rather than a floor in Cyber City, and you can put a face to the invoice. The case against is real too — we are four people, we cannot staff a project that needs fifteen, and we say so rather than subcontracting it quietly. Ask any Lucknow shop pitching you the same question and watch whether the answer is specific.",
+          "The case for hiring here is narrower and more honest: you get the person who writes the code, at a cost base that is two small offices rather than a floor in Cyber City, and you can put a face to the invoice. The case against is real too — we are two people, we cannot staff a project that needs fifteen, and we say so rather than subcontracting it quietly. Ask any Lucknow shop pitching you the same question and watch whether the answer is specific.",
         ],
       },    ],
     caseStudies: [
@@ -695,7 +695,7 @@ export const locationPages: LocationPage[] = [
       {
         heading: "What we will not do",
         body: [
-          "No guaranteed follower counts, no purchased engagement, no \"we'll dominate every platform\" pitch for a four-person team that cannot actually staff that. No ranking guarantees, no fake reviews, no ad account access we do not hand back if the relationship ends. If a competing agency's number looks too good against the budget, ask what it does not include.",
+          "No guaranteed follower counts, no purchased engagement, no \"we'll dominate every platform\" pitch for a two-person team that cannot actually staff that. No ranking guarantees, no fake reviews, no ad account access we do not hand back if the relationship ends. If a competing agency's number looks too good against the budget, ask what it does not include.",
         ],
       },
       {

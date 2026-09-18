@@ -71,37 +71,6 @@ const teamMembersData: Record<string, TeamMemberData> = {
     ]
   },
 
-  "vivek-gautam": {
-    name: "Vivek Gautam",
-    role: "SEO & Social Media",
-    image: "/member/vivek-gautam.jpeg",
-    email: "vivek@nextgenfusion.in",
-    linkedinUrl: "https://linkedin.com/in/vivek-gautam",
-    experience: "3+ years",
-    bio: "Drives organic growth through smart search engine optimization and engaging social media strategy. Turns search rankings and social reach into real leads — building brand visibility and loyal, engaged audiences across every platform.",
-    expertise: [
-      "Search Engine Optimization",
-      "Social Media Marketing",
-      "Content Strategy",
-      "Keyword Research",
-      "Community Management",
-      "Analytics & Reporting"
-    ],
-    achievements: [
-      "Grew organic traffic for multiple brands through targeted SEO",
-      "Built and managed engaged social media communities",
-      "Ranked client websites on page one for competitive keywords",
-      "Data-driven content strategies that convert followers into customers"
-    ],
-    color: "from-emerald-500 to-emerald-600",
-    skills: [
-      { category: "SEO", items: ["On-Page SEO", "Technical SEO", "Link Building", "Local SEO"] },
-      { category: "Social Media", items: ["Instagram", "Facebook", "LinkedIn", "YouTube"] },
-      { category: "Content", items: ["Copywriting", "Content Calendar", "Hashtag Strategy", "Reels"] },
-      { category: "Tools", items: ["Google Analytics", "Search Console", "Ahrefs", "Meta Business Suite"] }
-    ]
-  },
-
   "sajal-singh": {
     name: "Sajal Singh",
     role: "Full Stack Developer & Cinematographer",
@@ -132,37 +101,6 @@ const teamMembersData: Record<string, TeamMemberData> = {
       { category: "Tools", items: ["Git", "Tailwind CSS", "Figma", "Adobe Suite"] }
     ]
   },
-
-  "mohammad-iqbal": {
-    name: "Mohammad Iqbal",
-    role: "Full Stack & App Developer",
-    image: "/member/mohammad-iqbal.png",
-    email: "iqbal@nextgenfusion.in",
-    linkedinUrl: "https://linkedin.com/in/mohammad-iqbal",
-    experience: "4+ years",
-    bio: "Builds powerful web and mobile applications end-to-end. Turns ideas into polished, production-ready products across web and app platforms — owning everything from API design to native mobile experiences.",
-    expertise: [
-      "Full Stack Development",
-      "Mobile App Development",
-      "Cross-Platform Apps",
-      "API Development",
-      "App Store Deployment",
-      "Backend Architecture"
-    ],
-    achievements: [
-      "Shipped multiple mobile apps to the Play Store and App Store",
-      "Built full-stack platforms powering web and mobile together",
-      "Expert in React Native and modern app development workflows",
-      "End-to-end delivery from backend APIs to native UI"
-    ],
-    color: "from-amber-500 to-amber-600",
-    skills: [
-      { category: "Mobile", items: ["React Native", "Flutter", "Android", "iOS"] },
-      { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
-      { category: "Backend", items: ["Node.js", "Express", "Firebase", "PostgreSQL"] },
-      { category: "Tools", items: ["Git", "Expo", "Play Console", "App Store Connect"] }
-    ]
-  }
 }
 
 export default async function TeamMemberPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -238,15 +176,20 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
                   <Mail className="w-5 h-5 text-blue-600 shrink-0" />
                   <span className="text-sm font-semibold text-gray-900 truncate">{member.email}</span>
                 </a>
-                <a
-                  href={member.linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <Linkedin className="w-5 h-5 text-blue-600 shrink-0" />
-                  <span className="text-sm font-semibold text-gray-900">LinkedIn Profile</span>
-                </a>
+                {/* Only rendered for a confirmed profile. The slugs here were
+                    previously guessed, so two of these links pointed at
+                    whoever happened to own that LinkedIn handle. */}
+                {member.linkedinUrl && (
+                  <a
+                    href={member.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <Linkedin className="w-5 h-5 text-blue-600 shrink-0" />
+                    <span className="text-sm font-semibold text-gray-900">LinkedIn Profile</span>
+                  </a>
+                )}
               </motion.div>
             </motion.div>
 

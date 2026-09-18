@@ -13,7 +13,7 @@ const PATH = "/about"
 export const metadata: Metadata = buildMetadata({
   title: "About NextGen Fusion — the team behind the work",
   description:
-    "Who we are, how we work, and why we don't disappear after launch. A four-person product team in Lucknow and Mumbai.",
+    "Who we are, how we work, and why we don't disappear after launch. A two-person product team in Lucknow and Mumbai.",
   path: PATH,
 })
 
@@ -93,7 +93,7 @@ export default function AboutPage() {
             A small team that finishes what it starts
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-gray-600">
-            NextGen Fusion is a four-person web and product team working out of Lucknow and Mumbai.
+            NextGen Fusion is a two-person web and product team working out of Lucknow and Mumbai.
             We build websites, online stores and the software behind them for D2C brands,
             manufacturers, institutes and B2B companies across India, the UK, Italy and the Gulf.
           </p>

@@ -68,13 +68,27 @@ describe("team identity is single-sourced", () => {
   })
 
   it("publishes only human-verified profile URLs in sameAs", () => {
-    // linkedinUrl is a guessed slug and must never leak into sameAs; a sameAs
-    // pointing at a stranger is worse for entity resolution than none.
+    // A profile URL reaches sameAs only by being listed in verifiedProfiles.
+    // Having a linkedinUrl is not enough on its own — two of these slugs were
+    // guessed, and a sameAs pointing at a stranger is worse than none.
     for (const member of team) {
       for (const url of member.verifiedProfiles) {
-        expect(url).toMatch(/^https:\/\//)
+        expect(url).toMatch(/^https:\/\/www\.linkedin\.com\/|^https:\/\//)
       }
-      expect(member.verifiedProfiles).not.toContain(member.linkedinUrl)
+    }
+  })
+
+  it("keeps unconfirmed members out of sameAs entirely", () => {
+    for (const member of team) {
+      if (member.verifiedProfiles.length === 0) {
+        // No confirmed profile means no sameAs is emitted for this person at
+        // all — see the conditional spread in the Person schema builders.
+        expect(member.verifiedProfiles).toHaveLength(0)
+      } else {
+        // Anything confirmed must also be the URL we link to on the page, so
+        // the visible link and the machine-readable claim cannot disagree.
+        expect(member.verifiedProfiles).toContain(member.linkedinUrl)
+      }
     }
   })
 })

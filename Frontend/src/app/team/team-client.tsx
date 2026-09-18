@@ -29,9 +29,7 @@ const itemVariants = {
 // Card accent per member — presentation only, so it stays local to this page.
 const cardAccent: Record<string, string> = {
   "ritesh-giri": "from-blue-500 to-blue-600",
-  "vivek-gautam": "from-emerald-500 to-emerald-600",
   "sajal-singh": "from-violet-500 to-violet-600",
-  "mohammad-iqbal": "from-amber-500 to-amber-600",
 }
 
 // Identity (name, role, photo, bio) comes from the canonical team source so

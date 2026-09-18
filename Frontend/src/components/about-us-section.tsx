@@ -5,6 +5,7 @@ import Image from "next/image"
 import BadgeSubtitle from "./badge-subtitle"
 import { AnimatedTooltip } from "./ui/animated-tooltip"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
+import { team } from "@/data/team"
 
 // Animation variants
 const containerVariants = {
@@ -72,40 +73,17 @@ const imageVariants = {
 export default function AboutUsSection() {
   const { getIconSrc } = useMobileIcon()
   
-  const teamMembers = [
-    {
-      id: 1,
-      name: "Ritesh Giri",
-      designation: "Founder & Full Stack Developer",
-      image: "/member/ritesh-giri.png",
-      hoverimage: "/member/ritesh-giri.png",
-      linkedinUrl: "https://linkedin.com/in/ritesh-giri",
-    },
-    {
-      id: 2,
-      name: "Sajal Singh",
-      designation: "Co-Founder & Full Stack Developer",
-      image: "/member/sajal-singh.jpeg",
-      hoverimage: "/member/sajal-singh.jpeg",
-      linkedinUrl: "https://linkedin.com/in/sajal-singh",
-    },
-    {
-      id: 3,
-      name: "Mohammad Iqbal",
-      designation: "Full Stack Developer & Android Developer",
-      image: "/member/mohammad-iqbal.png",
-      hoverimage: "/member/mohammad-iqbal.png",
-      linkedinUrl: "https://linkedin.com/in/mohammad-iqbal",
-    },
-    {
-      id: 4,
-      name: "Vivek Gautam",
-      designation: "SEO & Social Media Marketing",
-      image: "/member/vivek-gautam.jpeg",
-      hoverimage: "/member/vivek-gautam.jpeg",
-      linkedinUrl: "https://linkedin.com/in/vivek-gautam",
-    },
-  ]
+  // Derived from the canonical team source. This section used to carry its own
+  // copy of the roster, with its own guessed LinkedIn URLs — which is how the
+  // site ended up publishing links to profiles nobody had checked.
+  const teamMembers = team.map((member, i) => ({
+    id: i + 1,
+    name: member.name,
+    designation: member.role,
+    image: member.image,
+    hoverimage: member.image,
+    ...(member.linkedinUrl ? { linkedinUrl: member.linkedinUrl } : {}),
+  }))
 
   return (
     <motion.section 

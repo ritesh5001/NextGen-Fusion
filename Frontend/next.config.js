@@ -147,6 +147,11 @@ const nextConfig = {
       { source: '/category/:slug*', destination: '/blog/', permanent: true },
       { source: '/tag/:slug*', destination: '/blog/', permanent: true },
       { source: '/author/:slug*', destination: '/about/', permanent: true },
+      // Retired team profiles. These pages existed and were reachable, so a
+      // hard 404 would discard any inbound link and read as a soft 404 to
+      // Google. The team index is the honest replacement.
+      { source: '/team/mohammad-iqbal', destination: '/team/', permanent: true },
+      { source: '/team/vivek-gautam', destination: '/team/', permanent: true },
     ]
   },
   // Same-origin /api proxy to the Backend. Filesystem route handlers under
