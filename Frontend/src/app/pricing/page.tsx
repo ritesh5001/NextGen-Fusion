@@ -5,13 +5,14 @@ import CTABanner from "@/components/cta-banner"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import {
-  computeBallpark,
   computeSupport,
   ECOMMERCE_INCLUDED,
   formatCurrency,
   PAYMENT_TERMS,
+  priceTier,
+  rateCardForm as form,
+  type TierId,
 } from "@/lib/estimator-pricing"
-import type { ProjectEstimatorData } from "@/lib/api"
 import { PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
 
 const PATH = "/pricing"
@@ -29,38 +30,11 @@ export const metadata: Metadata = buildMetadata({
  * Nothing here is hardcoded — change `src/lib/estimator-pricing.ts` and this
  * page follows.
  */
-const baseForm: ProjectEstimatorData = {
-  name: "",
-  email: "",
-  phone: "",
-  companyName: "",
-  projectType: "landing-page",
-  buildType: "wordpress",
-  ecommercePackage: "standard",
-  features: [],
-  timeline: "3-months",
-  pageCount: "1-5",
-  designLevel: "clean",
-  contentReadiness: "ready",
-  maintenance: "none",
-  integrations: [],
-  goals: "",
-  notes: "",
-}
-
-const form = (overrides: Partial<ProjectEstimatorData>): ProjectEstimatorData => ({
-  ...baseForm,
-  ...overrides,
-})
-
 type Tier = {
-  id: string
+  /** Also the card's anchor: the homepage links to /pricing/#<id>. */
+  id: TierId
   name: string
   who: string
-  /** The estimator configuration this band is priced from. */
-  form: ProjectEstimatorData
-  /** Second configuration, where a tier spans a range of packages. */
-  upperForm?: ProjectEstimatorData
   included: string[]
   excluded: string[]
 }
@@ -70,8 +44,6 @@ const TIERS: Tier[] = [
     id: "launch",
     name: "Launch",
     who: "A brochure site on WordPress or Shopify. Right when you need a credible, fast, findable presence and the catalogue or logic is simple.",
-    form: form({ projectType: "landing-page", buildType: "wordpress" }),
-    upperForm: form({ projectType: "landing-page", buildType: "wordpress", pageCount: "6-15" }),
     included: [
       "Design and build of every template the site needs",
       "Responsive layouts tested on real devices, not a resized browser",
@@ -92,12 +64,6 @@ const TIERS: Tier[] = [
     id: "store",
     name: "Store",
     who: "A custom-coded online store. Right when merchandising, checkout and speed decide revenue, and a template has stopped being enough.",
-    form: form({ projectType: "ecommerce", buildType: "custom", ecommercePackage: "standard" }),
-    upperForm: form({
-      projectType: "ecommerce",
-      buildType: "custom",
-      ecommercePackage: "extra-premium",
-    }),
     included: [
       "Everything in Launch",
       ...ECOMMERCE_INCLUDED,
@@ -116,12 +82,6 @@ const TIERS: Tier[] = [
     id: "platform",
     name: "Platform",
     who: "Custom software: dashboards, marketplaces, B2B quoting, internal tools. Right when the model is unusual enough that a platform gets in the way.",
-    form: form({ projectType: "saas", buildType: "custom" }),
-    upperForm: form({
-      projectType: "saas",
-      buildType: "custom",
-      features: ["dashboard", "auth", "payment"],
-    }),
     included: [
       "Everything in Store, where a storefront is part of the scope",
       "Authentication, roles and permissions",
@@ -137,17 +97,7 @@ const TIERS: Tier[] = [
   },
 ]
 
-const priced = TIERS.map((tier) => {
-  const lower = computeBallpark(tier.form)
-  const upper = computeBallpark(tier.upperForm ?? tier.form)
-  return {
-    ...tier,
-    min: lower.cost.min,
-    max: Math.max(lower.cost.max, upper.cost.max),
-    weeksMin: Math.min(lower.weeks.min, upper.weeks.min),
-    weeksMax: Math.max(lower.weeks.max, upper.weeks.max),
-  }
-})
+const priced = TIERS.map((tier) => ({ ...tier, ...priceTier(tier.id) }))
 
 const overallMin = Math.min(...priced.map((t) => t.min))
 const overallMax = Math.max(...priced.map((t) => t.max))
@@ -302,7 +252,8 @@ export default function PricingPage() {
             {priced.map((tier) => (
               <div
                 key={tier.id}
-                className="flex flex-col rounded-2xl border border-gray-200 p-7"
+                id={tier.id}
+                className="flex scroll-mt-28 flex-col rounded-2xl border border-gray-200 p-7"
               >
                 <h2 className="text-2xl font-bold text-gray-900">{tier.name}</h2>
                 <p className="mt-3 text-3xl font-bold text-gray-900">
@@ -344,7 +295,7 @@ export default function PricingPage() {
         </section>
 
         {supportPlans.length > 0 && (
-          <section className="border-y border-gray-100 bg-gray-50 py-16">
+          <section id="support" className="scroll-mt-28 border-y border-gray-100 bg-gray-50 py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h2 className="text-3xl font-bold text-gray-900">After launch</h2>
               <p className="mt-3 max-w-3xl text-gray-600">

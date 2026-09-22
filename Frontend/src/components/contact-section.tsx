@@ -8,7 +8,7 @@ import BadgeSubtitle from "./badge-subtitle"
 import PhoneInput from "./phone-input"
 import { apiService, ContactFormData } from "@/lib/api"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
-import { offices } from "@/data/offices"
+import { OFFICE_HOURS, offices } from "@/data/offices"
 import { trackEvent } from "@/lib/analytics"
 
 // Animation variants
@@ -588,7 +588,7 @@ export default function ContactSection() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                   >
-                    Thank you for reaching out! We&apos;ll get back to you within 24 hours.
+                    Thank you for reaching out! We&apos;ll get back to you within {OFFICE_HOURS.replyWithin}.
                   </motion.p>
                   
                   <motion.button

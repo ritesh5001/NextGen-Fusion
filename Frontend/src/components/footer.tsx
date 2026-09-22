@@ -10,9 +10,9 @@ export default function Footer() {
   // About and Contact point at real pages now, not homepage fragments.
   const navigationLinks = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about/" },
-    { name: "Services", href: "/services/" },
     { name: "Pricing", href: "/pricing/" },
+    { name: "Services", href: "/services/" },
+    { name: "About", href: "/about/" },
     { name: "Store", href: "/store/" },
     { name: "Work", href: "/work/" },
     { name: "Blog", href: "/blog/" },
@@ -79,6 +79,12 @@ export default function Footer() {
                     contact@nextgenfusion.in
                   </a>
                 </div>
+                <a
+                  href="/pricing/"
+                  className="mt-3 inline-block py-1 text-sm font-medium text-gray-200 underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white transition-colors duration-200 lg:text-base"
+                >
+                  See our published rate card →
+                </a>
               </div>
             </div>
 
@@ -87,12 +93,22 @@ export default function Footer() {
               <div className="space-y-4 lg:space-y-6">
                 {offices.map((office) => (
                   <div key={office.city} className="border-l-2 border-white/20 pl-3 lg:pl-4">
-                    <p className="text-sm font-semibold text-white mb-1">
-                      {office.city}
-                    </p>
-                    <p className="text-xs text-gray-300 mb-2 leading-relaxed">
-                      {office.address}
-                    </p>
+                    <a
+                      href={office.landingPath}
+                      className="inline-block mb-1 text-sm font-semibold text-white underline decoration-white/30 underline-offset-4 hover:decoration-white transition-colors duration-200"
+                    >
+                      {office.city} office
+                    </a>
+                    <address className="text-xs text-gray-300 mb-2 leading-relaxed not-italic">
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`NextGen Fusion, ${office.address}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-white transition-colors duration-200"
+                      >
+                        {office.address}
+                      </a>
+                    </address>
                     <p className="text-xs text-gray-300 mb-2">
                       <strong>Managed by:</strong> {office.contact.name}
                     </p>

@@ -9,7 +9,7 @@ import LenisProvider from "@/components/lenis-provider";
 import LayoutChrome from "@/components/layout-chrome";
 import { Analytics } from "@/components/analytics";
 import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
-import { brandProfiles, CONTACT_EMAIL, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
+import { brandProfiles, CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { personId, team, TEAM_SIZE } from "@/data/team";
 import { serviceNavItems } from "@/data/services-nav";
 
@@ -51,10 +51,10 @@ const structuredData = {
         { "@type": "Country", name: "India" },
         { "@type": "Place", name: "Worldwide" },
       ],
-      // The registered postal address is the Mumbai office; Lucknow has no
-      // street-level address we publish.
+      // The registered postal address is the Mumbai office. Both offices now
+      // have street addresses, so pick it by city rather than by "has a street".
       address: (() => {
-        const registered = offices.find((office) => office.postal.street) ?? offices[0];
+        const registered = offices.find((office) => office.city === "Mumbai") ?? offices[0];
         return {
           "@type": "PostalAddress",
           ...(registered.postal.street ? { streetAddress: registered.postal.street } : {}),
@@ -129,9 +129,9 @@ const structuredData = {
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",
-            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            opens: "10:00",
-            closes: "19:00",
+            dayOfWeek: [...OFFICE_HOURS.days],
+            opens: OFFICE_HOURS.opens,
+            closes: OFFICE_HOURS.closes,
           },
         ],
       };

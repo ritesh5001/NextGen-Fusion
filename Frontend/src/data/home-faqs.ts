@@ -8,47 +8,25 @@
  * Keep the answers here in step with the opening hours in `offices.ts` and the
  * Organization schema in `app/layout.tsx` — they are the same claim in three places.
  */
-import type { ProjectEstimatorData } from "@/lib/api"
-import { computeBallpark } from "@/lib/estimator-pricing"
+import { OFFICE_HOURS } from "@/data/offices"
+import { computeSupport, formatINR, priceTier, rateCardForm } from "@/lib/estimator-pricing"
 
 export type HomeFaq = { question: string; answer: string }
 
-const baseForm: ProjectEstimatorData = {
-  name: "",
-  email: "",
-  phone: "",
-  companyName: "",
-  projectType: "landing-page",
-  buildType: "wordpress",
-  ecommercePackage: "standard",
-  features: [],
-  timeline: "3-months",
-  pageCount: "1-5",
-  designLevel: "clean",
-  contentReadiness: "ready",
-  maintenance: "none",
-  integrations: [],
-  goals: "",
-  notes: "",
-}
-
-// Always INR, never the estimator's locale-dependent formatter: this text is
-// rendered on the server and in FAQPage schema, and the homepage was quoting
-// dollars to an Indian audience.
-const inr = (value: number) => `₹${value.toLocaleString("en-IN")}`
-
-function band(lower: Partial<ProjectEstimatorData>, upper: Partial<ProjectEstimatorData>) {
-  const min = computeBallpark({ ...baseForm, ...lower }).cost.min
-  const max = computeBallpark({ ...baseForm, ...upper }).cost.max
-  return `${inr(min)}–${inr(max)}`
-}
-
 // Same configurations as the tiers on /pricing/, so the two cannot disagree.
-const launchBand = band({}, { pageCount: "6-15" })
-const storeBand = band(
-  { projectType: "ecommerce", buildType: "custom" },
-  { projectType: "ecommerce", buildType: "custom", ecommercePackage: "extra-premium" },
-)
+const launch = priceTier("launch")
+const store = priceTier("store")
+const platform = priceTier("platform")
+const launchBand = `${formatINR(launch.min)}–${formatINR(launch.max)}`
+const storeBand = `${formatINR(store.min)}–${formatINR(store.max)}`
+
+const supportPlans = [
+  computeSupport(rateCardForm({ maintenance: "basic" })),
+  computeSupport(rateCardForm({ maintenance: "growth", buildType: "wordpress" })),
+  computeSupport(rateCardForm({ maintenance: "growth", buildType: "custom" })),
+]
+  .filter((plan): plan is NonNullable<typeof plan> => plan !== null)
+  .map((plan) => `${formatINR(plan.amount)} a ${plan.cadence}`)
 
 export const homeFaqs: HomeFaq[] = [
   {
@@ -72,7 +50,7 @@ export const homeFaqs: HomeFaq[] = [
   {
     question: "How long does a project take?",
     answer:
-      "Most websites are delivered in 2-3 weeks. Larger ecommerce, custom, or SaaS builds take longer, and we lock an exact timeline with you on the discovery call before any work starts.",
+      `A WordPress or Shopify website typically takes ${launch.weeksMin}–${launch.weeksMax} weeks from content sign-off, a custom online store ${store.weeksMin}–${store.weeksMax} weeks, and a custom platform ${platform.weeksMin}–${platform.weeksMax} weeks. Your written quote names one delivery window, agreed before any work starts.`,
   },
   {
     question: "What if I'm not satisfied with the results?",
@@ -82,11 +60,11 @@ export const homeFaqs: HomeFaq[] = [
   {
     question: "Do you provide ongoing support after project completion?",
     answer:
-      "Yes. We don't ghost you after launch. We offer monthly maintenance and growth packages covering updates, monitoring, fixes, and improvements.",
+      `Yes. Support is a recurring plan billed separately from the build: ${supportPlans.join(", ")}, depending on whether you need fixes only or ongoing changes too. Support requests are handled ${OFFICE_HOURS.label}; automated uptime checks run around the clock.`,
   },
   {
     question: "What are the working hours of NextGen Fusion?",
     answer:
-      "Our offices are open Monday to Saturday, 10 AM to 7 PM IST. We're flexible and regularly accommodate clients across different time zones.",
+      `Our offices are open ${OFFICE_HOURS.label}, and we reply to every enquiry within ${OFFICE_HOURS.replyWithin}. We regularly schedule calls around clients in other time zones.`,
   },
 ]

@@ -592,7 +592,7 @@ export const maintenanceServiceData: ServicePageData = {
   featuresHeading: "What's Included in Our Website Maintenance Services",
   features: [
     { title: "Security Updates & Patching", description: "Regular CMS, plugin, and dependency updates with security scanning to close vulnerabilities." },
-    { title: "Uptime Monitoring", description: "24/7 automated uptime monitoring with immediate alerts and resolution for outages." },
+    { title: "Uptime Monitoring", description: "Automated uptime checks run around the clock and alert us the moment a site goes down; we fix outages during working hours, Mon–Sat 10:00–19:00 IST." },
     { title: "Backup Management", description: "Scheduled automated backups with tested restore procedures and off-site storage." },
     { title: "Performance Monitoring", description: "Monthly Core Web Vitals checks and proactive page speed optimization." },
     { title: "Bug Fixes & Content Updates", description: "Included development hours each month for bug resolution and minor content changes." },

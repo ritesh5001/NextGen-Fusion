@@ -257,6 +257,66 @@ export function computeBallpark(form: ProjectEstimatorData): Ballpark {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Published tiers (/pricing/). The homepage FAQ and comparison table quote the
+// same bands, so every figure the site prints comes from these configurations.
+// ─────────────────────────────────────────────────────────────────────────────
+export const RATE_CARD_BASE_FORM: ProjectEstimatorData = {
+  name: '',
+  email: '',
+  phone: '',
+  companyName: '',
+  projectType: 'landing-page',
+  buildType: 'wordpress',
+  ecommercePackage: 'standard',
+  features: [],
+  timeline: '3-months',
+  pageCount: '1-5',
+  designLevel: 'clean',
+  contentReadiness: 'ready',
+  maintenance: 'none',
+  integrations: [],
+  goals: '',
+  notes: '',
+}
+
+export const rateCardForm = (overrides: Partial<ProjectEstimatorData>): ProjectEstimatorData => ({
+  ...RATE_CARD_BASE_FORM,
+  ...overrides,
+})
+
+export type TierId = 'launch' | 'store' | 'platform'
+
+export const TIER_CONFIGS: Record<TierId, { lower: ProjectEstimatorData; upper: ProjectEstimatorData }> = {
+  launch: {
+    lower: rateCardForm({ projectType: 'landing-page', buildType: 'wordpress' }),
+    upper: rateCardForm({ projectType: 'landing-page', buildType: 'wordpress', pageCount: '6-15' }),
+  },
+  store: {
+    lower: rateCardForm({ projectType: 'ecommerce', buildType: 'custom', ecommercePackage: 'standard' }),
+    upper: rateCardForm({ projectType: 'ecommerce', buildType: 'custom', ecommercePackage: 'extra-premium' }),
+  },
+  platform: {
+    lower: rateCardForm({ projectType: 'saas', buildType: 'custom' }),
+    upper: rateCardForm({ projectType: 'saas', buildType: 'custom', features: ['dashboard', 'auth', 'payment'] }),
+  },
+}
+
+export function priceTier(id: TierId) {
+  const lower = computeBallpark(TIER_CONFIGS[id].lower)
+  const upper = computeBallpark(TIER_CONFIGS[id].upper)
+  return {
+    min: lower.cost.min,
+    max: Math.max(lower.cost.max, upper.cost.max),
+    weeksMin: Math.min(lower.weeks.min, upper.weeks.min),
+    weeksMax: Math.max(lower.weeks.max, upper.weeks.max),
+  }
+}
+
+// Always INR: for server-rendered copy and schema, where the visitor's locale
+// is unknown and the audience is Indian.
+export const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Currency display. Prices are authored in INR. Indian visitors see ₹ directly;
 // everyone else sees an approximate USD conversion.
 // TODO: confirm the conversion rate (or wire it to a live FX source).

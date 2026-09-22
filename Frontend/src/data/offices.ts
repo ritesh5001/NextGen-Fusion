@@ -29,10 +29,13 @@ export interface Office {
 export const offices: Office[] = [
   {
     city: "Lucknow",
-    address: "Lucknow, Uttar Pradesh",
+    address:
+      "3rd Floor, Galaxy Apartment, Dayal Residency, Shankar Puri, Kamta, Lucknow, Uttar Pradesh 226028",
     postal: {
+      street: "3rd Floor, Galaxy Apartment, Dayal Residency, Shankar Puri, Kamta",
       locality: "Lucknow",
       region: "Uttar Pradesh",
+      postalCode: "226028",
       country: "IN",
     },
     coordinates: "26.8467, 80.9462",
@@ -63,6 +66,19 @@ export const offices: Office[] = [
     },
   },
 ]
+
+/**
+ * The one statement of when we are available. Schema, the contact page, the
+ * homepage FAQ and the comparison table all read it, because they used to
+ * disagree ("24/7 support" next to Mon–Sat hours).
+ */
+export const OFFICE_HOURS = {
+  days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  opens: "10:00",
+  closes: "19:00",
+  label: "Mon–Sat, 10:00–19:00 IST",
+  replyWithin: "one working day",
+} as const
 
 /** The number used in schema, the primary CTA and every directory listing. */
 export const PRIMARY_PHONE_E164 = "+917348228167"

@@ -2,8 +2,74 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import BadgeSubtitle from "./badge-subtitle"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
+import { OFFICE_HOURS } from "@/data/offices"
+import { computeSupport, formatINR, priceTier, rateCardForm } from "@/lib/estimator-pricing"
+
+// Every claim in the table points at the page that proves it. The figures come
+// from the rate card, so they cannot drift from /pricing/.
+const launch = priceTier("launch")
+const basicSupport = computeSupport(rateCardForm({ maintenance: "basic" }))
+
+type ComparisonRow = {
+  category: string
+  livingTech: string
+  others: string
+  links: { label: string; href: string }[]
+}
+
+const comparisonData: ComparisonRow[] = [
+  {
+    category: "Pricing",
+    livingTech: `Published rate card — sites from ${formatINR(launch.min)}, then one fixed written quote. No hidden costs.`,
+    others: "Price only after a sales call, often with extras added later.",
+    links: [
+      { label: "Launch", href: "/pricing/#launch" },
+      { label: "Store", href: "/pricing/#store" },
+      { label: "Platform", href: "/pricing/#platform" },
+    ],
+  },
+  {
+    category: "Speed",
+    livingTech: `Launch-tier sites in ${launch.weeksMin}–${launch.weeksMax} weeks from content sign-off; larger builds get one delivery window in the quote.`,
+    others: "Slower delivery, often months with unclear timelines.",
+    links: [{ label: "Timelines by tier", href: "/pricing/" }],
+  },
+  {
+    category: "Proof",
+    livingTech: "Our work is published as case studies you can open — from D2C stores to a B2B marketplace with 3,226+ vendors.",
+    others: "Portfolio screenshots with no detail on what was built.",
+    links: [
+      { label: "DeeToo store", href: "/work/deetoo/" },
+      { label: "MariBiz.ai platform", href: "/work/maribiz-ai/" },
+    ],
+  },
+  {
+    category: "Post-Launch Support",
+    livingTech: `Plans from ${basicSupport ? formatINR(basicSupport.amount) : ""} a year. Requests handled ${OFFICE_HOURS.label}; uptime checked around the clock.`,
+    others: "Limited support, focus on new projects",
+    links: [{ label: "Support plans", href: "/pricing/#support" }],
+  },
+]
+
+function RowLinks({ links, className }: { links: ComparisonRow["links"]; className: string }) {
+  return (
+    <span className={`mt-2 flex flex-wrap gap-x-3 gap-y-1 ${className}`}>
+      {links.map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          prefetch={false}
+          className="font-medium text-purple-600 underline-offset-4 hover:underline"
+        >
+          {link.label} →
+        </Link>
+      ))}
+    </span>
+  )
+}
 
 // Animation variants
 const containerVariants = {
@@ -110,29 +176,6 @@ const MotionTr = motion.create("tr")
 export default function ComparisonSection() {
   const { getIconSrc } = useMobileIcon()
   
-  const comparisonData = [
-    {
-      category: "Custom Pricing",
-      livingTech: "Tailored packages, flexible, no hidden costs",
-      others: "Fixed or subscription plans, less flexible.",
-    },
-    {
-      category: "Speed",
-      livingTech: "Most projects delivered in 2-3 weeks, without cutting corners.",
-      others: "Slower delivery, often months with unclear timelines.",
-    },
-    {
-      category: "Quality",
-      livingTech: "High-quality designs via global talent and AI.",
-      others: "Varying quality, limited by tech or team size.",
-    },
-    {
-      category: "Post-Launch Support",
-      livingTech: "24/7 support, no ghosting, sustained engagement.",
-      others: "Limited support, focus on new projects",
-    },
-  ]
-
   return (
     <motion.section 
       className="bg-white pt-40 pb-24 px-4 sm:px-6 lg:px-8"
@@ -244,7 +287,7 @@ export default function ComparisonSection() {
             <tbody>
               {comparisonData.map((item, index) => (
                 <MotionTr 
-                  key={index} 
+                  key={item.category} 
                   className="border-t border-gray-200"
                   variants={rowVariants}
                   initial="hidden"
@@ -263,7 +306,10 @@ export default function ComparisonSection() {
                       >
                         <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                       </motion.div>
-                      <p className="text-sm text-gray-700">{item.livingTech}</p>
+                      <div>
+                        <p className="text-sm text-gray-700">{item.livingTech}</p>
+                        <RowLinks links={item.links} className="text-sm" />
+                      </div>
                     </div>
                   </td>
                   <td className="bg-white p-6">
@@ -320,7 +366,7 @@ export default function ComparisonSection() {
             <tbody>
               {comparisonData.map((item, index) => (
                 <MotionTr 
-                  key={index} 
+                  key={item.category} 
                   className="border-t border-gray-200"
                   variants={rowVariants}
                   initial="hidden"
@@ -339,7 +385,10 @@ export default function ComparisonSection() {
                       >
                         <div className="w-1 h-1 bg-white rounded-full"></div>
                       </motion.div>
-                      <p className="text-xs text-gray-700">{item.livingTech}</p>
+                      <div>
+                        <p className="text-xs text-gray-700">{item.livingTech}</p>
+                        <RowLinks links={item.links} className="text-xs" />
+                      </div>
                     </div>
                   </td>
                   <td className="bg-white p-4">

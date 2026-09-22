@@ -4,7 +4,7 @@ import { Mail, MapPin, MessageCircle, Phone } from "lucide-react"
 import ContactSection from "@/components/contact-section"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
-import { CONTACT_EMAIL, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
+import { CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
 
 const PATH = "/contact"
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = buildMetadata({
 })
 
 const OPENING_HOURS = [
-  { days: "Monday — Saturday", hours: "10:00 – 19:00 IST" },
+  { days: "Monday — Saturday", hours: `${OFFICE_HOURS.opens} – ${OFFICE_HOURS.closes} IST` },
   { days: "Sunday", hours: "Closed (email and WhatsApp still monitored)" },
 ]
 
@@ -117,7 +117,7 @@ export default function ContactPage() {
                   </div>
                   <div className="flex gap-2">
                     <dt className="w-24 shrink-0 font-medium text-gray-900">Hours</dt>
-                    <dd className="text-gray-600">Mon–Sat, 10:00–19:00 IST</dd>
+                    <dd className="text-gray-600">{OFFICE_HOURS.label}</dd>
                   </div>
                 </dl>
                 <iframe

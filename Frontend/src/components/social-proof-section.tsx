@@ -1,13 +1,16 @@
 "use client"
 
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { staticProjects } from "@/lib/static-projects"
 
-// TODO: Replace placeholder logos/stats with real client logos and verified numbers.
-const clientNames = staticProjects.slice(0, 6).map((p) => p.title)
+// TODO: Replace placeholder name chips with real client logos.
+const clients = staticProjects.slice(0, 6).map((p) => ({ name: p.title, href: `/work/${p.slug}/` }))
 
-const stats = [
-  { metric: "3,226+", label: "Vendors powered" }, // TODO: confirm aggregate
+// 3,226+ is one client's number (MariBiz.ai), not a total across clients, so it
+// is labelled and linked as such.
+const stats: { metric: string; label: string; href?: string }[] = [
+  { metric: "3,226+", label: "Vendors on MariBiz.ai, a marketplace we built", href: "/work/maribiz-ai/" },
   { metric: "0", label: "Clients ghosted" },
   { metric: "100%", label: "Mobile-optimized builds" },
 ]
@@ -44,13 +47,15 @@ export default function SocialProofSection() {
           viewport={{ once: true, margin: "-60px" }}
           variants={container}
         >
-          {clientNames.map((name) => (
-            <motion.span
-              key={name}
-              variants={item}
-              className="text-lg sm:text-xl font-semibold text-gray-300 grayscale transition-colors hover:text-gray-500"
-            >
-              {name}
+          {clients.map((client) => (
+            <motion.span key={client.href} variants={item}>
+              <Link
+                href={client.href}
+                prefetch={false}
+                className="text-lg sm:text-xl font-semibold text-gray-300 grayscale transition-colors hover:text-gray-500"
+              >
+                {client.name}
+              </Link>
             </motion.span>
           ))}
         </motion.div>
@@ -68,7 +73,15 @@ export default function SocialProofSection() {
               <div className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
                 {stat.metric}
               </div>
-              <div className="mt-2 text-sm text-gray-500">{stat.label}</div>
+              <div className="mt-2 text-sm text-gray-500">
+                {stat.href ? (
+                  <Link href={stat.href} prefetch={false} className="underline-offset-4 hover:text-gray-900 hover:underline">
+                    {stat.label}
+                  </Link>
+                ) : (
+                  stat.label
+                )}
+              </div>
             </motion.div>
           ))}
         </motion.div>

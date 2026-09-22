@@ -7,7 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
-import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
+import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, IndianRupee, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/components/booking-modal"
 
 type MenuItem = {
@@ -31,6 +31,8 @@ const menuItems: MenuItem[] = [
   { name: "Home", href: "/", isPage: true, Icon: Home },
   { name: "Projects", href: "/work/", isPage: true, Icon: Briefcase },
   { name: "Services", href: "/services/", isPage: true, Icon: Wrench },
+  // The published rate card is a differentiator; it sat two clicks deep.
+  { name: "Pricing", href: "/pricing/", isPage: true, Icon: IndianRupee },
   { name: "Store", href: "/store/", isPage: true, Icon: Store },
   { name: "Blogs", href: "/blog/", isPage: true, Icon: BookOpen },
   { name: "About", href: "/about/", isPage: true, Icon: User },
@@ -81,7 +83,7 @@ export default function SimpleNavbar() {
     <>
       {/* Desktop Navbar - Tetap di atas */}
       <motion.div
-        className={`hidden md:flex fixed top-0 left-0 right-0 z-50 justify-center items-center ${isScrolled ? 'py-2' : 'py-4'}`}
+        className={`hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center ${isScrolled ? 'py-2' : 'py-4'}`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.1, ease: "easeOut" }}
@@ -90,7 +92,7 @@ export default function SimpleNavbar() {
         <div className="flex items-center gap-4 relative">
           {/* Navbar Container */}
           <motion.div
-            className="flex items-center gap-8 px-8 py-3 rounded-full"
+            className="flex items-center gap-6 px-6 py-3 rounded-full lg:gap-8 lg:px-8"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.4)",
               backdropFilter: "blur(20px)",
@@ -117,7 +119,7 @@ export default function SimpleNavbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="flex items-center gap-6">
+            <nav className="flex items-center gap-4 lg:gap-6">
               {menuItems.map((item) => (
                 <div key={item.name}>
                   {isHomePage && !item.isPage ? (
@@ -209,7 +211,10 @@ export default function SimpleNavbar() {
           other axis as `auto` instead of `visible` (CSS Overflow spec), which
           silently clipped the dropdown out of view — the menu opened (state
           toggled fine) but never rendered on screen. */}
-      <div className="md:hidden fixed inset-x-0 bottom-0 z-50 max-w-full">
+      {/* The pill bar needs ~1,210px for nine links plus the auth buttons; below
+          xl it ran off both edges of the screen, so tablets and small laptops
+          get the bottom bar instead. */}
+      <div className="xl:hidden fixed inset-x-0 bottom-0 z-50 max-w-full">
         {/* Mobile Menu Dropdown - Di atas bottom nav */}
         <AnimatePresence>
           {isMobileMenuOpen && (
@@ -221,7 +226,7 @@ export default function SimpleNavbar() {
               transition={{ duration: 0.2 }}
             >
               <div 
-                className="rounded-2xl shadow-2xl border p-4"
+                className="max-h-[calc(100dvh-7rem)] overflow-y-auto rounded-2xl shadow-2xl border p-4"
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.15)", /* Sangat transparan */
                   backdropFilter: "blur(25px)",
