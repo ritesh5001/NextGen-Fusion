@@ -5,6 +5,7 @@ import { BlogSearch } from "@/components/blog/blog-search"
 import { BlogPostCard } from "@/components/blog/blog-post-card"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { guideLinks } from "@/data/guides"
 
 // Server-rendered so crawlers get the posts themselves, not a loading shell.
 // Revalidates hourly, so newly published posts appear without a redeploy.
@@ -65,6 +66,31 @@ export default async function BlogPage() {
               <BlogPostCard key={post.id} post={post} />
             ))}
           </div>
+
+          {/* Long-form guides live outside /blog so their figures can read the
+              rate card directly, but they are the same kind of reading. */}
+          <section className="mb-16" aria-labelledby="guides-heading">
+            <h2 id="guides-heading" className="text-2xl font-bold text-gray-900 sm:text-3xl">
+              Guides
+            </h2>
+            <p className="mt-2 max-w-3xl text-gray-600">
+              Reference pages built from our published rate card and case studies, updated when the
+              numbers change.
+            </p>
+            <ul className="mt-6 grid gap-6 md:grid-cols-2">
+              {guideLinks.map((guide) => (
+                <li key={guide.path}>
+                  <Link
+                    href={`${guide.path}/`}
+                    className="block h-full rounded-2xl border border-gray-200 p-6 transition-colors hover:border-gray-900"
+                  >
+                    <p className="text-lg font-bold text-gray-900">{guide.h1}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-600">{guide.metaDescription}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
 
           {posts.length === 0 && (
             <div className="mx-auto max-w-2xl py-16 text-center">

@@ -9,6 +9,7 @@ import PhoneInput from "./phone-input"
 import { apiService, ContactFormData } from "@/lib/api"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { OFFICE_HOURS, offices } from "@/data/offices"
+import { computeSupport, formatINR, rateCardForm } from "@/lib/estimator-pricing"
 import { trackEvent } from "@/lib/analytics"
 
 // Animation variants
@@ -128,29 +129,30 @@ export default function ContactSection() {
   })
 
 
+  const basicSupport = computeSupport(rateCardForm({ maintenance: "basic" }))
+
   const benefits = [
     {
       icon: <Target className="w-4 h-4 text-white" />,
-      title: "Personalized Strategy Insights",
+      title: "A straight answer on fit",
       description:
-        "A tailored discussion to align our digital solutions with your specific business goals and challenges.",
+        "We tell you on the first call whether we are the right team, including when the answer is that you do not need us.",
     },
     {
       icon: <Map className="w-4 h-4 text-white" />,
-      title: "Clear Project Roadmap",
+      title: "A written scope",
       description:
-        "A detailed outline of how we can bring your vision to life, including timelines and key milestones.",
+        "What we would build, what it costs on our rate card and one delivery window, in writing, before you pay anything.",
     },
     {
       icon: <Lightbulb className="w-4 h-4 text-white" />,
-      title: "Creative Inspiration",
-      description: "Innovative ideas from our team to elevate your brand and create impactful digital experiences.",
+      title: "Builds like yours",
+      description: "The case studies closest to your business, so you can see what we built for someone in your position.",
     },
     {
       icon: <Users className="w-4 h-4 text-white" />,
-      title: "Dedicated Partnership",
-      description:
-        "A commitment from our team to guide you with expertise, ensuring a collaborative and results-driven process.",
+      title: "Support after launch",
+      description: `A support plan from ${formatINR(basicSupport?.amount ?? 0)} a ${basicSupport?.cadence ?? "year"}, so the site does not go stale the month after it ships.`,
     },
   ]
 

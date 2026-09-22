@@ -238,8 +238,8 @@ export default function ComparisonSection() {
               variants={textVariants}
             >
               <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                Delivering impact, not just ideas. At our core, we believe great work should drive real results. Because
-                we don&apos;t just work for you, we grow with you.
+                Four claims, each linked to the page that backs it up: the published rate card, the
+                timelines, the case studies and the support plans. Check any of them before you call us.
               </p>
             </motion.div>
           </div>

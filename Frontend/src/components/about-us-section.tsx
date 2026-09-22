@@ -6,6 +6,7 @@ import BadgeSubtitle from "./badge-subtitle"
 import { AnimatedTooltip } from "./ui/animated-tooltip"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { team } from "@/data/team"
+import { staticProjects } from "@/lib/static-projects"
 
 // Animation variants
 const containerVariants = {
@@ -150,9 +151,9 @@ export default function AboutUsSection() {
               >
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Why we showed up</h3>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  We started NextGen Fusion to be the partner businesses actually want, one that stays
-                  invested at every step of your journey, not just until the invoice clears. We build to
-                  drive real growth, and we don&apos;t ghost you after launch.
+                  Most of our enquiries come from businesses whose previous developer stopped replying.
+                  So we stay on after launch, on a support plan with a published price, and the person
+                  who wrote your code is the person who answers when something needs changing.
                 </p>
               </motion.div>
               <motion.div
@@ -162,9 +163,9 @@ export default function AboutUsSection() {
               >
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Our Focus and Work</h3>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  We craft seamless digital experiences that resonate with your audience. We help businesses
-                  build solutions that don&apos;t just meet today&apos;s needs, they drive measurable
-                  outcomes: more enquiries, more sales, and lasting growth.
+                  Websites and online stores for D2C brands, manufacturers, institutes and B2B firms,
+                  with {staticProjects.length} of them written up as case studies you can check. We judge
+                  a build by the enquiries and sales it brings in, not by how it looks in a pitch deck.
                 </p>
               </motion.div>
             </motion.div>
@@ -181,7 +182,8 @@ export default function AboutUsSection() {
                 className="text-gray-600 text-sm sm:text-base mb-8"
                 variants={textVariants}
               >
-                Get to know our passionate team, the driving force behind every project.
+                {team.length} people across Lucknow and Mumbai. The developer who scopes your project
+                writes the code.
               </motion.p>
 
               {/* Team Member Avatars */}

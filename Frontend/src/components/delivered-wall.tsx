@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowRight, ArrowUpRight, FileText, Globe } from "lucide-react"
 import {
   deliveredProjects,
   CATEGORY_LABELS,
@@ -38,14 +38,16 @@ function Chip({
 
 function DeliveredCard({ project }: { project: DeliveredProject }) {
   const [errored, setErrored] = useState(false)
+  const caseStudyHref = project.caseStudySlug ? `/work/${project.caseStudySlug}/` : undefined
+
+  // One primary link stretched over the whole card (case study when there is
+  // one, otherwise the live site). The live-site link on case-study cards sits
+  // above it with z-10, so there is never an <a> nested inside another <a>.
+  const primaryClass =
+    "after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-purple-500"
 
   return (
-    <a
-      href={project.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
-    >
+    <div className="group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
       <div className="relative aspect-[16/10] overflow-hidden bg-gray-50">
         {errored ? (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2B35AB]/10 via-[#8A38F5]/10 to-[#13CBD4]/10 px-3 text-center text-sm font-semibold text-gray-500">
@@ -61,20 +63,53 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
             className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
           />
         )}
+        {caseStudyHref ? (
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-purple-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
+            <FileText className="h-3 w-3" aria-hidden="true" />
+            Case study
+          </span>
+        ) : (
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-gray-700 shadow">
+            <Globe className="h-3 w-3" aria-hidden="true" />
+            Live site
+          </span>
+        )}
         <div className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 opacity-0 shadow transition-opacity group-hover:opacity-100">
-          <ArrowUpRight className="h-4 w-4 text-gray-900" />
+          {caseStudyHref ? <ArrowRight className="h-4 w-4 text-gray-900" /> : <ArrowUpRight className="h-4 w-4 text-gray-900" />}
         </div>
       </div>
       <div className="px-3 py-2.5">
         <p className="truncate text-sm font-semibold text-gray-900 group-hover:text-purple-600">
-          {project.name}
+          {caseStudyHref ? (
+            <Link href={caseStudyHref} prefetch={false} className={primaryClass}>
+              {project.name}
+              <span className="sr-only"> — read the case study</span>
+            </Link>
+          ) : (
+            <a href={project.url} target="_blank" rel="noopener noreferrer" className={primaryClass}>
+              {project.name}
+              <span className="sr-only"> — visit the live site (opens in a new tab)</span>
+            </a>
+          )}
         </p>
-        <p className="truncate text-xs text-gray-400">{project.host}</p>
+        {caseStudyHref ? (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative z-10 flex w-fit max-w-full items-center gap-0.5 truncate text-xs text-gray-400 hover:text-gray-900 hover:underline"
+          >
+            Live site: {project.host}
+            <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
+          </a>
+        ) : (
+          <p className="truncate text-xs text-gray-400">{project.host}</p>
+        )}
         <span className="mt-1.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
           {project.subcategory ?? CATEGORY_LABELS[project.category]}
         </span>
       </div>
-    </a>
+    </div>
   )
 }
 

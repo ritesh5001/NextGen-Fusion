@@ -109,6 +109,9 @@ const wooStoreCount = staticProjects.filter(
  * on 2026-09-22. Two more delivered stores (zarqaa.in, qathirsnaturals.com) are
  * closed on Shopify and are left out until they reopen. Only Vashtara Heaven has
  * a written case study; the rest link to the live store.
+ *
+ * The blog post /blog/woocommerce-vs-shopify-india/ states the same counts
+ * (seven built, five live). Change both together.
  */
 export const shopifyStores: { name: string; url: string; sells: string; caseStudy?: string }[] = [
   { name: "Tatvivah", url: "https://www.tatvivah.in", sells: "Men's ethnic and formal wear: kurta sets, Jodhpuri and Modi jackets, shirts and trousers" },
@@ -117,6 +120,10 @@ export const shopifyStores: { name: string; url: string; sells: string; caseStud
   { name: "Shukala", url: "https://shukala.com", sells: "Women's co-ords, kurtis and feeding frocks" },
   { name: "Rumane Royale", url: "https://rumaneroyale.com", sells: "Leather and embellished jackets" },
 ]
+
+const CLOSED_SHOPIFY_STORES = 2
+export const shopifyDeliveredCount = shopifyStores.length + CLOSED_SHOPIFY_STORES
+const shopifyCountText = `${shopifyDeliveredCount} Shopify stores, ${shopifyStores.length} of them live today`
 
 // ─── Pages ──────────────────────────────────────────────────────────────────
 
@@ -176,7 +183,7 @@ const costGuide: GuidePage = {
     {
       heading: "Online stores",
       body: [
-        `Stores split on the same line. A WooCommerce or Shopify store is quoted from ${wooStandard.cost}, rising to ${wooCustomFn.cost} where it needs custom functionality on top of plugins or apps. ${wooStoreCount} of our delivered stores are WooCommerce builds with case studies on our work page, and ${shopifyStores.length} Shopify stores we built are live today.`,
+        `Stores split on the same line. A WooCommerce or Shopify store is quoted from ${wooStandard.cost}, rising to ${wooCustomFn.cost} where it needs custom functionality on top of plugins or apps. ${wooStoreCount} of our delivered stores are WooCommerce builds with case studies on our work page, and we have built ${shopifyCountText}.`,
         `A custom-coded store is the Store band, ${store.cost}, and goes up to ${customFnStore.cost} when it needs custom functionality. That is the right call when merchandising, checkout speed and catalogue logic decide revenue and a template has started getting in the way.`,
         "Payment gateway and Shiprocket integration are included in every ecommerce build at no extra cost. Gateway transaction fees are separate and paid by you to the gateway. Check the current rates on the gateway's own pricing page (Razorpay's is linked below) rather than trusting a figure in any agency's blog, including this one.",
       ],
@@ -645,18 +652,18 @@ const shopifyService: GuidePage = {
   kind: "service",
   label: "Shopify Development",
   metaTitle: "Shopify Development Company in India",
-  metaDescription: `Shopify store development from Lucknow and Mumbai for Indian D2C fashion and apparel brands. ${shopifyStores.length} live Shopify stores, including Tatvivah and Swarn Sutra. Stores from ${wooStandard.cost} on our rate card.`,
+  metaDescription: `Shopify store development from Lucknow and Mumbai for Indian D2C fashion and apparel brands. ${shopifyDeliveredCount} Shopify stores built, including Tatvivah and Swarn Sutra. Stores from ${wooStandard.cost} on our rate card.`,
   eyebrow: "Shopify development",
   h1: "Shopify development for Indian D2C brands",
   intro: [
-    `We build Shopify stores for Indian brands, mostly fashion and apparel: menswear, handloom sarees, kidswear, womenswear and jackets. ${shopifyStores.length} of the stores we built are live today and linked below, so you can open them on your phone and judge the work yourself.`,
+    `We build Shopify stores for Indian brands, mostly fashion and apparel: menswear, handloom sarees, kidswear, womenswear and jackets. We have built ${shopifyCountText}, all linked below, so you can open them on your phone and judge the work yourself.`,
     "We build on WooCommerce and custom code too, so we will tell you when Shopify is the wrong fit. The short version: Shopify is right when the people running the store are not technical and want to add products between customer calls without touching code.",
   ],
   updated: "2026-09-22",
   sections: [
     {
       heading: "Shopify stores we've built",
-      body: ["Every store below is live. Vashtara Heaven has a full written case study; the others link straight to the storefront."],
+      body: [`These are the ${shopifyStores.length} that are live today; ${CLOSED_SHOPIFY_STORES} more have since closed on Shopify. Vashtara Heaven has a full written case study; the others link straight to the storefront.`],
       table: {
         caption: "Live Shopify stores built by NextGen Fusion",
         columns: ["Store", "What it sells"],
@@ -726,7 +733,7 @@ const shopifyService: GuidePage = {
     },
     {
       question: "Have you built Shopify stores before?",
-      answer: `Yes. ${shopifyStores.length} Shopify stores we built are live, including Tatvivah (men's ethnic wear), Swarn Sutra (handloom sarees) and Vashtara Heaven (kidswear), which has a full case study.`,
+      answer: `Yes. We have built ${shopifyCountText}, including Tatvivah (men's ethnic wear), Swarn Sutra (handloom sarees) and Vashtara Heaven (kidswear), which has a full case study.`,
     },
     {
       question: "Shopify or WooCommerce: which should I choose?",

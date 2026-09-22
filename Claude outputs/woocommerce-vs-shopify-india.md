@@ -1,4 +1,4 @@
-# WooCommerce or Shopify? We've built nine of one and none of the other
+# WooCommerce or Shopify? We've built both — here's how we choose
 
 This is the question we field more than any other on ecommerce calls, usually from someone who has
 already been told by two different people that the answer is obvious. It isn't, and the honest answer
@@ -8,15 +8,11 @@ So here it is written down, including the parts that don't flatter us.
 
 ## Start with what biases me
 
-We have built nine WooCommerce stores. [Samaraha](/work/samaraha/), [New Saraswati Saree Centre](/work/newsaraswatisareecentre/), [Sitara Vastram](/work/sitaravastram/), [Kalamohini by Aditya](/work/kalamohini/), [Mahhika](/work/mahhika/), [Krushi Doctor](/work/krushidoctor/), [ClickNGreet](/work/clickngreet/), [TerrestrialYT](/work/terrestrialyt/), [Saurally Solar](/work/saurally/). You can click any of those and read what we actually built.
+We have built ten WooCommerce stores. [DeeToo](/work/deetoo/), [Samaraha](/work/samaraha/), [New Saraswati Saree Centre](/work/newsaraswatisareecentre/), [Sitara Vastram](/work/sitaravastram/), [Kalamohini by Aditya](/work/kalamohini/), [Mahhika](/work/mahhika/), [Krushi Doctor](/work/krushidoctor/), [ClickNGreet](/work/clickngreet/), [TerrestrialYT](/work/terrestrialyt/), [Saurally Solar](/work/saurally/). You can click any of those and read what we actually built.
 
-We have built zero Shopify stores.
+We have also built seven Shopify stores, and five of them are live today: [Tatvivah](https://www.tatvivah.in) (men's ethnic wear), [Swarn Sutra](https://swarnsutra.com) (handloom sarees), [Vashtara Heaven](/work/vashtaraheaven/) (kidswear, with a full case study), [Shukala](https://shukala.com) (womenswear) and [Rumane Royale](https://rumaneroyale.com) (jackets).
 
-So read everything below as a WooCommerce builder's opinion, because that is what it is. I can tell
-you exactly how a WooCommerce store behaves in month fourteen when the catalogue has tripled and
-somebody installed a review plugin without asking. I cannot tell you from experience how Shopify's
-checkout holds up at ten thousand orders a month, and anyone who claims to answer both sides equally
-well is usually selling one of them.
+So this is not an affiliate comparison, but it is not neutral either. I can tell you exactly how a WooCommerce store behaves in month fourteen when the catalogue has tripled and somebody installed a review plugin without asking. Our Shopify experience is narrower: it is almost all fashion and apparel. Where this post leans WooCommerce, read it as the view of a team that has built more of one than the other — and anyone who claims to answer both sides equally well is usually selling one of them.
 
 That disclosure matters more than it looks, because most "WooCommerce vs Shopify" comparisons are
 written by people with an affiliate link, and they all reach the same conclusion by coincidence.
@@ -111,7 +107,7 @@ later and angrier.
 
 ## Where WooCommerce actually earned it
 
-The pattern in our nine builds is consistent, and it is not "we like WordPress."
+The pattern in our ten WooCommerce builds is consistent, and it is not "we like WordPress."
 
 **Krushi Doctor** is the clearest case. It sells over a hundred agricultural products — insecticides,
 fertilisers, sticky traps — to Indian farmers, and the thing that makes it work is that downloadable
@@ -136,6 +132,13 @@ Read those back and the common thread is not a feature. It is that each one need
 into an unusual shape — around a crop cycle, a festival calendar, a Discord server, an occasion. On a
 template platform each of those bends is an app subscription, a workaround, or a no. Details of what
 a store build includes are on our [ecommerce development page](/services/ecommerce-web-development-services/).
+
+
+## Where Shopify actually earned it
+
+The Shopify pattern is just as consistent, and it is the mirror image. **Tatvivah** and **Swarn Sutra** both carry catalogues of well over a hundred products — kurta sets and jackets in one, Banarasi, Jamdani and Kosa silk sarees in the other — with sizes, colours and fabrics as ordinary variants. The teams running them want to add a product between customer calls without touching code, and that is precisely the job Shopify is good at.
+
+**Vashtara Heaven** is the interesting one. Its kidswear ships direct from several independent designer studios, so one order can arrive in two parcels. The work there was not the platform; it was explaining that dispatch model on the FAQ and policy pages before checkout, so a split shipment reads as the model working rather than as a broken order.
 
 ## When neither answer is right
 
@@ -210,8 +213,5 @@ All registered in your name and we work inside your accounts. The gateway especi
 tied to your GST and bank details and should never sit with a developer. If you leave, nothing needs
 handing over, because none of it was ever ours.
 
-**"You've never built a Shopify store — should that worry me?"**
-It should inform you. If you have decided on Shopify, hire somebody who builds them every week; we'd
-be learning on your money. If you are still deciding, the fact that nine clients in a row were better
-served by WooCommerce is itself a data point — but it is a data point about the kind of client who
-finds us, not proof of anything universal.
+**"You've built more WooCommerce stores than Shopify ones — should that worry me?"**
+It should inform you. We have built seven Shopify stores, almost all fashion and apparel, so if your catalogue looks like those, look at the live ones above and judge for yourself. If your Shopify store needs something unusual — a complex B2B price list, heavy custom checkout logic — ask to see a store like yours from whoever you hire, us included. And the fact that most clients who found us ended up on WooCommerce is a data point about the kind of client who finds us, not proof of anything universal.

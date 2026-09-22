@@ -51,17 +51,18 @@ const structuredData = {
         { "@type": "Country", name: "India" },
         { "@type": "Place", name: "Worldwide" },
       ],
-      // The registered postal address is the Mumbai office. Both offices now
-      // have street addresses, so pick it by city rather than by "has a street".
+      // The primary address is the Lucknow office: it carries the primary phone,
+      // the Google Business Profile and the brand's "Lucknow" alternateName.
+      // Mumbai is declared as its own ProfessionalService node below.
       address: (() => {
-        const registered = offices.find((office) => office.city === "Mumbai") ?? offices[0];
+        const primary = offices.find((office) => office.city === "Lucknow") ?? offices[0];
         return {
           "@type": "PostalAddress",
-          ...(registered.postal.street ? { streetAddress: registered.postal.street } : {}),
-          addressLocality: registered.postal.locality,
-          addressRegion: registered.postal.region,
-          ...(registered.postal.postalCode ? { postalCode: registered.postal.postalCode } : {}),
-          addressCountry: registered.postal.country,
+          ...(primary.postal.street ? { streetAddress: primary.postal.street } : {}),
+          addressLocality: primary.postal.locality,
+          addressRegion: primary.postal.region,
+          ...(primary.postal.postalCode ? { postalCode: primary.postal.postalCode } : {}),
+          addressCountry: primary.postal.country,
         };
       })(),
       location: offices.map((office) => ({

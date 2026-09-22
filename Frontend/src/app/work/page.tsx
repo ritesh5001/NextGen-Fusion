@@ -52,7 +52,7 @@ export default function WorkPage() {
         <DeliveredWall
           showFilters
           heading="Every project we've shipped"
-          subheading="Filter by category, or click any card to visit the live site."
+          subheading="Cards marked Case study open the full write-up; every other card opens the live site."
         />
 
         <div className="mx-auto max-w-7xl px-6 pb-16">
@@ -73,9 +73,11 @@ export default function WorkPage() {
             </div>
             <div className="space-y-4 text-lg leading-relaxed text-gray-600">
               <p>
-                Some of these have full case studies — what the client came with, what we
-                recommended and why, what got built, and what it changed. The rest link straight
-                through to the live site; click any of them and judge the work directly.
+                Cards marked <strong className="font-semibold text-gray-900">Case study</strong> have a
+                full write-up: what the client came with, what we recommended and why, what got built,
+                and what it changed. Cards marked <strong className="font-semibold text-gray-900">Live
+                site</strong> link straight to the store or site; open any of them and judge the work
+                directly.
               </p>
               <p className="text-base">
                 Looking for a specific capability instead?{" "}

@@ -121,17 +121,17 @@ export default function ServicesSection() {
     },
     {
       title: "Android App Development Services",
-      description: "Create robust Android applications with smooth UI performance, API connectivity, push notifications, and long-term maintainability.",
+      description: "Android apps that run well on the mid-range phones your customers actually use, with push notifications and a back end you own.",
       icon: "/icons/webdev.svg",
     },
     {
       title: "Web Design Services",
-      description: "Design modern, user-centric web experiences with clear information hierarchy, responsive layouts, and strong visual branding.",
+      description: "Layouts built around the one thing a visitor came to do, and tested on real phones rather than a resized browser.",
       icon: "/icons/uiuxdesign.svg",
     },
     {
       title: "AI Automation and AI Development Services",
-      description: "Automate repetitive workflows and develop AI-powered features like smart assistants, recommendations, and intelligent data processing.",
+      description: "Take repetitive jobs off your team — sorting enquiries, writing product descriptions, building reports — where it saves real hours.",
       icon: "/icons/datascience.svg",
     },
     {
@@ -146,7 +146,7 @@ export default function ServicesSection() {
     },
     {
       title: "Social Media Marketing Services",
-      description: "Grow your brand reach with strategic content, campaign planning, audience engagement, and performance-driven social media execution.",
+      description: "Content and campaigns on the platforms your buyers already use, reported against enquiries and sales rather than likes.",
       icon: "/icons/graphicdesign.svg",
     },
     {
@@ -156,7 +156,7 @@ export default function ServicesSection() {
     },
     {
       title: "Software Development Services",
-      description: "Develop custom software solutions tailored to your business processes, from planning and architecture to deployment and support.",
+      description: "Internal tools, dashboards and CRMs built around how your team already works, from a written scope to deployment.",
       icon: "/icons/webdev.svg",
     },
     {
@@ -166,7 +166,7 @@ export default function ServicesSection() {
     },
     {
       title: "Cloud Solutions",
-      description: "Design and deploy cloud-ready infrastructure for scalability, resilience, and secure application delivery across modern environments.",
+      description: "Hosting and infrastructure that stays up when traffic spikes, set up in a cloud account in your name.",
       icon: "/icons/datascience.svg",
     },
   ]
@@ -235,8 +235,13 @@ export default function ServicesSection() {
             className="text-gray-600 text-sm sm:text-base lg:text-lg max-w-3xl leading-relaxed"
             variants={textVariants}
           >
-            At NextGen Fusion, we offer comprehensive digital solutions from concept to execution.
-            We combine cutting-edge technology with creative excellence to deliver results that drive your business forward.
+            Most projects start as one of three jobs: build a site, get an existing one producing
+            enquiries, or build something that is not a website at all. Every service below is quoted
+            from the same{" "}
+            <Link href="/pricing/" className="font-medium text-purple-600 hover:underline">
+              published rate card
+            </Link>
+            .
           </motion.p>
         </motion.div>
 

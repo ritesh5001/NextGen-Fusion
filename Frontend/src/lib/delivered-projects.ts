@@ -1,5 +1,6 @@
 import rawUrls from "@/data/delivered-urls.json"
 import capturedSlugs from "@/data/delivered-captured.json"
+import { staticProjects } from "@/lib/static-projects"
 
 export type DeliveredCategory = "ecommerce" | "service" | "custom"
 
@@ -29,6 +30,8 @@ export type DeliveredProject = {
   hasImage: boolean // true when a screenshot exists on disk
   category: DeliveredCategory
   subcategory?: string // product type, only for ecommerce
+  /** Set when the project has a written case study at /work/<slug>/. */
+  caseStudySlug?: string
 }
 
 const captured = new Set(capturedSlugs as string[])
@@ -200,6 +203,15 @@ function hostFromUrl(url: string): string {
     .toLowerCase()
 }
 
+// Delivered sites whose store has since been closed by the owner (Shopify
+// returns "Store unavailable"). The /work page says everything on the wall is
+// live, so these stay off it until they reopen. Checked 2026-09-22.
+const CLOSED_HOSTS = new Set(["zarqaa.in", "qathirsnaturals.com"])
+
+// Case studies keyed by the host of their live site, so a wall card can say
+// whether a written case study sits behind it.
+const caseStudyByHost = new Map(staticProjects.map((p) => [hostFromUrl(p.liveUrl), p.slug]))
+
 function fallbackName(host: string): string {
   const core = host.split(".")[0]
   return core.charAt(0).toUpperCase() + core.slice(1)
@@ -219,6 +231,7 @@ export const deliveredProjects: DeliveredProject[] = (rawUrls as string[])
       hasImage: captured.has(slug),
       category,
       subcategory,
+      caseStudySlug: caseStudyByHost.get(host),
     }
   })
 
@@ -226,4 +239,4 @@ export const deliveredProjects: DeliveredProject[] = (rawUrls as string[])
   // screenshot couldn't be captured are hidden entirely (no fallback name cards).
   // Order follows delivered-urls.json, so the homepage teaser shows the first N there.
   
-  .filter((project) => project.hasImage)
+  .filter((project) => project.hasImage && !CLOSED_HOSTS.has(project.host))

@@ -18,6 +18,12 @@
  * Everything else below is drawn from the site's existing content and offices.
  */
 
+import { offices } from "@/data/offices"
+
+// Read from the office data so the street address on this page cannot drift
+// from the footer, contact page and LocalBusiness schema.
+const LUCKNOW_OFFICE = offices.find((office) => office.city === "Lucknow")!
+
 export type LocationFaq = { question: string; answer: string }
 
 export type LocationLink = { label: string; href: string }
@@ -130,7 +136,7 @@ export const locationPages: LocationPage[] = [
       {
         heading: "Where we are in Lucknow",
         body: [
-          "The Lucknow team works out of the city and takes meetings here by arrangement; the registered address we publish is the Mumbai office, and both are listed in full on the contact page. If you want to sit across a table before committing a budget, say so in the first email and we will arrange it rather than pushing you onto a video call.",
+          `Our Lucknow office is at ${LUCKNOW_OFFICE.address} — the same address as our Google Business Profile — and it is on the contact page alongside the Mumbai office in Mahim. Meetings are by appointment: if you want to sit across a table before committing a budget, say so in the first email and we will arrange it rather than pushing you onto a video call.`,
           "In practice most Lucknow projects run as one meeting in person at the start and written updates after that. Weekly calls are available and rarely wanted — a written update you can forward to a partner or a bank is more useful than a half hour nobody minuted.",
         ],
       },
