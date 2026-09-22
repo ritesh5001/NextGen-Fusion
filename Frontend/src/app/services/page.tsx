@@ -9,7 +9,7 @@ import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/s
 export const metadata: Metadata = {
   title: "Services — Web, Ecommerce, SEO & Software",
   description:
-    "Website and ecommerce development, web design, marketplaces, Next.js, SEO, PPC, social media, AI automation, software and cloud — all fourteen services, explained.",
+    "Website and ecommerce development, web design, marketplaces, Next.js, Shopify, SEO, PPC, social media, AI automation, software and cloud — all fifteen services, explained.",
   alternates: {
     canonical: absoluteUrl("/services"),
   },
@@ -24,6 +24,8 @@ const serviceDescriptions: Record<string, string> = {
     "Multi-vendor and B2B marketplaces with seller onboarding, verification and RFQ flows.",
   "Next.js Development Services":
     "Fast custom websites, headless stores and web apps built in Next.js.",
+  "Shopify Development Services":
+    "Shopify stores for D2C brands, with the account and apps in your name.",
   "Android App Development Services":
     "Robust Android apps with smooth performance, API connectivity, and long-term maintainability.",
   "Web Design Services":
@@ -101,7 +103,7 @@ export default function ServicesPage() {
         <div className="mb-14 grid max-w-5xl gap-8 md:grid-cols-2">
           <div className="space-y-4 text-gray-600 leading-relaxed">
             <p>
-              Fourteen services, but most projects start as one of three
+              Fifteen services, but most projects start as one of three
               conversations. <strong className="font-semibold text-gray-900">You need a site
               built</strong> — a new business, a rebrand, or an existing site that has become more
               expensive to change than it was to make. That is website development, web design and,

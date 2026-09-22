@@ -828,6 +828,7 @@ export const serviceRoutes: Record<string, string> = {
   "E-commerce Web Development Services": "/services/ecommerce-web-development-services/",
   "Marketplace Development Services": "/services/marketplace-development-services/",
   "Next.js Development Services": "/services/nextjs-development-services/",
+  "Shopify Development Services": "/services/shopify-development-services/",
   "Android App Development Services": "/services/android-app-development-services/",
   "Web Design Services": "/services/web-design-services/",
   "AI Automation and AI Development Services": "/services/ai-automation-development-services/",

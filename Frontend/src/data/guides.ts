@@ -1,12 +1,13 @@
 /**
  * Guide and specialist pages: the cost guide, the ecommerce-vs-marketplace
- * decision page, and the marketplace and Next.js service pages.
+ * decision page, and the marketplace, Next.js and Shopify service pages.
  *
  * Every rupee figure below is computed from the rate card in
  * `lib/estimator-pricing.ts`, the same source as /pricing/ and the project
  * estimator, so these pages cannot quote a number the quote will not match.
- * Every proof point names a build that has a case study at /work/<slug>/.
- * If a claim cannot be linked to one of those two sources, it does not go here.
+ * Every proof point names a build with a case study at /work/<slug>/ or, for
+ * the Shopify list, a store that is live today. If a claim cannot be linked to
+ * one of those sources, it does not go here.
  */
 import { OFFICE_HOURS } from "@/data/offices"
 import {
@@ -103,6 +104,20 @@ const wooStoreCount = staticProjects.filter(
   (p) => p.techStack.includes("WooCommerce") && !p.techStack.includes("Next.js"),
 ).length
 
+/**
+ * Shopify stores we built that are live today, checked against each storefront
+ * on 2026-09-22. Two more delivered stores (zarqaa.in, qathirsnaturals.com) are
+ * closed on Shopify and are left out until they reopen. Only Vashtara Heaven has
+ * a written case study; the rest link to the live store.
+ */
+export const shopifyStores: { name: string; url: string; sells: string; caseStudy?: string }[] = [
+  { name: "Tatvivah", url: "https://www.tatvivah.in", sells: "Men's ethnic and formal wear: kurta sets, Jodhpuri and Modi jackets, shirts and trousers" },
+  { name: "Swarn Sutra", url: "https://swarnsutra.com", sells: "Handloom sarees (Banarasi, Jamdani, Chanderi, Kosa silk), blouses and pashmina stoles" },
+  { name: "Vashtara Heaven", url: "https://www.vashtaraheaven.com", sells: "Kids' denim co-ords and printed sets, shipped direct from each designer studio", caseStudy: "vashtaraheaven" },
+  { name: "Shukala", url: "https://shukala.com", sells: "Women's co-ords, kurtis and feeding frocks" },
+  { name: "Rumane Royale", url: "https://rumaneroyale.com", sells: "Leather and embellished jackets" },
+]
+
 // ─── Pages ──────────────────────────────────────────────────────────────────
 
 const costGuide: GuidePage = {
@@ -161,13 +176,13 @@ const costGuide: GuidePage = {
     {
       heading: "Online stores",
       body: [
-        `Stores split on the same line. A WooCommerce store on WordPress is quoted from ${wooStandard.cost}, rising to ${wooCustomFn.cost} where it needs custom functionality on top of plugins. ${wooStoreCount} of our delivered stores are WooCommerce builds, and every one has a case study on our work page.`,
+        `Stores split on the same line. A WooCommerce or Shopify store is quoted from ${wooStandard.cost}, rising to ${wooCustomFn.cost} where it needs custom functionality on top of plugins or apps. ${wooStoreCount} of our delivered stores are WooCommerce builds with case studies on our work page, and ${shopifyStores.length} Shopify stores we built are live today.`,
         `A custom-coded store is the Store band, ${store.cost}, and goes up to ${customFnStore.cost} when it needs custom functionality. That is the right call when merchandising, checkout speed and catalogue logic decide revenue and a template has started getting in the way.`,
         "Payment gateway and Shiprocket integration are included in every ecommerce build at no extra cost. Gateway transaction fees are separate and paid by you to the gateway. Check the current rates on the gateway's own pricing page (Razorpay's is linked below) rather than trusting a figure in any agency's blog, including this one.",
       ],
       table: {
         caption: "Online store cost in India by package and build type",
-        columns: ["Package", "WooCommerce", "Custom-coded"],
+        columns: ["Package", "WooCommerce or Shopify", "Custom-coded"],
         rows: (
           [
             ["Standard", "standard"],
@@ -184,6 +199,8 @@ const costGuide: GuidePage = {
       },
       links: [
         { label: "Razorpay pricing (official)", href: "https://razorpay.com/pricing/" },
+        { label: "Shopify India plans (official)", href: "https://www.shopify.com/in/pricing" },
+        { label: "Shopify development", href: "/services/shopify-development-services/" },
         { label: "Ecommerce store or marketplace?", href: "/ecommerce-store-vs-marketplace/" },
       ],
     },
@@ -268,7 +285,7 @@ const costGuide: GuidePage = {
   faqs: [
     {
       question: "How much does a website cost in India in 2026?",
-      answer: `On our rate card: a WordPress business site costs ${launch.cost}, a custom-coded online store ${store.cost}, and a custom platform or web app ${platform.cost}. WooCommerce stores start at ${wooStandard.cost}.`,
+      answer: `On our rate card: a WordPress business site costs ${launch.cost}, a custom-coded online store ${store.cost}, and a custom platform or web app ${platform.cost}. WooCommerce and Shopify stores start at ${wooStandard.cost}.`,
     },
     {
       question: "How much does a small business website cost in India?",
@@ -276,7 +293,7 @@ const costGuide: GuidePage = {
     },
     {
       question: "How much does an ecommerce website cost in India?",
-      answer: `A WooCommerce store starts at ${wooStandard.cost}. A custom-coded store is ${store.cost}, rising to ${customFnStore.cost} with custom functionality. Payment gateway and Shiprocket integration are included in every store.`,
+      answer: `A WooCommerce or Shopify store starts at ${wooStandard.cost} (Shopify's own monthly plan is paid to Shopify). A custom-coded store is ${store.cost}, rising to ${customFnStore.cost} with custom functionality. Payment gateway and Shiprocket integration are included in every store.`,
     },
     {
       question: "Why is a custom-coded site more expensive than WordPress?",
@@ -309,7 +326,7 @@ const storeVsMarketplace: GuidePage = {
   h1: "Ecommerce store or marketplace: which one are you actually building?",
   intro: [
     "The short answer: if you own the stock, you need a store. If other people sell through you and you earn from their sales, you need a marketplace. Everything else is detail, but the detail is where budgets go wrong, because a marketplace costs more than a store and takes longer to build.",
-    "We have built both — WooCommerce and custom stores, a Shopify store that ships from multiple designers, and two full multi-vendor marketplaces — so this is written from the build side, with the case studies linked.",
+    "We have built both — WooCommerce, Shopify and custom stores (one of them shipping from multiple designers) and two full multi-vendor marketplaces — so this is written from the build side, with the case studies linked.",
   ],
   updated: "2026-09-22",
   sections: [
@@ -623,7 +640,116 @@ const nextjsService: GuidePage = {
   ],
 }
 
-export const guidePages: GuidePage[] = [costGuide, storeVsMarketplace, marketplaceService, nextjsService]
+const shopifyService: GuidePage = {
+  path: "/services/shopify-development-services",
+  kind: "service",
+  label: "Shopify Development",
+  metaTitle: "Shopify Development Company in India",
+  metaDescription: `Shopify store development from Lucknow and Mumbai for Indian D2C fashion and apparel brands. ${shopifyStores.length} live Shopify stores, including Tatvivah and Swarn Sutra. Stores from ${wooStandard.cost} on our rate card.`,
+  eyebrow: "Shopify development",
+  h1: "Shopify development for Indian D2C brands",
+  intro: [
+    `We build Shopify stores for Indian brands, mostly fashion and apparel: menswear, handloom sarees, kidswear, womenswear and jackets. ${shopifyStores.length} of the stores we built are live today and linked below, so you can open them on your phone and judge the work yourself.`,
+    "We build on WooCommerce and custom code too, so we will tell you when Shopify is the wrong fit. The short version: Shopify is right when the people running the store are not technical and want to add products between customer calls without touching code.",
+  ],
+  updated: "2026-09-22",
+  sections: [
+    {
+      heading: "Shopify stores we've built",
+      body: ["Every store below is live. Vashtara Heaven has a full written case study; the others link straight to the storefront."],
+      table: {
+        caption: "Live Shopify stores built by NextGen Fusion",
+        columns: ["Store", "What it sells"],
+        rows: shopifyStores.map((store) => [store.name, store.sells]),
+      },
+      links: [
+        ...shopifyStores.map((store) => ({ label: store.name, href: store.url })),
+        { label: "Vashtara Heaven case study", href: "/work/vashtaraheaven/" },
+      ],
+    },
+    {
+      heading: "When Shopify is the right choice",
+      body: [
+        "When the store team is not technical. Adding a product, changing a price or running a sale takes minutes in Shopify's admin, and nobody has to update plugins or worry about hosting.",
+        "When the catalogue is conventional, even if it is large. Tatvivah and Swarn Sutra both carry catalogues of over a hundred products, with sizes, colours and fabrics as variants, which is exactly what Shopify handles well.",
+        "When products ship from more than one place. Vashtara Heaven sells kidswear from independent designer studios that each dispatch their own orders, and the store explains split shipments before checkout so one order arriving in two parcels does not read as a mistake.",
+      ],
+    },
+    {
+      heading: "When we will recommend something else",
+      body: [
+        "When the catalogue is strange rather than big: made-to-order lead times, blouse and fabric options on every saree, or pricing that depends on the customer. Each of those tends to become a paid Shopify app, and the monthly bill adds up. WooCommerce or a custom build is often cheaper over two years.",
+        "When other sellers need their own logins to list products. That is a marketplace, not a store, and Shopify is not built for it.",
+      ],
+      links: [
+        { label: "WooCommerce vs Shopify for Indian brands", href: "/blog/woocommerce-vs-shopify-india/" },
+        { label: "Ecommerce store or marketplace?", href: "/ecommerce-store-vs-marketplace/" },
+      ],
+    },
+    {
+      heading: "What it costs",
+      body: [
+        `On our rate card, Shopify stores are quoted in the same band as WooCommerce: ${wooStandard.cost} for a standard store, up to ${wooCustomFn.cost} with custom functionality, typically ${wooStandard.weeks} from content sign-off. Payment gateway and Shiprocket integration are included.`,
+        `Shopify's own monthly plan, any paid theme and any paid apps are billed by Shopify to you, in your account, not through us; check Shopify's current India plans on their pricing page. Support after launch is ${plan(support.basic)} for fixes, or ${plan(support.growthWp)} including ongoing changes. Payment terms: ${PAYMENT_TERMS}.`,
+      ],
+      table: {
+        caption: "Shopify store cost on our rate card",
+        columns: ["Package", "Price"],
+        rows: (
+          [
+            ["Standard", "standard"],
+            ["Premium", "premium"],
+            ["Extra premium", "extra-premium"],
+            ["Custom functionality", "custom-functionality"],
+          ] as const
+        ).map(([label, pkg]) => [label, band({ projectType: "ecommerce", ecommercePackage: pkg }).cost]),
+        note: "Shopify plan, theme and app fees are paid to Shopify and are not included",
+      },
+      links: [
+        { label: "Shopify India plans (official)", href: "https://www.shopify.com/in/pricing" },
+        { label: "Full pricing and tiers", href: "/pricing/" },
+      ],
+    },
+  ],
+  caseStudiesHeading: "Shopify case study",
+  caseStudies: [
+    {
+      slug: "vashtaraheaven",
+      title: "Vashtara Heaven",
+      body: "Shopify kidswear store with a multi-vendor dispatch model, Girls and Boys as the primary categories, a free-shipping threshold, a 7-day return window and cash on delivery nationwide.",
+    },
+  ],
+  faqs: [
+    {
+      question: "How much does a Shopify store cost in India?",
+      answer: `On our rate card a Shopify store is ${wooStandard.cost} for a standard build, up to ${wooCustomFn.cost} with custom functionality. Shopify's own monthly plan, paid themes and paid apps are billed separately by Shopify.`,
+    },
+    {
+      question: "Have you built Shopify stores before?",
+      answer: `Yes. ${shopifyStores.length} Shopify stores we built are live, including Tatvivah (men's ethnic wear), Swarn Sutra (handloom sarees) and Vashtara Heaven (kidswear), which has a full case study.`,
+    },
+    {
+      question: "Shopify or WooCommerce: which should I choose?",
+      answer: "Shopify if the people running the store are not technical and the catalogue is conventional. WooCommerce if you want to avoid monthly app fees for unusual product options, or already work in WordPress. We build both and will recommend one on the first call.",
+    },
+    {
+      question: "Who owns the Shopify store?",
+      answer: "You do. The Shopify account, domain and payment gateway are set up in your name from day one, so nothing has to be transferred if you ever stop working with us.",
+    },
+    {
+      question: "Can you move my store to Shopify from another platform?",
+      answer: "Yes. Products, collections and customer records can be migrated, and we map redirects from your old URLs so existing search rankings are not thrown away.",
+    },
+  ],
+  related: [
+    { label: "E-commerce development", href: "/services/ecommerce-web-development-services/" },
+    { label: "Website development cost in India", href: "/website-development-cost-in-india/" },
+    { label: "Ecommerce store vs marketplace", href: "/ecommerce-store-vs-marketplace/" },
+    { label: "Projects we've delivered", href: "/work/" },
+  ],
+}
+
+export const guidePages: GuidePage[] = [costGuide, storeVsMarketplace, marketplaceService, nextjsService, shopifyService]
 
 export function getGuidePage(path: string): GuidePage {
   const page = guidePages.find((p) => p.path === path)

@@ -16,6 +16,7 @@ export const serviceNavItems: ServiceNavItem[] = [
   { slug: "ecommerce-web-development-services", label: "E-commerce Development" },
   { slug: "marketplace-development-services", label: "Marketplace Development" },
   { slug: "nextjs-development-services", label: "Next.js Development" },
+  { slug: "shopify-development-services", label: "Shopify Development" },
   { slug: "web-design-services", label: "Web Design" },
   { slug: "android-app-development-services", label: "Android App Development" },
   { slug: "seo-services", label: "SEO Services" },
