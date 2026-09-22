@@ -41,10 +41,13 @@ const captured = new Set(capturedSlugs as string[])
 // TODO: refine any of these if a site's focus changes.
 const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   // ── Custom apps / tools ──────────────────────────────────────────────
+  "maribiz.ai": ["custom"],
+  "mail.maribiz.ai": ["custom"],
   "webscraperhub.com": ["custom"],
   "terrestrialyt.com": ["custom"],
   "nextmentor.com": ["custom"],
   // ── Service-based businesses ─────────────────────────────────────────
+  "cleanship.co": ["service"],
   "riteshgiri.dev": ["service"],
   "3am-assignments.com": ["service"],
   "filtxpert.com": ["service"],
@@ -146,6 +149,9 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
 
 // Nicer display names for recognisable brands; everything else falls back to the host.
 const NAME_OVERRIDES: Record<string, string> = {
+  "maribiz.ai": "MariBiz.ai",
+  "mail.maribiz.ai": "MariMail",
+  "cleanship.co": "Cleanship",
   "thegrafftee.com": "The Grafftee",
   "tatvivahtrends.com": "TatVivah Trends",
   "tatvivah.in": "TatVivah",
