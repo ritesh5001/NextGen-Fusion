@@ -45,7 +45,7 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "mail.maribiz.ai": ["custom"],
   "webscraperhub.com": ["custom"],
   "terrestrialyt.com": ["custom"],
-  "nextmentor.com": ["custom"],
+  "nextmentor.in": ["custom"],
   // ── Service-based businesses ─────────────────────────────────────────
   "cleanship.co": ["service"],
   "riteshgiri.dev": ["service"],
@@ -159,7 +159,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "vashtaraheaven.com": "Vashtara Heaven",
   "sidcobharat.org": "SIDCO",
   "ladyscootytrainer.com": "Lady Scooty Trainer",
-  "nextmentor.com": "NEXTmentor",
+  "nextmentor.in": "NEXTmentor",
   "clickngreet.in": "ClickNGreet",
   "krushidoctor.com": "Krushi Doctor",
   "hcbengineering.in": "HCB Engineering",

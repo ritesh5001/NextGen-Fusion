@@ -547,11 +547,11 @@ const nextjsService: GuidePage = {
   kind: "service",
   label: "Next.js Development",
   metaTitle: "Next.js Development Agency in India",
-  metaDescription: `Next.js development from Lucknow and Mumbai: fast custom websites, headless stores and web apps. Built TatVivah Trends and The Grafftee on Next.js. Custom sites from ${customBrochure.cost}.`,
+  metaDescription: `Next.js development from Lucknow and Mumbai: fast custom websites, headless stores and web apps. Built TatVivah Trends, NEXTmentor and The Grafftee on Next.js. Custom sites from ${customBrochure.cost}.`,
   eyebrow: "Next.js development",
   h1: "Next.js development agency",
   intro: [
-    "We build custom websites, headless stores and web apps in Next.js, the React framework behind this site. TatVivah Trends (a multi-vendor marketplace with a Next.js front end over WooCommerce) and The Grafftee (an HR services platform with demo booking and CRM integration) are two client builds with full case studies.",
+    "We build custom websites, headless stores and web apps in Next.js, the React framework behind this site. TatVivah Trends (a multi-vendor marketplace with a Next.js front end over WooCommerce), NEXTmentor (a course platform with Razorpay payments, verifiable certificates and referral commission) and The Grafftee (an HR services platform with demo booking and CRM integration) are three client builds with full case studies.",
     "Next.js is not always the right answer, and it is not the cheapest. Below is when we recommend it, when we talk people out of it, and what it costs on our rate card.",
   ],
   updated: "2026-09-22",
@@ -565,6 +565,7 @@ const nextjsService: GuidePage = {
       ],
       links: [
         { label: "TatVivah Trends case study", href: "/work/tatvivahtrends/" },
+        { label: "NEXTmentor case study", href: "/work/nextmentor/" },
         { label: "The Grafftee case study", href: "/work/thegrafftee/" },
       ],
     },
@@ -610,6 +611,11 @@ const nextjsService: GuidePage = {
       slug: "tatvivahtrends",
       title: "TatVivah Trends",
       body: "Next.js multi-vendor marketplace over a WooCommerce back end: 3,000+ products, verified sellers, Razorpay payments and occasion-based filtering.",
+    },
+    {
+      slug: "nextmentor",
+      title: "NEXTmentor",
+      body: "Next.js course platform: three skill packs sold through Razorpay, a resume-where-you-stopped player, serial-numbered certificates with public verification pages, and a referral programme paying up to 50% commission.",
     },
     {
       slug: "thegrafftee",

@@ -595,63 +595,64 @@ export const staticProjects: StaticProject[] = [
   },
   {
     slug: "nextmentor",
-    domain: "nextmentor.com",
+    domain: "nextmentor.in",
     title: "NEXTmentor",
-    seoTitle: "NEXTmentor: WordPress Video Mentorship Platform",
+    seoTitle: "NEXTmentor: Next.js Course Platform with Referral Payouts",
     shortDescription:
-      "Subscription video-mentorship platform streaming business, sales and leadership courses from globally recognised trainers.",
+      "Next.js course platform for freelance skills — skill packs, verifiable certificates and a referral programme that pays learners commission.",
     description:
-      "Built the course platform for NEXTmentor — a Vietnamese subscription streaming service carrying video courses from internationally recognised business trainers including Blair Singer, on subjects spanning sales mastery, team leadership, presentation skills and applied AI. The catalogue runs to 30+ courses averaging 15 lessons each, playable across desktop, TV and mobile through a members-only area separate from the public marketing site, with downloadable workbooks and a tiered monthly, half-yearly and annual membership structure.",
+      "Built NEXTmentor, a Next.js learning platform that teaches freelance-ready skills — Meta and Google ads, WhatsApp lead generation, video editing, design and AI tools — through screen-recorded, follow-along courses. Courses are sold as three skill packs from ₹999 to ₹9,999 through Razorpay, every finished course unlocks a serial-numbered certificate with its own public verification page, and every member gets a referral link that earns up to 50% commission on what their referrals actually pay.",
     challenge:
-      "Vietnamese professionals and entrepreneurs wanting access to established international business mentors had no single, localised platform carrying that catalogue in one place — content was scattered across individual course sites, each with its own login, its own player and its own billing.",
+      "NEXTmentor's founder, Saurabh Namdev, has built a community of more than 14,000 people. The platform had to turn that audience into paying learners and keep them earning after the course ended — most course sites stop at the certificate, and a certificate nobody can check is worth little to a freelancer pitching their first client.",
     approach:
-      "We built one catalogue and one membership around it: courses organised by mentor rather than buried in a generic list, a separate members subdomain so the learning experience isn't competing with marketing-site page weight, and a tiered plan structure so a learner can commit month to month before buying a year upfront.",
+      "We built the platform around the full path from learning to earning: a free preview before purchase, packs that bundle the courses for one kind of client work, a player that remembers where each learner stopped, certificates that anyone can verify online, and a partner programme calculated on the amount actually charged, so a discount never quietly comes out of a referrer's cut.",
     keyFeatures: [
       {
-        title: "Mentor-Led Course Catalogue",
+        title: "Skill Packs",
         description:
-          "30+ courses organised by instructor rather than topic alone, so a learner can follow a specific mentor's full curriculum.",
+          "Starter (₹999, one course), Pro (₹4,999, two courses) and Premium Pro (₹9,999, three courses), each bundling the courses for one kind of client work behind a single Razorpay payment.",
       },
       {
-        title: "Dedicated Members Platform",
+        title: "Follow-Along Course Player",
         description:
-          "A separate members.nextmentor.com application handling playback, progress and account access apart from the public marketing site.",
+          "Screen-recorded lessons that resume where the learner stopped on phone or laptop, with progress tracked per course in the learner dashboard.",
       },
       {
-        title: "Cross-Device Streaming",
+        title: "Verifiable Certificates",
         description:
-          "Course video plays on desktop, TV and mobile, with downloadable workbooks and guides for offline study.",
+          "Completing every lesson unlocks a certificate with a unique serial number and its own public verification page on the site.",
       },
       {
-        title: "Tiered Membership Plans",
+        title: "Referral & Commission Programme",
         description:
-          "Monthly, half-yearly and annual membership options, so commitment level is the learner's choice rather than a single all-or-nothing price.",
+          "Every member gets a referral link earning up to 50% commission on the amount a referral actually pays; commission clears after 7 days and is paid to the member's bank after KYC.",
       },
       {
-        title: "Free Trial-Lesson Capture",
+        title: "Trainer Profiles & Free Previews",
         description:
-          "An email-gated trial lesson from the catalogue's most popular courses, used as the primary top-of-funnel conversion path.",
+          "Profiles for the founder and a nine-person trainer team, with a free preview on each course so learners can judge the teaching before they buy.",
       },
     ],
-    techStack: ["WordPress", "Elementor", "Membership & LMS Platform", "Video Streaming Infrastructure"],
+    techStack: ["Next.js", "React", "Razorpay", "Vercel"],
     results: [
-      { metric: "30+", label: "Courses Live" },
-      { metric: "15", label: "Avg. Lessons per Course" },
-      { metric: "10 min", label: "Avg. Lesson Length" },
+      { metric: "3", label: "Skill Packs Live" },
+      { metric: "Up to 50%", label: "Referral Commission" },
+      { metric: "9", label: "Trainers Profiled" },
+      { metric: "Verifiable", label: "Serial-Numbered Certificates" },
     ],
     role: "Full-Stack Developer",
     category: "EdTech / Online Learning Platform",
     tags: [
-      "Membership & LMS Development",
-      "Video Streaming Platform",
-      "Subscription Billing",
-      "Multi-Mentor Course Catalog",
+      "Next.js Development",
+      "Course Platform",
+      "Referral & Commission System",
+      "Razorpay Integration",
     ],
     images: ["/projects/nextmentor/screenshot-1.png"],
     coverImage: "/projects/nextmentor/screenshot-1.png",
-    liveUrl: "https://nextmentor.com",
+    liveUrl: "https://www.nextmentor.in",
     featured: false,
-    publishedAt: "2026-09-13",
+    publishedAt: "2026-09-22",
   },
   {
     slug: "vashtaraheaven",
