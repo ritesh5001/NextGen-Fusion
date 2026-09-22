@@ -3,6 +3,7 @@
 import { brandProfiles, CONTACT_EMAIL, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { serviceNavItems } from "@/data/services-nav";
 import { locationPages } from "@/data/locations";
+import { guideLinks } from "@/data/guides";
 
 export default function Footer() {
   // Trailing slashes are mandatory here. The site enforces them with a 308, so
@@ -171,6 +172,17 @@ export default function Footer() {
                     <li key={location.slug}>
                       <a href={`/${location.slug}/`} className={link}>
                         {location.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className={`${label} mt-6 lg:mt-8`}>Guides</p>
+                <ul className={list}>
+                  {guideLinks.map((guide) => (
+                    <li key={guide.path}>
+                      <a href={`${guide.path}/`} className={link}>
+                        {guide.label}
                       </a>
                     </li>
                   ))}

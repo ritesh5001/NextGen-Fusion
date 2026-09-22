@@ -9,7 +9,7 @@ import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/s
 export const metadata: Metadata = {
   title: "Services — Web, Ecommerce, SEO & Software",
   description:
-    "Website and ecommerce development, web design, SEO, PPC, social media, AI automation, software and cloud — all twelve services, explained.",
+    "Website and ecommerce development, web design, marketplaces, Next.js, SEO, PPC, social media, AI automation, software and cloud — all fourteen services, explained.",
   alternates: {
     canonical: absoluteUrl("/services"),
   },
@@ -20,6 +20,10 @@ const serviceDescriptions: Record<string, string> = {
     "Fast, scalable, conversion-focused websites with clean architecture and SEO-ready structure.",
   "E-commerce Web Development Services":
     "Secure online stores with optimized checkout, payment integration, and order management.",
+  "Marketplace Development Services":
+    "Multi-vendor and B2B marketplaces with seller onboarding, verification and RFQ flows.",
+  "Next.js Development Services":
+    "Fast custom websites, headless stores and web apps built in Next.js.",
   "Android App Development Services":
     "Robust Android apps with smooth performance, API connectivity, and long-term maintainability.",
   "Web Design Services":
@@ -91,13 +95,13 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        {/* Hub copy. A category page with a heading and twelve cards ranks for
-            nothing; the twelve service pages are what we want to rank, and this
+        {/* Hub copy. A category page with a heading and a grid of cards ranks for
+            nothing; the service pages are what we want to rank, and this
             page's job is to route intent to the right one. */}
         <div className="mb-14 grid max-w-5xl gap-8 md:grid-cols-2">
           <div className="space-y-4 text-gray-600 leading-relaxed">
             <p>
-              Twelve services, but most projects start as one of three
+              Fourteen services, but most projects start as one of three
               conversations. <strong className="font-semibold text-gray-900">You need a site
               built</strong> — a new business, a rebrand, or an existing site that has become more
               expensive to change than it was to make. That is website development, web design and,

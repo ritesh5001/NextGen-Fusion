@@ -1,4 +1,5 @@
 import { serviceNavItems } from "@/data/services-nav"
+import { guideLinks } from "@/data/guides"
 import { locationPages } from "@/data/locations"
 import { team } from "@/data/team"
 import { staticProjects } from "@/lib/static-projects"
@@ -64,6 +65,10 @@ ${line("/contact", "Contact")}
 ## Case studies
 
 ${staticProjects.map((p) => line(`/work/${p.slug}`, p.title, p.shortDescription)).join("\n")}
+
+## Guides
+
+${guideLinks.map((g) => line(g.path, g.label, g.metaDescription)).join("\n")}
 
 ## Resources
 

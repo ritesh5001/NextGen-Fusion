@@ -1,5 +1,5 @@
 /**
- * The twelve service pages, in one place.
+ * The service pages, in one place.
  *
  * These carry ~2,200 words each and are the pages we actually want to rank,
  * but they had no sitewide internal links — six of them were reachable only
@@ -14,6 +14,8 @@ export type ServiceNavItem = {
 export const serviceNavItems: ServiceNavItem[] = [
   { slug: "website-development-services", label: "Website Development" },
   { slug: "ecommerce-web-development-services", label: "E-commerce Development" },
+  { slug: "marketplace-development-services", label: "Marketplace Development" },
+  { slug: "nextjs-development-services", label: "Next.js Development" },
   { slug: "web-design-services", label: "Web Design" },
   { slug: "android-app-development-services", label: "Android App Development" },
   { slug: "seo-services", label: "SEO Services" },

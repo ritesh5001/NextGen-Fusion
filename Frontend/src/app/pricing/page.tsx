@@ -245,6 +245,14 @@ export default function PricingPage() {
           <p className="mt-4 max-w-3xl leading-relaxed text-gray-600">
             Payment terms are the same on every project: <strong className="font-semibold text-gray-900">{PAYMENT_TERMS}</strong>.
           </p>
+          <p className="mt-4 max-w-3xl leading-relaxed text-gray-600">
+            Want the reasoning behind the numbers, with a line-by-line breakdown by page count and
+            store package? Read the{" "}
+            <Link href="/website-development-cost-in-india/" className="font-medium text-purple-600 hover:underline">
+              website development cost guide
+            </Link>
+            .
+          </p>
         </section>
 
         <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">

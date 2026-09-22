@@ -7,6 +7,7 @@ import { serviceSlugs } from "@/data/services-nav"
 import { locationSlugs } from "@/data/locations"
 import { activeCategorySlugs } from "@/lib/blog"
 import { team } from "@/data/team"
+import { guidePages } from "@/data/guides"
 
 // Revalidate hourly so newly published blog posts, store products and
 // portfolio entries show up without a redeploy.
@@ -59,7 +60,12 @@ const entry = (path: string, lastModified: Date | string): Entry => ({
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries: MetadataRoute.Sitemap = [
     ...Object.entries(STATIC_LAST_MODIFIED).map(([path, date]) => entry(path, date)),
-    ...serviceSlugs.map((slug) => entry(`/services/${slug}`, SERVICES_LAST_MODIFIED)),
+    // Guide-built service pages are in serviceSlugs too; skip them there so
+    // they carry their own edit date rather than the shared services date.
+    ...serviceSlugs
+      .filter((slug) => !guidePages.some((page) => page.path === `/services/${slug}`))
+      .map((slug) => entry(`/services/${slug}`, SERVICES_LAST_MODIFIED)),
+    ...guidePages.map((page) => entry(page.path, page.updated)),
     // City landing pages — the query shape every page-one competitor ranks with.
     ...locationSlugs.map((slug) => entry(`/${slug}`, LOCATIONS_LAST_MODIFIED)),
     ...staticProjects.map((p) => entry(`/work/${p.slug}`, WORK_LAST_MODIFIED)),
