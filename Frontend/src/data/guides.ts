@@ -13,7 +13,9 @@ import { OFFICE_HOURS } from "@/data/offices"
 import {
   computeBallpark,
   computeSupport,
+  formatAED,
   formatINR,
+  FX_NOTE,
   PAYMENT_TERMS,
   priceTier,
   rateCardForm,
@@ -320,6 +322,180 @@ const costGuide: GuidePage = {
     { label: "Get a tailored estimate", href: "/#project-estimator" },
     { label: "Ecommerce store vs marketplace", href: "/ecommerce-store-vs-marketplace/" },
     { label: "Projects we've delivered", href: "/work/" },
+  ],
+}
+
+// Both currencies side by side for UAE readers; the quote itself is in INR.
+const dual = (form: Partial<ProjectEstimatorData>) => {
+  const { cost } = computeBallpark(rateCardForm(form))
+  return {
+    inr: range(cost.min, cost.max),
+    aed: cost.min === cost.max ? formatAED(cost.min) : `${formatAED(cost.min)}–${formatAED(cost.max).replace("AED ", "")}`,
+  }
+}
+const tierDual = (id: "launch" | "store" | "platform") => {
+  const t = priceTier(id)
+  return { inr: range(t.min, t.max), aed: `${formatAED(t.min)}–${formatAED(t.max).replace("AED ", "")}`, weeks: `${t.weeksMin}–${t.weeksMax} weeks` }
+}
+const launchAe = tierDual("launch")
+const storeAe = tierDual("store")
+const platformAe = tierDual("platform")
+const planAe = (p: (typeof support)[keyof typeof support]) =>
+  p ? `${formatINR(p.amount)} (${formatAED(p.amount)}) / ${p.cadence}` : "—"
+
+const dubaiCostGuide: GuidePage = {
+  path: "/website-development-cost-in-dubai",
+  kind: "guide",
+  label: "Website development cost in Dubai",
+  metaTitle: "Website Development Cost in Dubai & UAE (2026), in AED",
+  metaDescription: `What a website costs a Dubai or UAE business in 2026, in AED and INR from our published rate card: business sites ${launchAe.aed}, custom online stores ${storeAe.aed}, platforms ${platformAe.aed}.`,
+  eyebrow: "Cost guide · UAE · 2026",
+  h1: "Website development cost in Dubai and the UAE: the numbers in AED",
+  intro: [
+    `On our rate card, a UAE business website costs from about ${formatAED(launch.min)} for a WordPress business site to about ${formatAED(platform.max)} for a custom platform. We are an Indian team working UAE hours, so these are Indian rates, shown in dirhams.`,
+    `Every figure is computed from the same rate card as our pricing page, so it moves when the rate card does. ${FX_NOTE}`,
+  ],
+  updated: "2026-09-29",
+  sections: [
+    {
+      heading: "The short answer: three bands",
+      body: [
+        "Almost every UAE brief falls into one of three bands. The band is set by what the site has to do, not by how it looks, and the step from the first band to the second is more than tenfold.",
+      ],
+      table: {
+        caption: "Website development cost for UAE businesses by project type (NextGen Fusion rate card, 2026)",
+        columns: ["Band", "What it is", "AED (approx.)", "INR", "Timeline"],
+        rows: [
+          ["Launch", "Business or brochure site on WordPress", launchAe.aed, launchAe.inr, launchAe.weeks],
+          ["Store", "Custom-coded online store", storeAe.aed, storeAe.inr, storeAe.weeks],
+          ["Platform", "Portals, marketplaces, RFQ platforms, web apps", platformAe.aed, platformAe.inr, platformAe.weeks],
+        ],
+        note: "Timelines run from content sign-off. Your written quote names one number and one delivery window",
+      },
+      links: [
+        { label: "Launch tier", href: "/pricing/#launch" },
+        { label: "Store tier", href: "/pricing/#store" },
+        { label: "Platform tier", href: "/pricing/#platform" },
+      ],
+    },
+    {
+      heading: "Business websites, and what Arabic adds",
+      body: [
+        "A business site on WordPress stays inside the Launch band whatever the page count. Built as custom code, typically in Next.js, the price climbs with the number of pages.",
+        "An Arabic version is, for pricing purposes, more pages: each Arabic page is a page to build and check, so a 10-page English site with a full Arabic version is priced like a 20-page site. The Arabic copy itself should come from a native writer and is not included.",
+      ],
+      table: {
+        caption: "Business website cost by page count, in AED (approx.)",
+        columns: ["Pages", "WordPress", "Custom-coded (Next.js)"],
+        rows: (["1-5", "6-15", "16-30"] as const).map((pages) => [
+          pages.replace("-", "–"),
+          dual({ pageCount: pages }).aed,
+          dual({ buildType: "custom", pageCount: pages }).aed,
+        ]),
+        note: "INR equivalents are on the India cost guide",
+      },
+      links: [{ label: "The same guide in INR", href: "/website-development-cost-in-india/" }],
+    },
+    {
+      heading: "Online stores",
+      body: [
+        "A WooCommerce or Shopify store is the cheapest way to sell online in the UAE, and a custom-coded store is right when checkout speed and catalogue logic decide revenue.",
+        "Payment gateway integration is included in every store. Gateway fees are paid by you to the gateway, and on Shopify the monthly plan, themes and apps are paid to Shopify. UAE stores usually settle in AED through gateways such as Network International, Telr, PayTabs or Stripe.",
+      ],
+      table: {
+        caption: "Online store cost for UAE businesses, in AED (approx.)",
+        columns: ["Package", "WooCommerce or Shopify", "Custom-coded"],
+        rows: (
+          [
+            ["Standard", "standard"],
+            ["Premium", "premium"],
+            ["Extra premium", "extra-premium"],
+            ["Custom functionality", "custom-functionality"],
+          ] as const
+        ).map(([label, pkg]) => [
+          label,
+          dual({ projectType: "ecommerce", ecommercePackage: pkg }).aed,
+          dual({ projectType: "ecommerce", buildType: "custom", ecommercePackage: pkg }).aed,
+        ]),
+      },
+      links: [
+        { label: "Shopify development", href: "/services/shopify-development-services/" },
+        { label: "Ecommerce store or marketplace?", href: "/ecommerce-store-vs-marketplace/" },
+      ],
+    },
+    {
+      heading: "Running costs after launch",
+      body: [
+        "Three things recur, and a quote that leaves them out is not complete. Support is a plan with us; domain, hosting and gateway fees are paid by you to those providers, in accounts in your company's name.",
+        "VAT in the UAE is 5%. How it applies to a supplier outside the UAE depends on your registration, so ask your accountant before you compare our INR quote with a local one.",
+      ],
+      table: {
+        caption: "Recurring costs for a UAE business website",
+        columns: ["Cost", "Paid to", "Amount"],
+        rows: [
+          ["Support: uptime and fixes", "NextGen Fusion", planAe(support.basic)],
+          ["Support + changes (WordPress)", "NextGen Fusion", planAe(support.growthWp)],
+          ["Support + changes (custom-coded)", "NextGen Fusion", planAe(support.growthCustom)],
+          ["Domain and hosting", "Your registrar and host", "Their current price"],
+          ["Payment gateway fees", "Your gateway, per transaction", "Their current rate"],
+        ],
+      },
+      links: [{ label: "Support plans", href: "/pricing/#support" }],
+    },
+    {
+      heading: "What you give up by hiring outside the UAE",
+      body: [
+        `Two things. Meetings are on video, not across a table, although our hours overlap the whole UAE working week. And without a UAE office we cannot put you in the Google Maps results for "near me" searches; that needs your own Google Business Profile at your own address, which we can help you set up.`,
+        "Everything else (the developer who writes the code answering after launch, accounts in your name, a fixed written quote) is the same as for our clients in India.",
+      ],
+      links: [{ label: "Website development in the UAE", href: "/website-development-company-in-uae/" }],
+    },
+  ],
+  caseStudiesHeading: "UAE and comparable builds",
+  caseStudies: [
+    {
+      slug: "cleanship",
+      title: "Cleanship",
+      body: "An Ajman Free Zone marine company: 310 service-and-port landing pages across 13 UAE ports and beyond, with UAE and India contact paths.",
+    },
+    {
+      slug: "deetoo",
+      title: "DeeToo",
+      body: "A WooCommerce store with 12 brands across 8 categories: the WooCommerce end of the store range.",
+    },
+    {
+      slug: "maribiz-ai",
+      title: "MariBiz.ai",
+      body: "A B2B procurement marketplace with an RFQ engine and 3,226+ vendors: the kind of project the Platform band covers.",
+    },
+  ],
+  faqs: [
+    {
+      question: "How much does a website cost in Dubai?",
+      answer: `On our rate card: about ${launchAe.aed} for a WordPress business site, ${storeAe.aed} for a custom-coded online store, and ${platformAe.aed} for a custom platform. Quotes are issued in INR (${launchAe.inr}, ${storeAe.inr} and ${platformAe.inr}).`,
+    },
+    {
+      question: "How much does an ecommerce website cost in the UAE?",
+      answer: `A WooCommerce or Shopify store starts at about ${dual({ projectType: "ecommerce" }).aed}; a custom-coded store is ${storeAe.aed}. Gateway fees and any Shopify plan are paid to those providers.`,
+    },
+    {
+      question: "Why is an Indian team cheaper for a UAE website?",
+      answer: "Our rates are set for an Indian cost base. Compare scope rather than totals: ask every quote what is excluded, who owns the accounts and what happens when you need a change in month six.",
+    },
+    {
+      question: "Does an Arabic version cost extra?",
+      answer: "Yes, in pages: each Arabic page is built and checked like an English one, so a full Arabic version roughly doubles the page count. The Arabic copy should come from a native writer.",
+    },
+    {
+      question: "How long does a website take?",
+      answer: `A business site typically takes ${launchAe.weeks} from content sign-off, a custom store ${storeAe.weeks} and a platform ${platformAe.weeks}. The written quote names one delivery window.`,
+    },
+  ],
+  related: [
+    { label: "Website development in the UAE", href: "/website-development-company-in-uae/" },
+    { label: "Website development in Dubai", href: "/website-development-company-in-dubai/" },
+    { label: "Full pricing and tiers", href: "/pricing/" },
+    { label: "The India cost guide", href: "/website-development-cost-in-india/" },
   ],
 }
 
@@ -762,7 +938,7 @@ const shopifyService: GuidePage = {
   ],
 }
 
-export const guidePages: GuidePage[] = [costGuide, storeVsMarketplace, marketplaceService, nextjsService, shopifyService]
+export const guidePages: GuidePage[] = [costGuide, dubaiCostGuide, storeVsMarketplace, marketplaceService, nextjsService, shopifyService]
 
 export function getGuidePage(path: string): GuidePage {
   const page = guidePages.find((p) => p.path === path)

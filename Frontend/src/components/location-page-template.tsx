@@ -1,15 +1,22 @@
 import Link from "next/link"
-import { MapPin, Phone } from "lucide-react"
+import { MapPin, MessageCircle, Phone } from "lucide-react"
 import CTABanner from "@/components/cta-banner"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema, siteUrl } from "@/lib/seo"
 import { offices } from "@/data/offices"
 import { getLocationPage, type LocationPage } from "@/data/locations"
 
+/** A page for a city in another country, served from an Indian office. */
+function isRemote(page: LocationPage) {
+  const office = offices.find((o) => o.city === page.city)
+  return Boolean(page.areaCountry && office && page.areaCountry !== office.postal.country)
+}
+
 function schemaFor(page: LocationPage) {
   const office = offices.find((o) => o.city === page.city)
   const url = absoluteUrl(`/${page.slug}`)
   const area = page.area ?? page.city
+  const remote = isRemote(page)
 
   return [
     {
@@ -22,9 +29,17 @@ function schemaFor(page: LocationPage) {
       // The office node, not the Organization: this page is about work delivered
       // from a specific place, and that node carries the address and geo.
       provider: { "@id": `${siteUrl}/#office-${page.city.toLowerCase()}` },
-      areaServed: page.area
+      // A remote page names the place it serves and its country, never an
+      // address there: the provider stays the Indian office, which is true.
+      areaServed: remote
         ? {
-            "@type": "State",
+            "@type": page.areaType ?? "City",
+            name: area,
+            address: { "@type": "PostalAddress", addressCountry: page.areaCountry },
+          }
+        : page.area
+        ? {
+            "@type": page.areaType ?? "State",
             name: page.area,
             ...(office ? { address: { "@type": "PostalAddress", addressRegion: office.postal.region, addressCountry: office.postal.country } } : {}),
           }
@@ -79,6 +94,7 @@ function schemaFor(page: LocationPage) {
 export function LocationPageTemplate({ page }: { page: LocationPage }) {
   const office = offices.find((o) => o.city === page.city)
   const area = page.area ?? page.city
+  const remote = isRemote(page)
 
   return (
     <>
@@ -101,8 +117,19 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
             <div className="mt-8 flex flex-wrap gap-4 text-sm">
               <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-gray-700">
                 <MapPin className="h-4 w-4 text-purple-600" aria-hidden="true" />
-                {office.address}
+                {remote ? `Served remotely from ${office.city}, India` : office.address}
               </span>
+              {remote && (
+                <a
+                  href={`https://wa.me/${office.contact.phoneE164.replace("+", "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-gray-700 transition-colors hover:border-gray-900"
+                >
+                  <MessageCircle className="h-4 w-4 text-purple-600" aria-hidden="true" />
+                  WhatsApp {office.contact.phone}
+                </a>
+              )}
               <a
                 href={`tel:${office.contact.phoneE164}`}
                 className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-gray-700 transition-colors hover:border-gray-900"

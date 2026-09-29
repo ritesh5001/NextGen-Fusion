@@ -286,6 +286,67 @@ export const staticProjects: StaticProject[] = [
     featured: true,
   },
   {
+    slug: "cleanship",
+    domain: "cleanship.co",
+    title: "Cleanship",
+    seoTitle: "Cleanship: Next.js Site with 310 Port Landing Pages for a UAE Marine Firm",
+    shortDescription:
+      "Marine cleaning company registered in Ajman Free Zone — a Next.js site with a landing page for every service at every port it covers across the UAE, India, the Gulf and West Africa.",
+    description:
+      "Built the website for Cleanship, a hull, hold and tank cleaning company whose head office is registered in Ajman Free Zone, with operating bases in Fujairah and Khor Fakkan. Ship operators search by port, not by company, so the site carries 310 service-and-port landing pages — hull cleaning at Jebel Ali, hold cleaning at Khalifa Port, tank cleaning at Hamriyah and so on — covering 13 UAE ports alongside ports in India, the Gulf and West Africa, with 21 service scopes and a quote form built for vessel, port and window.",
+    challenge:
+      "A superintendent with a vessel arriving at Khor Fakkan searches for hull cleaning at that port, that week. A generic services page ranks for none of those searches, and a marine contractor that is invisible at port level loses the job to whoever answers first.",
+    approach:
+      "We built the site around the port as the unit of search: one landing page per service per port, each naming the port, whether it is a state or private port, which sea it sits on, and which services can be done there. The enquiry path asks for what an operations desk actually needs (vessel, port, service, window), protected by Cloudflare Turnstile rather than a CAPTCHA puzzle.",
+    keyFeatures: [
+      {
+        title: "310 Service-and-Port Landing Pages",
+        description:
+          "Hull, hold, tank, propeller, thruster, in-water survey and UWILD pages for each port covered, so the site answers the exact search a ship operator makes.",
+      },
+      {
+        title: "13 UAE Ports Covered",
+        description:
+          "Jebel Ali, Port Rashid, Sharjah, Khor Fakkan, Hamriyah, Ajman, Fujairah, Khalifa Port, Ras Al Khaimah, Mina Saqr and more, each with its own pages and port details.",
+      },
+      {
+        title: "21 Service Scopes",
+        description:
+          "Underwater hull cleaning, hold cleaning, tank cleaning, offshore services and NDT & repair, broken down into 21 individually described scopes.",
+      },
+      {
+        title: "Operations-Desk Enquiry Flow",
+        description:
+          "A short quote form on every page and a full enquiry form that asks for vessel, port and window, protected by Cloudflare Turnstile.",
+      },
+      {
+        title: "UAE and India Contact Paths",
+        description:
+          "Separate UAE (+971) and India (+91) numbers, WhatsApp, and office pages for the Ajman head office and the Fujairah and Khor Fakkan bases.",
+      },
+    ],
+    techStack: ["Next.js", "React", "Cloudflare Turnstile", "Vercel"],
+    results: [
+      { metric: "310", label: "Service & Port Landing Pages" },
+      { metric: "13", label: "UAE Ports Covered" },
+      { metric: "21", label: "Service Scopes" },
+      { metric: "3", label: "UAE Bases: Ajman, Fujairah, Khor Fakkan" },
+    ],
+    role: "Full-Stack Developer",
+    category: "Marine Services / B2B",
+    tags: [
+      "Next.js Development",
+      "Programmatic Local SEO",
+      "UAE Business Website",
+      "Maritime Industry",
+    ],
+    images: ["/projects/cleanship/screenshot-1.png"],
+    coverImage: "/projects/cleanship/screenshot-1.png",
+    liveUrl: "https://www.cleanship.co",
+    featured: false,
+    publishedAt: "2026-09-29",
+  },
+  {
     slug: "thegrafftee",
     domain: "thegrafftee.com",
     title: "The Grafftee",

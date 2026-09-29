@@ -322,6 +322,18 @@ export const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}
 // TODO: confirm the conversion rate (or wire it to a live FX source).
 // ─────────────────────────────────────────────────────────────────────────────
 const INR_PER_USD = 85
+// The dirham has been pegged to the US dollar at 3.6725 since 1997, so AED
+// figures move only with the rupee rate above.
+const AED_PER_USD = 3.6725
+
+/** Approximate AED for UAE-facing copy, rounded to the nearest AED 10. Always
+ *  shown as approximate next to the INR figure the quote is actually in. */
+export function formatAED(inrValue: number): string {
+  const aed = Math.round((inrValue / INR_PER_USD) * AED_PER_USD / 10) * 10
+  return `AED ${aed.toLocaleString("en-US")}`
+}
+
+export const FX_NOTE = `AED figures are approximate, at ₹${INR_PER_USD} to US$1 and the fixed rate of AED ${AED_PER_USD} to US$1. Quotes are issued in INR.`
 
 function prefersINR(): boolean {
   if (typeof window === 'undefined') return true // SSR default for an India-first brand

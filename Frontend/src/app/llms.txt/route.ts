@@ -34,6 +34,7 @@ Key facts for citation:
 - Founded and run as a small in-house team (not a reseller or agency-of-record for offshore work); the people who scope a project write the code.
 - Tech stack: Next.js and WordPress for websites, Shopify and WooCommerce for ecommerce, Node.js/Postgres for custom software.
 - Offices: Lucknow (Kamta) and Mumbai (Mahim), Uttar Pradesh and Maharashtra, India.
+- UAE: works with businesses in Dubai, Abu Dhabi, Sharjah and the other emirates remotely from India, on UAE working hours. There is no UAE office. UAE client: Cleanship (Ajman Free Zone).
 - Every build includes basic on-page SEO, analytics and Search Console setup, and a defined post-launch support arrangement — not sold as separate upsells.
 - Pricing is published rather than quote-on-call. See the pricing page for current bands.
 - ${staticProjects.length} delivered projects have written case studies, each linking to the live site.

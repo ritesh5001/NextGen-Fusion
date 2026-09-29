@@ -36,7 +36,7 @@ const structuredData = {
       alternateName: "NextGen Fusion — Web Development Agency, Lucknow",
       url: siteUrl,
       description:
-        "Web development, ecommerce and SEO studio in Lucknow and Mumbai, India. Builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps and custom software for D2C brands, manufacturers, institutes and B2B companies, with published pricing and post-launch support.",
+        "Web development, ecommerce and SEO studio in Lucknow and Mumbai, India, serving businesses across India and the UAE. Builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps and custom software for D2C brands, manufacturers, institutes and B2B companies, with published pricing and post-launch support.",
       // Google requires a raster logo; the SVG here was silently ignored.
       logo: { "@id": `${siteUrl}/#logo` },
       image: { "@id": `${siteUrl}/#logo` },
@@ -49,6 +49,8 @@ const structuredData = {
       knowsLanguage: ["en", "hi"],
       areaServed: [
         { "@type": "Country", name: "India" },
+        // Served remotely from the Indian offices; there is no UAE address.
+        { "@type": "Country", name: "United Arab Emirates" },
         { "@type": "Place", name: "Worldwide" },
       ],
       // The primary address is the Lucknow office: it carries the primary phone,
@@ -90,7 +92,7 @@ const structuredData = {
         // Worldwide claim one node above it — telling Google and every AI
         // system simultaneously that the studio serves the world and can only
         // be contacted from India.
-        areaServed: ["IN", "Worldwide"],
+        areaServed: ["IN", "AE", "Worldwide"],
         availableLanguage: ["English", "Hindi"],
       })),
       // NOTE: aggregateRating deliberately omitted. Google's structured-data
@@ -125,7 +127,7 @@ const structuredData = {
           addressCountry: office.postal.country,
         },
         geo: { "@type": "GeoCoordinates", latitude, longitude },
-        areaServed: ["IN", "Worldwide"],
+        areaServed: ["IN", "AE", "Worldwide"],
         priceRange: "₹₹",
         openingHoursSpecification: [
           {

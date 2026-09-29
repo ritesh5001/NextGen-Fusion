@@ -5,6 +5,7 @@ import { apiService } from "@/lib/api"
 import { getStoreProducts, isStoreProductIndexable } from "@/lib/store"
 import { serviceSlugs } from "@/data/services-nav"
 import { locationSlugs } from "@/data/locations"
+import { uaeLocationPages } from "@/data/locations-uae"
 import { activeCategorySlugs } from "@/lib/blog"
 import { team } from "@/data/team"
 import { guidePages } from "@/data/guides"
@@ -43,6 +44,7 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
 
 const SERVICES_LAST_MODIFIED = "2026-09-16"
 const LOCATIONS_LAST_MODIFIED = "2026-09-16"
+const UAE_LAST_MODIFIED = "2026-09-29"
 // Case studies are edited on their own cadence; they were inheriting the
 // services date and claiming an edit they had not had.
 const WORK_LAST_MODIFIED = "2026-08-14"
@@ -67,7 +69,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .map((slug) => entry(`/services/${slug}`, SERVICES_LAST_MODIFIED)),
     ...guidePages.map((page) => entry(page.path, page.updated)),
     // City landing pages — the query shape every page-one competitor ranks with.
-    ...locationSlugs.map((slug) => entry(`/${slug}`, LOCATIONS_LAST_MODIFIED)),
+    ...locationSlugs.map((slug) =>
+      entry(`/${slug}`, uaeLocationPages.some((page) => page.slug === slug) ? UAE_LAST_MODIFIED : LOCATIONS_LAST_MODIFIED),
+    ),
     ...staticProjects.map((p) => entry(`/work/${p.slug}`, WORK_LAST_MODIFIED)),
     // Team profiles were absent from the sitemap entirely while also declaring
     // /team/ as their canonical — between the two, four pages of real

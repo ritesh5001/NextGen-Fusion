@@ -19,6 +19,7 @@
  */
 
 import { offices } from "@/data/offices"
+import { uaeLocationPages } from "@/data/locations-uae"
 
 // Read from the office data so the street address on this page cannot drift
 // from the footer, contact page and LocalBusiness schema.
@@ -45,6 +46,11 @@ export type LocationPage = {
   /** Region the page targets when wider than the office city, e.g. a state hub
    *  served from the Lucknow office. Defaults to `city`. */
   area?: string
+  /** Schema type of `area`. Defaults to "State" for a hub, "City" for a remote city. */
+  areaType?: "City" | "State" | "Country"
+  /** ISO country of `area` when it is outside India (e.g. "AE"). The page is
+   *  then marked as served remotely from `city`'s office; no address there is claimed. */
+  areaCountry?: string
   serviceLabel: string
   title: string
   metaTitle: string
@@ -1600,6 +1606,7 @@ export const locationPages: LocationPage[] = [
       "seo-services-in-mumbai",
     ],
   },
+  ...uaeLocationPages,
 ]
 
 export const locationSlugs = locationPages.map((page) => page.slug)
