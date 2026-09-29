@@ -46,9 +46,27 @@ These are not technical defects; they are limits on how well a site in India can
 
 - The city pages are marked in schema as `areaServed` Dubai / Abu Dhabi / Sharjah / UAE with `addressCountry: AE`, provided by the Lucknow office. No UAE address is claimed anywhere.
 - Ajman, Ras Al Khaimah, Fujairah, Umm Al Quwain and Al Ain are sections of the UAE hub, not separate pages, to avoid near-identical doorway pages.
-- AED figures are computed from the INR rate card (₹85 = US$1, AED 3.6725 = US$1) and labelled approximate.
+- AED figures are computed from the INR rate card (₹96 = US$1, AED 3.6725 = US$1; ECB rate, 29 September 2026) and labelled approximate.
 - Organization schema lists the United Arab Emirates in `areaServed`; `llms.txt` states the UAE market and that there is no UAE office.
 - All new URLs are in the sitemap with a 2026-09-29 `lastmod`.
+
+## What was added for Singapore (29 September 2026)
+
+| Page | Primary keyword | URL |
+|---|---|---|
+| Singapore | Website development company in Singapore | `/website-development-company-in-singapore/` |
+| Cost guide | Website development cost in Singapore (SGD) | `/website-development-cost-in-singapore/` |
+| Blog | Hiring a web development team in India from Singapore | `/blog/hire-web-development-team-india-from-singapore/` |
+| Blog | Online store for Singapore: PayNow, GST, PDPA | `/blog/ecommerce-website-singapore-paynow-gst-pdpa/` |
+
+- One page, not several: Singapore is a single city, and there is no Singapore client to build district pages on.
+- The page states there is no Singapore office and no Singapore-registered client yet, and that the team is not a PSG pre-approved vendor. Its proof is maritime (MariBiz.ai, MariMail, Cleanship) and comparable builds.
+- The same ccTLD and Maps-pack limits apply as for the UAE. Singapore adds one more: working hours cover Singapore afternoons (12:30–21:30 SGT), not mornings, and the page says so.
+- SGD figures use ₹96 and S$1.28 to US$1 (ECB, 29 September 2026). The Singapore dollar floats, so re-check the rate in `estimator-pricing.ts` every few months.
+
+## Currency correction (29 September 2026)
+
+The rate card converted rupees at ₹85 to US$1, a figure marked "TODO: confirm" in the code. The ECB rate on 29 September 2026 was ₹95.98, so USD prices for overseas visitors and every AED figure were about 13% too high. The rate is now ₹96, and the two UAE blog posts were corrected in the database; their live pages switch to the corrected figures at the next hourly refresh or deploy.
 
 ## AI Crawler Access
 

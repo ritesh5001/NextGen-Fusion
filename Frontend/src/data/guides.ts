@@ -9,11 +9,13 @@
  * the Shopify list, a store that is live today. If a claim cannot be linked to
  * one of those sources, it does not go here.
  */
-import { OFFICE_HOURS } from "@/data/offices"
+import { OFFICE_HOURS, officeHoursAt } from "@/data/offices"
 import {
   computeBallpark,
   computeSupport,
   formatAED,
+  formatSGD,
+  SGD_FX_NOTE,
   formatINR,
   FX_NOTE,
   PAYMENT_TERMS,
@@ -499,6 +501,173 @@ const dubaiCostGuide: GuidePage = {
   ],
 }
 
+// Singapore figures in SGD; the quote itself is in INR.
+const sgRange = (min: number, max: number) => (min === max ? formatSGD(min) : `${formatSGD(min)}–${formatSGD(max)}`)
+const dualSg = (form: Partial<ProjectEstimatorData>) => {
+  const { cost } = computeBallpark(rateCardForm(form))
+  return { inr: range(cost.min, cost.max), sgd: sgRange(cost.min, cost.max) }
+}
+const tierSg = (id: "launch" | "store" | "platform") => {
+  const t = priceTier(id)
+  return { inr: range(t.min, t.max), sgd: sgRange(t.min, t.max), weeks: `${t.weeksMin}–${t.weeksMax} weeks` }
+}
+const SG_HOURS = officeHoursAt(150)
+const launchSg = tierSg("launch")
+const storeSg = tierSg("store")
+const platformSg = tierSg("platform")
+const planSg = (p: (typeof support)[keyof typeof support]) =>
+  p ? `${formatINR(p.amount)} (${formatSGD(p.amount)}) / ${p.cadence}` : "—"
+
+const singaporeCostGuide: GuidePage = {
+  path: "/website-development-cost-in-singapore",
+  kind: "guide",
+  label: "Website development cost in Singapore",
+  metaTitle: "Website Development Cost in Singapore (2026), in SGD",
+  metaDescription: `What a website costs a Singapore business in 2026, in SGD and INR from our published rate card: business sites ${launchSg.sgd}, custom online stores ${storeSg.sgd}, platforms ${platformSg.sgd}.`,
+  eyebrow: "Cost guide · Singapore · 2026",
+  h1: "Website development cost in Singapore: the numbers in SGD",
+  intro: [
+    `On our rate card, a Singapore business website costs from about ${formatSGD(launch.min)} for a WordPress business site to about ${formatSGD(platform.max)} for a custom platform. We are an Indian team, so these are Indian rates, shown in Singapore dollars.`,
+    `Every figure is computed from the same rate card as our pricing page. ${SGD_FX_NOTE}`,
+  ],
+  updated: "2026-09-29",
+  sections: [
+    {
+      heading: "The short answer: three bands",
+      body: [
+        "Almost every brief falls into one of three bands, set by what the site has to do rather than how it looks. The step from the first band to the second is more than tenfold.",
+      ],
+      table: {
+        caption: "Website development cost for Singapore businesses by project type (NextGen Fusion rate card, 2026)",
+        columns: ["Band", "What it is", "SGD (approx.)", "INR", "Timeline"],
+        rows: [
+          ["Launch", "Business or brochure site on WordPress", launchSg.sgd, launchSg.inr, launchSg.weeks],
+          ["Store", "Custom-coded online store", storeSg.sgd, storeSg.inr, storeSg.weeks],
+          ["Platform", "SaaS products, portals, marketplaces, web apps", platformSg.sgd, platformSg.inr, platformSg.weeks],
+        ],
+        note: "Timelines run from content sign-off. Your written quote names one number and one delivery window",
+      },
+      links: [
+        { label: "Launch tier", href: "/pricing/#launch" },
+        { label: "Store tier", href: "/pricing/#store" },
+        { label: "Platform tier", href: "/pricing/#platform" },
+      ],
+    },
+    {
+      heading: "Business websites",
+      body: [
+        "A business site on WordPress stays inside the Launch band whatever the page count. Built as custom code, typically in Next.js, the price climbs with the number of pages. A second language, such as Chinese, is priced as more pages.",
+      ],
+      table: {
+        caption: "Business website cost by page count, in SGD (approx.)",
+        columns: ["Pages", "WordPress", "Custom-coded (Next.js)"],
+        rows: (["1-5", "6-15", "16-30"] as const).map((pages) => [
+          pages.replace("-", "–"),
+          dualSg({ pageCount: pages }).sgd,
+          dualSg({ buildType: "custom", pageCount: pages }).sgd,
+        ]),
+        note: "INR equivalents are on the India cost guide",
+      },
+      links: [{ label: "The same guide in INR", href: "/website-development-cost-in-india/" }],
+    },
+    {
+      heading: "Online stores",
+      body: [
+        "Payment gateway integration is included in every store. Singapore stores usually take PayNow alongside cards, through a gateway such as Stripe, Adyen, HitPay or 2C2P; gateway fees are paid by you to the gateway, and on Shopify the monthly plan, themes and apps are paid to Shopify.",
+      ],
+      table: {
+        caption: "Online store cost for Singapore businesses, in SGD (approx.)",
+        columns: ["Package", "WooCommerce or Shopify", "Custom-coded"],
+        rows: (
+          [
+            ["Standard", "standard"],
+            ["Premium", "premium"],
+            ["Extra premium", "extra-premium"],
+            ["Custom functionality", "custom-functionality"],
+          ] as const
+        ).map(([label, pkg]) => [
+          label,
+          dualSg({ projectType: "ecommerce", ecommercePackage: pkg }).sgd,
+          dualSg({ projectType: "ecommerce", buildType: "custom", ecommercePackage: pkg }).sgd,
+        ]),
+      },
+      links: [{ label: "Shopify development", href: "/services/shopify-development-services/" }],
+    },
+    {
+      heading: "Running costs, GST and PSG",
+      body: [
+        "Support is a plan with us; domain, hosting and gateway fees are paid by you to those providers, in accounts in your company's name.",
+        "Singapore GST is 9%, and how it applies to services bought from a supplier outside Singapore depends on your registration, so ask your accountant before comparing our INR quote with a local one. We are not a pre-approved vendor under the Productivity Solutions Grant, so our work cannot be claimed under PSG.",
+      ],
+      table: {
+        caption: "Recurring costs for a Singapore business website",
+        columns: ["Cost", "Paid to", "Amount"],
+        rows: [
+          ["Support: uptime and fixes", "NextGen Fusion", planSg(support.basic)],
+          ["Support + changes (WordPress)", "NextGen Fusion", planSg(support.growthWp)],
+          ["Support + changes (custom-coded)", "NextGen Fusion", planSg(support.growthCustom)],
+          ["Domain and hosting", "Your registrar and host", "Their current price"],
+          ["Payment gateway fees", "Your gateway, per transaction", "Their current rate"],
+        ],
+      },
+      links: [{ label: "Support plans", href: "/pricing/#support" }],
+    },
+    {
+      heading: "What you give up by hiring outside Singapore",
+      body: [
+        `Mornings and meetings. Our day runs ${SG_HOURS} Singapore time, so a morning question waits until lunchtime, and meetings are on video. And without a Singapore address we cannot put you in Google Maps results; that needs your own Google Business Profile at your own address.`,
+      ],
+      links: [{ label: "Website development in Singapore", href: "/website-development-company-in-singapore/" }],
+    },
+  ],
+  caseStudiesHeading: "Comparable builds",
+  caseStudies: [
+    {
+      slug: "maribiz-ai",
+      title: "MariBiz.ai",
+      body: "A global marine procurement marketplace with an RFQ engine and 3,226+ vendors: the kind of project the Platform band covers.",
+    },
+    {
+      slug: "nextmentor",
+      title: "NEXTmentor",
+      body: "A Next.js course platform with payments, verifiable certificates and referral commission: a typical startup platform build.",
+    },
+    {
+      slug: "deetoo",
+      title: "DeeToo",
+      body: "A WooCommerce store with 12 brands across 8 categories: the WooCommerce end of the store range.",
+    },
+  ],
+  faqs: [
+    {
+      question: "How much does a website cost in Singapore?",
+      answer: `On our rate card: about ${launchSg.sgd} for a WordPress business site, ${storeSg.sgd} for a custom-coded online store, and ${platformSg.sgd} for a custom platform. Quotes are issued in INR (${launchSg.inr}, ${storeSg.inr} and ${platformSg.inr}).`,
+    },
+    {
+      question: "How much does an ecommerce website cost in Singapore?",
+      answer: `A WooCommerce or Shopify store starts at about ${dualSg({ projectType: "ecommerce" }).sgd}; a custom-coded store is ${storeSg.sgd}. Gateway fees and any Shopify plan are paid to those providers.`,
+    },
+    {
+      question: "Can I use the Productivity Solutions Grant with you?",
+      answer: "No. We are not a PSG pre-approved vendor, so our work cannot be claimed under the grant.",
+    },
+    {
+      question: "What hours do you work in Singapore time?",
+      answer: `${SG_HOURS} Singapore time, Monday to Saturday, which covers every Singapore afternoon.`,
+    },
+    {
+      question: "How long does a website take?",
+      answer: `A business site typically takes ${launchSg.weeks} from content sign-off, a custom store ${storeSg.weeks} and a platform ${platformSg.weeks}.`,
+    },
+  ],
+  related: [
+    { label: "Website development in Singapore", href: "/website-development-company-in-singapore/" },
+    { label: "Full pricing and tiers", href: "/pricing/" },
+    { label: "The UAE cost guide (AED)", href: "/website-development-cost-in-dubai/" },
+    { label: "The India cost guide", href: "/website-development-cost-in-india/" },
+  ],
+}
+
 const storeVsMarketplace: GuidePage = {
   path: "/ecommerce-store-vs-marketplace",
   kind: "guide",
@@ -938,7 +1107,7 @@ const shopifyService: GuidePage = {
   ],
 }
 
-export const guidePages: GuidePage[] = [costGuide, dubaiCostGuide, storeVsMarketplace, marketplaceService, nextjsService, shopifyService]
+export const guidePages: GuidePage[] = [costGuide, dubaiCostGuide, singaporeCostGuide, storeVsMarketplace, marketplaceService, nextjsService, shopifyService]
 
 export function getGuidePage(path: string): GuidePage {
   const page = guidePages.find((p) => p.path === path)

@@ -80,6 +80,20 @@ export const OFFICE_HOURS = {
   replyWithin: "one working day",
 } as const
 
+/**
+ * Our office hours in another time zone, e.g. `officeHoursAt(-90)` for the UAE
+ * (1h30 behind India) or `officeHoursAt(150)` for Singapore (2h30 ahead).
+ * None of the countries we serve use daylight saving, so the offset is fixed.
+ */
+export function officeHoursAt(minutesFromIndia: number): string {
+  const shift = (time: string) => {
+    const [h, m] = time.split(":").map(Number)
+    const total = h * 60 + m + minutesFromIndia
+    return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`
+  }
+  return `${shift(OFFICE_HOURS.opens)}–${shift(OFFICE_HOURS.closes)}`
+}
+
 /** The number used in schema, the primary CTA and every directory listing. */
 export const PRIMARY_PHONE_E164 = "+917348228167"
 export const PRIMARY_PHONE_DISPLAY = "+91 73482 28167"

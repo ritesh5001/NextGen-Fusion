@@ -20,6 +20,7 @@
 
 import { offices } from "@/data/offices"
 import { uaeLocationPages } from "@/data/locations-uae"
+import { sgLocationPages } from "@/data/locations-sg"
 
 // Read from the office data so the street address on this page cannot drift
 // from the footer, contact page and LocalBusiness schema.
@@ -1607,6 +1608,7 @@ export const locationPages: LocationPage[] = [
     ],
   },
   ...uaeLocationPages,
+  ...sgLocationPages,
 ]
 
 export const locationSlugs = locationPages.map((page) => page.slug)

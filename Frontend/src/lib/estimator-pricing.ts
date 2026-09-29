@@ -319,9 +319,11 @@ export const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}
 // ─────────────────────────────────────────────────────────────────────────────
 // Currency display. Prices are authored in INR. Indian visitors see ₹ directly;
 // everyone else sees an approximate USD conversion.
-// TODO: confirm the conversion rate (or wire it to a live FX source).
+// Rates below are the ECB reference rates for 29 Sep 2026 (via frankfurter.dev),
+// rounded. Re-check them every few months; every foreign-currency figure on the
+// site is derived from these two constants.
 // ─────────────────────────────────────────────────────────────────────────────
-const INR_PER_USD = 85
+const INR_PER_USD = 96
 // The dirham has been pegged to the US dollar at 3.6725 since 1997, so AED
 // figures move only with the rupee rate above.
 const AED_PER_USD = 3.6725
@@ -334,6 +336,17 @@ export function formatAED(inrValue: number): string {
 }
 
 export const FX_NOTE = `AED figures are approximate, at ₹${INR_PER_USD} to US$1 and the fixed rate of AED ${AED_PER_USD} to US$1. Quotes are issued in INR.`
+
+// The Singapore dollar floats, so this rate needs the same periodic check.
+const SGD_PER_USD = 1.28
+
+/** Approximate SGD for Singapore-facing copy, rounded to the nearest S$10. */
+export function formatSGD(inrValue: number): string {
+  const sgd = Math.round((inrValue / INR_PER_USD) * SGD_PER_USD / 10) * 10
+  return `S$${sgd.toLocaleString("en-US")}`
+}
+
+export const SGD_FX_NOTE = `SGD figures are approximate, at ₹${INR_PER_USD} and S$${SGD_PER_USD} to US$1 (September 2026). Quotes are issued in INR.`
 
 function prefersINR(): boolean {
   if (typeof window === 'undefined') return true // SSR default for an India-first brand

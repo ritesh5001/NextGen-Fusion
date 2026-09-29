@@ -16,18 +16,13 @@
  * for clients elsewhere and is described that way.
  */
 import type { LocationPage } from "@/data/locations"
-import { OFFICE_HOURS, offices } from "@/data/offices"
+import { OFFICE_HOURS, officeHoursAt, offices } from "@/data/offices"
 import { FX_NOTE, formatAED, formatINR, priceTier } from "@/lib/estimator-pricing"
 
 const LUCKNOW = offices.find((office) => office.city === "Lucknow")!
 
-// The UAE is 1h30 behind India all year (neither country uses daylight saving).
-function toUaeTime(ist: string): string {
-  const [h, m] = ist.split(":").map(Number)
-  const minutes = h * 60 + m - 90
-  return `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`
-}
-const UAE_HOURS = `${toUaeTime(OFFICE_HOURS.opens)}–${toUaeTime(OFFICE_HOURS.closes)}`
+// The UAE is 1h30 behind India all year.
+const UAE_HOURS = officeHoursAt(-90)
 
 const launch = priceTier("launch")
 const store = priceTier("store")
