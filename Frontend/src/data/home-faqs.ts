@@ -45,7 +45,7 @@ export const homeFaqs: HomeFaq[] = [
   },
   {
     question: "How much does website development cost in India?",
-    answer: `WordPress or Shopify business websites start at ${launchBand}. Custom-coded online stores run ${storeBand}, and custom platforms or web apps are quoted from the same rate card. Full bands are on our pricing page, and the project estimator gives a tailored range in about two minutes — every quote is fixed, with no hidden costs.`,
+    answer: `WordPress or Shopify business websites start at ${launchBand}. Custom-coded online stores run ${storeBand}, and custom platforms or web apps are quoted from the same rate card. Full bands are on our pricing page, and every written quote is fixed, with no hidden costs.`,
   },
   {
     question: "How long does a project take?",

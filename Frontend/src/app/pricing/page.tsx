@@ -118,7 +118,7 @@ const FAQS = [
   {
     question: "Is this a quote?",
     answer:
-      "No — it is the rate card the quote is built from. Your written quote comes back from a brief and names one number and one delivery window, not a range. The project estimator on the homepage gets you closer in about two minutes.",
+      "No — it is the rate card the quote is built from. Your written quote comes back from a brief and names one number and one delivery window, not a range.",
   },
   {
     question: "What are the payment terms?",
@@ -235,12 +235,9 @@ export default function PricingPage() {
             What a website actually costs
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-gray-600">
-            These are the bands our quotes are built from, not a teaser. They come from the same
-            rate card the{" "}
-            <Link href="/#project-estimator" className="font-medium text-purple-600 hover:underline">
-              project estimator
-            </Link>{" "}
-            uses, so the number here and the number you are quoted cannot drift apart.
+            These are the bands our quotes are built from, not a teaser. Your written quote is
+            built from the same rate card, so the number here and the number you are quoted cannot
+            drift apart.
           </p>
           <p className="mt-4 max-w-3xl leading-relaxed text-gray-600">
             Payment terms are the same on every project: <strong className="font-semibold text-gray-900">{PAYMENT_TERMS}</strong>.

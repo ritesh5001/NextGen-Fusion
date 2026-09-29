@@ -141,7 +141,7 @@ const costGuide: GuidePage = {
   h1: "Website development cost in India: what you will actually pay in 2026",
   intro: [
     `On our rate card, a business website in India costs from ${formatINR(launch.min)} to ${formatINR(platform.max)}, and both ends of that range are honest. The spread is not agencies making numbers up. It is three different kinds of project that happen to share the word "website".`,
-    "This guide uses our own published rate card rather than survey averages, because a real rate card is the only number you can check against a quote. Every figure on this page is computed from the same rate card as our pricing page and project estimator, so if we change a price, this page changes with it.",
+    "This guide uses our own published rate card rather than survey averages, because a real rate card is the only number you can check against a quote. Every figure on this page is computed from the same rate card as our pricing page, so if we change a price, this page changes with it.",
   ],
   updated: "2026-09-22",
   sections: [
@@ -321,7 +321,7 @@ const costGuide: GuidePage = {
   ],
   related: [
     { label: "Full pricing and tiers", href: "/pricing/" },
-    { label: "Get a tailored estimate", href: "/#project-estimator" },
+    { label: "Get a written quote", href: "/contact/" },
     { label: "Ecommerce store vs marketplace", href: "/ecommerce-store-vs-marketplace/" },
     { label: "Projects we've delivered", href: "/work/" },
   ],
@@ -926,7 +926,7 @@ const nextjsService: GuidePage = {
       body: [
         "TypeScript throughout, server-rendered pages, structured data, and analytics and Search Console connected before launch. Core Web Vitals are checked on a throttled mobile connection, not just on a fast office laptop.",
         "A repository, hosting and every account in your name from day one, plus a staging environment on platform builds. If you ever leave us, another developer can pick up the code, because it is a standard Next.js project with nothing hidden in it.",
-        "This site is itself a Next.js App Router build. Its pricing page, estimator and this page all compute their rupee figures from one rate card, which is the sort of thing a framework makes easy and a theme does not.",
+        "This site is itself a Next.js App Router build. Its pricing page, cost guides and this page all compute their rupee figures from one rate card, which is the sort of thing a framework makes easy and a theme does not.",
       ],
     },
     {

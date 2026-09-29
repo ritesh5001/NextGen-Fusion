@@ -14,7 +14,6 @@ const ProcessSection = dynamic(() => import("@/components/process-section"))
 const StackMarqueeSection = dynamic(() => import("@/components/stack-marquee-section"))
 const FAQSection = dynamic(() => import("@/components/faq-section"))
 const ContactSection = dynamic(() => import("@/components/contact-section"))
-const ProjectEstimatorSection = dynamic(() => import("@/components/project-estimator-section"))
 const WorkSection = dynamic(() => import("@/components/work-section"))
 const DeliveredWall = dynamic(() => import("@/components/delivered-wall"))
 
@@ -37,9 +36,9 @@ export default function HomeClient() {
       <div id="about">
         <AboutUsSection />
       </div>
-      <div id="project-estimator">
-        <ProjectEstimatorSection />
-      </div>
+      {/* The project estimator (components/project-estimator-section.tsx) is
+          switched off for now; the component and its backend are kept, so
+          bringing it back is this block plus its import. */}
       <StackMarqueeSection />
       <div id="faq">
         <FAQSection />

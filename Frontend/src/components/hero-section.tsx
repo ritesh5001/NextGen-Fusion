@@ -261,12 +261,12 @@ const HeroContent = () => {
           Book a Free Call
         </motion.button>
         <motion.a
-          href="#project-estimator"
+          href="/pricing/"
           className="px-8 py-3.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-base sm:text-lg"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
-          Get a Free Estimate
+          See Our Pricing
         </motion.a>
       </motion.div>
 
