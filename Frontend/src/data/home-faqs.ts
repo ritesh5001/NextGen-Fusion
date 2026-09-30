@@ -9,24 +9,15 @@
  * Organization schema in `app/layout.tsx` — they are the same claim in three places.
  */
 import { OFFICE_HOURS } from "@/data/offices"
-import { computeSupport, formatINR, priceTier, rateCardForm } from "@/lib/estimator-pricing"
+import { priceTier } from "@/lib/estimator-pricing"
 
 export type HomeFaq = { question: string; answer: string }
 
-// Same configurations as the tiers on /pricing/, so the two cannot disagree.
+// Timelines only. Prices are not published; they are shared in conversation.
 const launch = priceTier("launch")
 const store = priceTier("store")
 const platform = priceTier("platform")
-const launchBand = `${formatINR(launch.min)}–${formatINR(launch.max)}`
-const storeBand = `${formatINR(store.min)}–${formatINR(store.max)}`
 
-const supportPlans = [
-  computeSupport(rateCardForm({ maintenance: "basic" })),
-  computeSupport(rateCardForm({ maintenance: "growth", buildType: "wordpress" })),
-  computeSupport(rateCardForm({ maintenance: "growth", buildType: "custom" })),
-]
-  .filter((plan): plan is NonNullable<typeof plan> => plan !== null)
-  .map((plan) => `${formatINR(plan.amount)} a ${plan.cadence}`)
 
 export const homeFaqs: HomeFaq[] = [
   {
@@ -36,7 +27,7 @@ export const homeFaqs: HomeFaq[] = [
   },
   {
     question: "Can you work with startups or small businesses?",
-    answer: `Yes — most of our clients are founder-led businesses, and we work with them from our Lucknow and Mumbai offices. A WordPress or Shopify site starts at ${launchBand}, so a first website does not need an enterprise budget, and you own the domain, hosting and code from day one.`,
+    answer: `Yes — most of our clients are founder-led businesses, and we work with them from our Lucknow and Mumbai offices. A first website does not need an enterprise budget, and you own the domain, hosting and code from day one. Tell us the budget you have in mind on WhatsApp and we will say honestly what it can buy.`,
   },
   {
     question: "How do I get started with NextGen Fusion?",
@@ -45,7 +36,7 @@ export const homeFaqs: HomeFaq[] = [
   },
   {
     question: "How much does website development cost in India?",
-    answer: `WordPress or Shopify business websites start at ${launchBand}. Custom-coded online stores run ${storeBand}, and custom platforms or web apps are quoted from the same rate card. Full bands are on our pricing page, and every written quote is fixed, with no hidden costs.`,
+    answer: `It depends on the kind of project: a business site, an online store and a custom platform are very different amounts of work, and pages, content, integrations and deadline move the number further. We do not publish prices. Message us on WhatsApp or use the contact form and you get one fixed written quote, with no hidden costs, within one working day.`,
   },
   {
     question: "How long does a project take?",
@@ -60,7 +51,7 @@ export const homeFaqs: HomeFaq[] = [
   {
     question: "Do you provide ongoing support after project completion?",
     answer:
-      `Yes. Support is a recurring plan billed separately from the build: ${supportPlans.join(", ")}, depending on whether you need fixes only or ongoing changes too. Support requests are handled ${OFFICE_HOURS.label}; automated uptime checks run around the clock.`,
+      `Yes. Support is a recurring plan billed separately from the build, quoted with your project, depending on whether you need fixes only or ongoing changes too. Support requests are handled ${OFFICE_HOURS.label}; automated uptime checks run around the clock.`,
   },
   {
     question: "What are the working hours of NextGen Fusion?",

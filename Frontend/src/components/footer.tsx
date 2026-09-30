@@ -11,7 +11,6 @@ export default function Footer() {
   // About and Contact point at real pages now, not homepage fragments.
   const navigationLinks = [
     { name: "Home", href: "/" },
-    { name: "Pricing", href: "/pricing/" },
     { name: "Services", href: "/services/" },
     { name: "About", href: "/about/" },
     { name: "Store", href: "/store/" },
@@ -81,10 +80,10 @@ export default function Footer() {
                   </a>
                 </div>
                 <a
-                  href="/pricing/"
+                  href="/contact/"
                   className="mt-3 inline-block py-1 text-sm font-medium text-gray-200 underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white transition-colors duration-200 lg:text-base"
                 >
-                  See our published rate card →
+                  Get a written quote →
                 </a>
               </div>
             </div>

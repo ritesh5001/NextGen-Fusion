@@ -62,9 +62,6 @@ export type LocationPage = {
   /** Named builds with a case study behind them. Section skipped when empty. */
   caseStudies: LocationCaseStudy[]
   faqs: LocationFaq[]
-  /** e.g. "₹45,000 – ₹1,80,000". Section is skipped while undefined. */
-  priceBand?: string
-  priceNote?: string
   /** Named local clients / outcomes. Section is skipped while empty. */
   localProof: { client: string; detail: string }[]
   relatedServices: { slug: string; label: string }[]
@@ -151,10 +148,10 @@ export const locationPages: LocationPage[] = [
         heading: "What a website costs in Lucknow",
         body: [
           "The honest answer is that the city has two price points and almost nothing in between. A template brochure site goes for the price of a mid-range phone. A Delhi or Bangalore agency doing genuinely custom work starts several times higher and bills at metro rates. Businesses here routinely pay the first price, get what it buys, and then pay the second price eighteen months later to have it done properly.",
-          "We publish our bands rather than holding them for a call, because most enquiries lost on price would have been lost after three meetings anyway. What moves a Lucknow project up its band is the same everywhere: how many custom features are in scope, how many systems have to talk to each other, and — most often — how ready your content and photography are.",
+          "We do not publish prices, because a number on a page is a guess about a project we have not heard yet; a short chat gives you a real one, in writing. What moves the price of a Lucknow project is the same everywhere: how many custom features are in scope, how many systems have to talk to each other, and — most often — how ready your content and photography are.",
           "Terms are the same on every project regardless of size: 50% advance to start, 50% at payment-gateway integration. No separate design fee, no per-revision charge inside the agreed scope.",
         ],
-        links: [{ label: "See the full price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Hiring in Lucknow versus a Delhi or NCR agency",
@@ -205,7 +202,7 @@ export const locationPages: LocationPage[] = [
       {
         question: "What does a website cost, roughly?",
         answer:
-          "We publish the bands rather than making you ask. What moves a project within its band is the number of custom features, the number of integrations, and how ready your content is — a build where copy and photography arrive on day one is meaningfully cheaper than one still waiting on them in week six.",
+          "It depends on the project, and we quote it in writing after a short conversation rather than publishing a number. What moves the price is the number of custom features, the number of integrations, and how ready your content is — a build where copy and photography arrive on day one is meaningfully cheaper than one still waiting on them in week six.",
       },
       {
         question: "Who pays for hosting, and whose account is it in?",
@@ -220,7 +217,7 @@ export const locationPages: LocationPage[] = [
       {
         question: "What happens after launch, and what does it cost?",
         answer:
-          "Every build comes with a defined support arrangement rather than a handshake: updates, uptime monitoring, backups and a named developer to call. Basic support runs yearly; a plan that includes ongoing changes is priced by build type. The plans and their prices are on the pricing page.",
+          "Every build comes with a defined support arrangement rather than a handshake: updates, uptime monitoring, backups and a named developer to call. Basic support runs yearly; a plan that includes ongoing changes is priced by build type. The plan and its price are quoted with your project.",
       },
       {
         question: "Can we work together entirely remotely?",
@@ -310,10 +307,10 @@ export const locationPages: LocationPage[] = [
       {
         heading: "What a website costs in Uttar Pradesh",
         body: [
-          "We publish our price bands instead of holding them for a sales call, and they are the same whether you are in Lucknow, Kanpur or Noida. What moves a project up its band is the number of custom features, the number of systems that have to connect, and how ready your content and photography are.",
+          "The price does not depend on whether you are in Lucknow, Kanpur or Noida, and we quote it in writing after a short conversation. What moves the price of a project is the number of custom features, the number of systems that have to connect, and how ready your content and photography are.",
           "Terms are the same on every project: 50% advance to start, 50% at payment-gateway integration. No separate design fee and no per-revision charge inside the agreed scope.",
         ],
-        links: [{ label: "See the full price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
     ],
     caseStudies: [
@@ -352,7 +349,7 @@ export const locationPages: LocationPage[] = [
       {
         question: "Do prices change depending on the city?",
         answer:
-          "No. The same published rate card applies across Uttar Pradesh and the rest of India. What changes the price is scope, integrations and content readiness, not your address.",
+          "No. The same rates apply across Uttar Pradesh and the rest of India. What changes the price is scope, integrations and content readiness, not your address.",
       },
       {
         question: "Who owns the website, domain and hosting?",
@@ -362,7 +359,7 @@ export const locationPages: LocationPage[] = [
       {
         question: "What happens after launch?",
         answer:
-          "Every build includes a defined support arrangement: updates, uptime monitoring, backups and a named developer to contact. Plans that include ongoing changes are priced by build type and listed on the pricing page.",
+          "Every build includes a defined support arrangement: updates, uptime monitoring, backups and a named developer to contact. Plans that include ongoing changes are priced by build type and quoted with your project.",
       },
     ],
     localProof: [],
@@ -439,9 +436,9 @@ export const locationPages: LocationPage[] = [
         heading: "What SEO costs here, and what the cheap version buys",
         body: [
           "Lucknow has a floor price for SEO that is roughly the cost of a phone bill, and at that price the work is directory submissions and a ranking report. It is not fraud exactly — those things do happen — it is just that none of them touch the reasons the site is not ranking.",
-          "We price SEO as engineering time because that is what it is: changes made in the codebase, not described in a PDF. The build bands on our pricing page give you the shape of what technical work costs; a retainer is scoped against the audit rather than sold as a fixed package, because a site that needs its architecture rebuilt and a site that needs content are different amounts of work at the same monthly fee.",
+          "We price SEO as engineering time because that is what it is: changes made in the codebase, not described in a PDF. A retainer is scoped against the audit rather than sold as a fixed package, because a site that needs its architecture rebuilt and a site that needs content are different amounts of work at the same monthly fee.",
         ],
-        links: [{ label: "How we price work", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Hiring in Lucknow versus a Delhi or NCR agency",
@@ -492,7 +489,7 @@ export const locationPages: LocationPage[] = [
       {
         question: "What does an SEO retainer cost?",
         answer:
-          "It is scoped against the audit rather than sold as a fixed monthly package, because a site needing its architecture rebuilt and a site needing content are different amounts of work. The build bands on our pricing page show what technical time costs; the audit tells us how much of it your site needs.",
+          "It is scoped against the audit rather than sold as a fixed monthly package, because a site needing its architecture rebuilt and a site needing content are different amounts of work. The audit tells us how much of it your site needs.",
       },
       {
         question: "Who owns the accounts and the data?",
@@ -587,10 +584,10 @@ export const locationPages: LocationPage[] = [
         heading: "What a store costs to build in Lucknow",
         body: [
           "A Shopify or WooCommerce store put together from a theme sits at the bottom of our range and is genuinely the right answer for a first catalogue — you are paying for setup and configuration, not engineering. A custom-coded store starts an order of magnitude higher because it is a different product, and most Lucknow businesses should not buy it until the template one is provably the constraint.",
-          "Where budgets here go wrong is not the build. It is the running cost nobody quoted: gateway charges of roughly two percent a transaction, platform fees, and the returns from cash on delivery, which quietly eat more margin than all of it. We put those numbers in front of you before you commit, and the build bands are published rather than held for a call.",
+          "Where budgets here go wrong is not the build. It is the running cost nobody quoted: gateway charges of roughly two percent a transaction, platform fees, and the returns from cash on delivery, which quietly eat more margin than all of it. We put those numbers in front of you before you commit.",
           "Terms are 50% advance to start and 50% at payment-gateway integration — which for a store means you are paying the balance at the point the thing can actually take money.",
         ],
-        links: [{ label: "See the price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Hiring in Lucknow versus a Delhi or NCR agency",
@@ -716,7 +713,7 @@ export const locationPages: LocationPage[] = [
         body: [
           "There is no single \"digital marketing\" price — SEO is scoped against a technical audit, Google Ads is priced as management fee plus ad spend you control directly, and social is priced by content volume. What we will not do is quote a bundled number before knowing which channels your business actually needs; that is how agencies sell a Facebook package to a business whose customers are all searching Google.",
         ],
-        links: [{ label: "See the service-level price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Hiring in Lucknow versus a Delhi or NCR agency",
@@ -819,9 +816,9 @@ export const locationPages: LocationPage[] = [
       {
         heading: "What a Lucknow web design project costs",
         body: [
-          "What moves a project within its band is the number of distinct templates, not the number of pages — thirty pages sharing four templates is a smaller job than eight pages that all look different. No separate design fee and no per-revision charge inside the agreed scope.",
+          "What moves the price of a project is the number of distinct templates, not the number of pages — thirty pages sharing four templates is a smaller job than eight pages that all look different. No separate design fee and no per-revision charge inside the agreed scope.",
         ],
-        links: [{ label: "See the full price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Hiring in Lucknow versus a Delhi or NCR agency",
@@ -876,7 +873,7 @@ export const locationPages: LocationPage[] = [
       {
         question: "What does design cost separately from the build?",
         answer:
-          "Nothing — it is not billed as a line item. The build bands on the pricing page already include design, and there is no per-revision charge inside the agreed scope.",
+          "Nothing — it is not billed as a line item. Design is already inside the build price, and there is no per-revision charge inside the agreed scope.",
       },
     ],
     localProof: [],
@@ -931,9 +928,9 @@ export const locationPages: LocationPage[] = [
       {
         heading: "What an Android app costs in Lucknow",
         body: [
-          "Custom-coded app and backend work starts at a meaningfully higher band than a website, because it is different engineering — native mobile plus the API layer behind it. The build bands on our pricing page cover the software side of this; the same terms apply — 50% advance to start, 50% at the milestone the app can actually do its job.",
+          "Custom-coded app and backend work is priced differently from a website, because it is different engineering — native mobile plus the API layer behind it. We scope it before quoting and give you one fixed written number.",
         ],
-        links: [{ label: "See the price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Hiring in Lucknow versus a Delhi or NCR agency",
@@ -1023,9 +1020,9 @@ export const locationPages: LocationPage[] = [
       {
         heading: "What custom software costs in Lucknow",
         body: [
-          "This sits at the top of our range because it is different engineering from a website — architecture, integrations and testing that a template cannot shortcut. MVPs run six to twelve weeks; full production systems three to nine months depending on scope. The same terms apply as everywhere else: 50% advance to start, 50% at the agreed delivery milestone.",
+          "This is priced differently from a website because it is different engineering — architecture, integrations and testing that a template cannot shortcut. MVPs run six to twelve weeks; full production systems three to nine months depending on scope. We scope it before quoting and give you one fixed written number.",
         ],
-        links: [{ label: "See the price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Hiring in Lucknow versus a Delhi or NCR agency",
@@ -1130,7 +1127,7 @@ export const locationPages: LocationPage[] = [
         body: [
           "Management fee is separate from ad spend, and the spend itself runs through an account in your name — you see exactly where every rupee goes, and we do not mark it up. For meaningful data and optimisation cycles, a minimum monthly ad spend in the ₹40,000–₹80,000 range alongside the management fee is where campaigns start producing usable signal.",
         ],
-        links: [{ label: "See the service price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Hiring in Lucknow versus a Delhi or NCR agency",
@@ -1254,9 +1251,9 @@ export const locationPages: LocationPage[] = [
         heading: "What a build costs against Mumbai agency rates",
         body: [
           "A Lower Parel or BKC agency is carrying rent, an account layer and a new-business team, and all three are in the quote whether or not they touch your project. We carry two small offices and no account layer, and the difference lands in the number rather than in the quality of the build.",
-          "What is worth comparing is not the headline figure. It is what happens after: how many revisions are included, who owns the repository, what support costs monthly, and how fast somebody answers when the gateway fails during a Saturday sale. Our bands are published, and the terms are 50% advance to start and 50% at payment-gateway integration on every project regardless of size.",
+          "What is worth comparing is not the headline figure. It is what happens after: how many revisions are included, who owns the repository, what support costs monthly, and how fast somebody answers when the gateway fails during a Saturday sale. Ask us and any agency you are comparing for a fixed written quote, and compare the scope line by line.",
         ],
-        links: [{ label: "See the full price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },    ],
     caseStudies: [
       {
@@ -1309,7 +1306,7 @@ export const locationPages: LocationPage[] = [
       {
         question: "What does support cost after launch?",
         answer:
-          "Support is a recurring plan billed separately from the build, covering updates, uptime monitoring, backups and a named developer. Basic cover is annual; a plan including ongoing changes is priced by build type. The figures are on the pricing page.",
+          "Support is a recurring plan billed separately from the build, covering updates, uptime monitoring, backups and a named developer. Basic cover is annual; a plan including ongoing changes is priced by build type. The figures are quoted with your project.",
       },
       {
         question: "What are the payment terms?",
@@ -1387,9 +1384,9 @@ export const locationPages: LocationPage[] = [
         heading: "What SEO costs against Mumbai agency rates",
         body: [
           "A Lower Parel or BKC agency is carrying rent, an account layer and a new-business team, and all three sit inside the retainer whether or not they touch your rankings. At the low end of the market the retainer buys directory submissions and a monthly report — neither one moves a technical problem.",
-          "We price SEO as engineering time because that is what it is: changes made in the codebase, not described in a PDF. The build bands on our pricing page give you the shape of what technical work costs; a retainer is scoped against the audit rather than sold as a fixed package, because a site that needs its architecture rebuilt and a site that needs content are different amounts of work at the same monthly fee.",
+          "We price SEO as engineering time because that is what it is: changes made in the codebase, not described in a PDF. A retainer is scoped against the audit rather than sold as a fixed package, because a site that needs its architecture rebuilt and a site that needs content are different amounts of work at the same monthly fee.",
         ],
-        links: [{ label: "How we price work", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Where we are in Mumbai",
@@ -1439,7 +1436,7 @@ export const locationPages: LocationPage[] = [
       {
         question: "What does an SEO retainer cost?",
         answer:
-          "It is scoped against the audit rather than sold as a fixed monthly package, because a site needing its architecture rebuilt and a site needing content are different amounts of work. The build bands on our pricing page show what technical time costs; the audit tells us how much of it your site needs.",
+          "It is scoped against the audit rather than sold as a fixed monthly package, because a site needing its architecture rebuilt and a site needing content are different amounts of work. The audit tells us how much of it your site needs.",
       },
       {
         question: "Who owns the accounts and the data?",
@@ -1525,10 +1522,10 @@ export const locationPages: LocationPage[] = [
         heading: "What a store costs against Mumbai agency rates",
         body: [
           "A Shopify or WooCommerce store put together from a theme sits at the bottom of our range and is genuinely the right answer for a first catalogue — you are paying for setup and configuration, not engineering. A custom-coded store starts an order of magnitude higher because it is a different product, and most businesses should not buy it until the template one is provably the constraint.",
-          "Where budgets in this city go wrong is not the build. It is the running cost nobody quoted: gateway charges of roughly two percent a transaction, platform fees, and the returns from cash on delivery, which quietly eat more margin than all of it. We put those numbers in front of you before you commit, and the build bands are published rather than held for a call.",
+          "Where budgets in this city go wrong is not the build. It is the running cost nobody quoted: gateway charges of roughly two percent a transaction, platform fees, and the returns from cash on delivery, which quietly eat more margin than all of it. We put those numbers in front of you before you commit.",
           "Terms are 50% advance to start and 50% at payment-gateway integration — which for a store means you are paying the balance at the point the thing can actually take money.",
         ],
-        links: [{ label: "See the price bands", href: "/pricing/" }],
+        links: [{ label: "Get a written quote", href: "/contact/" }],
       },
       {
         heading: "Where we are in Mumbai",

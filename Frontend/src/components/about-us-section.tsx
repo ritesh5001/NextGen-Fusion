@@ -152,7 +152,7 @@ export default function AboutUsSection() {
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Why we showed up</h3>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
                   Most of our enquiries come from businesses whose previous developer stopped replying.
-                  So we stay on after launch, on a support plan with a published price, and the person
+                  So we stay on after launch, on a support plan quoted upfront, and the person
                   who wrote your code is the person who answers when something needs changing.
                 </p>
               </motion.div>

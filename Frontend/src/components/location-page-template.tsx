@@ -200,16 +200,6 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
             </div>
           )}
 
-          {page.priceBand && (
-            <div className="mb-12 rounded-2xl bg-gray-50 p-6">
-              <h2 className="text-2xl font-bold text-gray-900">
-                What this costs in {area}
-              </h2>
-              <p className="mt-3 text-3xl font-bold text-gray-900">{page.priceBand}</p>
-              {page.priceNote && <p className="mt-3 text-gray-600">{page.priceNote}</p>}
-            </div>
-          )}
-
           {page.localProof.length > 0 && (
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
@@ -273,14 +263,6 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                   className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
                 >
                   Projects we&apos;ve delivered
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pricing/"
-                  className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
-                >
-                  What a build costs
                 </Link>
               </li>
               <li>

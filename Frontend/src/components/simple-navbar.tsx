@@ -7,7 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Link as ScrollLink } from "react-scroll"
-import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, IndianRupee, type LucideIcon } from "lucide-react"
+import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/components/booking-modal"
 
 type MenuItem = {
@@ -31,8 +31,6 @@ const menuItems: MenuItem[] = [
   { name: "Home", href: "/", isPage: true, Icon: Home },
   { name: "Projects", href: "/work/", isPage: true, Icon: Briefcase },
   { name: "Services", href: "/services/", isPage: true, Icon: Wrench },
-  // The published rate card is a differentiator; it sat two clicks deep.
-  { name: "Pricing", href: "/pricing/", isPage: true, Icon: IndianRupee },
   { name: "Store", href: "/store/", isPage: true, Icon: Store },
   { name: "Blogs", href: "/blog/", isPage: true, Icon: BookOpen },
   { name: "About", href: "/about/", isPage: true, Icon: User },

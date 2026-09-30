@@ -89,9 +89,9 @@ export function GuidePageTemplate({ page }: { page: GuidePage }) {
             </p>
           ))}
           <p className="mt-6 text-sm text-gray-500">
-            Updated <time dateTime={page.updated}>{updated}</time> · Figures from our{" "}
-            <Link href="/pricing/" className="font-medium text-purple-600 hover:underline">
-              published rate card
+            Updated <time dateTime={page.updated}>{updated}</time> ·{" "}
+            <Link href="/contact/" className="font-medium text-purple-600 hover:underline">
+              Get a written quote
             </Link>
           </p>
         </section>

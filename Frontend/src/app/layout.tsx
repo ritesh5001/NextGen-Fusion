@@ -36,7 +36,7 @@ const structuredData = {
       alternateName: "NextGen Fusion — Web Development Agency, Lucknow",
       url: siteUrl,
       description:
-        "Web development, ecommerce and SEO studio in Lucknow and Mumbai, India, serving businesses across India, the UAE and Singapore. Builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps and custom software for D2C brands, manufacturers, institutes and B2B companies, with published pricing and post-launch support.",
+        "Web development, ecommerce and SEO studio in Lucknow and Mumbai, India, serving businesses across India, the UAE and Singapore. Builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps and custom software for D2C brands, manufacturers, institutes and B2B companies, with post-launch support.",
       // Google requires a raster logo; the SVG here was silently ignored.
       logo: { "@id": `${siteUrl}/#logo` },
       image: { "@id": `${siteUrl}/#logo` },
@@ -129,7 +129,6 @@ const structuredData = {
         },
         geo: { "@type": "GeoCoordinates", latitude, longitude },
         areaServed: ["IN", "AE", "SG", "Worldwide"],
-        priceRange: "₹₹",
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",

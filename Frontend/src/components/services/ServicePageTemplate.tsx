@@ -47,7 +47,7 @@ export interface ServiceDeepDive {
   body: string[]
 }
 
-/** Optional published price band, linking to /pricing/ for the real numbers. */
+/** Optional "how we price this" block. No figures: prices are shared in conversation. */
 export interface ServicePricing {
   heading: string
   body: string[]
@@ -390,10 +390,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 ))}
               </div>
               <Link
-                href="/pricing/"
+                href="/contact/"
                 className="mt-6 inline-block rounded-full border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
               >
-                See the full price bands
+                Get a written quote
               </Link>
             </motion.section>
           )}

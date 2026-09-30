@@ -122,6 +122,8 @@ const nextConfig = {
       // Our own nav says "Blogs" and "Projects" while the routes are /blog and
       // /work, so those are the paths people type and directories link to. Both
       // hard-404'd.
+      // Pricing is discussed in conversation, never published: the old page redirects to Contact.
+      { source: '/pricing', destination: '/contact/', permanent: true },
       { source: '/blogs', destination: '/blog/', permanent: true },
       { source: '/blogs/:slug*', destination: '/blog/:slug*/', permanent: true },
       { source: '/projects', destination: '/work/', permanent: true },

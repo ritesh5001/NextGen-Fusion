@@ -9,7 +9,6 @@ import PhoneInput from "./phone-input"
 import { apiService, ContactFormData } from "@/lib/api"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { OFFICE_HOURS, offices } from "@/data/offices"
-import { computeSupport, formatINR, rateCardForm } from "@/lib/estimator-pricing"
 import { trackEvent } from "@/lib/analytics"
 
 // Animation variants
@@ -129,8 +128,6 @@ export default function ContactSection() {
   })
 
 
-  const basicSupport = computeSupport(rateCardForm({ maintenance: "basic" }))
-
   const benefits = [
     {
       icon: <Target className="w-4 h-4 text-white" />,
@@ -142,7 +139,7 @@ export default function ContactSection() {
       icon: <Map className="w-4 h-4 text-white" />,
       title: "A written scope",
       description:
-        "What we would build, what it costs on our rate card and one delivery window, in writing, before you pay anything.",
+        "What we would build, one fixed price and one delivery window, in writing, before you pay anything.",
     },
     {
       icon: <Lightbulb className="w-4 h-4 text-white" />,
@@ -152,7 +149,7 @@ export default function ContactSection() {
     {
       icon: <Users className="w-4 h-4 text-white" />,
       title: "Support after launch",
-      description: `A support plan from ${formatINR(basicSupport?.amount ?? 0)} a ${basicSupport?.cadence ?? "year"}, so the site does not go stale the month after it ships.`,
+      description: "A support plan quoted upfront with every project, so the site does not go stale the month after it ships.",
     },
   ]
 

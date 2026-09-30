@@ -11,8 +11,8 @@
  * (`areaCountry: "SG"`); no Singapore address is claimed.
  */
 import type { LocationPage } from "@/data/locations"
-import { OFFICE_HOURS, officeHoursAt, offices } from "@/data/offices"
-import { SGD_FX_NOTE, formatINR, formatSGD, priceTier } from "@/lib/estimator-pricing"
+import { OFFICE_HOURS, officeHoursAt, offices, PRIMARY_PHONE_DISPLAY } from "@/data/offices"
+import { priceTier } from "@/lib/estimator-pricing"
 
 const LUCKNOW = offices.find((office) => office.city === "Lucknow")!
 
@@ -22,8 +22,6 @@ const SG_HOURS = officeHoursAt(150)
 const launch = priceTier("launch")
 const store = priceTier("store")
 const platform = priceTier("platform")
-const both = (min: number, max: number) =>
-  `${formatINR(min)} – ${formatINR(max)} (about ${formatSGD(min)} – ${formatSGD(max)})`
 
 export const sgLocationPages: LocationPage[] = [
   {
@@ -35,7 +33,7 @@ export const sgLocationPages: LocationPage[] = [
     serviceLabel: "Website Development",
     title: "Website Development Company in Singapore",
     metaTitle: "Website Development Company in Singapore — Served from India",
-    metaDescription: `Websites, online stores and platforms for Singapore businesses, from maritime and trading firms to startups, built by an Indian team working Singapore afternoons. From ${formatSGD(launch.min)} on a published rate card.`,
+    metaDescription: `Websites, online stores and platforms for Singapore businesses, from maritime and trading firms to startups, built by an Indian team working Singapore afternoons..`,
     h1: "Website development for Singapore businesses",
     intro: [
       "NextGen Fusion builds websites, online stores and platforms from our offices in Lucknow and Mumbai. We have no office in Singapore, and we have not yet built for a Singapore-registered company, so this page shows the work closest to what Singapore businesses ask for instead of a logo wall.",
@@ -47,11 +45,11 @@ export const sgLocationPages: LocationPage[] = [
         body: [
           `Singapore is two and a half hours ahead of India. Our team works ${OFFICE_HOURS.opens}–${OFFICE_HOURS.closes} India time, Monday to Saturday, which is ${SG_HOURS} in Singapore. That covers every Singapore afternoon; a message sent first thing in the morning is answered when our day starts.`,
           `Projects run on WhatsApp, email and video calls. WhatsApp ${LUCKNOW.contact.phone} reaches the team directly, and the developer who scopes your site is the one who writes it and answers after launch.`,
-          "Scope comes first, in writing: what the site has to do, what it costs on our rate card and one delivery window. Every account (domain, hosting, payment gateway, analytics) is opened in your company's name from day one.",
+          "Scope comes first, in writing: what the site has to do, one fixed price and one delivery window. Every account (domain, hosting, payment gateway, analytics) is opened in your company's name from day one.",
         ],
         links: [
-          { label: "What a website costs in Singapore", href: "/website-development-cost-in-singapore/" },
-          { label: "Our published rate card", href: "/pricing/" },
+          { label: "What decides website cost in Singapore", href: "/website-development-cost-in-singapore/" },
+          { label: "Get a written quote", href: "/contact/" },
         ],
       },
       {
@@ -123,7 +121,7 @@ export const sgLocationPages: LocationPage[] = [
       },
       {
         question: "How much does a website cost for a Singapore business?",
-        answer: `On our rate card, a WordPress business site is ${both(launch.min, launch.max)}, a custom-coded online store ${both(store.min, store.max)}, and a custom platform ${both(platform.min, platform.max)}. Quotes are issued in INR.`,
+        answer: `It depends on the kind of project (a business site, an online store and a platform are very different amounts of work) and on pages, content, integrations and deadline. We do not publish prices; message us on WhatsApp at ${PRIMARY_PHONE_DISPLAY} and you get a fixed written quote within ${OFFICE_HOURS.replyWithin}.`,
       },
       {
         question: "Can your work be claimed under the Productivity Solutions Grant?",
@@ -138,8 +136,6 @@ export const sgLocationPages: LocationPage[] = [
         answer: `${SG_HOURS}, Monday to Saturday. That covers every Singapore afternoon; morning messages are answered when our day starts.`,
       },
     ],
-    priceBand: both(launch.min, platform.max),
-    priceNote: `A WordPress business site is ${both(launch.min, launch.max)}; a custom-coded online store ${both(store.min, store.max)}; a custom platform ${both(platform.min, platform.max)}. ${SGD_FX_NOTE}`,
     localProof: [],
     relatedServices: [
       { slug: "website-development-services", label: "Website Development Services" },

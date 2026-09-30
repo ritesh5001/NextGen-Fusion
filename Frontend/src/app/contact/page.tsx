@@ -52,7 +52,7 @@ export default function ContactPage() {
           <p className="mt-5 max-w-3xl text-lg leading-relaxed text-gray-600">
             No account managers relaying messages. Every enquiry goes straight to the developers
             and strategists who would run your project, and you get a written reply within one
-            working day — including a rough scope and price band, not just a request for a meeting.
+            working day — including a clear scope and a next step, not just a request for a meeting.
           </p>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

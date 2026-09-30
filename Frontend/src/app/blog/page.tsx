@@ -68,13 +68,13 @@ export default async function BlogPage() {
           </div>
 
           {/* Long-form guides live outside /blog so their figures can read the
-              rate card directly, but they are the same kind of reading. */}
+              content layer directly, but they are the same kind of reading. */}
           <section className="mb-16" aria-labelledby="guides-heading">
             <h2 id="guides-heading" className="text-2xl font-bold text-gray-900 sm:text-3xl">
               Guides
             </h2>
             <p className="mt-2 max-w-3xl text-gray-600">
-              Reference pages built from our published rate card and case studies, updated when the
+              Reference pages built from our own projects and case studies, updated when the
               numbers change.
             </p>
             <ul className="mt-6 grid gap-6 md:grid-cols-2">

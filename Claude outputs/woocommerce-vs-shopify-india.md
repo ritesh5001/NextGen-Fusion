@@ -36,31 +36,19 @@ is hard, and it is where template platforms start charging you an app subscripti
 **Who fixes it at 11pm during a Diwali sale?** This is the question nobody asks until the night it
 matters. It has a different answer on each platform and the difference is the whole argument.
 
-## The money, with actual numbers
+## How the money behaves, without the numbers
 
-Most agencies won't publish this. We do, on our [pricing page](/pricing/), and here is the short
-version.
+We do not publish prices, because a number on a page is a guess about a project we have not heard yet. Here is how the cost actually behaves, so you can compare quotes properly.
 
-A WooCommerce store from us is quoted in the ₹4,000–₹7,000 band. That is the build. It buys catalogue
-setup, the storefront, payment gateway integration and Shiprocket integration — those two are in
-every ecommerce build we do rather than being quoted as extras.
+A WooCommerce store buys catalogue setup, the storefront, payment gateway integration and Shiprocket integration — those two are in every ecommerce build we do rather than being quoted as extras. It is mostly configuration, and the cost stays low because of that.
 
-A custom-coded store starts at ₹50,000 and runs to about ₹1,15,000 depending on the package, because
-it is a genuinely different product and not a better version of the same one.
+A custom-coded store is a genuinely different product, not a better version of the same one, and it is priced as engineering.
 
-Integrations are where the platform choice shows up in the invoice most clearly. On WooCommerce we
-quote roughly ₹2,500 per integration. On a custom build the same integration is ₹10,000, because on
-WooCommerce a large part of the work is configuration and on a custom build all of it is
-engineering. Individual features follow the same pattern — a feature that costs a certain amount to
-build custom runs at about a quarter of that on WooCommerce.
+Integrations are where the platform choice shows up in the invoice most clearly. On WooCommerce a large part of the work is configuration, and on a custom build all of it is engineering, so the same integration costs a good deal more. Individual features follow the same pattern.
 
-Terms are the same on every project we take: 50% advance to start, 50% at payment-gateway
-integration. For a store that means the balance falls due at the point the thing can actually take
-money, which we think is the only defensible place to put it.
+Whoever you talk to, ask for one fixed quote in writing with the scope attached, and compare the scope line by line. Message us on WhatsApp +91 73482 28167 and you get ours within one working day.
 
-Shopify's side of this is a monthly plan fee plus transaction charges if you use a gateway other than
-Shopify Payments. Check their current India plan pricing yourself rather than trusting a number in a
-blog post — ours included. It changes.
+Shopify's side of this is a monthly plan fee plus transaction charges if you use a gateway other than Shopify Payments. Check their current India plan pricing yourself rather than trusting a number in a blog post. It changes.
 
 Your payment gateway takes roughly 2% of every transaction regardless of platform. That one is not a
 differentiator, but it belongs in your spreadsheet, and it is the number most first-time sellers
@@ -76,14 +64,9 @@ review plugin somebody installed loads its own JavaScript on every product page 
 until the site feels slow. None of this is hypothetical — it is most of what our
 support work consists of.
 
-We charge ₹15,000 a year for the WooCommerce plan that covers ongoing changes, and ₹2,000 a year for
-the basic one that covers uptime monitoring and fixes but not content changes. On a custom build the
-equivalent plan is ₹5,000 a month, which is considerably more, and honestly reflects that there is
-more that only we can fix.
+We sell support as a separate yearly plan. The basic one covers uptime monitoring and fixes but not content changes; the fuller one covers ongoing changes. On a custom build the equivalent plan is monthly and costs more, which honestly reflects that there is more that only we can fix. We quote it with the project.
 
-I would not describe the ₹15,000 as optional. If your plan is to buy a WooCommerce store and then
-touch nothing for two years, you are not saving money, you are deferring it and adding risk. Stores
-we inherit from that pattern usually need more work than a fresh build.
+I would not describe the fuller plan as optional. If your plan is to buy a WooCommerce store and then touch nothing for two years, you are not saving money, you are deferring it and adding risk. Stores we inherit from that pattern usually need more work than a fresh build.
 
 Shopify's monthly fee is, in large part, you paying somebody else to make that entire category of
 problem disappear. That is worth real money and I am not going to pretend otherwise to win the

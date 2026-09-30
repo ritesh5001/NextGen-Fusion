@@ -16,8 +16,8 @@
  * for clients elsewhere and is described that way.
  */
 import type { LocationPage } from "@/data/locations"
-import { OFFICE_HOURS, officeHoursAt, offices } from "@/data/offices"
-import { FX_NOTE, formatAED, formatINR, priceTier } from "@/lib/estimator-pricing"
+import { OFFICE_HOURS, officeHoursAt, offices, PRIMARY_PHONE_DISPLAY } from "@/data/offices"
+import { priceTier } from "@/lib/estimator-pricing"
 
 const LUCKNOW = offices.find((office) => office.city === "Lucknow")!
 
@@ -27,8 +27,6 @@ const UAE_HOURS = officeHoursAt(-90)
 const launch = priceTier("launch")
 const store = priceTier("store")
 const platform = priceTier("platform")
-const both = (min: number, max: number) =>
-  `${formatINR(min)} – ${formatINR(max)} (about ${formatAED(min)} – ${formatAED(max).replace("AED ", "")})`
 
 const WORKING_FROM_INDIA = [
   `Our team works ${OFFICE_HOURS.opens}–${OFFICE_HOURS.closes} India time, Monday to Saturday. That is ${UAE_HOURS} in the UAE, which covers the whole of a Monday-to-Friday UAE working week, plus Saturday morning.`,
@@ -45,7 +43,7 @@ export const uaeLocationPages: LocationPage[] = [
     serviceLabel: "Website Development",
     title: "Website Development Company in UAE",
     metaTitle: "Website Development Company in UAE — Served from India",
-    metaDescription: `Websites, online stores and platforms for businesses in Dubai, Abu Dhabi, Sharjah and every emirate — built by an Indian team working UAE hours, from ${formatAED(launch.min)} on a published rate card.`,
+    metaDescription: `Websites, online stores and platforms for businesses in Dubai, Abu Dhabi, Sharjah and every emirate — built by an Indian team working UAE hours.`,
     h1: "Website development for businesses across the UAE",
     intro: [
       "NextGen Fusion builds websites, online stores and platforms for UAE businesses from our offices in Lucknow and Mumbai. We do not have an office in the UAE, and we would rather say so here than have you find out on the first call.",
@@ -56,11 +54,11 @@ export const uaeLocationPages: LocationPage[] = [
         heading: "How a UAE project runs from India",
         body: [
           ...WORKING_FROM_INDIA,
-          "Scope comes first, in writing: what the site has to do, what it costs on our rate card and one delivery window. You approve design and build at agreed milestones, and every account (domain, hosting, payment gateway, analytics) is set up in your company's name from day one.",
+          "Scope comes first, in writing: what the site has to do, one fixed price and one delivery window. You approve design and build at agreed milestones, and every account (domain, hosting, payment gateway, analytics) is set up in your company's name from day one.",
         ],
         links: [
-          { label: "What a website costs in Dubai", href: "/website-development-cost-in-dubai/" },
-          { label: "Our published rate card", href: "/pricing/" },
+          { label: "What decides website cost in the UAE", href: "/website-development-cost-in-dubai/" },
+          { label: "Get a written quote", href: "/contact/" },
         ],
       },
       {
@@ -77,7 +75,7 @@ export const uaeLocationPages: LocationPage[] = [
       {
         heading: "Ajman, Ras Al Khaimah, Fujairah, Umm Al Quwain and Al Ain",
         body: [
-          "Ajman is where our one UAE-registered client is based: Cleanship's head office is in Ajman Free Zone, and its site carries its own pages for Ajman Port. Ajman Free Zone companies are often small teams that need one credible site to win their first contracts, which is exactly what the Launch band on our rate card covers.",
+          "Ajman is where our one UAE-registered client is based: Cleanship's head office is in Ajman Free Zone, and its site carries its own pages for Ajman Port. Ajman Free Zone companies are often small teams that need one credible site to win their first contracts, which a straightforward business site covers.",
           "Ras Al Khaimah has RAKEZ, its economic zone, and two ports, Ras Al Khaimah Port and Mina Saqr, both of which have their own pages on the Cleanship site. Fujairah is one of the world's largest bunkering hubs and the east-coast base Cleanship works from, so if you are in marine services there, the case study below is the closest thing to your brief we have built.",
           "Umm Al Quwain businesses, including those in UAQ Free Trade Zone, work with us the same way as every other emirate: remotely, on UAE hours. Al Ain is part of Abu Dhabi emirate and is covered by our Abu Dhabi page.",
         ],
@@ -124,7 +122,7 @@ export const uaeLocationPages: LocationPage[] = [
       },
       {
         question: "How much does a website cost for a UAE business?",
-        answer: `On our rate card, a WordPress business site is ${both(launch.min, launch.max)}, a custom-coded online store ${both(store.min, store.max)}, and a custom platform ${both(platform.min, platform.max)}. Quotes are issued in INR.`,
+        answer: `It depends on the kind of project (a business site, an online store and a platform are very different amounts of work) and on pages, content, integrations and deadline. We do not publish prices; message us on WhatsApp at ${PRIMARY_PHONE_DISPLAY} and you get a fixed written quote within ${OFFICE_HOURS.replyWithin}.`,
       },
       {
         question: "Can you build an Arabic and English website?",
@@ -136,11 +134,9 @@ export const uaeLocationPages: LocationPage[] = [
       },
       {
         question: "Do you work with free zone companies?",
-        answer: "Yes. Our UAE client Cleanship is registered in Ajman Free Zone. Free zone companies are often small teams that need one credible site quickly, which our Launch band covers.",
+        answer: "Yes. Our UAE client Cleanship is registered in Ajman Free Zone. Free zone companies are often small teams that need one credible site quickly, which a straightforward business site covers.",
       },
     ],
-    priceBand: both(launch.min, platform.max),
-    priceNote: `A WordPress business site is ${both(launch.min, launch.max)}; a custom-coded online store ${both(store.min, store.max)}; a custom platform or marketplace ${both(platform.min, platform.max)}. ${FX_NOTE}`,
     localProof: [
       {
         client: "Cleanship — Ajman Free Zone",
@@ -169,11 +165,11 @@ export const uaeLocationPages: LocationPage[] = [
     serviceLabel: "Website Development",
     title: "Website Development Company in Dubai",
     metaTitle: "Website Development Company in Dubai",
-    metaDescription: `Websites and online stores for Dubai businesses — ecommerce, trading and marine firms — built by an Indian team on UAE hours. From ${formatAED(launch.min)} on a published rate card, with a Jebel Ali case study.`,
+    metaDescription: `Websites and online stores for Dubai businesses — ecommerce, trading and marine firms — built by an Indian team on UAE hours., with a Jebel Ali case study.`,
     h1: "Website development company for Dubai businesses",
     intro: [
       "We build websites and online stores for Dubai businesses from our team in India: D2C brands selling online, trading companies, free-zone startups, and marine and logistics firms working out of Jebel Ali and Port Rashid.",
-      "We have no Dubai office. What you get instead is an Indian rate card, the same working week, and the developer who scopes your project writing the code and answering after launch.",
+      "We have no Dubai office. What you get instead is Indian rates, the same working week, and the developer who scopes your project writing the code and answering after launch.",
     ],
     sections: [
       {
@@ -236,7 +232,7 @@ export const uaeLocationPages: LocationPage[] = [
       },
       {
         question: "How much does a website cost in Dubai with you?",
-        answer: `A WordPress business site is ${both(launch.min, launch.max)}; a custom-coded online store ${both(store.min, store.max)}. Quotes are issued in INR, and the full breakdown is on our Dubai cost guide.`,
+        answer: `It depends on the kind of project (a business site, an online store and a platform are very different amounts of work) and on pages, content, integrations and deadline. We do not publish prices; message us on WhatsApp at ${PRIMARY_PHONE_DISPLAY} and you get a fixed written quote within ${OFFICE_HOURS.replyWithin}.`,
       },
       {
         question: "How long does a website take?",
@@ -255,8 +251,6 @@ export const uaeLocationPages: LocationPage[] = [
         answer: "Yes: technical SEO and on-page structure are part of every build, and we run ongoing SEO for clients who want it. Without a Dubai office we cannot get you into the Google Maps pack, and we will not pretend otherwise.",
       },
     ],
-    priceBand: both(launch.min, store.max),
-    priceNote: `A WordPress business site is ${both(launch.min, launch.max)}; a custom-coded online store ${both(store.min, store.max)}. Platforms and marketplaces run to ${formatAED(platform.max)}. ${FX_NOTE}`,
     localProof: [
       {
         client: "Cleanship",
@@ -285,11 +279,11 @@ export const uaeLocationPages: LocationPage[] = [
     serviceLabel: "Website Development",
     title: "Website Development Company in Abu Dhabi",
     metaTitle: "Website Development Company in Abu Dhabi",
-    metaDescription: `Corporate websites, B2B portals and procurement platforms for Abu Dhabi businesses, built by an Indian team on UAE hours. From ${formatAED(launch.min)} on a published rate card.`,
+    metaDescription: `Corporate websites, B2B portals and procurement platforms for Abu Dhabi businesses, built by an Indian team on UAE hours..`,
     h1: "Website development company for Abu Dhabi businesses",
     intro: [
       "We build corporate websites, B2B portals and procurement platforms for Abu Dhabi businesses from our team in India, including companies in ADGM, Masdar City and KEZAD, and suppliers working around Khalifa Port.",
-      "We have no Abu Dhabi office and say so up front. You work with a small in-house team on UAE hours, priced on a rate card you can read before the first call.",
+      "We have no Abu Dhabi office and say so up front. You work with a small in-house team on UAE hours, and a fixed written quote after a short conversation.",
     ],
     sections: [
       {
@@ -304,7 +298,7 @@ export const uaeLocationPages: LocationPage[] = [
         heading: "Portals, RFQ platforms and dashboards",
         body: [
           "Where the site has to do work, such as taking requests for quote, managing suppliers or giving clients a login, we build it as a custom platform. MariBiz.ai is the example: an RFQ engine, vendor verification, real-time messaging and a buyer dashboard, used by more than 3,226 vendors.",
-          `Platforms sit in the top band of our rate card, ${both(platform.min, platform.max)}, typically ${platform.weeksMin}–${platform.weeksMax} weeks from content sign-off.`,
+          `Platforms are scoped before we quote, and typically take ${platform.weeksMin}–${platform.weeksMax} weeks from content sign-off.`,
         ],
         links: [
           { label: "MariBiz.ai case study", href: "/work/maribiz-ai/" },
@@ -320,7 +314,7 @@ export const uaeLocationPages: LocationPage[] = [
       {
         heading: "Al Ain and the rest of the emirate",
         body: [
-          "Al Ain and the western region are part of Abu Dhabi emirate, and we work with businesses there the same way: remotely, on UAE hours, with the same rate card.",
+          "Al Ain and the western region are part of Abu Dhabi emirate, and we work with businesses there the same way: remotely, on UAE hours.",
           ...WORKING_FROM_INDIA,
         ],
         links: [{ label: "What a website costs in Dubai and the UAE", href: "/website-development-cost-in-dubai/" }],
@@ -350,11 +344,11 @@ export const uaeLocationPages: LocationPage[] = [
       },
       {
         question: "Can you build a B2B portal or RFQ platform?",
-        answer: `Yes. MariBiz.ai is an RFQ marketplace with vendor verification and dashboards. Platforms like it are ${both(platform.min, platform.max)} on our rate card.`,
+        answer: `Yes. MariBiz.ai is an RFQ marketplace with vendor verification and dashboards. Platforms like it are scoped before we quote a fixed price.`,
       },
       {
         question: "How much does a corporate website cost?",
-        answer: `A WordPress corporate site is ${both(launch.min, launch.max)}; a custom-coded site starts higher because every template is written rather than configured. Quotes are issued in INR.`,
+        answer: `It depends on the kind of project (a business site, an online store and a platform are very different amounts of work) and on pages, content, integrations and deadline. We do not publish prices; message us on WhatsApp at ${PRIMARY_PHONE_DISPLAY} and you get a fixed written quote within ${OFFICE_HOURS.replyWithin}.`,
       },
       {
         question: "Can you build a full Arabic version?",
@@ -365,8 +359,6 @@ export const uaeLocationPages: LocationPage[] = [
         answer: "Yes. Al Ain is part of Abu Dhabi emirate, and we work with businesses there remotely on UAE hours, like everywhere else in the UAE.",
       },
     ],
-    priceBand: both(launch.min, platform.max),
-    priceNote: `A WordPress corporate site is ${both(launch.min, launch.max)}; a custom platform or portal ${both(platform.min, platform.max)}. ${FX_NOTE}`,
     localProof: [],
     relatedServices: [
       { slug: "software-development-services", label: "Software Development" },
@@ -390,7 +382,7 @@ export const uaeLocationPages: LocationPage[] = [
     serviceLabel: "Website Development",
     title: "Website Development Company in Sharjah",
     metaTitle: "Website Development Company in Sharjah",
-    metaDescription: `Websites and product catalogues for Sharjah manufacturers, traders and free-zone companies in SAIF Zone and Hamriyah, built by an Indian team on UAE hours. From ${formatAED(launch.min)}.`,
+    metaDescription: `Websites and product catalogues for Sharjah manufacturers, traders and free-zone companies in SAIF Zone and Hamriyah, built by an Indian team on UAE hours..`,
     h1: "Website development company for Sharjah businesses",
     intro: [
       "We build websites for Sharjah manufacturers, traders and free-zone companies, in SAIF Zone, Hamriyah Free Zone, Sharjah Media City and SRTIP, from our team in India.",
@@ -457,15 +449,13 @@ export const uaeLocationPages: LocationPage[] = [
       },
       {
         question: "How much does a website cost?",
-        answer: `A WordPress business or catalogue site is ${both(launch.min, launch.max)}; a custom-coded online store ${both(store.min, store.max)}. Quotes are issued in INR.`,
+        answer: `It depends on the kind of project (a business site, an online store and a platform are very different amounts of work) and on pages, content, integrations and deadline. We do not publish prices; message us on WhatsApp at ${PRIMARY_PHONE_DISPLAY} and you get a fixed written quote within ${OFFICE_HOURS.replyWithin}.`,
       },
       {
         question: "Do you work with SAIF Zone and Hamriyah Free Zone companies?",
-        answer: "Yes, remotely and on UAE hours, the same as every other UAE client. Free-zone companies often need one credible site quickly, which our Launch band covers.",
+        answer: "Yes, remotely and on UAE hours, the same as every other UAE client. Free-zone companies often need one credible site quickly, which a straightforward business site covers.",
       },
     ],
-    priceBand: both(launch.min, store.max),
-    priceNote: `A WordPress business or catalogue site is ${both(launch.min, launch.max)}; a custom-coded online store ${both(store.min, store.max)}. ${FX_NOTE}`,
     localProof: [
       {
         client: "Cleanship — Khor Fakkan base",

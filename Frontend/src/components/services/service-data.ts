@@ -65,11 +65,11 @@ export const ecommerceServiceData: ServicePageData = {
     ],
   },
   pricing: {
-    heading: "What an online store costs",
+    heading: "How an online store is priced",
     body: [
-      "There are two honest answers and they are far apart. A Shopify or WooCommerce store assembled from a theme sits at the bottom of our range — you are paying for setup, configuration and merchandising rather than engineering, and for a first catalogue that is usually the right purchase. A custom-coded store starts an order of magnitude higher because it is a different product, and most businesses should not buy it until the template version is provably the constraint.",
-      "What moves a build within its band is the number of integrations, the size and messiness of the catalogue, and how ready your photography is. Payment gateway and Shiprocket integration are included in every ecommerce build rather than quoted as extras.",
-      "Terms are the same on every project: 50% advance to start, 50% at payment-gateway integration — for a store, that means the balance falls due at the point it can take a real order.",
+      "There are two honest answers. A Shopify or WooCommerce store assembled from a theme is mostly setup, configuration and merchandising rather than engineering, and for a first catalogue that is usually the right purchase. A custom-coded store is a different product, and most businesses should not buy it until the template version is provably the constraint.",
+      "What moves the price of a build is the number of integrations, the size and messiness of the catalogue, and how ready your photography is. Payment gateway and Shiprocket integration are included in every ecommerce build rather than quoted as extras.",
+      "We do not publish prices. After a short conversation you get one written, fixed quote, and the scope says exactly what it includes.",
     ],
   },
   industries: {
@@ -96,7 +96,7 @@ export const ecommerceServiceData: ServicePageData = {
     { question: "Can you migrate our existing store?", answer: "Yes — products, customers, orders and URL structure. The redirects are the part people skip, and skipping them discards the search visibility the old store had already earned." },
     { question: "Which payment gateways do you support?", answer: "Razorpay, PayU, Cashfree, Stripe, PayPal and most regional gateways. For Indian stores the choice usually comes down to settlement timing and which categories the provider will underwrite." },
     { question: "How long does an e-commerce build take?", answer: "Typically six to ten weeks from content sign-off. The variable is almost never the code — it is how quickly product copy and photography arrive." },
-    { question: "What does a store cost?", answer: "A template build on Shopify or WooCommerce sits at the bottom of our range; a custom-coded store is an order of magnitude higher because it is a different product. The bands are published on the pricing page rather than held back for a call." },
+    { question: "What does a store cost?", answer: "It depends on the platform, the size of the catalogue, the integrations and how much custom checkout logic you need. We do not publish prices; a short conversation gives you one fixed written quote." },
     { question: "What will it cost to run each month?", answer: "Platform fees if you are on Shopify, gateway charges of roughly two percent per transaction, domain, and any apps you add — plus your support plan. We put those in front of you before you commit so there are no surprises in month two." },
     { question: "How do you handle cash on delivery?", answer: "With RTO rules, partial-prepaid nudges or pincode restrictions configured at launch. COD returns quietly eat more margin than anything else on an Indian store, and configuring it after the first bad month is too late." },
     { question: "Who owns the store and the gateway account?", answer: "You do, from day one. Domain, hosting, repository, analytics and the gateway are all registered in your name — the gateway especially, since it is tied to your GST and bank details and should never sit with a developer." },
@@ -233,10 +233,10 @@ export const webDesignServiceData: ServicePageData = {
     ],
   },
   pricing: {
-    heading: "What design costs here",
+    heading: "How design is priced here",
     body: [
       "Design is not billed as a separate line. It sits inside the build price, because a design nobody builds is worth nothing and splitting the two is how projects end up with a beautiful homepage and eleven templates nobody drew.",
-      "What moves a project within its band is the number of distinct templates, not the number of pages — thirty pages sharing four templates is a smaller job than eight pages that all look different. There is no separate design fee and no per-revision charge inside the agreed scope.",
+      "What moves the price of a project is the number of distinct templates, not the number of pages — thirty pages sharing four templates is a smaller job than eight pages that all look different. There is no separate design fee and no per-revision charge inside the agreed scope.",
     ],
   },
   industries: {
@@ -263,7 +263,7 @@ export const webDesignServiceData: ServicePageData = {
     { question: "What do you deliver?", answer: "Design of every template the site needs — not a homepage mockup and a promise — plus a design system with type scale, spacing, colour tokens and component states, so the site can be extended without it drifting." },
     { question: "How many design revisions are included?", answer: "Review rounds at agreed milestones, iterating until the design matches the signed scope. New scope — an extra template, a section that was not in the agreement — is quoted before it is built." },
     { question: "Do you do brand identity and logos?", answer: "We do not take brand-only engagements with no build attached. We will work with your existing identity, or with a brand designer you bring, and we will say honestly when the identity is the actual problem." },
-    { question: "What does design cost?", answer: "It is not billed separately — design is inside the build price rather than a line item, and the bands are published on the pricing page. There is no separate design fee and no per-revision charge inside the agreed scope." },
+    { question: "What does design cost?", answer: "It is not billed separately — design is inside the build price rather than a line item. There is no separate design fee and no per-revision charge inside the agreed scope." },
     { question: "Will the design work on mobile?", answer: "It is checked on real devices rather than a resized browser, and on a mid-range Android over a throttled connection — which is the condition most of your visitors are actually in." },
     { question: "Is the design accessible?", answer: "We build to sensible contrast ratios, real focus states, keyboard operability and semantic headings as a matter of course. Full WCAG certification is a separate scope and we will say so rather than implying it is included." },
     { question: "Can you redesign without losing our rankings?", answer: "Yes — migration planning, redirect mapping, metadata continuity and a performance-safe rollout. A redesign that drops rankings is almost always a redirect problem, not a design one." },
@@ -400,7 +400,7 @@ export const seoServiceData: ServicePageData = {
     ],
   },
   pricing: {
-    heading: "What SEO costs",
+    heading: "How SEO is priced",
     body: [
       "A retainer is scoped against the audit rather than sold as a fixed monthly package. A site that needs its architecture rebuilt and a site that needs content are very different amounts of work, and pricing them identically is how retainers run for a year with nothing to show.",
       "There is a floor price for SEO in most Indian markets that buys directory submissions and a ranking report. That is not fraud exactly — those things do happen — it is that none of them touch the reasons the site is not ranking. We price it as engineering time, because that is what it is: changes made in the codebase, not described in a PDF.",
@@ -429,7 +429,7 @@ export const seoServiceData: ServicePageData = {
     { question: "How long before SEO shows results?", answer: "Technical fixes can move things in weeks. Competitive commercial rankings take six to twelve months of consistent work. Anyone promising page one in thirty days is either bidding on your brand name or selling you something else." },
     { question: "What happens in the first month?", answer: "A technical pass and nothing else: crawl and indexing errors, page speed, mobile faults, duplicate and thin pages, broken internal links, structured data, and a canonical strategy that holds. On most sites we inherit, this alone moves things." },
     { question: "Do you need access to our code?", answer: "Yes, or to whoever maintains it. SEO that cannot change the site is limited to advice, and advice nobody implements is the most common reason retainers fail. We build and maintain sites too, so recommendation and implementation are one conversation." },
-    { question: "What does an SEO retainer cost?", answer: "It is scoped against the audit rather than sold as a fixed package, because a site needing its architecture rebuilt and a site needing content are different amounts of work at the same monthly fee. The build bands on our pricing page show what technical time costs." },
+    { question: "What does an SEO retainer cost?", answer: "It is scoped against the audit rather than sold as a fixed package, because a site needing its architecture rebuilt and a site needing content are different amounts of work at the same monthly fee. We quote it after the audit, once we can see how much technical work the site needs." },
     { question: "What do we receive each month?", answer: "A short written note of what changed on the site, what moved, and what is queued — with the commits and page changes behind it. Not a forty-page automated export you will not read." },
     { question: "What will you refuse to do?", answer: "No purchased links, no private blog networks, no expired-domain redirects, no AI-generated bulk content under your name, no fake reviews or review-gating, and no guarantee of a specific ranking position. If a competing proposal is cheaper, this list is usually why." },
     { question: "Who owns the accounts and the data?", answer: "You do — Analytics, Search Console, Google Business Profile and any tooling stay in your name and we work inside them. An agency holding your Search Console access is holding the evidence of its own work." },

@@ -37,7 +37,7 @@ Key facts for citation:
 - UAE: works with businesses in Dubai, Abu Dhabi, Sharjah and the other emirates remotely from India, on UAE working hours. There is no UAE office. UAE client: Cleanship (Ajman Free Zone).
 - Singapore: works with Singapore businesses remotely from India (office hours overlap Singapore afternoons). No Singapore office and no Singapore-registered client yet; not a PSG pre-approved vendor.
 - Every build includes basic on-page SEO, analytics and Search Console setup, and a defined post-launch support arrangement — not sold as separate upsells.
-- Pricing is published rather than quote-on-call. See the pricing page for current bands.
+- Pricing is not published: a fixed written quote is shared after a short conversation on WhatsApp or a call, usually within one working day.
 - ${staticProjects.length} delivered projects have written case studies, each linking to the live site.
 
 Disambiguation: NextGen Fusion (nextgenfusion.in) is a web development and SEO
@@ -57,7 +57,6 @@ ${locationPages.map((l) => line(`/${l.slug}`, l.title)).join("\n")}
 ## Company
 
 ${line("/about", "About", "who the team is and how projects are scoped")}
-${line("/pricing", "Pricing", "published price bands, not quote-on-call")}
 ${line("/work", "Work", "delivered websites and stores with case studies")}
 ${line("/team", "Team")}
 ${team.map((m) => line(`/team/${m.slug}`, `${m.name} — ${m.role}`)).join("\n")}

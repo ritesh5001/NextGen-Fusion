@@ -140,7 +140,7 @@ const faqs = [
   {
     question: "What happens after launch, and what does it cost?",
     answer:
-      "Every build comes with a defined support arrangement rather than a handshake — updates, uptime monitoring, backups and a named developer to call. It is billed separately from the build as a recurring plan; the figures are on the pricing page.",
+      "Every build comes with a defined support arrangement rather than a handshake — updates, uptime monitoring, backups and a named developer to call. It is billed separately from the build as a recurring plan, quoted with your project.",
   },
   {
     question: "What are the payment terms?",
@@ -417,33 +417,31 @@ export default function WebsiteDevelopmentServicePage() {
           {/* Pricing */}
           <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Pricing</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">What a website costs</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">How a website is priced</h2>
             <div className="mt-6 space-y-4">
               <p className="text-gray-600 leading-relaxed">
-                A template build on WordPress or Shopify sits at the bottom of our range — you are
-                paying for setup, configuration and content rather than engineering, and for plenty
-                of businesses that is genuinely the right purchase. A custom-coded build starts an
-                order of magnitude higher because it is a different product, and you should not buy
-                it until the template version is provably the constraint.
+                A template build on WordPress or Shopify is mostly setup, configuration and content
+                rather than engineering, and for plenty of businesses that is genuinely the right
+                purchase. A custom-coded build is a different product, and you should not buy it
+                until the template version is provably the constraint.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                What moves a project within its band is the number of custom features, the number of
+                What moves the price of a project is the number of custom features, the number of
                 systems that have to talk to each other, and how ready your content is. A build
                 where copy and photography arrive on day one is meaningfully cheaper than one still
                 waiting on them in week six.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                Terms are the same on every project regardless of size: 50% advance to start, 50% at
-                payment-gateway integration. No separate design fee, no per-revision charge inside
-                the agreed scope, and no charge for the pre-launch performance, analytics and Search
-                Console checks.
+                We do not publish prices. After a short conversation you get one fixed written quote.
+                There is no separate design fee, no per-revision charge inside the agreed scope, and
+                no charge for the pre-launch performance, analytics and Search Console checks.
               </p>
             </div>
             <Link
-              href="/pricing/"
+              href="/contact/"
               className="mt-6 inline-block rounded-full border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
             >
-              See the full price bands
+              Get a written quote
             </Link>
           </motion.section>
 

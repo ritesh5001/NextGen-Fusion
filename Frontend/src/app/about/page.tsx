@@ -24,8 +24,8 @@ const principles = [
     body: "Most agency relationships end at handover, which is exactly when a site starts needing attention. Every build we ship comes with a defined support arrangement, and the developer who wrote the code is the one who answers when something breaks. Nobody on our client list has been handed a repository and left to it.",
   },
   {
-    title: "You get a number before you get a proposal",
-    body: "We give a price band and a delivery window in the first written reply, from the brief alone. If the range does not work for you, nobody has spent three meetings finding that out. If it does, the proposal that follows is the same number with the scope attached.",
+    title: "You get a fixed number before you spend anything",
+    body: "After a short chat on WhatsApp or a call, you get one written scope with a fixed price and one delivery window. We do not publish price lists because a number on a page is a guess about a project we have not heard yet. If the number does not work for you, nobody has spent three meetings finding that out.",
   },
   {
     title: "We say no to work we would build badly",

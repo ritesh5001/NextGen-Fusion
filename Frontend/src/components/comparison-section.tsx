@@ -6,12 +6,11 @@ import Link from "next/link"
 import BadgeSubtitle from "./badge-subtitle"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { OFFICE_HOURS } from "@/data/offices"
-import { computeSupport, formatINR, priceTier, rateCardForm } from "@/lib/estimator-pricing"
+import { priceTier } from "@/lib/estimator-pricing"
 
-// Every claim in the table points at the page that proves it. The figures come
-// from the rate card, so they cannot drift from /pricing/.
+// Every claim in the table points at something a visitor can check. No prices
+// are shown anywhere on the site; they are shared in conversation.
 const launch = priceTier("launch")
-const basicSupport = computeSupport(rateCardForm({ maintenance: "basic" }))
 
 type ComparisonRow = {
   category: string
@@ -22,20 +21,16 @@ type ComparisonRow = {
 
 const comparisonData: ComparisonRow[] = [
   {
-    category: "Pricing",
-    livingTech: `Published rate card — sites from ${formatINR(launch.min)}, then one fixed written quote. No hidden costs.`,
-    others: "Price only after a sales call, often with extras added later.",
-    links: [
-      { label: "Launch", href: "/pricing/#launch" },
-      { label: "Store", href: "/pricing/#store" },
-      { label: "Platform", href: "/pricing/#platform" },
-    ],
+    category: "Quotes",
+    livingTech: `One fixed written quote after a short chat, within ${OFFICE_HOURS.replyWithin}. No hidden costs.`,
+    others: "Open-ended estimates that grow as the project does.",
+    links: [{ label: "Get a written quote", href: "/contact/" }],
   },
   {
     category: "Speed",
-    livingTech: `Launch-tier sites in ${launch.weeksMin}–${launch.weeksMax} weeks from content sign-off; larger builds get one delivery window in the quote.`,
+    livingTech: `Business sites in ${launch.weeksMin}–${launch.weeksMax} weeks from content sign-off; larger builds get one delivery window in the quote.`,
     others: "Slower delivery, often months with unclear timelines.",
-    links: [{ label: "Timelines by tier", href: "/pricing/" }],
+    links: [{ label: "Delivered projects", href: "/work/" }],
   },
   {
     category: "Proof",
@@ -48,9 +43,9 @@ const comparisonData: ComparisonRow[] = [
   },
   {
     category: "Post-Launch Support",
-    livingTech: `Plans from ${basicSupport ? formatINR(basicSupport.amount) : ""} a year. Requests handled ${OFFICE_HOURS.label}; uptime checked around the clock.`,
+    livingTech: `A support plan quoted upfront with every project. Requests handled ${OFFICE_HOURS.label}; uptime checked around the clock.`,
     others: "Limited support, focus on new projects",
-    links: [{ label: "Support plans", href: "/pricing/#support" }],
+    links: [{ label: "Ask about support", href: "/contact/" }],
   },
 ]
 
@@ -238,8 +233,8 @@ export default function ComparisonSection() {
               variants={textVariants}
             >
               <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                Four claims, each linked to the page that backs it up: the published rate card, the
-                timelines, the case studies and the support plans. Check any of them before you call us.
+                Four claims, each linked to something you can check: how we quote, our timelines, the
+                case studies and support after launch. Check any of them before you call us.
               </p>
             </motion.div>
           </div>

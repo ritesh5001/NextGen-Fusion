@@ -237,11 +237,7 @@ export default function ServicesSection() {
           >
             Most projects start as one of three jobs: build a site, get an existing one producing
             enquiries, or build something that is not a website at all. Every service below is quoted
-            from the same{" "}
-            <Link href="/pricing/" className="font-medium text-purple-600 hover:underline">
-              published rate card
-            </Link>
-            .
+            in writing after a short conversation, with one fixed price and one delivery window.
           </motion.p>
         </motion.div>
 
