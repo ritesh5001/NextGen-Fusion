@@ -236,10 +236,17 @@ export const locationPages: LocationPage[] = [
       { slug: "web-design-services", label: "Web Design Services" },
       { slug: "website-maintenance-services", label: "Website Maintenance Services" },
     ],
+    // The Lucknow hub links every Lucknow service page, so none of them depends
+    // on the footer for an internal link.
     relatedLocations: [
       "website-development-company-in-uttar-pradesh",
       "seo-services-in-lucknow",
       "ecommerce-development-company-in-lucknow",
+      "web-designing-company-in-lucknow",
+      "digital-marketing-company-in-lucknow",
+      "google-ads-ppc-company-in-lucknow",
+      "mobile-app-development-company-in-lucknow",
+      "software-company-in-lucknow",
     ],
   },
   {
