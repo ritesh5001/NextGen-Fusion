@@ -6,6 +6,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Mail, Linkedin, ExternalLink } from "lucide-react"
 import { getTeamMember } from "@/data/team"
+import { CONTACT_EMAIL } from "@/data/offices"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -44,7 +45,7 @@ const teamMembersData: Record<string, TeamMemberData> = {
     name: "Ritesh Kumar Giri",
     role: "Full Stack Developer",
     image: "/member/ritesh-giri.png",
-    email: "ritesh@nextgenfusion.in",
+    email: CONTACT_EMAIL,
     linkedinUrl: "https://linkedin.com/in/ritesh-giri",
     experience: "5+ years",
     bio: "Expert full-stack developer who builds scalable, performant web applications from the ground up. Leads technical architecture decisions and delivers end-to-end digital solutions — from database design to deployment.",
@@ -75,7 +76,7 @@ const teamMembersData: Record<string, TeamMemberData> = {
     name: "Sajal Singh",
     role: "Full Stack Developer & Cinematographer",
     image: "/member/sajal-singh.jpeg",
-    email: "sajal@nextgenfusion.in",
+    email: CONTACT_EMAIL,
     linkedinUrl: "https://linkedin.com/in/sajal-singh",
     experience: "4+ years",
     bio: "A rare blend of code and creativity. Builds robust full-stack applications by day and crafts compelling visual stories behind the lens — bringing both technical precision and an artistic eye to every project.",

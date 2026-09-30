@@ -51,7 +51,7 @@ export async function sendBookingConfirmedEmail(args: {
   if (!fromEmail) throw new Error('RESEND_FROM_EMAIL is not set')
   const replyTo = process.env.RESEND_REPLY_TO || undefined
 
-  const to = process.env.BOOKING_ALERT_EMAIL || 'nextgenfusion.devs@gmail.com'
+  const to = process.env.BOOKING_ALERT_EMAIL || 'contact@nextgenfusion.in'
   const subject = `New booking confirmed: ${args.name} · ${args.slotLabel}`
   const html = wrapHtml(`
     <h2 style="margin:0 0 16px;font-size:24px;line-height:1.2;color:#0f172a">New booking confirmed</h2>

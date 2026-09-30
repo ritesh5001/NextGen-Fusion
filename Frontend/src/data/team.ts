@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "@/data/offices"
+
 /**
  * Canonical team identity. Single source of truth for name, role, photo and
  * office across /about/, /team/, /team/<slug>/, blog bylines and every Person
@@ -52,7 +54,7 @@ export const team: TeamMember[] = [
     familyName: "Giri",
     role: "Founder & Full Stack Developer",
     image: "/member/ritesh-giri.png",
-    email: "ritesh@nextgenfusion.in",
+    email: CONTACT_EMAIL,
     officeCity: "Lucknow",
     isFounder: true,
     bio: "Owns technical architecture across every project — Next.js and Shopify front ends, Node and Postgres back ends, and the deployment pipelines that keep them up. Writes the estimate you receive and is on the call when it is delivered.",
@@ -74,7 +76,7 @@ export const team: TeamMember[] = [
     familyName: "Singh",
     role: "Co-Founder, Full Stack Developer & Cinematographer",
     image: "/member/sajal-singh.jpeg",
-    email: "sajal@nextgenfusion.in",
+    email: CONTACT_EMAIL,
     officeCity: "Lucknow",
     isFounder: true,
     bio: "Splits time between building product surfaces and shooting the photography and video that fills them. The reason our ecommerce clients get a store and the imagery to merchandise it.",
