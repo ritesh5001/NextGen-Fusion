@@ -144,6 +144,7 @@ const CLASSIFY: Record<string, [DeliveredCategory, string?]> = {
   "khyationlinemart.in": ["ecommerce", "Other"],
   "hmsbrothers.com": ["ecommerce", "Other"],
   "deetoo.in": ["ecommerce", "Other"],
+  "jnsamart.in": ["ecommerce", "Other"],
   "orangelilies.com": ["ecommerce", "Beauty & Wellness"],
 }
 
@@ -156,6 +157,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "tatvivahtrends.com": "TatVivah Trends",
   "tatvivah.in": "TatVivah",
   "deetoo.in": "DeeToo",
+  "jnsamart.in": "JNSA Mart",
   "vashtaraheaven.com": "Vashtara Heaven",
   "sidcobharat.org": "SIDCO",
   "ladyscootytrainer.com": "Lady Scooty Trainer",

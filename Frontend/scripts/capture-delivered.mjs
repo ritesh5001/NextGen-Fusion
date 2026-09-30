@@ -15,6 +15,11 @@ const hostFromUrl = (url) =>
   url.replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/.*$/, "").toLowerCase()
 const slugFor = (url) => hostFromUrl(url).replace(/[^a-z0-9]+/g, "-")
 
+// Sites whose screenshot is unusable: prccandles.com renders blank headless,
+// and webscraperhub.com's domain has expired (NameSilo parking page). They are
+// never captured and never listed, so a re-run cannot put them back on the wall.
+const SKIP = new Set(["prccandles-com", "webscraperhub-com"])
+
 const exists = async (p) => {
   try { await access(p, constants.F_OK); return true } catch { return false }
 }
@@ -36,6 +41,7 @@ async function main() {
 
   for (const url of urls) {
     const slug = slugFor(url)
+    if (SKIP.has(slug)) continue
     const dest = path.join(outDir, `${slug}.jpg`)
     if (await exists(dest)) { ok++; continue }
 
@@ -70,6 +76,7 @@ async function main() {
   const captured = (await readdir(outDir))
     .filter((f) => f.endsWith(".jpg"))
     .map((f) => f.replace(/\.jpg$/, ""))
+    .filter((slug) => !SKIP.has(slug))
     .sort()
   await writeFile(
     path.join(root, "src", "data", "delivered-captured.json"),
