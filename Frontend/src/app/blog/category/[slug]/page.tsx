@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { apiService } from "@/lib/api"
-import { activeCategorySlugs, categoryLabelFromSlug, categorySlug } from "@/lib/blog"
+import { activeCategorySlugs, categoryCopy, categoryLabelFromSlug, categorySlug } from "@/lib/blog"
 import { BlogPostCard } from "@/components/blog/blog-post-card"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
@@ -31,9 +31,12 @@ export async function generateMetadata({
   const category = categoryLabelFromSlug(posts, slug)
   if (!category) return {}
 
+  const copy = categoryCopy[slug]
   return buildMetadata({
-    title: `${category} Articles`,
-    description: `${category} guides and write-ups from the NextGen Fusion blog — practical posts on building, launching and growing a site, written by the team that ships them.`,
+    title: copy?.title ?? `${category} Articles`,
+    description:
+      copy?.description ??
+      `${category} guides and write-ups from the NextGen Fusion blog — practical posts on building, launching and growing a site, written by the team that ships them.`,
     path: `/blog/category/${slug}`,
   })
 }
@@ -50,6 +53,7 @@ export default async function BlogCategoryPage({
   if (!category) notFound()
 
   const categoryPosts = posts.filter((post) => post.category && categorySlug(post.category) === slug)
+  const copy = categoryCopy[slug]
 
   const schema = [
     {
@@ -57,7 +61,7 @@ export default async function BlogCategoryPage({
       "@type": "CollectionPage",
       "@id": `${absoluteUrl(`/blog/category/${slug}`)}#collection`,
       url: absoluteUrl(`/blog/category/${slug}`),
-      name: `${category} Articles`,
+      name: copy?.heading ?? `${category} Articles`,
       isPartOf: { "@id": `${siteUrl}/#website` },
       about: { "@id": ORGANIZATION_ID },
     },
@@ -81,10 +85,11 @@ export default async function BlogCategoryPage({
               / {category}
             </p>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              {category}
+              {copy?.heading ?? category}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {categoryPosts.length} {categoryPosts.length === 1 ? "article" : "articles"} on {category.toLowerCase()}.
+              {copy?.description ??
+                `${categoryPosts.length} ${categoryPosts.length === 1 ? "article" : "articles"} on ${category.toLowerCase()}.`}
             </p>
           </div>
 

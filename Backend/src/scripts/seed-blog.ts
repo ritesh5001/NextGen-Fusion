@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import { getSupabaseAdmin } from '../lib/supabase'
-import { blogSeedPosts } from '../lib/blog-seed'
+import { blogSeedPosts, type SeedPost } from '../lib/blog-seed'
+import { indiaBlogPosts } from '../lib/blog-seed-india'
 
 /**
  * Publishes the launch set of blog posts.
@@ -8,8 +9,17 @@ import { blogSeedPosts } from '../lib/blog-seed'
  * Idempotent: matches on slug, so re-running updates existing posts rather than
  * creating duplicates. Safe to run after editing the copy in blog-seed.ts.
  *
- *   npm run seed:blog
+ *   npm run seed:blog              # launch set
+ *   npm run seed:blog -- india     # one named set only
+ *
+ * Sets are seeded on their own so publishing a new country never overwrites
+ * edits made to earlier posts in the admin panel.
  */
+
+const SEED_SETS: Record<string, SeedPost[]> = {
+  launch: blogSeedPosts,
+  india: indiaBlogPosts,
+}
 
 function estimateReadMinutes(...htmlParts: (string | null | undefined)[]): number {
   const text = htmlParts.filter(Boolean).join(' ').replace(/<[^>]+>/g, ' ')
@@ -18,6 +28,13 @@ function estimateReadMinutes(...htmlParts: (string | null | undefined)[]): numbe
 }
 
 async function main() {
+  const setName = process.argv[2] || 'launch'
+  const posts = SEED_SETS[setName]
+  if (!posts) {
+    console.error(`Unknown seed set "${setName}". Available: ${Object.keys(SEED_SETS).join(', ')}`)
+    process.exit(1)
+  }
+
   const sb = getSupabaseAdmin()
 
   const { error: probeError } = await sb.from('blog_posts').select('id').limit(1)
@@ -36,7 +53,7 @@ async function main() {
   let created = 0
   let updated = 0
 
-  for (const post of blogSeedPosts) {
+  for (const post of posts) {
     const row = {
       ...post,
       read_duration: estimateReadMinutes(post.introduction, post.content, post.conclution),

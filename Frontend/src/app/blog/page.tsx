@@ -6,6 +6,7 @@ import { BlogPostCard } from "@/components/blog/blog-post-card"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import { guideLinks } from "@/data/guides"
+import { categoryCounts } from "@/lib/blog"
 
 // Server-rendered so crawlers get the posts themselves, not a loading shell.
 // Revalidates hourly, so newly published posts appear without a redeploy.
@@ -22,6 +23,7 @@ async function getPosts(): Promise<BlogPost[]> {
 
 export default async function BlogPage() {
   const posts = await getPosts()
+  const categories = categoryCounts(posts)
 
   const schema = [
     {
@@ -59,6 +61,21 @@ export default async function BlogPage() {
               revenue — written by the team that ships them.
             </p>
             <BlogSearch total={posts.length} />
+            {/* Crawlable links into the category archives — country hubs like
+                /blog/category/india/ were otherwise only reachable from a post. */}
+            {categories.length > 0 && (
+              <nav aria-label="Blog categories" className="mt-8 flex flex-wrap justify-center gap-2">
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.slug}
+                    href={`/blog/category/${cat.slug}/`}
+                    className="rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-gray-900 hover:text-gray-900"
+                  >
+                    {cat.label} <span className="text-gray-400">({cat.count})</span>
+                  </Link>
+                ))}
+              </nav>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
