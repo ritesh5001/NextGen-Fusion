@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react"
 import ContactSection from "@/components/contact-section"
 import { JsonLd } from "@/components/json-ld"
+import { officeSchemas } from "@/lib/office-schema"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import { CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
 
@@ -38,6 +39,7 @@ export default function ContactPage() {
       { name: "Home", path: "/" },
       { name: "Contact", path: PATH },
     ]),
+    ...officeSchemas(),
   ]
 
   return (

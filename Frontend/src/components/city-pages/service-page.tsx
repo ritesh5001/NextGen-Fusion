@@ -6,7 +6,7 @@ import { cityPath, cityServiceHref, cityServicePath } from "@/data/city-pages/pa
 import type { CityPage, CityRegion, CityServicePage } from "@/data/city-pages/types"
 import { GrowthProblemFinder } from "./growth-problem-finder"
 import { SelfCheck } from "./self-check"
-import { CityCaseStudies, CityFaqs, CityHero, CityLinkList, CitySections, cityAreaServed, faqSchema } from "./parts"
+import { CityCaseStudies, CityFaqs, CityHero, CityLinkList, CitySections, cityAreaServed, faqSchema, officeNodes } from "./parts"
 
 type Props<C extends CityPage> = { region: CityRegion<C>; city: C; service: CityService; page: CityServicePage }
 
@@ -32,6 +32,7 @@ function schemaFor<C extends CityPage>({ region, city, service, page }: Props<C>
       { name: city.name, path: cityPath(region, city) },
       { name: service.label, path },
     ]),
+    ...officeNodes(region, city),
   ]
 }
 

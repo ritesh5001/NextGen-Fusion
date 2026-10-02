@@ -2,7 +2,8 @@ import Link from "next/link"
 import { MapPin, MessageCircle, Phone } from "lucide-react"
 import CTABanner from "@/components/cta-banner"
 import { JsonLd } from "@/components/json-ld"
-import { absoluteUrl, breadcrumbSchema, siteUrl } from "@/lib/seo"
+import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID } from "@/lib/seo"
+import { officeId, officeSchema } from "@/lib/office-schema"
 import { offices } from "@/data/offices"
 import { getLocationPage, type LocationPage } from "@/data/locations"
 
@@ -26,9 +27,10 @@ function schemaFor(page: LocationPage) {
       name: `${page.serviceLabel} in ${area}`,
       serviceType: page.serviceLabel,
       url,
-      // The office node, not the Organization: this page is about work delivered
-      // from a specific place, and that node carries the address and geo.
-      provider: { "@id": `${siteUrl}/#office-${page.city.toLowerCase()}` },
+      // The office node where the page serves the office's own country: that
+      // node carries the address and geo. A page for a city abroad is served
+      // by the organisation, with no local office claimed.
+      provider: { "@id": remote || !office ? ORGANIZATION_ID : officeId(office.city) },
       // A remote page names the place it serves and its country, never an
       // address there: the provider stays the Indian office, which is true.
       areaServed: remote
@@ -88,6 +90,7 @@ function schemaFor(page: LocationPage) {
       { name: "Home", path: "/" },
       { name: `${page.serviceLabel} in ${area}`, path: `/${page.slug}` },
     ]),
+    ...(office && !remote ? [officeSchema(office)] : []),
   ]
 }
 
