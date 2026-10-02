@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { openBookingModal } from "@/lib/booking"
 
 /**
@@ -87,6 +88,19 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
     <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-10 hero-rise hero-delay-4">
       Conversion-focused websites for growing D2C and ecommerce brands across India and
       worldwide — designed, built, and supported end to end.
+    </p>
+
+    {/* The Lucknow landing page owns the "website development company in
+        Lucknow" query; the homepage links to it rather than competing for it. */}
+    <p className="-mt-6 mb-10 text-base text-gray-600 hero-rise hero-delay-4">
+      Based in Lucknow? See our{" "}
+      <Link
+        href="/website-development-company-in-lucknow/"
+        className="font-medium text-[#2B35AB] underline underline-offset-4 hover:text-[#8A38F5]"
+      >
+        website development company in Lucknow
+      </Link>{" "}
+      page.
     </p>
 
     {/* CTA Buttons — one primary, one lighter secondary */}

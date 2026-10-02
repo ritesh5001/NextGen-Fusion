@@ -167,15 +167,33 @@ export interface ProjectEstimatorResponse {
     data: T
   }
  
+  /**
+   * Opt-in caching for server callers that must not be dynamic. By default a
+   * request is `no-store`; passing `revalidate` uses the Data Cache instead, and
+   * `timeoutMs` aborts a stalled Backend so the caller can degrade instead of
+   * hanging until the function times out.
+   */
+  export type FetchCacheOptions = { revalidate?: number; tags?: string[]; timeoutMs?: number }
+
+  /**
+   * Cache tag on every cached blog-post fetch. /api/revalidate clears it on
+   * publish: revalidatePath('/sitemap.xml') alone misses the sitemap, whose
+   * cache entry is keyed '/sitemap.xml/' under trailingSlash.
+   */
+  export const BLOG_POSTS_TAG = 'blog-posts'
+
   class ApiService {
   private portfolioEndpoint: string | null | undefined = undefined
 
-   private async fetchApi<T>(endpoint: string, options?: { quiet?: boolean }): Promise<ApiResponse<T>> {
+   private async fetchApi<T>(endpoint: string, options?: { quiet?: boolean } & FetchCacheOptions): Promise<ApiResponse<T>> {
     const quiet = options?.quiet === true
     try {
       const url = `${API_BASE_URL}${endpoint}`
       const response = await fetch(url, {
-        cache: 'no-store',
+        ...(options?.revalidate !== undefined
+          ? { next: { revalidate: options.revalidate, tags: options.tags } }
+          : { cache: 'no-store' as const }),
+        ...(options?.timeoutMs ? { signal: AbortSignal.timeout(options.timeoutMs) } : {}),
         headers: { 'Content-Type': 'application/json' }
       })
       if (!response.ok) {
@@ -463,14 +481,36 @@ export interface ProjectEstimatorResponse {
     }
   }
 
-  async getBlogPosts(): Promise<BlogPost[]> {
+  async getBlogPosts(cacheOptions?: FetchCacheOptions): Promise<BlogPost[]> {
     try {
-      const response = await this.fetchApi<BlogPost[]>('/blog-posts', { quiet: true })
+      const response = await this.fetchApi<BlogPost[]>('/blog-posts', { quiet: true, ...cacheOptions })
       return response.data
     } catch (error) {
       console.warn('Blog posts endpoint not available, using empty list')
       return []
     }
+  }
+
+  /**
+   * Like getBlogPosts(), but throws when the Backend can't be reached instead
+   * of returning []. For the post page, where an empty list would turn a
+   * Backend hiccup into a cached 404; UI lists keep the lenient version.
+   * Cached for an hour (matching the page's revalidate) so the page stays
+   * statically regenerated; /api/revalidate clears it on publish.
+   */
+  async getBlogPostsStrict(): Promise<BlogPost[]> {
+    const response = await fetch(`${API_BASE_URL}/blog-posts`, {
+      next: { revalidate: 3600, tags: [BLOG_POSTS_TAG] },
+      headers: { 'Content-Type': 'application/json' },
+    })
+    if (!response.ok) {
+      throw new Error(`Blog posts request failed: ${response.status}`)
+    }
+    const json = (await response.json()) as ApiResponse<BlogPost[]>
+    if (!Array.isArray(json?.data)) {
+      throw new Error('Blog posts response had no data array')
+    }
+    return json.data
   }
 
   async getBlogPost(id: number): Promise<BlogPost | null> {
@@ -499,9 +539,9 @@ export interface ProjectEstimatorResponse {
     }
   }
 
-  async getActiveBlogPosts(): Promise<BlogPost[]> {
+  async getActiveBlogPosts(cacheOptions?: FetchCacheOptions): Promise<BlogPost[]> {
     try {
-      const blogPosts = await this.getBlogPosts()
+      const blogPosts = await this.getBlogPosts(cacheOptions)
       return blogPosts
         .filter(post => post.is_active)
         .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())

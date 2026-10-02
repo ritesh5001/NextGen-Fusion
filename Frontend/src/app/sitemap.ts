@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 import { absoluteUrl } from "@/lib/seo"
 import { staticProjects } from "@/lib/static-projects"
-import { apiService } from "@/lib/api"
+import { apiService, BLOG_POSTS_TAG } from "@/lib/api"
 import { getStoreProducts, isStoreProductIndexable } from "@/lib/store"
 import { serviceSlugs } from "@/data/services-nav"
 import { locationPages } from "@/data/locations"
@@ -22,6 +22,8 @@ import type { CityRegion } from "@/data/city-pages/types"
 // Revalidate hourly so newly published blog posts, store products and
 // portfolio entries show up without a redeploy.
 export const revalidate = 3600
+
+const REMOTE_TIMEOUT_MS = 5000
 
 
 /**
@@ -107,12 +109,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Remote content is best-effort: a Backend hiccup must not fail the build or
   // serve an empty sitemap, so each source degrades to "skip this section".
+  // Both fetches are cached (the blog one was no-store, which made the whole
+  // sitemap dynamic: every Googlebot hit waited on the Backend, and a slow one
+  // timed the function out with a 500) and give up after REMOTE_TIMEOUT_MS.
   const [blogPosts, storeEntries] = await Promise.all([
-    apiService.getActiveBlogPosts().catch(() => [] as Awaited<ReturnType<typeof apiService.getActiveBlogPosts>>),
+    apiService
+      .getActiveBlogPosts({ revalidate, tags: [BLOG_POSTS_TAG], timeoutMs: REMOTE_TIMEOUT_MS })
+      .catch(() => [] as Awaited<ReturnType<typeof apiService.getActiveBlogPosts>>),
     // 47 product pages that render server-side with full metadata and were
     // absent from the sitemap entirely — the highest commercial-intent URLs
     // on the site had no path in.
-    getStoreProducts()
+    getStoreProducts({ timeoutMs: REMOTE_TIMEOUT_MS })
       .then((products) =>
         products
           // Only products that pass the content gate — the rest are noindexed at
