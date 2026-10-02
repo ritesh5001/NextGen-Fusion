@@ -268,7 +268,7 @@ export default function ComparisonSection() {
                         alt="" 
                         width={24}
                         height={24}
-                        className="w-6 h-6"
+                        className="w-6 h-6 object-contain"
                       />
                     </m.div>
                     <span className="font-semibold text-black">NextGen Fusion</span>
@@ -347,7 +347,7 @@ export default function ComparisonSection() {
                         alt="" 
                         width={20}
                         height={20}
-                        className="w-5 h-5"
+                        className="w-5 h-5 object-contain"
                       />
                     </m.div>
                     <span className="font-semibold text-black text-sm">NextGen Fusion</span>

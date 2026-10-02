@@ -16,7 +16,7 @@ interface CTABannerProps {
 
 export default function CTABanner({
   className = "",
-  backgroundImageUrl = "/images/bgbanner.png",
+  backgroundImageUrl = "/images/bgbanner.webp",
   compact = false,
 }: CTABannerProps) {
   const waNumber = "917348228167"

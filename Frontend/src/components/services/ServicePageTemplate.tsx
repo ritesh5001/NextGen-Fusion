@@ -161,11 +161,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
       <main className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-24">
 
-          {/* Hero */}
-          <m.section
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
+          {/* Hero — static on purpose: its paragraph is the mobile LCP element,
+              and a framer entrance kept it invisible until the motion features
+              had loaded. */}
+          <section
             className="relative overflow-hidden rounded-3xl border border-gray-100 bg-gradient-to-br from-[#f8faff] via-white to-[#f4f7ff] p-8 sm:p-12 lg:p-16"
           >
             <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#8A38F5]/10 blur-3xl" />
@@ -190,14 +189,14 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="/work"
+                  href="/work/"
                   className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors"
                 >
                   View Case Studies
                 </Link>
               </div>
             </div>
-          </m.section>
+          </section>
 
           {/* About + Who it's for */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>

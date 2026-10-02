@@ -136,7 +136,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
       <header className="bg-white pt-20 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-10">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-1.5 text-sm text-gray-400 mb-8">
+          <nav className="flex items-center gap-1.5 text-sm text-gray-500 mb-8">
             <Link href="/" className="hover:text-gray-700 transition-colors">
               Home
             </Link>
@@ -198,6 +198,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 90vw"
                 priority
+                fetchPriority="high"
               />
             </div>
           </div>
@@ -239,7 +240,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center">
                   <Layers className="w-4 h-4 text-blue-600" />
                 </div>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500">
                   Project Overview
                 </h2>
               </div>
@@ -258,7 +259,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 <div className="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center">
                   <Zap className="w-4 h-4 text-red-500" />
                 </div>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500">
                   The Challenge
                 </h2>
               </div>
@@ -277,7 +278,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 <div className="w-7 h-7 rounded-lg bg-purple-50 flex items-center justify-center">
                   <Lightbulb className="w-4 h-4 text-purple-600" />
                 </div>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500">
                   Our Approach
                 </h2>
               </div>
@@ -310,7 +311,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 <div className="w-7 h-7 rounded-lg bg-green-50 flex items-center justify-center">
                   <CheckCircle2 className="w-4 h-4 text-green-600" />
                 </div>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500">
                   What We Built
                 </h2>
               </div>
@@ -361,7 +362,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
             {/* Tech Stack */}
             <section>
               <div className="flex items-center gap-2 mb-5">
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500">
                   Technology Stack
                 </h2>
               </div>
@@ -388,7 +389,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                     <ArrowLeft className="w-4 h-4 text-gray-500 group-hover:-translate-x-0.5 transition-transform" />
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">
+                    <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
                       Previous
                     </p>
                     <p className="text-sm text-gray-700 font-medium truncate max-w-[160px]">
@@ -405,7 +406,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                   className="flex items-center gap-2.5 group text-right"
                 >
                   <div>
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">
+                    <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
                       Next
                     </p>
                     <p className="text-sm text-gray-700 font-medium truncate max-w-[160px]">
@@ -429,7 +430,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
               {/* Project Meta Card */}
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-5">
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                     Our Role
                   </p>
                   <p className="text-sm text-gray-800 font-semibold">
@@ -437,7 +438,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                     Industry
                   </p>
                   <p className="text-sm text-gray-800 font-semibold">
@@ -445,7 +446,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                     Live Website
                   </p>
                   <a
@@ -459,7 +460,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                   </a>
                 </div>
                 <div className="pt-1">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
                     Deliverables
                   </p>
                   <div className="space-y-2">
@@ -475,7 +476,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
 
               {/* Service and city pages this build sits under */}
               <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">
                   Related Services
                 </p>
                 <ul className="space-y-2">
@@ -519,7 +520,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
 
               {/* More Projects */}
               <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">
                   More Work
                 </p>
                 <div className="space-y-4">
@@ -542,7 +543,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                         <p className="text-xs font-semibold text-gray-800 group-hover:text-purple-600 transition-colors line-clamp-1">
                           {p.title}
                         </p>
-                        <p className="text-[10px] text-gray-400 mt-0.5">
+                        <p className="text-[10px] text-gray-500 mt-0.5">
                           {p.category.split(" / ")[0]}
                         </p>
                       </div>
@@ -599,7 +600,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                   </div>
                 </div>
                 <div className="p-4">
-                  <p className="text-[10px] text-gray-400 mb-1">{p.domain}</p>
+                  <p className="text-[10px] text-gray-500 mb-1">{p.domain}</p>
                   <h3 className="text-sm font-bold text-gray-900 group-hover:text-purple-600 transition-colors mb-1.5">
                     {p.title}
                   </h3>
