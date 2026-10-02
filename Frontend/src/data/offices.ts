@@ -83,12 +83,14 @@ export const OFFICE_HOURS = {
 /**
  * Our office hours in another time zone, e.g. `officeHoursAt(-90)` for the UAE
  * (1h30 behind India) or `officeHoursAt(150)` for Singapore (2h30 ahead).
- * None of the countries we serve use daylight saving, so the offset is fixed.
+ * India has no daylight saving, so the offset is fixed per zone; for places
+ * that do observe it (south-eastern Australia), call it once per offset.
+ * Wraps past midnight: Sydney in summer closes at 00:30, not 24:30.
  */
 export function officeHoursAt(minutesFromIndia: number): string {
   const shift = (time: string) => {
     const [h, m] = time.split(":").map(Number)
-    const total = h * 60 + m + minutesFromIndia
+    const total = (((h * 60 + m + minutesFromIndia) % 1440) + 1440) % 1440
     return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`
   }
   return `${shift(OFFICE_HOURS.opens)}–${shift(OFFICE_HOURS.closes)}`
