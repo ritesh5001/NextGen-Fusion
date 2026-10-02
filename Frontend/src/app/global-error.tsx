@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Image from "next/image"
 import { RefreshCw, Home, AlertTriangle } from "lucide-react"
 import Link from "next/link"
@@ -42,14 +42,14 @@ export default function GlobalError({
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           {/* Error Icon */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
             className="mb-8"
           >
             <div className="flex justify-center mb-6">
-              <motion.div
+              <m.div
                 animate={{ 
                   rotate: [0, 5, -5, 0],
                 }}
@@ -61,12 +61,12 @@ export default function GlobalError({
                 className="p-4 bg-red-100 rounded-full"
               >
                 <AlertTriangle className="w-16 h-16 text-red-500" />
-              </motion.div>
+              </m.div>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Main Content */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -93,16 +93,16 @@ export default function GlobalError({
                 )}
               </div>
             )}
-          </motion.div>
+          </m.div>
 
           {/* Action Buttons */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <motion.button
+            <m.button
               onClick={reset}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -110,7 +110,7 @@ export default function GlobalError({
             >
               <RefreshCw className="w-5 h-5" />
               Try Again
-            </motion.button>
+            </m.button>
 
             <Link
               href="/"
@@ -119,17 +119,17 @@ export default function GlobalError({
               <Home className="w-5 h-5" />
               Back to Home
             </Link>
-          </motion.div>
+          </m.div>
 
           {/* Support Message */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mt-12 text-sm text-gray-500"
           >
             <p>If this problem persists, please contact our support team.</p>
-          </motion.div>
+          </m.div>
         </div>
       </body>
     </html>

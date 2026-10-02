@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 
 interface OptimizedIconProps {
   src: string
@@ -25,7 +25,7 @@ export function OptimizedIcon({
   // Jika SVG, konversi ke PNG atau gunakan wrapper khusus
   if (isSvg) {
     return (
-      <motion.div 
+      <m.div 
         className={`relative inline-block overflow-hidden optimized-icon ${className}`}
         variants={variants}
         style={{ width: size, height: size }}
@@ -40,13 +40,13 @@ export function OptimizedIcon({
           priority={priority}
           unoptimized={true} // Untuk SVG, kita gunakan unoptimized
         />
-      </motion.div>
+      </m.div>
     )
   }
   
   // Jika PNG/JPG, gunakan Image seperti biasa
   return (
-    <motion.div 
+    <m.div 
       className={`relative inline-block overflow-hidden ${className}`}
       variants={variants}
       style={{ width: size, height: size }}
@@ -59,7 +59,7 @@ export function OptimizedIcon({
         className="object-contain w-full h-full"
         priority={priority}
       />
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -78,7 +78,7 @@ export const BannerIcon = ({
   variants?: any
 }) => {
   return (
-    <motion.div 
+    <m.div 
       className={`relative inline-block overflow-hidden optimized-banner-icon ${className}`}
       variants={variants}
       style={{ width: size, height: size }}
@@ -92,6 +92,6 @@ export const BannerIcon = ({
         className="object-contain w-full h-full"
         unoptimized={src.endsWith('.svg')}
       />
-    </motion.div>
+    </m.div>
   )
 }

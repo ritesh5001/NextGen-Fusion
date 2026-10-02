@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -23,7 +23,7 @@ export default function CTABanner({
   const { getIconSrc } = useMobileIcon()
 
   return (
-    <motion.section
+    <m.section
       className={className}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -85,6 +85,6 @@ export default function CTABanner({
           </div>
         </div>
       </div>
-    </motion.section>
+    </m.section>
   )
 }

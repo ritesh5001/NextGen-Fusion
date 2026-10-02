@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -130,7 +130,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
 
       {/* Hero Banner */}
       <section className="pt-32 pb-8 px-4 sm:px-6 lg:px-8 bg-gray-50 border-b border-gray-100">
-        <motion.div
+        <m.div
           className="max-w-5xl mx-auto"
           variants={containerVariants}
           initial="hidden"
@@ -140,12 +140,12 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
             <ArrowLeft className="w-4 h-4" />
             Back to Team
           </Link>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* Profile Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <motion.div
+        <m.div
           className="max-w-5xl mx-auto"
           variants={containerVariants}
           initial="hidden"
@@ -154,7 +154,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
         >
           <div className="grid md:grid-cols-3 gap-12 mb-16">
             {/* Image & Contact */}
-            <motion.div variants={itemVariants} className="md:col-span-1">
+            <m.div variants={itemVariants} className="md:col-span-1">
               <div className={`rounded-xl overflow-hidden shadow-xl bg-gradient-to-b ${member.color} p-1 mb-6`}>
                 <div className="rounded-lg overflow-hidden bg-white">
                   <div className="relative h-96">
@@ -169,7 +169,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
               </div>
 
               {/* Contact */}
-              <motion.div className="space-y-3">
+              <m.div className="space-y-3">
                 <a
                   href={`mailto:${member.email}`}
                   className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -191,11 +191,11 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
                     <span className="text-sm font-semibold text-gray-900">LinkedIn Profile</span>
                   </a>
                 )}
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
 
             {/* Details */}
-            <motion.div variants={itemVariants} className="md:col-span-2">
+            <m.div variants={itemVariants} className="md:col-span-2">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3">{member.name}</h1>
               <p className={`text-xl font-semibold bg-gradient-to-r ${member.color} bg-clip-text text-transparent mb-6`}>
                 {member.role}
@@ -214,23 +214,23 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Key Achievements</h3>
                   <ul className="space-y-3">
                     {member.achievements.map((achievement, idx) => (
-                      <motion.li
+                      <m.li
                         key={idx}
                         variants={itemVariants}
                         className="flex gap-3 items-start"
                       >
                         <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${member.color} mt-2 flex-shrink-0`} />
                         <span className="text-gray-700">{achievement}</span>
-                      </motion.li>
+                      </m.li>
                     ))}
                   </ul>
                 </div>
               )}
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Expertise & Skills */}
-          <motion.div variants={itemVariants}>
+          <m.div variants={itemVariants}>
             <h2 className="text-3xl font-bold text-gray-900 mb-8">Expertise &amp; Skills</h2>
 
             {/* Core Expertise */}
@@ -238,14 +238,14 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
               <h3 className="text-xl font-bold text-gray-900 mb-4">Core Expertise</h3>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {member.expertise.map((exp, idx) => (
-                  <motion.div
+                  <m.div
                     key={idx}
                     variants={itemVariants}
                     className="p-4 rounded-lg border border-gray-200 bg-gray-50 hover:shadow-sm transition-shadow"
                   >
                     <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${member.color} mb-2`} />
                     <p className="font-semibold text-gray-900 text-sm">{exp}</p>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             </div>
@@ -255,7 +255,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
               <h3 className="text-xl font-bold text-gray-900 mb-6">Skills</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 {member.skills.map((skillGroup, idx) => (
-                  <motion.div
+                  <m.div
                     key={idx}
                     variants={itemVariants}
                     className="p-6 bg-gray-50 rounded-xl border border-gray-200"
@@ -270,14 +270,14 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
                         </span>
                       ))}
                     </div>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* CTA */}
-          <motion.div variants={itemVariants} className="mt-16 p-8 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl text-center border border-gray-200">
+          <m.div variants={itemVariants} className="mt-16 p-8 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl text-center border border-gray-200">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">Interested in working together?</h3>
             <p className="text-gray-600 mb-6">Get in touch to learn more about our services and how we can help your business grow.</p>
             <a
@@ -286,8 +286,8 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
             >
               Let&#39;s Connect <ExternalLink className="w-4 h-4 inline ml-2" />
             </a>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </section>
     </div>
   )

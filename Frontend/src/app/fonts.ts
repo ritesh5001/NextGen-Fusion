@@ -23,19 +23,9 @@ export const trap = localFont({
 });
 
 /**
- * Trap carries only 97 glyphs — basic Latin and a little punctuation. Inter is
- * what actually renders ₹, em dashes, curly quotes, bullets and arrows, so it
- * stays in the stack, but it is fetched on demand rather than preloaded.
+ * Trap carries only 97 glyphs — basic Latin and a little punctuation. Inter used
+ * to sit behind it in the stack to draw ₹, em dashes, curly quotes and "·", but
+ * that cost every visitor a 33 KB download for a handful of punctuation marks
+ * (the hero uses two). Those glyphs now come from the system UI font, which is
+ * visually indistinguishable at punctuation size.
  */
-export const inter = localFont({
-  src: [
-    { path: '../../public/fonts/Inter-Regular.woff2', weight: '400', style: 'normal' },
-    { path: '../../public/fonts/Inter-Medium.woff2', weight: '500', style: 'normal' },
-    { path: '../../public/fonts/Inter-SemiBold.woff2', weight: '600', style: 'normal' },
-    { path: '../../public/fonts/Inter-Bold.woff2', weight: '700', style: 'normal' },
-  ],
-  variable: '--font-inter',
-  display: 'swap',
-  preload: false,
-  fallback: ['system-ui', 'arial', 'sans-serif'],
-});

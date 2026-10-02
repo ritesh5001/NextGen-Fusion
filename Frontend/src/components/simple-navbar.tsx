@@ -2,40 +2,30 @@
 
 import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Link as ScrollLink } from "react-scroll"
 import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
-import { openBookingModal } from "@/components/booking-modal"
+import { openBookingModal } from "@/lib/booking"
 
 type MenuItem = {
   name: string
   href: string
-  isPage: boolean
   Icon: LucideIcon
 }
-
-/**
- * Real URL for a menu item. Every nav entry must render an anchor with a valid
- * href so search engines can crawl the site's internal links — on-page section
- * links still scroll smoothly because react-scroll calls preventDefault().
- */
-const hrefFor = (item: MenuItem) => (item.isPage ? item.href : `/#${item.href}`)
 
 // Trailing slashes match the 308 the site enforces, so nav links resolve in one
 // hop. About and Contact were homepage fragments — fragments cannot rank, cannot
 // be linked to by directories and cannot carry their own schema.
 const menuItems: MenuItem[] = [
-  { name: "Home", href: "/", isPage: true, Icon: Home },
-  { name: "Projects", href: "/work/", isPage: true, Icon: Briefcase },
-  { name: "Services", href: "/services/", isPage: true, Icon: Wrench },
-  { name: "Store", href: "/store/", isPage: true, Icon: Store },
-  { name: "Blogs", href: "/blog/", isPage: true, Icon: BookOpen },
-  { name: "About", href: "/about/", isPage: true, Icon: User },
-  { name: "Contact", href: "/contact/", isPage: true, Icon: MessageCircle },
-  { name: "Careers", href: "/careers/", isPage: true, Icon: Users },
+  { name: "Home", href: "/", Icon: Home },
+  { name: "Projects", href: "/work/", Icon: Briefcase },
+  { name: "Services", href: "/services/", Icon: Wrench },
+  { name: "Store", href: "/store/", Icon: Store },
+  { name: "Blogs", href: "/blog/", Icon: BookOpen },
+  { name: "About", href: "/about/", Icon: User },
+  { name: "Contact", href: "/contact/", Icon: MessageCircle },
+  { name: "Careers", href: "/careers/", Icon: Users },
 ]
 
 export default function SimpleNavbar() {
@@ -79,17 +69,15 @@ export default function SimpleNavbar() {
 
   return (
     <>
-      {/* Desktop Navbar - Tetap di atas */}
-      <motion.div
-        className={`hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center ${isScrolled ? 'py-2' : 'py-4'}`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.1, ease: "easeOut" }}
+      {/* Desktop Navbar. Plain elements with no entrance animation: framer-motion
+          here made the navbar the reason the library sat in every page's
+          first-load JS. */}
+      <div
+        className={`hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center transition-[padding] ${isScrolled ? 'py-2' : 'py-4'}`}
       >
-        {/* Desktop Layout */}
         <div className="flex items-center gap-4 relative">
           {/* Navbar Container */}
-          <motion.div
+          <div
             className="flex items-center gap-6 px-6 py-3 rounded-full lg:gap-8 lg:px-8"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.4)",
@@ -97,11 +85,7 @@ export default function SimpleNavbar() {
               WebkitBackdropFilter: "blur(20px)",
               border: "1px solid rgba(128, 128, 128, 0.2)",
             }}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.1, delay: 0.05 }}
           >
-            {/* Logo */}
             <Link
               href="/"
               onClick={(e) => {
@@ -113,45 +97,30 @@ export default function SimpleNavbar() {
               className="cursor-pointer"
               aria-label="NextGen Fusion — home"
             >
-              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={128} height={72} priority className="h-8 w-auto" />
+              <Image src="/images/site-logo.png" alt="" width={128} height={72} className="h-8 w-auto" />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="flex items-center gap-4 lg:gap-6">
+            <nav aria-label="Main" className="flex items-center gap-4 lg:gap-6">
               {menuItems.map((item) => (
-                <div key={item.name}>
-                  {isHomePage && !item.isPage ? (
-                    <ScrollLink
-                      to={item.href}
-                      href={hrefFor(item)}
-                      smooth={true}
-                      duration={500}
-                      offset={-80}
-                      className="text-black font-medium hover:text-gray-600 transition-colors cursor-pointer"
-                    >
-                      {item.name}
-                    </ScrollLink>
-                  ) : (
-                    <Link
-                      href={hrefFor(item)}
-                      onClick={(e) => {
-                        if (item.href === "/") {
-                          e.preventDefault()
-                          handleLogoClick()
-                        }
-                      }}
-                      className="text-black font-medium hover:text-gray-600 transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                  )}
-                </div>
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => {
+                    if (item.href === "/" && isHomePage) {
+                      e.preventDefault()
+                      handleLogoClick()
+                    }
+                  }}
+                  className="text-black font-medium hover:text-gray-600 transition-colors"
+                >
+                  {item.name}
+                </Link>
               ))}
             </nav>
-          </motion.div>
+          </div>
 
           {/* User Auth */}
-          <motion.div
+          <div
             className="flex items-center gap-1.5 rounded-full p-1"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.4)",
@@ -159,36 +128,32 @@ export default function SimpleNavbar() {
               WebkitBackdropFilter: "blur(20px)",
               border: "1px solid rgba(128, 128, 128, 0.2)",
             }}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.1, delay: 0.07 }}
           >
-            <button
-              onClick={() => router.push('/portal/login')}
+            <Link
+              href="/portal/login/"
+              prefetch={false}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-black font-semibold text-xs sm:text-sm hover:bg-white/50 transition-colors"
             >
-              <LogIn className="w-4 h-4" />
+              <LogIn className="w-4 h-4" aria-hidden="true" />
               Login
-            </button>
-            <button
-              onClick={() => router.push('/portal/signup')}
+            </Link>
+            <Link
+              href="/portal/signup/"
+              prefetch={false}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 text-white font-semibold text-xs sm:text-sm hover:bg-slate-800 transition-colors"
             >
-              <UserPlus className="w-4 h-4" />
+              <UserPlus className="w-4 h-4" aria-hidden="true" />
               Sign Up
-            </button>
-          </motion.div>
+            </Link>
+          </div>
 
           {/* CTA Button */}
-          <motion.div
+          <div
             className="px-4 py-2 rounded-full"
             style={{
               backgroundColor: "rgba(0, 0, 0, 0.9)",
               border: "1px solid rgba(128, 128, 128, 0.3)",
             }}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.1, delay: 0.08 }}
           >
             <Button
               className="bg-transparent text-white hover:bg-gray-800 transition-all duration-300 font-semibold text-xs sm:text-sm"
@@ -196,164 +161,140 @@ export default function SimpleNavbar() {
             >
               Book a Call
             </Button>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
-
-      {/* Mobile Layout - Dihapus, hanya gunakan bottom navigation */}
+      </div>
 
       {/* Mobile Bottom Navigation.
           No overflow-x-hidden here: the menu dropdown is an absolutely
           positioned child sitting above this container's own (short) box.
           Setting overflow on only one axis forces the browser to compute the
           other axis as `auto` instead of `visible` (CSS Overflow spec), which
-          silently clipped the dropdown out of view — the menu opened (state
-          toggled fine) but never rendered on screen. */}
+          silently clipped the dropdown out of view. */}
       {/* The pill bar needs ~1,210px for nine links plus the auth buttons; below
           xl it ran off both edges of the screen, so tablets and small laptops
           get the bottom bar instead. */}
       <div className="xl:hidden fixed inset-x-0 bottom-0 z-50 max-w-full">
-        {/* Mobile Menu Dropdown - Di atas bottom nav */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              className="absolute bottom-20 left-4 right-4"
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+        {isMobileMenuOpen && (
+          <div id="mobile-menu" className="absolute bottom-20 left-4 right-4 menu-pop">
+            <div
+              className="max-h-[calc(100dvh-7rem)] overflow-y-auto rounded-2xl shadow-2xl border p-4"
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.92)",
+                backdropFilter: "blur(25px)",
+                WebkitBackdropFilter: "blur(25px)",
+                border: "1px solid rgba(255, 255, 255, 0.3)",
+                boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.15)",
+              }}
             >
-              <div 
-                className="max-h-[calc(100dvh-7rem)] overflow-y-auto rounded-2xl shadow-2xl border p-4"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.15)", /* Sangat transparan */
-                  backdropFilter: "blur(25px)",
-                  WebkitBackdropFilter: "blur(25px)",
-                  border: "1px solid rgba(255, 255, 255, 0.3)",
-                  boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.15)",
-                }}
-              >
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-semibold text-gray-800">Menu</h3>
-                  <button onClick={toggleMobileMenu} className="p-2 text-gray-800 hover:bg-gray-100 rounded-full transition-colors">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                <nav className="space-y-2">
-                  {menuItems.map((item) => (
-                    <div key={item.name}>
-                      {isHomePage && !item.isPage ? (
-                        <ScrollLink
-                          to={item.href}
-                          href={hrefFor(item)}
-                          smooth={true}
-                          duration={500}
-                          offset={-80}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer text-gray-800"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          <item.Icon className="w-5 h-5" />
-                          <span className="font-medium">{item.name}</span>
-                        </ScrollLink>
-                      ) : (
-                        <Link
-                          href={hrefFor(item)}
-                          onClick={(e) => {
-                            if (item.href === "/") {
-                              e.preventDefault()
-                              handleLogoClick()
-                            }
-                            setIsMobileMenuOpen(false)
-                          }}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
-                        >
-                          <item.Icon className="w-5 h-5" />
-                          <span className="font-medium">{item.name}</span>
-                        </Link>
-                      )}
-                    </div>
-                  ))}
-                  <button
-                    onClick={() => {
-                      router.push('/portal/login')
-                      setIsMobileMenuOpen(false)
-                    }}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
-                  >
-                    <LogIn className="w-5 h-5" />
-                    <span className="font-medium">User Login</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      router.push('/portal/signup')
-                      setIsMobileMenuOpen(false)
-                    }}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
-                  >
-                    <UserPlus className="w-5 h-5" />
-                    <span className="font-medium">User Sign Up</span>
-                  </button>
-                </nav>
+              <div className="flex justify-between items-center mb-4">
+                <p className="font-semibold text-gray-800">Menu</p>
+                <button
+                  type="button"
+                  onClick={toggleMobileMenu}
+                  aria-label="Close menu"
+                  className="p-2 text-gray-800 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X className="w-5 h-5" aria-hidden="true" />
+                </button>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <nav aria-label="Mobile" className="space-y-2">
+                {menuItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => {
+                      if (item.href === "/" && isHomePage) {
+                        e.preventDefault()
+                        handleLogoClick()
+                      }
+                      setIsMobileMenuOpen(false)
+                    }}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
+                  >
+                    <item.Icon className="w-5 h-5" aria-hidden="true" />
+                    <span className="font-medium">{item.name}</span>
+                  </Link>
+                ))}
+                <Link
+                  href="/portal/login/"
+                  prefetch={false}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
+                >
+                  <LogIn className="w-5 h-5" aria-hidden="true" />
+                  <span className="font-medium">User Login</span>
+                </Link>
+                <Link
+                  href="/portal/signup/"
+                  prefetch={false}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
+                >
+                  <UserPlus className="w-5 h-5" aria-hidden="true" />
+                  <span className="font-medium">User Sign Up</span>
+                </Link>
+              </nav>
+            </div>
+          </div>
+        )}
 
-        {/* Bottom Navigation Bar - Dengan glass effect lebih transparan dan dinaikkan */}
-        <motion.div 
-          className="px-4 py-3 mx-4 mb-2 rounded-full" /* mb-4 diubah jadi mb-2 untuk naikkan posisi */
+        {/* Bottom Navigation Bar */}
+        <div
+          className="px-4 py-3 mx-4 mb-2 rounded-full"
           style={{
-            backgroundColor: "rgba(255, 255, 255, 0.2)", /* Dibuat lebih transparan dari 0.4 ke 0.2 */
-            backdropFilter: "blur(30px)", /* Ditingkatkan dari 20px ke 30px */
-            WebkitBackdropFilter: "blur(30px)", /* Ditingkatkan dari 20px ke 30px */
-            border: "1px solid rgba(255, 255, 255, 0.3)", /* Border lebih terang */
-            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)", /* Tambahan shadow untuk efek glass */
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            backdropFilter: "blur(30px)",
+            WebkitBackdropFilter: "blur(30px)",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
           }}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.1, delay: 0.05 }}
         >
           <div className="flex min-w-0 items-center justify-between gap-2">
-            {/* Logo */}
-            <div
-              onClick={handleLogoClick}
-              className="min-w-0 shrink cursor-pointer"
+            <Link
+              href="/"
+              onClick={(e) => {
+                if (isHomePage) {
+                  e.preventDefault()
+                  handleLogoClick()
+                }
+              }}
+              aria-label="NextGen Fusion — home"
+              className="min-w-0 shrink py-1"
             >
-              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={96} height={54} className="h-5 w-auto" />
-            </div>
+              <Image src="/images/site-logo.png" alt="" width={96} height={54} className="h-5 w-auto" />
+            </Link>
 
-            {/* Tombol Hamburger di kanan logo */}
-            <motion.button
+            <button
+              type="button"
               onClick={toggleMobileMenu}
-              className="p-2 rounded-full hover:bg-white/20 transition-colors"
-              whileTap={{ scale: 0.95 }}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
+              className="p-2 rounded-full hover:bg-white/20 transition-[background-color,transform] active:scale-95"
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6 text-black" />
+                <X className="w-6 h-6 text-black" aria-hidden="true" />
               ) : (
-                <Menu className="w-6 h-6 text-black" />
+                <Menu className="w-6 h-6 text-black" aria-hidden="true" />
               )}
-            </motion.button>
+            </button>
 
-            {/* WhatsApp dan Book Button */}
             <div className="flex items-center gap-2">
-              {/* WhatsApp Button dengan glass effect lebih transparan */}
-              <motion.button
-                className="p-2 rounded-full"
+              <a
+                href="tel:+917348228167"
+                aria-label="Call NextGen Fusion on +91 73482 28167"
+                className="p-2 rounded-full transition-transform active:scale-95"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.3)", /* Dibuat lebih transparan dari 0.6 ke 0.3 */
-                  backdropFilter: "blur(20px)", /* Ditingkatkan dari 10px ke 20px */
-                  WebkitBackdropFilter: "blur(20px)", /* Ditingkatkan dari 10px ke 20px */
-                  border: "1px solid rgba(255, 255, 255, 0.4)", /* Border lebih terang */
+                  backgroundColor: "rgba(255, 255, 255, 0.3)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: "1px solid rgba(255, 255, 255, 0.4)",
                 }}
-                onClick={() => window.open('tel:+917348228167', '_self')}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
               >
-                <Phone className="w-5 h-5 text-green-600" />
-              </motion.button>
+                <Phone className="w-5 h-5 text-green-700" aria-hidden="true" />
+              </a>
 
-              {/* CTA Button */}
               <Button
                 className="bg-black text-white hover:bg-gray-800 transition-all duration-300 font-semibold text-xs px-3 py-2 rounded-full"
                 onClick={() => openBookingModal({ requestType: 'meeting' })}
@@ -362,7 +303,7 @@ export default function SimpleNavbar() {
               </Button>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </>
   )

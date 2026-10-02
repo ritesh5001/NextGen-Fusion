@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Image from "next/image"
 import BadgeSubtitle from "./badge-subtitle"
 import { AnimatedTooltip } from "./ui/animated-tooltip"
@@ -87,7 +87,7 @@ export default function AboutUsSection() {
   }))
 
   return (
-    <motion.section 
+    <m.section 
       id="about" 
       className="bg-white py-32"
       initial="hidden"
@@ -98,19 +98,19 @@ export default function AboutUsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column */}
-          <motion.div variants={itemVariants}>
-            <motion.div 
+          <m.div variants={itemVariants}>
+            <m.div 
               className="mb-6"
               variants={textVariants}
             >
               <BadgeSubtitle>About Us</BadgeSubtitle>
-            </motion.div>
-            <motion.h2
+            </m.div>
+            <m.h2
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-8"
               variants={textVariants}
             >
               <div className="flex flex-wrap items-center gap-2">
-                <motion.div 
+                <m.div 
                   className="relative -translate-y-1 inline-block overflow-hidden hero-icon"
                   variants={imageVariants}
                   whileHover="hover"
@@ -122,7 +122,7 @@ export default function AboutUsSection() {
                     height={56}
                     className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
                   />
-                </motion.div>
+                </m.div>
                 <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
                   Hello
                 </span>
@@ -131,20 +131,20 @@ export default function AboutUsSection() {
               <span className="text-gray-900">NextGen</span>{" "}
               <br />
               <span className="text-gray-900">Fusion</span>
-            </motion.h2>
-          </motion.div>
+            </m.h2>
+          </m.div>
 
           {/* Right Column */}
-          <motion.div 
+          <m.div 
             className="space-y-12"
             variants={containerVariants}
           >
             {/* Two column text content */}
-            <motion.div 
+            <m.div 
               className="grid sm:grid-cols-2 gap-8"
               variants={itemVariants}
             >
-              <motion.div
+              <m.div
                 variants={textVariants}
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.2 }}
@@ -155,8 +155,8 @@ export default function AboutUsSection() {
                   So we stay on after launch, on a support plan quoted upfront, and the person
                   who wrote your code is the person who answers when something needs changing.
                 </p>
-              </motion.div>
-              <motion.div
+              </m.div>
+              <m.div
                 variants={textVariants}
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.2 }}
@@ -167,38 +167,38 @@ export default function AboutUsSection() {
                   with {staticProjects.length} of them written up as case studies you can check. We judge
                   a build by the enquiries and sales it brings in, not by how it looks in a pitch deck.
                 </p>
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
 
             {/* Team Section */}
-            <motion.div variants={itemVariants}>
-              <motion.h2 
+            <m.div variants={itemVariants}>
+              <m.h2 
                 className="text-2xl font-bold text-gray-900 mb-3"
                 variants={textVariants}
               >
                 Meet the Team Behind Our Work
-              </motion.h2>
-              <motion.p 
+              </m.h2>
+              <m.p 
                 className="text-gray-600 text-sm sm:text-base mb-8"
                 variants={textVariants}
               >
                 {team.length} people across Lucknow and Mumbai. The developer who scopes your project
                 writes the code.
-              </motion.p>
+              </m.p>
 
               {/* Team Member Avatars */}
-              <motion.div 
+              <m.div 
                 className="flex justify-start"
                 variants={textVariants}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
                 <AnimatedTooltip items={teamMembers} />
-              </motion.div>
-            </motion.div>
-          </motion.div>
+              </m.div>
+            </m.div>
+          </m.div>
         </div>
       </div>
-    </motion.section>
+    </m.section>
   )
 }

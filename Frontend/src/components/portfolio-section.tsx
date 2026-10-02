@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
@@ -148,7 +148,7 @@ export default function PortfolioSection({
   const filteredProjects = projects;
 
   return (
-    <motion.section
+    <m.section
       id="portofolio"
       className="bg-white py-32 px-4 sm:px-6 lg:px-8"
       initial="hidden"
@@ -158,18 +158,18 @@ export default function PortfolioSection({
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div className="mb-12" variants={itemVariants}>
-          <motion.div className="mb-4" variants={textVariants}>
+        <m.div className="mb-12" variants={itemVariants}>
+          <m.div className="mb-4" variants={textVariants}>
             <BadgeSubtitle>Portfolio</BadgeSubtitle>
-          </motion.div>
+          </m.div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
-            <motion.h2
+            <m.h2
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
               variants={textVariants}
             >
               <div className="flex flex-wrap items-center gap-3 md:gap-4">
                 <span>Discover</span>
-                <motion.div
+                <m.div
                   className="relative inline-block mx-1"
                   variants={iconVariants}
                   whileHover="hover"
@@ -181,14 +181,14 @@ export default function PortfolioSection({
                     height={56}
                     className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
                   />
-                </motion.div>
+                </m.div>
                 <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
                   Our
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-2">
                 <span>Recent</span>
-                <motion.div
+                <m.div
                   className="relative inline-block mx-1"
                   variants={iconVariants}
                   whileHover="hover"
@@ -200,13 +200,13 @@ export default function PortfolioSection({
                     height={56}
                     className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
                   />
-                </motion.div>
+                </m.div>
                 <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
                   Projects
                 </span>
               </div>
-            </motion.h2>
-            <motion.div
+            </m.h2>
+            <m.div
               variants={textVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -219,20 +219,20 @@ export default function PortfolioSection({
                 View all portfolio
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-            </motion.div>
+            </m.div>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Projects Masonry Grid */}
         {loading ? (
-          <motion.div
+          <m.div
             className="columns-1 md:columns-2 gap-6 space-y-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <motion.div
+              <m.div
                 key={i}
                 className="break-inside-avoid mb-6"
                 initial={{ opacity: 0, y: 20 }}
@@ -244,18 +244,18 @@ export default function PortfolioSection({
                   <div className="h-6 bg-gray-200 rounded mb-2"></div>
                   <div className="h-4 bg-gray-200 rounded mb-3 w-3/4"></div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             className="columns-1 md:columns-2 gap-6 space-y-6"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
             {filteredProjects.map((project) => (
-              <motion.div
+              <m.div
                 key={project.id}
                 className="break-inside-avoid mb-6 group"
                 variants={cardVariants}
@@ -263,7 +263,7 @@ export default function PortfolioSection({
                 onMouseLeave={() => setHoveredProject(null)}
               >
                 <Link href={project.link} prefetch={false} className="block">
-                  <motion.div
+                  <m.div
                     className={`relative rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/10] w-full`}
                     variants={imageVariants}
                   >
@@ -276,7 +276,7 @@ export default function PortfolioSection({
                     />
 
                     {/* Category Badge */}
-                    <motion.div
+                    <m.div
                       className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-gray-700 border border-gray-200"
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileInView={{ opacity: 1, scale: 1 }}
@@ -284,10 +284,10 @@ export default function PortfolioSection({
                       transition={{ duration: 0.3, delay: 0.2 }}
                     >
                       {project.category}
-                    </motion.div>
+                    </m.div>
 
                     {/* Title Overlay - Hidden by default, shown on hover */}
-                    <motion.div
+                    <m.div
                       className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-start p-6"
                       initial={{ opacity: 0 }}
                       whileHover={{ opacity: 1 }}
@@ -305,14 +305,14 @@ export default function PortfolioSection({
                           <ArrowRight className="w-3.5 h-3.5" />
                         </span>
                       </div>
-                    </motion.div>
-                  </motion.div>
+                    </m.div>
+                  </m.div>
                 </Link>
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         )}
       </div>
-    </motion.section>
+    </m.section>
   );
 }

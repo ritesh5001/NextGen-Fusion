@@ -1,6 +1,6 @@
 "use client"
 
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import {
   Sparkles,
   ArrowRight,
@@ -232,7 +232,7 @@ export default function ProjectEstimatorSection() {
     featureOptions.find((f) => f.value === value)?.label ?? value.replace(/_/g, " ")
 
   return (
-    <motion.section
+    <m.section
       id="project-estimator"
       className="relative overflow-hidden bg-white px-4 py-20 sm:px-6 md:py-28 lg:px-8"
       initial="hidden"
@@ -243,7 +243,7 @@ export default function ProjectEstimatorSection() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(43,53,171,0.10),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(19,203,212,0.10),_transparent_30%)]" />
 
       <div className="relative mx-auto max-w-7xl">
-        <motion.div className="max-w-3xl" variants={itemVariants}>
+        <m.div className="max-w-3xl" variants={itemVariants}>
           <BadgeSubtitle>Project Estimator</BadgeSubtitle>
           <h2 className="mt-5 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
             Get an instant{" "}
@@ -252,18 +252,18 @@ export default function ProjectEstimatorSection() {
           <p className="mt-4 max-w-2xl text-base leading-7 text-gray-600 sm:text-lg">
             Answer a few quick questions and watch your estimate update live. No back-and-forth, no waiting.
           </p>
-        </motion.div>
+        </m.div>
 
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           {/* Tool */}
-          <motion.div
+          <m.div
             variants={itemVariants}
             className="order-2 rounded-3xl border border-gray-200 bg-white p-4 shadow-[0_30px_80px_rgba(17,19,24,0.08)] lg:order-1"
           >
             <div className="rounded-[20px] border border-gray-100 bg-white p-5 sm:p-7">
               <AnimatePresence mode="wait">
                 {step === 1 && (
-                  <motion.div key="step-1" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
+                  <m.div key="step-1" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
                     <StepHeading title="Your build" subtitle="Pick the type, size, and timeline." />
 
                     <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -341,7 +341,7 @@ export default function ProjectEstimatorSection() {
 
                       <AnimatePresence initial={false}>
                         {showDetail && (
-                          <motion.div
+                          <m.div
                             key="detail"
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
@@ -382,15 +382,15 @@ export default function ProjectEstimatorSection() {
                                 ))}
                               </div>
                             </div>
-                          </motion.div>
+                          </m.div>
                         )}
                       </AnimatePresence>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
 
                 {step === 2 && (
-                  <motion.div key="step-2" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
+                  <m.div key="step-2" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
                     <StepHeading title="Where to send it" subtitle="A couple of details and your estimate is ready." />
 
                     <div className="mt-6 space-y-5">
@@ -450,11 +450,11 @@ export default function ProjectEstimatorSection() {
                         />
                       </Field>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
 
                 {step === 3 && result && (
-                  <motion.div key="step-3" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
+                  <m.div key="step-3" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <StepHeading title="Your estimate" subtitle="A first-pass scope and budget from your brief." />
                       <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600">
@@ -533,7 +533,7 @@ export default function ProjectEstimatorSection() {
                       </ul>
                       <p className="mt-4 text-sm font-medium text-gray-900">{result.next_step}</p>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
 
@@ -581,10 +581,10 @@ export default function ProjectEstimatorSection() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Live preview */}
-          <motion.div variants={itemVariants} className="order-1 lg:order-2">
+          <m.div variants={itemVariants} className="order-1 lg:order-2">
             <div className="lg:sticky lg:top-24 overflow-hidden rounded-3xl border border-white/10 bg-[#0b0d12] p-7 text-white shadow-[0_25px_80px_rgba(0,0,0,0.18)]">
               <div className={`pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full ${GRADIENT} opacity-20 blur-3xl`} />
 
@@ -597,7 +597,7 @@ export default function ProjectEstimatorSection() {
                 </div>
 
                 <AnimatePresence mode="wait">
-                  <motion.div
+                  <m.div
                     key={
                       step === 3 && result
                         ? `final-${result.estimated_cost_inr.min}-${result.estimated_cost_inr.max}`
@@ -616,7 +616,7 @@ export default function ProjectEstimatorSection() {
                       : ballpark
                         ? `${formatCurrency(ballpark.cost.min)} – ${formatCurrency(ballpark.cost.max)}`
                         : "—"}
-                  </motion.div>
+                  </m.div>
                 </AnimatePresence>
 
                 <div className="mt-4 flex items-center gap-4 text-sm text-white/70">
@@ -682,10 +682,10 @@ export default function ProjectEstimatorSection() {
                 )}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
-    </motion.section>
+    </m.section>
   )
 }
 

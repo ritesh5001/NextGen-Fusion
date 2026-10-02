@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { motion, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion"
+import { m, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion"
 import Image from "next/image"
 
 export const AnimatedTooltip = ({
@@ -64,7 +64,7 @@ export const AnimatedTooltip = ({
          >
           <AnimatePresence>
             {hoveredIndex === item.id && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20, scale: 0.6 }}
                 animate={{
                   opacity: 1,
@@ -83,7 +83,7 @@ export const AnimatedTooltip = ({
                 }}
                 className="absolute -top-56 -left-24 z-50 flex flex-col items-center justify-center rounded-lg overflow-hidden shadow-xl w-47">
                 <Image src={item.hoverimage || `/memberhover/${item.name.toLowerCase().split(' ')[0]}.jpg`} alt={item.name} width={192} height={192} className="w-48 h-48 object-cover" />
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
           <Image

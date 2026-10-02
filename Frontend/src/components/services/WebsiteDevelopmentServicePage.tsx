@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import {
   ArrowRight,
   BarChart3,
@@ -176,7 +176,7 @@ export default function WebsiteDevelopmentServicePage() {
       />
       <main className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-24">
-          <motion.section
+          <m.section
             initial="hidden"
             animate="visible"
             variants={sectionVariants}
@@ -212,9 +212,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </Link>
               </div>
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <div className="grid lg:grid-cols-2 gap-8">
               <div className="rounded-2xl border border-gray-100 p-8 bg-white shadow-sm">
                 <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#2B35AB]/10 text-[#2B35AB]">
@@ -238,9 +238,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </p>
               </div>
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Problems We Solve</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Common Pain Points in Website Development Services</h2>
             <div className="mt-8 grid md:grid-cols-2 gap-4">
@@ -251,9 +251,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Our Solution</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">How We Deliver Better Website Development Services</h2>
             <div className="mt-8 rounded-2xl border border-gray-100 p-8 bg-gradient-to-br from-white to-gray-50">
@@ -262,9 +262,9 @@ export default function WebsiteDevelopmentServicePage() {
                 optimization. This ensures your website performs as a business asset, not just a digital brochure.
               </p>
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Key Features</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">What’s Included in Our Website Development Services</h2>
             <div className="mt-8 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -278,9 +278,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Our Process</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Step-by-Step Website Development Workflow</h2>
             <div className="mt-8 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -294,9 +294,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Benefits & ROI</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Business Outcomes You Can Expect</h2>
             <div className="mt-8 grid lg:grid-cols-4 gap-5">
@@ -313,9 +313,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Technologies Used</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Modern Tech Stack Behind Our Website Development Services</h2>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -328,9 +328,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </span>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Portfolio Preview</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Recent Website Development Use Cases</h2>
             <div className="mt-8 grid md:grid-cols-2 gap-6 lg:grid-cols-3">
@@ -375,10 +375,10 @@ export default function WebsiteDevelopmentServicePage() {
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
           {/* In practice */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>In practice</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">
               How a build actually runs
@@ -412,10 +412,10 @@ export default function WebsiteDevelopmentServicePage() {
                 telling you exactly what month four will look like.
               </p>
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Pricing */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Pricing</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">How a website is priced</h2>
             <div className="mt-6 space-y-4">
@@ -443,10 +443,10 @@ export default function WebsiteDevelopmentServicePage() {
             >
               Get a written quote
             </Link>
-          </motion.section>
+          </m.section>
 
           {/* Industries */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Industries</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Industries we build for</h2>
             <p className="mt-4 text-gray-600 leading-relaxed">
@@ -470,10 +470,10 @@ export default function WebsiteDevelopmentServicePage() {
                 </li>
               ))}
             </ul>
-          </motion.section>
+          </m.section>
 
           {/* City pages */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Where we work</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">
               Looking for website development in your city?
@@ -495,9 +495,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </li>
               ))}
             </ul>
-          </motion.section>
+          </m.section>
 
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>FAQ</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Website Development Services FAQs</h2>
             <div className="mt-8 space-y-4">
@@ -508,9 +508,9 @@ export default function WebsiteDevelopmentServicePage() {
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section
+          <m.section
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -541,7 +541,7 @@ export default function WebsiteDevelopmentServicePage() {
                 </Link>
               </div>
             </div>
-          </motion.section>
+          </m.section>
         </div>
       </main>
 

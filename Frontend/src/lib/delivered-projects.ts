@@ -1,6 +1,6 @@
 import rawUrls from "@/data/delivered-urls.json"
 import capturedSlugs from "@/data/delivered-captured.json"
-import { staticProjects } from "@/lib/static-projects"
+import { caseStudySlugByHost } from "@/data/case-study-hosts"
 
 export type DeliveredCategory = "ecommerce" | "service" | "custom"
 
@@ -218,7 +218,7 @@ const CLOSED_HOSTS = new Set(["zarqaa.in", "qathirsnaturals.com"])
 
 // Case studies keyed by the host of their live site, so a wall card can say
 // whether a written case study sits behind it.
-const caseStudyByHost = new Map(staticProjects.map((p) => [hostFromUrl(p.liveUrl), p.slug]))
+const caseStudyByHost = new Map(Object.entries(caseStudySlugByHost))
 
 function fallbackName(host: string): string {
   const core = host.split(".")[0]

@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import BadgeSubtitle from "./badge-subtitle"
@@ -166,13 +166,13 @@ const rowVariants = {
 }
 
 // Create motion-enabled table row to avoid undefined motion.tr in some builds
-const MotionTr = motion.create("tr")
+const MotionTr = m.tr
 
 export default function ComparisonSection() {
   const { getIconSrc } = useMobileIcon()
   
   return (
-    <motion.section 
+    <m.section 
       className="bg-white pt-40 pb-24 px-4 sm:px-6 lg:px-8"
       initial="hidden"
       whileInView="visible"
@@ -181,28 +181,28 @@ export default function ComparisonSection() {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div 
+        <m.div 
           className="mb-12"
           variants={itemVariants}
         >
-          <motion.div 
+          <m.div 
             className="mb-4 text-left"
             variants={textVariants}
           >
             <BadgeSubtitle>Advantages</BadgeSubtitle>
-          </motion.div>
+          </m.div>
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
-            <motion.div 
+            <m.div 
               className="text-left"
               variants={textVariants}
             >
-              <motion.h2 
+              <m.h2 
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-none"
                 variants={textVariants}
               >
                 <div className="flex flex-wrap items-center gap-2 mb-1">
                   <span>Why</span>{" "}
-                  <motion.div 
+                  <m.div 
                     className="relative inline-block"
                     variants={iconVariants}
                     whileHover="hover"
@@ -214,7 +214,7 @@ export default function ComparisonSection() {
                       height={56}
                       className="rounded-lg object-cover w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
                     />
-                  </motion.div>
+                  </m.div>
                   <span 
                     className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent" 
                     style={{
@@ -226,9 +226,9 @@ export default function ComparisonSection() {
                 </div>
                 {" "}
                 <div>with Us?</div>
-              </motion.h2>
-            </motion.div>
-            <motion.div 
+              </m.h2>
+            </m.div>
+            <m.div 
               className="flex items-center"
               variants={textVariants}
             >
@@ -236,12 +236,12 @@ export default function ComparisonSection() {
                 Four claims, each linked to something you can check: how we quote, our timelines, the
                 case studies and support after launch. Check any of them before you call us.
               </p>
-            </motion.div>
+            </m.div>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Desktop Table - Hidden on Mobile */}
-        <motion.div 
+        <m.div 
           className="hidden sm:block overflow-hidden rounded-2xl border border-gray-200"
           variants={tableVariants}
         >
@@ -259,18 +259,18 @@ export default function ComparisonSection() {
                 </th>
                 <th className="bg-white p-6 text-left border-r border-gray-200">
                   <div className="flex items-center gap-3">
-                    <motion.div
+                    <m.div
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.2 }}
                     >
                       <Image 
                         src="/images/site-logo.png" 
-                        alt="NextGen Fusion" 
+                        alt="" 
                         width={24}
                         height={24}
                         className="w-6 h-6"
                       />
-                    </motion.div>
+                    </m.div>
                     <span className="font-semibold text-black">NextGen Fusion</span>
                   </div>
                 </th>
@@ -294,13 +294,13 @@ export default function ComparisonSection() {
                   <td className="bg-white p-6 font-medium text-gray-900 border-r border-gray-200">{item.category}</td>
                   <td className="bg-gray-50 p-6 border-r border-gray-200">
                     <div className="flex items-start gap-3">
-                      <motion.div 
+                      <m.div 
                         className="w-4 h-4 bg-gray-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
                         whileHover={{ scale: 1.2 }}
                         transition={{ duration: 0.2 }}
                       >
                         <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                      </motion.div>
+                      </m.div>
                       <div>
                         <p className="text-sm text-gray-700">{item.livingTech}</p>
                         <RowLinks links={item.links} className="text-sm" />
@@ -317,10 +317,10 @@ export default function ComparisonSection() {
               ))}
             </tbody>
           </table>
-        </motion.div>
+        </m.div>
 
         {/* Mobile Table */}
-        <motion.div 
+        <m.div 
           className="sm:hidden overflow-hidden rounded-2xl border border-gray-200"
           variants={tableVariants}
         >
@@ -338,18 +338,18 @@ export default function ComparisonSection() {
                 </th>
                 <th className="bg-white p-4 text-left border-r border-gray-200">
                   <div className="flex items-center gap-2">
-                    <motion.div
+                    <m.div
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.2 }}
                     >
                       <Image 
                         src="/images/site-logo.png" 
-                        alt="NextGen Fusion" 
+                        alt="" 
                         width={20}
                         height={20}
                         className="w-5 h-5"
                       />
-                    </motion.div>
+                    </m.div>
                     <span className="font-semibold text-black text-sm">NextGen Fusion</span>
                   </div>
                 </th>
@@ -373,13 +373,13 @@ export default function ComparisonSection() {
                   <td className="bg-white p-4 font-medium text-gray-900 border-r border-gray-200 text-sm">{item.category}</td>
                   <td className="bg-gray-50 p-4 border-r border-gray-200">
                     <div className="flex items-start gap-2">
-                      <motion.div 
+                      <m.div 
                         className="w-3 h-3 bg-gray-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
                         whileHover={{ scale: 1.2 }}
                         transition={{ duration: 0.2 }}
                       >
                         <div className="w-1 h-1 bg-white rounded-full"></div>
-                      </motion.div>
+                      </m.div>
                       <div>
                         <p className="text-xs text-gray-700">{item.livingTech}</p>
                         <RowLinks links={item.links} className="text-xs" />
@@ -396,8 +396,8 @@ export default function ComparisonSection() {
               ))}
             </tbody>
           </table>
-        </motion.div>
+        </m.div>
       </div>
-    </motion.section>
+    </m.section>
   )
 }
