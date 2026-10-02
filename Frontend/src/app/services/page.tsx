@@ -3,17 +3,16 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { serviceRoutes } from "@/components/services/service-data"
 import { JsonLd } from "@/components/json-ld"
-import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Services — Web, Ecommerce, SEO & Software",
   description:
-    "Website and ecommerce development, web design, marketplaces, Next.js, Shopify, SEO, PPC, social media, AI automation, software and cloud — all fifteen services, explained.",
-  alternates: {
-    canonical: absoluteUrl("/services"),
-  },
-}
+    "Websites, online stores, marketplaces, Shopify, SEO, Google Ads, social media, AI automation, software and cloud: all fifteen services, explained.",
+  path: "/services",
+  ogEyebrow: "Services",
+})
 
 const serviceDescriptions: Record<string, string> = {
   "Website Development Services":

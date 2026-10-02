@@ -16,7 +16,7 @@ import {
 import ScrollToTop from "@/components/scroll-to-top";
 import { staticProjects, getProjectBySlug } from "@/lib/static-projects";
 import { JsonLd } from "@/components/json-ld";
-import { absoluteUrl, assetUrl, breadcrumbSchema, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { absoluteUrl, assetUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import type { StaticProject } from "@/lib/static-projects";
 
 // The service page and Lucknow page each build type is sold on. Case studies
@@ -55,29 +55,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return {};
-  return {
-    // Absolute: /work/layout.tsx sets a plain string title, which cancels the
-    // root template, so the brand suffix never made it onto case studies.
-    title: { absolute: `${project.seoTitle} | NextGen Fusion` },
+  return buildMetadata({
+    title: project.seoTitle,
     description: project.shortDescription,
-    alternates: {
-      canonical: absoluteUrl(`/work/${project.slug}`),
-    },
-    openGraph: {
-      title: `${project.seoTitle} | NextGen Fusion`,
-      description: project.shortDescription,
-      url: `${siteUrl}/work/${project.slug}`,
-      siteName: "NextGen Fusion",
-      type: "article",
-      images: [project.coverImage],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${project.seoTitle} | NextGen Fusion`,
-      description: project.shortDescription,
-      images: [project.coverImage],
-    },
-  };
+    path: `/work/${project.slug}`,
+    // The project's own screenshot is a better preview than a text card.
+    image: project.coverImage,
+    type: "article",
+  });
 }
 
 export default async function WorkDetailPage({ params }: PageProps) {
