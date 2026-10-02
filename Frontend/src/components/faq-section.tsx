@@ -195,7 +195,7 @@ export default function FAQSection() {
                   />
                 </motion.div>
                 <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                  Ask
+                  Questions
                 </span>
                 <motion.div 
                   className="relative inline-block"
@@ -210,8 +210,8 @@ export default function FAQSection() {
                   />
                 </motion.div>
               </div>{" "}
-                <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                  the answers
+                <span className="inline-block">
+                  about working with us, answered
                 </span>
               </motion.h2>
             </motion.div>
@@ -244,6 +244,7 @@ export default function FAQSection() {
                   <div className="flex items-center justify-between">
                     <motion.button 
                       onClick={handleBackClick} 
+                      aria-label="Back to all questions"
                       className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-gray-100"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
@@ -264,12 +265,14 @@ export default function FAQSection() {
                         <div className="text-sm font-semibold text-gray-900">
                           {activeIndex !== null ? "NextGen Fusion" : "Your Questions"}
                         </div>
-                        <div className="text-xs text-gray-400">Usually replies within a day</div>
+                        <div className="text-xs text-gray-600">Usually replies within a day</div>
                       </div>
                     </div>
                     <div className="relative" ref={dropdownRef}>
                       <motion.button 
                         onClick={toggleDropdown} 
+                        aria-label="About this chat"
+                        aria-expanded={showDropdown}
                         className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-gray-100"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}

@@ -156,11 +156,9 @@ const HeroContent = () => {
             <div className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></div>
             <div className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></div>
           </div>
-          {/* The H1 is brand copy with no location in it; this line carries the
-              query the homepage is meant to rank for. */}
           <p className="text-xs font-medium text-gray-700">
-            Website development company in Lucknow, India
-            <span className="hidden sm:inline text-gray-500"> · Available for work</span>
+            Next.js, WordPress &amp; Shopify · Lucknow &amp; Mumbai
+            <span className="hidden sm:inline text-gray-600"> · Available for work</span>
           </p>
         </div>
       </motion.div>
@@ -172,17 +170,23 @@ const HeroContent = () => {
           mobile; giving it an entrance animation meant LCP could not fire until
           hydration finished, pinning it at 5.4s while FCP was 1.5s. Static
           markup lets it paint with the document. */}
+      {/* The query the homepage ranks for leads the H1 and matches the
+          <title>; a heading with no keyword in it was one reason Google kept
+          rewriting the title in results. */}
       <h1
         className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-5 max-w-5xl mx-auto"
       >
-        Websites &amp; Online Stores That Don&apos;t Get Abandoned{" "}
-        <span
-          className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"
-          style={{
-            backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
-          }}
-        >
-          After Launch
+        <span className="block">Website Development Company in Lucknow</span>
+        <span className="mt-3 block text-xl font-semibold text-gray-700 sm:text-2xl md:text-3xl lg:text-4xl">
+          Websites &amp; online stores that don&apos;t get abandoned{" "}
+          <span
+            className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"
+            style={{
+              backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
+            }}
+          >
+            after launch
+          </span>
         </span>
       </h1>
 
