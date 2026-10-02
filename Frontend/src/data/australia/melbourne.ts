@@ -753,7 +753,7 @@ export const melbourne: AuCity = {
     "ai-automation": {
       metaTitle: "AI Automation in Melbourne — Less Admin for Venues & Brands",
       metaDescription:
-        "AI automation for Melbourne venues, studios and brands: function enquiries, supplier invoices, customer emails and reporting handled automatically, with a person reviewing.",
+        "AI automation for Melbourne venues and brands: function enquiries, supplier invoices and customer emails handled automatically, with a person reviewing.",
       h1: "AI automation for Melbourne businesses where the admin happens after closing time",
       card: "Function enquiries, invoices and inboxes handled automatically.",
       intro: [

@@ -1,12 +1,37 @@
 import { OFFICE_HOURS, officeHoursAt } from "@/data/offices"
 import type { AuCity } from "./types"
 import type { AuServiceSlug } from "./services"
+import { adelaide } from "./adelaide"
+import { brisbane } from "./brisbane"
+import { canberra } from "./canberra"
+import { darwin } from "./darwin"
+import { goldCoast } from "./gold-coast"
+import { hobart } from "./hobart"
+import { melbourne } from "./melbourne"
+import { newcastle } from "./newcastle"
+import { perth } from "./perth"
+import { sunshineCoast } from "./sunshine-coast"
 import { sydney } from "./sydney"
+import { wollongong } from "./wollongong"
 
 export * from "./types"
 export * from "./services"
 
-export const auCities: AuCity[] = [sydney]
+// Ordered by size: the hub lists them in this order.
+export const auCities: AuCity[] = [
+  sydney,
+  melbourne,
+  brisbane,
+  perth,
+  adelaide,
+  goldCoast,
+  canberra,
+  newcastle,
+  sunshineCoast,
+  wollongong,
+  hobart,
+  darwin,
+]
 
 /** Regional cities named on the hub page rather than given pages of their own. */
 export const auRegionalCentres: { state: string; places: string[] }[] = [

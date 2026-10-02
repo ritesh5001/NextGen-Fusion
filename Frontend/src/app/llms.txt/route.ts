@@ -1,6 +1,7 @@
 import { serviceNavItems } from "@/data/services-nav"
 import { guideLinks } from "@/data/guides"
 import { locationPages } from "@/data/locations"
+import { AUSTRALIA_PATH, auCities, auCityPath } from "@/data/australia"
 import { team } from "@/data/team"
 import { staticProjects } from "@/lib/static-projects"
 import { absoluteUrl } from "@/lib/seo"
@@ -36,6 +37,7 @@ Key facts for citation:
 - Offices: Lucknow (Kamta) and Mumbai (Mahim), Uttar Pradesh and Maharashtra, India.
 - UAE: works with businesses in Dubai, Abu Dhabi, Sharjah and the other emirates remotely from India, on UAE working hours. There is no UAE office. UAE client: Cleanship (Ajman Free Zone).
 - Singapore: works with Singapore businesses remotely from India (office hours overlap Singapore afternoons). No Singapore office and no Singapore-registered client yet; not a PSG pre-approved vendor.
+- Australia: works with businesses across Australia remotely from India, during Australian afternoons and evenings. No Australian office; not on any Australian government procurement panel.
 - Every build includes basic on-page SEO, analytics and Search Console setup, and a defined post-launch support arrangement — not sold as separate upsells.
 - Pricing is not published: a fixed written quote is shared after a short conversation on WhatsApp or a call, usually within one working day.
 - ${staticProjects.length} delivered projects have written case studies, each linking to the live site.
@@ -53,6 +55,11 @@ ${line("/services", "Full services index")}
 ## Locations
 
 ${locationPages.map((l) => line(`/${l.slug}`, l.title)).join("\n")}
+
+## Australia
+
+${line(AUSTRALIA_PATH, "Australia", "websites, SEO, ecommerce and automation for Australian businesses, served remotely")}
+${auCities.map((c) => line(auCityPath(c), `${c.name}, ${c.stateCode}`, c.summary)).join("\n")}
 
 ## Company
 

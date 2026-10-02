@@ -50,6 +50,16 @@ const locations: { group: string; links: FooterLink[] }[] = [
       { label: "Singapore", href: "/website-development-company-in-singapore/" },
     ],
   },
+  {
+    group: "Australia",
+    links: [
+      { label: "Sydney", href: "/australia/sydney/" },
+      { label: "Melbourne", href: "/australia/melbourne/" },
+      { label: "Brisbane", href: "/australia/brisbane/" },
+      { label: "Perth", href: "/australia/perth/" },
+      { label: "All Australian cities", href: "/australia/" },
+    ],
+  },
 ];
 
 const resources: FooterLink[] = [
@@ -118,7 +128,7 @@ export default function Footer() {
             </a>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-gray-300">
               Web development, ecommerce and SEO studio in Lucknow and Mumbai, building websites, online
-              stores and platforms for businesses in India, the UAE and Singapore.
+              stores and platforms for businesses in India, the UAE, Singapore and Australia.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a

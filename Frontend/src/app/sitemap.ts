@@ -8,6 +8,7 @@ import { locationPages } from "@/data/locations"
 import { activeCategorySlugs } from "@/lib/blog"
 import { team } from "@/data/team"
 import { guidePages } from "@/data/guides"
+import { AUSTRALIA_PATH, auCities, auCityPath, auServicePath, auServiceSlugs } from "@/data/australia"
 
 // Revalidate hourly so newly published blog posts, store products and
 // portfolio entries show up without a redeploy.
@@ -43,6 +44,7 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
 const SERVICES_LAST_MODIFIED = "2026-09-16"
 const LOCATIONS_LAST_MODIFIED = "2026-09-16"
 const INTERNATIONAL_LAST_MODIFIED = "2026-09-29"
+const AUSTRALIA_LAST_MODIFIED = "2026-10-02"
 // Case studies are edited on their own cadence; they were inheriting the
 // services date and claiming an edit they had not had.
 const WORK_LAST_MODIFIED = "2026-08-14"
@@ -71,6 +73,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...locationPages.map((page) =>
       entry(`/${page.slug}`, page.areaCountry ? INTERNATIONAL_LAST_MODIFIED : LOCATIONS_LAST_MODIFIED),
     ),
+    // Australia: hub, one page per city and one per city × service.
+    entry(AUSTRALIA_PATH, AUSTRALIA_LAST_MODIFIED),
+    ...auCities.flatMap((city) => [
+      entry(auCityPath(city), AUSTRALIA_LAST_MODIFIED),
+      ...auServiceSlugs.map((service) => entry(auServicePath(city, service), AUSTRALIA_LAST_MODIFIED)),
+    ]),
     ...staticProjects.map((p) => entry(`/work/${p.slug}`, WORK_LAST_MODIFIED)),
     // Team profiles were absent from the sitemap entirely while also declaring
     // /team/ as their canonical — between the two, four pages of real

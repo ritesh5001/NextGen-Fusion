@@ -125,7 +125,7 @@ export const adelaide: AuCity = {
     "website-development": {
       metaTitle: "Website Development in Adelaide — For Defence & Manufacturing Suppliers",
       metaDescription:
-        "Website development for Adelaide defence and advanced manufacturing suppliers: capability, certifications and past programmes presented clearly for primes and procurement.",
+        "Website development for Adelaide defence and manufacturing suppliers: capability and certifications presented clearly for primes and procurement.",
       h1: "Website development for Adelaide suppliers who want primes to find them",
       card: "Supplier sites that present capability, quality and security clearly.",
       intro: [
@@ -498,7 +498,7 @@ export const adelaide: AuCity = {
     "android-app-development": {
       metaTitle: "Android App Development in Adelaide — Home Care & Field Staff Apps",
       metaDescription:
-        "Android apps for Adelaide home care, community health and service teams: visit notes, checklists and schedules on company devices, designed around privacy obligations.",
+        "Android apps for Adelaide home care and community teams: visit notes, checklists and schedules on company devices, built around privacy.",
       h1: "Android apps for Adelaide home care and community service teams",
       card: "Visit notes, checklists and schedules on company Android devices.",
       intro: [
@@ -560,7 +560,7 @@ export const adelaide: AuCity = {
     seo: {
       metaTitle: "SEO Services in Adelaide — Local Search That's Actually Winnable",
       metaDescription:
-        "SEO for Adelaide businesses: a smaller, very winnable local market, plus wine-region tourism searches for cellar doors in the Barossa, McLaren Vale and Adelaide Hills.",
+        "SEO for Adelaide: a very winnable local market, plus wine-tourism searches for cellar doors in the Barossa, McLaren Vale and Adelaide Hills.",
       h1: "SEO for Adelaide, where local search is still very winnable",
       card: "Local SEO in a winnable market, plus wine-tourism searches.",
       intro: [
@@ -805,7 +805,7 @@ export const adelaide: AuCity = {
     "software-development": {
       metaTitle: "Custom Software in Adelaide — Quality & Traceability for Manufacturers",
       metaDescription:
-        "Custom software for Adelaide manufacturers: inspection records, non-conformance reports and batch traceability in one system, ready for customer and certification audits.",
+        "Custom software for Adelaide manufacturers: inspections, non-conformance reports and batch traceability in one system, ready for audits.",
       h1: "Custom software for Adelaide manufacturers who dread audit week",
       card: "Inspection, non-conformance and traceability records in one place.",
       intro: [

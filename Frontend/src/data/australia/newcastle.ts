@@ -125,7 +125,7 @@ export const newcastle: AuCity = {
     "website-development": {
       metaTitle: "Website Development in Newcastle — Repositioning Industrial Firms",
       metaDescription:
-        "Website development for Newcastle and Hunter industrial firms moving into renewables, transmission, defence and advanced manufacturing. Show the capability you have now.",
+        "Websites for Hunter industrial firms moving into renewables, transmission, defence and advanced manufacturing. Show the capability you have now.",
       h1: "Website development for Hunter firms moving into new markets",
       card: "Sites that show where an industrial firm is heading, not just where it's been.",
       intro: [
@@ -742,7 +742,7 @@ export const newcastle: AuCity = {
     "ai-automation": {
       metaTitle: "AI Automation in Newcastle — Less Admin for Clinics & Allied Health",
       metaDescription:
-        "AI automation for Newcastle clinics and allied health: online intake, referral letters read automatically and reminders sent, with privacy built in and staff in control.",
+        "AI automation for Newcastle clinics: online intake, referral letters read automatically and reminders sent, with privacy built in.",
       h1: "AI automation for Newcastle clinics drowning in referrals and paperwork",
       card: "Online intake, referral processing and reminders for clinics.",
       intro: [
@@ -759,7 +759,7 @@ export const newcastle: AuCity = {
         {
           heading: "Privacy first",
           body: [
-            "Health information is sensitive under the Privacy Act. We use AI providers that don't train on your data, process information in Australian regions where possible, and build so our team never sees real patient records.",
+            "Patient information carries extra protection under the Privacy Act. We use AI providers that don't train on your data, process information in Australian regions where possible, and build so our team never sees real patient records.",
           ],
         },
       ],
@@ -865,7 +865,7 @@ export const newcastle: AuCity = {
     "api-integration": {
       metaTitle: "API Integration in Newcastle — Connect Practice Software, Booking & Xero",
       metaDescription:
-        "API integration for Newcastle clinics and service businesses: connect practice management, online booking, SMS, payments and Xero so patient admin flows automatically.",
+        "API integration for Newcastle clinics: connect practice software, online booking, SMS, payments and Xero so patient admin flows automatically.",
       h1: "API integration for Newcastle clinics and practices",
       card: "Connect practice software, booking, SMS, payments and Xero.",
       intro: [
@@ -970,7 +970,7 @@ export const newcastle: AuCity = {
       checklist: [
         "You've tested restoring a backup",
         "Staff can reach files securely from site",
-        "Everyone uses an individual account with MFA",
+        "No shared logins: each person signs in with their own account and MFA",
         "You know your monthly cloud costs",
       ],
       faqs: [

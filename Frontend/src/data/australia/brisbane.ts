@@ -193,7 +193,7 @@ export const brisbane: AuCity = {
     "web-design": {
       metaTitle: "Web Design in Brisbane — Property, Development & Real Estate Sites",
       metaDescription:
-        "Web design for Brisbane property developers and agencies: project sites that sell location and lifestyle, floor plans buyers can explore and registrations sent to CRM.",
+        "Web design for Brisbane property developers and agencies: project sites that sell location and lifestyle, with registrations sent straight to your CRM.",
       h1: "Web design for Brisbane property projects that need to sell before the slab is poured",
       card: "Project and agency sites that sell location, lifestyle and plans.",
       intro: [
@@ -425,7 +425,7 @@ export const brisbane: AuCity = {
         "Licences and insurance are verified before providers go live",
         "Expiring documents trigger reminders automatically",
         "Deposits and bonds are handled in the checkout",
-        "Providers are paid without manual transfers",
+        "Payouts to providers happen without bank transfers by hand",
       ],
       faqs: [
         {
@@ -751,7 +751,7 @@ export const brisbane: AuCity = {
     "ai-automation": {
       metaTitle: "AI Automation in Brisbane — Reply to Every Quote Request in Minutes",
       metaDescription:
-        "AI automation for Brisbane trades and contractors: instant quote-request replies, site visit booking, job summaries and tender document checks, with a person in control.",
+        "AI automation for Brisbane trades: instant replies to quote requests, site visit booking, job summaries and tender checks, with you in control.",
       h1: "AI automation for Brisbane trades who lose jobs to whoever replies first",
       card: "Instant replies to quote requests and tidy job summaries.",
       intro: [
@@ -797,7 +797,7 @@ export const brisbane: AuCity = {
         "Every quote request gets a reply within an hour",
         "Customers can send photos before a site visit",
         "Site visits can be booked without phone tag",
-        "Tender requirements are tracked in a checklist",
+        "Each tender has a requirements checklist your estimator signs off",
       ],
       faqs: [
         {
@@ -1042,7 +1042,7 @@ export const brisbane: AuCity = {
         "Your newest project on the site is from the last three months",
         "Your site's software was updated this month",
         "You have a backup from the last 24 hours",
-        "You would know within minutes if the site went down",
+        "An alert reaches you within minutes if the site goes offline",
       ],
       faqs: [
         {

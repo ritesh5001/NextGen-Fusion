@@ -193,7 +193,7 @@ export const perth: AuCity = {
     "web-design": {
       metaTitle: "Web Design in Perth — Industrial Firms That Look Their Size",
       metaDescription:
-        "Web design for Perth engineering and industrial firms: credible, modern design built around real site photography, clear capability and straightforward enquiry paths.",
+        "Web design for Perth engineering and industrial firms: credible, modern sites built around real site photography and clear capability.",
       h1: "Web design for Perth industrial firms that look smaller online than on site",
       card: "Credible industrial design built around real site photography.",
       intro: [
@@ -255,7 +255,7 @@ export const perth: AuCity = {
     "ecommerce-development": {
       metaTitle: "Ecommerce Development in Perth — Ships From WA, and Says So",
       metaDescription:
-        "Ecommerce development for Perth retailers and WA brands: stores that lead with local shipping, price regional WA freight properly and sell east without losing margin.",
+        "Ecommerce for Perth retailers and WA brands: stores that lead with local shipping, price regional WA freight properly and sell east profitably.",
       h1: "Ecommerce development for WA brands whose customers are tired of waiting for the east coast",
       card: "Online stores that sell the advantage of shipping from Perth.",
       intro: [
@@ -379,7 +379,7 @@ export const perth: AuCity = {
     "marketplace-development": {
       metaTitle: "Marketplace Development in Perth — Procurement & Supplier Platforms",
       metaDescription:
-        "Marketplace development for Perth: supplier, equipment hire and contractor platforms with verified vendors, requests for quote and quote comparison, from the team behind MariBiz.ai.",
+        "Marketplace development for Perth: supplier, hire and contractor platforms with verified vendors and RFQs, from the team that built MariBiz.ai.",
       h1: "Marketplace development for Perth's procurement-heavy industries",
       card: "Supplier and contractor platforms with RFQs and verified vendors.",
       intro: [
@@ -687,7 +687,7 @@ export const perth: AuCity = {
     "social-media-marketing": {
       metaTitle: "Social Media Marketing in Perth — LinkedIn for B2B, Local for Retail",
       metaDescription:
-        "Social media for Perth businesses: LinkedIn for resources and engineering firms building reputation and recruiting, and Instagram and Facebook for WA retail and services.",
+        "Social media for Perth: LinkedIn for resources and engineering firms building reputation and hiring, Instagram and Facebook for WA retail.",
       h1: "Social media for Perth firms selling to industry and hiring for it",
       card: "LinkedIn for B2B and recruiting; Instagram for WA retail.",
       intro: [
@@ -748,7 +748,7 @@ export const perth: AuCity = {
     "ai-automation": {
       metaTitle: "AI Automation in Perth — Tenders, Safety Reports & Compliance",
       metaDescription:
-        "AI automation for Perth firms: tender documents turned into checklists, safety and incident reports summarised, and compliance paperwork processed, with people reviewing.",
+        "AI automation for Perth firms: tenders turned into checklists, safety reports summarised and compliance paperwork processed, with people reviewing.",
       h1: "AI automation for Perth firms buried in tenders, reports and compliance paperwork",
       card: "Tenders, safety reports and compliance paperwork, processed faster.",
       intro: [

@@ -249,7 +249,7 @@ export const canberra: AuCity = {
     "ecommerce-development": {
       metaTitle: "Ecommerce for Canberra Associations — Memberships, Events & Publications",
       metaDescription:
-        "Ecommerce for Canberra peak bodies and associations: membership payments, event tickets and publications with tax invoices, member pricing and purchase-order support.",
+        "Ecommerce for Canberra associations: memberships, event tickets and publications with member pricing, tax invoices and purchase-order support.",
       h1: "Ecommerce for Canberra associations selling memberships, events and publications",
       card: "Online payments for memberships, events and publications.",
       intro: [
@@ -435,7 +435,7 @@ export const canberra: AuCity = {
     "nextjs-development": {
       metaTitle: "Next.js Development in Canberra — Publications & Research Libraries",
       metaDescription:
-        "Next.js development for Canberra research organisations and peak bodies: searchable, accessible publications libraries and knowledge sites that are fast and easy to maintain.",
+        "Next.js for Canberra research organisations and peak bodies: searchable, accessible publication libraries that are fast and easy to maintain.",
       h1: "Next.js development for Canberra organisations with large publication libraries",
       card: "Searchable, accessible publications and research libraries.",
       intro: [
@@ -620,7 +620,7 @@ export const canberra: AuCity = {
     "google-ads": {
       metaTitle: "Google Ads in Canberra — Course Enrolments, Events & Local Leads",
       metaDescription:
-        "Google Ads for Canberra training providers, associations and local businesses: campaigns for enrolments, event registrations and local services, with honest advice on B2G.",
+        "Google Ads for Canberra training providers, associations and local businesses: enrolments, event registrations and local leads, with honest B2G advice.",
       h1: "Google Ads for Canberra training providers, associations and local businesses",
       card: "Ads for enrolments, event registrations and local leads.",
       intro: [
@@ -681,7 +681,7 @@ export const canberra: AuCity = {
     "social-media-marketing": {
       metaTitle: "Social Media Marketing in Canberra — LinkedIn Thought Leadership",
       metaDescription:
-        "Social media for Canberra consultancies, peak bodies and research organisations: LinkedIn thought leadership, event promotion and expert content that builds reputation.",
+        "Social media for Canberra consultancies and peak bodies: LinkedIn thought leadership, event promotion and expert content that builds reputation.",
       h1: "Social media for Canberra organisations whose reputation is their pipeline",
       card: "LinkedIn thought leadership and event promotion for expert organisations.",
       intro: [
@@ -742,7 +742,7 @@ export const canberra: AuCity = {
     "ai-automation": {
       metaTitle: "AI Automation in Canberra — Faster RFQ Responses & Report Summaries",
       metaDescription:
-        "AI automation for Canberra consultancies and organisations: draft RFQ responses from your best past work, summarise long reports and submissions, with experts in control.",
+        "AI automation for Canberra consultancies: RFQ responses drafted from your best past work and long reports summarised, with experts in control.",
       h1: "AI automation for Canberra consultancies writing responses against the clock",
       card: "Draft RFQ responses from past work and summarise long reports.",
       intro: [
