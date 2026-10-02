@@ -124,6 +124,9 @@ const nextConfig = {
       // hard-404'd.
       // Pricing is discussed in conversation, never published: the old page redirects to Contact.
       { source: '/pricing', destination: '/contact/', permanent: true },
+      // Common paths from older site builders and directory listings. Both 404'd.
+      { source: '/about-us', destination: '/about/', permanent: true },
+      { source: '/contact-us', destination: '/contact/', permanent: true },
       { source: '/blogs', destination: '/blog/', permanent: true },
       { source: '/blogs/:slug*', destination: '/blog/:slug*/', permanent: true },
       { source: '/projects', destination: '/work/', permanent: true },
@@ -155,8 +158,8 @@ const nextConfig = {
       { source: '/portfolio-category/:slug*', destination: '/work/', permanent: true },
       { source: '/case-study', destination: '/work/', permanent: true },
       { source: '/case-studies', destination: '/work/', permanent: true },
-      { source: '/offer', destination: '/pricing/', permanent: true },
-      { source: '/offers', destination: '/pricing/', permanent: true },
+      { source: '/offer', destination: '/contact/', permanent: true },
+      { source: '/offers', destination: '/contact/', permanent: true },
       { source: '/category/:slug*', destination: '/blog/', permanent: true },
       { source: '/tag/:slug*', destination: '/blog/', permanent: true },
       { source: '/author/:slug*', destination: '/about/', permanent: true },
