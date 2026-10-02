@@ -38,6 +38,68 @@ export function assetUrl(path: string): string {
   return `${siteUrl}/${path.replace(/^\/+/, "")}`
 }
 
+const BRAND_SUFFIX = ` | ${SITE_NAME}`
+/** Google truncates titles at roughly 600px, which is about 60 characters. */
+export const TITLE_MAX = 60
+/** Snippets are cut at roughly 920px on desktop, about 155–160 characters. */
+export const DESCRIPTION_MAX = 160
+
+/**
+ * A title that fits the SERP: " | NextGen Fusion" is appended only when it
+ * still fits in 60 characters (the keyword is worth more than the name), and
+ * when the title alone is too long a trailing tagline after " — ", " – ",
+ * " | ", ": " or " - " is cut. Always absolute, so a section layout that sets
+ * its own plain title can't cancel the brand suffix. Pages should still be
+ * written short; this only stops a long one from shipping truncated.
+ */
+export function fitTitle(title: string): Metadata["title"] {
+  const core = title.endsWith(BRAND_SUFFIX) ? title.slice(0, -BRAND_SUFFIX.length) : title
+  let short = core
+  for (const separator of [" — ", " – ", " | ", ": ", " - "]) {
+    if (short.length <= TITLE_MAX) break
+    const at = short.indexOf(separator)
+    if (at > 15) short = short.slice(0, at)
+  }
+  if (short.length + BRAND_SUFFIX.length <= TITLE_MAX) return { absolute: `${short}${BRAND_SUFFIX}` }
+  return { absolute: short.length <= TITLE_MAX ? short : clampText(short, TITLE_MAX) }
+}
+
+function clampText(text: string, max: number): string {
+  const cut = text.slice(0, max - 1)
+  const space = cut.lastIndexOf(" ")
+  return `${(space > max * 0.6 ? cut.slice(0, space) : cut).replace(/[\s,;:—–-]+$/, "")}…`
+}
+
+/**
+ * A meta description that fits the snippet: whole sentences where they fit,
+ * otherwise cut at a word boundary. Long descriptions were being truncated by
+ * Google mid-sentence, usually just before the call to action.
+ */
+export function fitDescription(description: string): string {
+  const text = description.replace(/\s+/g, " ").trim()
+  if (text.length <= DESCRIPTION_MAX) return text
+  const sentences = text.match(/[^.!?]+[.!?]+(?=\s|$)/g) ?? []
+  let fitted = ""
+  for (const sentence of sentences) {
+    const next = `${fitted}${sentence}`.trim()
+    if (next.length > DESCRIPTION_MAX) break
+    fitted = `${next} `
+  }
+  fitted = fitted.trim()
+  return fitted.length >= 90 ? fitted : clampText(text, DESCRIPTION_MAX)
+}
+
+/**
+ * A generated 1200×630 share image for one page (see app/api/og). 554 pages
+ * shared the same og-default.png, so every link posted to WhatsApp, LinkedIn or
+ * X looked identical whatever it pointed to.
+ */
+export function ogImageUrl(title: string, eyebrow?: string): string {
+  const params = new URLSearchParams({ title })
+  if (eyebrow) params.set("eyebrow", eyebrow)
+  return `/api/og/?${params.toString()}`
+}
+
 type BuildMetadataInput = {
   title: string
   description: string
@@ -48,6 +110,8 @@ type BuildMetadataInput = {
   twitterTitle?: string
   twitterDescription?: string
   image?: string
+  /** Small label above the title on the generated share image, e.g. a city. */
+  ogEyebrow?: string
   type?: "website" | "article"
   noIndex?: boolean
   publishedTime?: string
@@ -68,19 +132,22 @@ export function buildMetadata({
   twitterTitle,
   twitterDescription,
   image,
+  ogEyebrow,
   type = "website",
   noIndex = false,
   publishedTime,
   modifiedTime,
 }: BuildMetadataInput): Metadata {
   const url = absoluteUrl(path)
+  const shareTitle = ogTitle ?? title
   const images = image
-    ? [{ url: image, width: 1200, height: 630, alt: ogTitle ?? title }]
-    : OG_IMAGES
+    ? [{ url: image, alt: shareTitle }]
+    : [{ url: ogImageUrl(shareTitle, ogEyebrow), width: 1200, height: 630, alt: shareTitle }]
+  const metaDescription = fitDescription(description)
 
   return {
-    title,
-    description,
+    title: fitTitle(title),
+    description: metaDescription,
     alternates: { canonical: url },
     // index:false keeps the page out of the SERP; follow:true still lets the
     // links on it pass equity. Store product pages link into /store/ and the
@@ -88,7 +155,7 @@ export function buildMetadata({
     ...(noIndex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title: ogTitle ?? title,
-      description: ogDescription ?? description,
+      description: ogDescription ?? metaDescription,
       url,
       siteName: SITE_NAME,
       locale: "en_IN",
@@ -100,7 +167,7 @@ export function buildMetadata({
     twitter: {
       card: "summary_large_image",
       title: twitterTitle ?? ogTitle ?? title,
-      description: twitterDescription ?? ogDescription ?? description,
+      description: twitterDescription ?? ogDescription ?? metaDescription,
       images: images.map((i) => i.url),
     },
   }

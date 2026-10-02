@@ -45,6 +45,9 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
   // One primary link stretched over the whole card (case study when there is
   // one, otherwise the live site). The live-site link on case-study cards sits
   // above it with z-10, so there is never an <a> nested inside another <a>.
+  // min-h-6 keeps the visible link at least 24px tall (WCAG 2.5.8); the
+  // stretched ::after already makes the whole card clickable, but tap-target
+  // audits measure the link's own box.
   const primaryClass =
     "inline-block max-w-full truncate py-0.5 align-top after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-purple-500"
 

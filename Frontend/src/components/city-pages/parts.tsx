@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { ChevronRight, Clock, MapPin, MessageCircle } from "lucide-react"
 import { PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
-import type { CityFaq, CitySection } from "@/data/city-pages/types"
+import type { CityFaq, CityPage, CityRegion, CitySection } from "@/data/city-pages/types"
+import { officeSchema } from "@/lib/office-schema"
 import { getProjectBySlug } from "@/lib/static-projects"
 
 export type Crumb = { name: string; href: string }
@@ -210,4 +211,10 @@ export function cityAreaServed(
         }
       : { "@type": "PostalAddress", addressRegion: city.stateCode, addressCountry: countryCode },
   }
+}
+
+/** The office's ProfessionalService node, on the pages of a city where we have one. */
+export function officeNodes<C extends CityPage>(region: CityRegion<C>, city: C) {
+  const office = region.localOffice?.(city)
+  return office ? [officeSchema(office)] : []
 }

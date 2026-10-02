@@ -289,7 +289,7 @@ export const staticProjects: StaticProject[] = [
     slug: "cleanship",
     domain: "cleanship.co",
     title: "Cleanship",
-    seoTitle: "Cleanship: Next.js Site with 310 Port Landing Pages for a UAE Marine Firm",
+    seoTitle: "Cleanship: Next.js Site With 310 Port Landing Pages",
     shortDescription:
       "Marine cleaning company registered in Ajman Free Zone — a Next.js site with a landing page for every service at every port it covers across the UAE, India, the Gulf and West Africa.",
     description:

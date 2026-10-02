@@ -8,6 +8,7 @@
  * services (the Record type enforces it), either as a page of its own or as a
  * pointer to an older page that already targets that city and service.
  */
+import type { Office } from "@/data/offices"
 import type { CityServiceSlug } from "./services"
 
 export type CityFaq = { question: string; answer: string }
@@ -55,6 +56,13 @@ export type CityExistingPage = { existingPath: string; card: string }
 
 export type CityPage = {
   slug: string
+  /**
+   * Last real content change to this city's pages (YYYY-MM-DD), for the
+   * sitemap. Bump it only when this file's copy changes; falls back to the
+   * region's date. A sitemap where every page shares one date stops being
+   * trusted for the whole domain.
+   */
+  updated?: string
   name: string
   state: string
   stateCode: string
@@ -106,6 +114,21 @@ export type CityRegion<C extends CityPage = CityPage> = {
   name: string
   /** e.g. "/australia" — no trailing slash. */
   path: string
+  /** Last real content change to the hub, and the default for its cities. */
+  updated: string
+  /**
+   * The <title> for a city page: the search phrase first, no tagline (the
+   * longer `metaTitle` in the data becomes the social-share title).
+   */
+  cityTitle(city: C): string
+  /**
+   * Which generated city × service pages may be indexed: "all", or a list of
+   * "<city>/<service>" keys. The rest stay live for visitors and pass links
+   * (noindex, follow) but are left out of the sitemap, so a region we serve
+   * remotely is not read as hundreds of doorway pages. Add a key once Search
+   * Console shows that page earning impressions or links.
+   */
+  indexServicePages: "all" | readonly string[]
   countryCode: string
   cities: C[]
   hub: CityHub
@@ -115,6 +138,8 @@ export type CityRegion<C extends CityPage = CityPage> = {
   presence(city: C): string
   /** schema.org @id of the provider node for this city. */
   providerId(city: C): string
+  /** Our office in this city, if we have one; its schema node goes on the city's pages. */
+  localOffice?(city: C): Office | undefined
   /** Street address to put on the areaServed node, only where we have an office. */
   localAddress?(city: C): { locality: string; region: string; postalCode?: string } | undefined
 }

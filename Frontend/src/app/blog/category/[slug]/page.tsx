@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { apiService } from "@/lib/api"
-import { activeCategorySlugs, categoryCopy, categoryLabelFromSlug, categorySlug } from "@/lib/blog"
+import { activeCategorySlugs, categoryCopy, categoryLabelFromSlug, categorySlug, isCategoryIndexable } from "@/lib/blog"
 import { BlogPostCard } from "@/components/blog/blog-post-card"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
@@ -38,6 +38,8 @@ export async function generateMetadata({
       copy?.description ??
       `${category} guides and write-ups from the NextGen Fusion blog — practical posts on building, launching and growing a site, written by the team that ships them.`,
     path: `/blog/category/${slug}`,
+    ogEyebrow: "NextGen Fusion Blog",
+    noIndex: !isCategoryIndexable(posts, slug),
   })
 }
 
@@ -92,6 +94,26 @@ export default async function BlogCategoryPage({
                 `${categoryPosts.length} ${categoryPosts.length === 1 ? "article" : "articles"} on ${category.toLowerCase()}.`}
             </p>
           </div>
+
+          {copy && (
+            <div className="mx-auto mb-14 max-w-3xl space-y-4 text-lg leading-relaxed text-gray-700">
+              {copy.intro.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+              <ul className="flex flex-wrap gap-3 pt-2">
+                {copy.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="inline-flex min-h-11 items-center rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-800 hover:border-purple-600 hover:text-purple-700"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categoryPosts.map((post) => (

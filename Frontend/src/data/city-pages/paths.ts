@@ -28,3 +28,13 @@ export function generatedServicePairs(region: CityRegion): { city: CityPage; ser
       .map((service) => ({ city, service })),
   )
 }
+
+/** Whether a generated city × service page is indexable (see CityRegion.indexServicePages). */
+export function isServicePageIndexed(region: CityRegion, city: CityPage, service: CityServiceSlug): boolean {
+  return region.indexServicePages === "all" || region.indexServicePages.includes(`${city.slug}/${service}`)
+}
+
+/** The sitemap date for a city and its pages. */
+export function cityUpdated(region: CityRegion, city: CityPage): string {
+  return city.updated ?? region.updated
+}

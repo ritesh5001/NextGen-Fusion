@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import HomeClient from "@/components/home-client"
 import { JsonLd } from "@/components/json-ld"
 import { homeFaqs } from "@/data/home-faqs"
+import { officeSchemas } from "@/lib/office-schema"
 import { staticProjects } from "@/lib/static-projects"
 import { DEFAULT_OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 
@@ -9,14 +10,14 @@ import { DEFAULT_OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, siteUrl } from "@/lib/seo
 export const metadata: Metadata = {
   // The root layout's `%s | NextGen Fusion` template does not apply to the root
   // segment, so the brand has to be spelled out here.
-  title: "Website Development Company in Lucknow & India | NextGen Fusion",
+  title: "Website Development Company in Lucknow | NextGen Fusion",
   description:
-    "Website development company in Lucknow building fast Next.js, WordPress and Shopify websites and online stores for businesses across Uttar Pradesh and India, with SEO and support after launch.",
+    "Website development company in Lucknow building fast Next.js, WordPress and Shopify sites and online stores across India, with SEO and support after launch.",
   alternates: {
     canonical: `${siteUrl}/`,
   },
   openGraph: {
-    title: "Website Development Company in Lucknow & India | NextGen Fusion",
+    title: "Website Development Company in Lucknow | NextGen Fusion",
     description:
       "Websites and online stores built in Lucknow for businesses across India, and supported after launch.",
     url: `${siteUrl}/`,
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Website Development Company in Lucknow & India | NextGen Fusion",
+    title: "Website Development Company in Lucknow | NextGen Fusion",
     description:
       "Websites and online stores built in Lucknow for businesses across India, and supported after launch.",
     images: [DEFAULT_OG_IMAGE],
@@ -52,7 +53,7 @@ const homeSchema = [
     "@type": "WebPage",
     "@id": `${siteUrl}/#webpage`,
     url: `${siteUrl}/`,
-    name: "Website Development Company in Lucknow & India | NextGen Fusion",
+    name: "Website Development Company in Lucknow | NextGen Fusion",
     description:
       "Websites and online stores built in Lucknow for businesses across India, and supported after launch.",
     inLanguage: "en-IN",
@@ -61,6 +62,7 @@ const homeSchema = [
     primaryImageOfPage: { "@id": `${siteUrl}/#logo` },
     mainEntity: { "@id": `${siteUrl}/#faq` },
   },
+  ...officeSchemas(),
   // No BreadcrumbList here. A single "Home" item conveys no hierarchy and never
   // renders; the trails on deeper pages are the ones that matter.
 ]

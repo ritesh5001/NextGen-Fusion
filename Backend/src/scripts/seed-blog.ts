@@ -2,6 +2,7 @@ import 'dotenv/config'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { blogSeedPosts, type SeedPost } from '../lib/blog-seed'
 import { indiaBlogPosts } from '../lib/blog-seed-india'
+import { guideBlogPosts } from '../lib/blog-seed-guides'
 
 /**
  * Publishes the launch set of blog posts.
@@ -11,6 +12,7 @@ import { indiaBlogPosts } from '../lib/blog-seed-india'
  *
  *   npm run seed:blog              # launch set
  *   npm run seed:blog -- india     # one named set only
+ *   npm run seed:blog -- guides    # how-long / who-should / SEO timeline posts
  *
  * Sets are seeded on their own so publishing a new country never overwrites
  * edits made to earlier posts in the admin panel.
@@ -19,6 +21,7 @@ import { indiaBlogPosts } from '../lib/blog-seed-india'
 const SEED_SETS: Record<string, SeedPost[]> = {
   launch: blogSeedPosts,
   india: indiaBlogPosts,
+  guides: guideBlogPosts,
 }
 
 function estimateReadMinutes(...htmlParts: (string | null | undefined)[]): number {

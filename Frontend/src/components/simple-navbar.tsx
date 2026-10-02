@@ -68,7 +68,7 @@ export default function SimpleNavbar() {
   }
 
   return (
-    <>
+    <header>
       {/* Desktop Navbar. Plain elements with no entrance animation: framer-motion
           here made the navbar the reason the library sat in every page's
           first-load JS. */}
@@ -305,6 +305,6 @@ export default function SimpleNavbar() {
           </div>
         </div>
       </div>
-    </>
+    </header>
   )
 }

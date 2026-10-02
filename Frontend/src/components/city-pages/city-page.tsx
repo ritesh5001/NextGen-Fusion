@@ -7,7 +7,7 @@ import { cityServiceGroups, cityServices, getCityService } from "@/data/city-pag
 import { cityPath, cityServiceHref, findCity } from "@/data/city-pages/paths"
 import type { CityPage, CityRegion } from "@/data/city-pages/types"
 import { GrowthProblemFinder } from "./growth-problem-finder"
-import { CityFaqs, CityHero, CityLinkList, CitySections, cityAreaServed, faqSchema } from "./parts"
+import { CityFaqs, CityHero, CityLinkList, CitySections, cityAreaServed, faqSchema, officeNodes } from "./parts"
 
 function schemaFor<C extends CityPage>(region: CityRegion<C>, city: C) {
   const url = absoluteUrl(cityPath(region, city))
@@ -40,6 +40,7 @@ function schemaFor<C extends CityPage>(region: CityRegion<C>, city: C) {
       { name: region.name, path: region.path },
       { name: city.name, path: cityPath(region, city) },
     ]),
+    ...officeNodes(region, city),
   ]
 }
 
