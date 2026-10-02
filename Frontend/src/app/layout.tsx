@@ -261,6 +261,7 @@ export const metadata: Metadata = {
     "msapplication-TileColor": "#2B35AB",
     "msapplication-TileImage": "/favicon/ms-icon-144x144.png",
     "msapplication-config": "/favicon/browserconfig.xml",
+    "p:domain_verify": "e81b27281c09b9645d59cd92969215c0",
   },
 
   // Verification tags. Google is already verified via the two HTML files in
@@ -315,6 +316,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#2B35AB" />
         <meta name="msapplication-navbutton-color" content="#2B35AB" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#2B35AB" />
+        <meta name="p:domain_verify" content="e81b27281c09b9645d59cd92969215c0" />
 
         {/* Favicons, apple-touch icons, tile metas and manifest are declared
             in the `metadata` export above — no hand-written <link> tags needed. */}
