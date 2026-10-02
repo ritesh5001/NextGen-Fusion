@@ -2,7 +2,7 @@ import type { CityHub } from "@/data/city-pages/types"
 
 /** Copy for /australia/. Problems here link to the main /services/ pages. */
 export const auHub: CityHub = {
-  metaTitle: "Website Development, SEO & Digital Marketing for Australian Businesses",
+  metaTitle: "Website Development & SEO in Australia",
   metaDescription:
     "Websites, online stores, SEO, Google Ads and automation for businesses in Sydney, Melbourne, Brisbane, Perth, Adelaide and across Australia, served remotely from India.",
   h1: "Helping Australian businesses grow online",

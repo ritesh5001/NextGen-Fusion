@@ -5,12 +5,18 @@ import { apiService } from "@/lib/api"
 import { getStoreProducts, isStoreProductIndexable } from "@/lib/store"
 import { serviceSlugs } from "@/data/services-nav"
 import { locationPages } from "@/data/locations"
-import { activeCategorySlugs } from "@/lib/blog"
+import { activeCategorySlugs, isCategoryIndexable } from "@/lib/blog"
 import { team } from "@/data/team"
 import { guidePages } from "@/data/guides"
 import { australia } from "@/data/australia"
 import { india } from "@/data/india"
-import { cityPath, cityServicePath, generatedServicePairs } from "@/data/city-pages/paths"
+import {
+  cityPath,
+  cityServicePath,
+  cityUpdated,
+  generatedServicePairs,
+  isServicePageIndexed,
+} from "@/data/city-pages/paths"
 import type { CityRegion } from "@/data/city-pages/types"
 
 // Revalidate hourly so newly published blog posts, store products and
@@ -47,8 +53,6 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
 const SERVICES_LAST_MODIFIED = "2026-09-16"
 const LOCATIONS_LAST_MODIFIED = "2026-09-16"
 const INTERNATIONAL_LAST_MODIFIED = "2026-09-29"
-const AUSTRALIA_LAST_MODIFIED = "2026-10-02"
-const INDIA_LAST_MODIFIED = "2026-10-02"
 // Case studies are edited on their own cadence; they were inheriting the
 // services date and claiming an edit they had not had.
 const WORK_LAST_MODIFIED = "2026-08-14"
@@ -63,11 +67,16 @@ const entry = (path: string, lastModified: Date | string): Entry => ({
   lastModified,
 })
 
-function regionEntries(region: CityRegion, date: string): Entry[] {
+// Each city carries its own date (see CityPage.updated), so editing one city's
+// file moves only that city's URLs. Noindexed city × service pages are left
+// out: a sitemap listing pages that ask not to be indexed is a mixed signal.
+function regionEntries(region: CityRegion): Entry[] {
   return [
-    entry(region.path, date),
-    ...region.cities.map((city) => entry(cityPath(region, city), date)),
-    ...generatedServicePairs(region).map(({ city, service }) => entry(cityServicePath(region, city, service), date)),
+    entry(region.path, region.updated),
+    ...region.cities.map((city) => entry(cityPath(region, city), cityUpdated(region, city))),
+    ...generatedServicePairs(region)
+      .filter(({ city, service }) => isServicePageIndexed(region, city, service))
+      .map(({ city, service }) => entry(cityServicePath(region, city, service), cityUpdated(region, city))),
   ]
 }
 
@@ -87,8 +96,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ),
     // City pages by region: hub, one page per city and one per generated
     // city × service (city × service pairs owned by older pages are skipped).
-    ...regionEntries(australia, AUSTRALIA_LAST_MODIFIED),
-    ...regionEntries(india, INDIA_LAST_MODIFIED),
+    ...regionEntries(australia),
+    ...regionEntries(india),
     ...staticProjects.map((p) => entry(`/work/${p.slug}`, WORK_LAST_MODIFIED)),
     // Team profiles were absent from the sitemap entirely while also declaring
     // /team/ as their canonical — between the two, four pages of real
@@ -119,9 +128,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   )
   // Category archives — same freshness signal as /blog itself, since they're
   // just a filtered view of the same posts.
-  const blogCategoryEntries = activeCategorySlugs(blogPosts).map((slug) =>
-    entry(`/blog/category/${slug}`, STATIC_LAST_MODIFIED["/blog"]),
-  )
+  // Only archives with an introduction and enough posts; the rest are noindexed.
+  const blogCategoryEntries = activeCategorySlugs(blogPosts)
+    .filter((slug) => isCategoryIndexable(blogPosts, slug))
+    .map((slug) => entry(`/blog/category/${slug}`, STATIC_LAST_MODIFIED["/blog"]))
 
   return [...staticEntries, ...blogEntries, ...blogCategoryEntries, ...storeEntries]
 }
