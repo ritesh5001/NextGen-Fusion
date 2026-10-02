@@ -257,6 +257,16 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                   </li>
                 )
               })}
+              {!remote && !page.area && (
+                <li>
+                  <Link
+                    href={`/india/${page.city.toLowerCase()}/`}
+                    className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                  >
+                    Every service we offer in {page.city}
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link
                   href="/work/"

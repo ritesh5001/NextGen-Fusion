@@ -1,6 +1,8 @@
-import { OFFICE_HOURS, officeHoursAt } from "@/data/offices"
+import { officeHoursAt } from "@/data/offices"
+import { siteUrl } from "@/lib/seo"
+import type { CityRegion } from "@/data/city-pages/types"
 import type { AuCity } from "./types"
-import type { AuServiceSlug } from "./services"
+import { auHub } from "./hub"
 import { adelaide } from "./adelaide"
 import { brisbane } from "./brisbane"
 import { canberra } from "./canberra"
@@ -14,55 +16,24 @@ import { sunshineCoast } from "./sunshine-coast"
 import { sydney } from "./sydney"
 import { wollongong } from "./wollongong"
 
-export * from "./types"
-export * from "./services"
-
-// Ordered by size: the hub lists them in this order.
-export const auCities: AuCity[] = [
-  sydney,
-  melbourne,
-  brisbane,
-  perth,
-  adelaide,
-  goldCoast,
-  canberra,
-  newcastle,
-  sunshineCoast,
-  wollongong,
-  hobart,
-  darwin,
-]
-
-/** Regional cities named on the hub page rather than given pages of their own. */
-export const auRegionalCentres: { state: string; places: string[] }[] = [
-  { state: "New South Wales", places: ["Central Coast", "Albury", "Wagga Wagga", "Coffs Harbour", "Port Macquarie", "Orange", "Dubbo"] },
-  { state: "Victoria", places: ["Geelong", "Ballarat", "Bendigo", "Shepparton", "Mildura"] },
-  { state: "Queensland", places: ["Townsville", "Cairns", "Toowoomba", "Mackay", "Rockhampton", "Bundaberg"] },
-  { state: "Western Australia", places: ["Bunbury", "Geraldton", "Kalgoorlie", "Karratha", "Port Hedland"] },
-  { state: "South Australia", places: ["Mount Gambier", "Whyalla", "Port Lincoln"] },
-  { state: "Tasmania", places: ["Launceston", "Devonport", "Burnie"] },
-  { state: "Northern Territory", places: ["Alice Springs", "Katherine"] },
-]
-
-export const AUSTRALIA_PATH = "/australia"
-
-export function getAuCity(slug: string): AuCity | undefined {
-  return auCities.find((city) => city.slug === slug)
-}
-
-export function auCityPath(city: AuCity): string {
-  return `${AUSTRALIA_PATH}/${city.slug}/`
-}
-
-export function auServicePath(city: AuCity, service: AuServiceSlug): string {
-  return `${AUSTRALIA_PATH}/${city.slug}/${service}/`
-}
+export type { AuCity } from "./types"
 
 /** Our working day in the city's local time, both offsets where daylight saving applies. */
-export function auWorkingHours(city: AuCity): string {
+function workingHours(city: AuCity): string {
   const { std, dst } = city.zone
   const standard = `${officeHoursAt(std.offset)} ${std.label}`
   return dst ? `${standard}, or ${officeHoursAt(dst.offset)} ${dst.label} in daylight saving` : standard
 }
 
-export const AU_WORKING_DAYS = `${OFFICE_HOURS.days[0]} to ${OFFICE_HOURS.days[OFFICE_HOURS.days.length - 1]}`
+export const australia: CityRegion<AuCity> = {
+  name: "Australia",
+  path: "/australia",
+  countryCode: "AU",
+  // Ordered by size: the hub lists them in this order.
+  cities: [sydney, melbourne, brisbane, perth, adelaide, goldCoast, canberra, newcastle, sunshineCoast, wollongong, hobart, darwin],
+  hub: auHub,
+  hours: workingHours,
+  presence: () => "Served remotely from Lucknow and Mumbai, India",
+  // Served remotely: the provider stays the Indian office, which is true.
+  providerId: () => `${siteUrl}/#office-lucknow`,
+}

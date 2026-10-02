@@ -1,7 +1,7 @@
 import { hubRoute } from "@/components/city-pages/routes"
-import { australia } from "@/data/australia"
+import { india } from "@/data/india"
 
-const route = hubRoute(australia)
+const route = hubRoute(india)
 
 export const metadata = route.metadata
 export default route.Page

@@ -2,23 +2,15 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import CTABanner from "@/components/cta-banner"
 import { JsonLd } from "@/components/json-ld"
-import { absoluteUrl, breadcrumbSchema, siteUrl } from "@/lib/seo"
-import {
-  AUSTRALIA_PATH,
-  auCityPath,
-  auServiceGroups,
-  auServicePath,
-  auServices,
-  auWorkingHours,
-  getAuCity,
-  getAuService,
-  type AuCity,
-} from "@/data/australia"
+import { absoluteUrl, breadcrumbSchema } from "@/lib/seo"
+import { cityServiceGroups, cityServices, getCityService } from "@/data/city-pages/services"
+import { cityPath, cityServiceHref, findCity } from "@/data/city-pages/paths"
+import type { CityPage, CityRegion } from "@/data/city-pages/types"
 import { GrowthProblemFinder } from "./growth-problem-finder"
-import { AuFaqs, AuHero, AuLinkList, AuSections, faqSchema } from "./parts"
+import { CityFaqs, CityHero, CityLinkList, CitySections, cityAreaServed, faqSchema } from "./parts"
 
-function schemaFor(city: AuCity) {
-  const url = absoluteUrl(auCityPath(city))
+function schemaFor<C extends CityPage>(region: CityRegion<C>, city: C) {
+  const url = absoluteUrl(cityPath(region, city))
   return [
     {
       "@context": "https://schema.org",
@@ -27,22 +19,17 @@ function schemaFor(city: AuCity) {
       name: `Website development, SEO and digital marketing in ${city.name}`,
       description: city.page.metaDescription,
       url,
-      provider: { "@id": `${siteUrl}/#office-lucknow` },
-      // Served remotely: name the city and its country, never an address there.
-      areaServed: {
-        "@type": "City",
-        name: city.name,
-        address: { "@type": "PostalAddress", addressRegion: city.stateCode, addressCountry: "AU" },
-      },
+      provider: { "@id": region.providerId(city) },
+      areaServed: cityAreaServed(city, region.countryCode, region.localAddress?.(city)),
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: `Services for ${city.name} businesses`,
-        itemListElement: auServices.map((service) => ({
+        itemListElement: cityServices.map((service) => ({
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
             name: `${service.label} in ${city.name}`,
-            url: absoluteUrl(auServicePath(city, service.slug)),
+            url: absoluteUrl(cityServiceHref(region, city, service.slug)),
           },
         })),
       },
@@ -50,35 +37,36 @@ function schemaFor(city: AuCity) {
     faqSchema(url, city.page.faqs),
     breadcrumbSchema([
       { name: "Home", path: "/" },
-      { name: "Australia", path: AUSTRALIA_PATH },
-      { name: city.name, path: auCityPath(city) },
+      { name: region.name, path: region.path },
+      { name: city.name, path: cityPath(region, city) },
     ]),
   ]
 }
 
-export function AuCityPage({ city }: { city: AuCity }) {
+export function CityPageView<C extends CityPage>({ region, city }: { region: CityRegion<C>; city: C }) {
   const { page } = city
-  const nearby = city.nearby.map(getAuCity).filter((c) => c !== undefined)
+  const nearby = city.nearby.map((slug) => findCity(region, slug)).filter((c) => c !== undefined)
 
   return (
     <>
-      <JsonLd data={schemaFor(city)} />
+      <JsonLd data={schemaFor(region, city)} />
       <main className="min-h-screen bg-white">
-        <AuHero
+        <CityHero
           crumbs={[
             { name: "Home", href: "/" },
-            { name: "Australia", href: `${AUSTRALIA_PATH}/` },
-            { name: city.name, href: auCityPath(city) },
+            { name: region.name, href: `${region.path}/` },
+            { name: city.name, href: cityPath(region, city) },
           ]}
           eyebrow={`${city.name}, ${city.state}`}
           h1={page.h1}
           intro={page.intro}
-          hours={auWorkingHours(city)}
+          presence={region.presence(city)}
+          hours={region.hours(city)}
           whatsappMessage={`Hi NextGen Fusion, I run a business in ${city.name} and would like some help growing it.`}
         />
 
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <AuSections sections={page.sections} />
+          <CitySections sections={page.sections} />
 
           <div className="mb-14">
             <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Who we help in {city.name}</h2>
@@ -99,24 +87,24 @@ export function AuCityPage({ city }: { city: AuCity }) {
             problems={page.problems.map((problem) => ({
               ...problem,
               link: {
-                href: auServicePath(city, problem.service),
-                label: `${getAuService(problem.service)?.label ?? "This service"} in ${city.name}`,
+                href: cityServiceHref(region, city, problem.service),
+                label: `${getCityService(problem.service)?.label ?? "This service"} in ${city.name}`,
               },
             }))}
           />
 
           <div className="mb-14">
             <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Everything we do for {city.name} businesses</h2>
-            {auServiceGroups.map((group) => (
+            {cityServiceGroups.map((group) => (
               <div key={group.group} className="mt-8">
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{group.label}</h3>
                 <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-                  {auServices
+                  {cityServices
                     .filter((service) => service.group === group.group)
                     .map((service) => (
                       <li key={service.slug}>
                         <Link
-                          href={auServicePath(city, service.slug)}
+                          href={cityServiceHref(region, city, service.slug)}
                           className="group flex h-full flex-col rounded-2xl border border-gray-200 p-5 transition-colors hover:border-gray-900"
                         >
                           <span className="flex items-center justify-between gap-2 font-semibold text-gray-900">
@@ -137,14 +125,14 @@ export function AuCityPage({ city }: { city: AuCity }) {
             <p className="mt-4 leading-relaxed text-gray-600">{city.areas.join(" · ")}</p>
           </div>
 
-          <AuFaqs faqs={page.faqs} />
+          <CityFaqs faqs={page.faqs} />
 
           {nearby.length > 0 && (
-            <AuLinkList
+            <CityLinkList
               heading="Nearby cities"
               links={[
-                ...nearby.map((c) => ({ href: auCityPath(c), label: c.name })),
-                { href: `${AUSTRALIA_PATH}/`, label: "All Australian cities" },
+                ...nearby.map((c) => ({ href: cityPath(region, c), label: c.name })),
+                { href: `${region.path}/`, label: `All cities in ${region.name}` },
               ]}
             />
           )}

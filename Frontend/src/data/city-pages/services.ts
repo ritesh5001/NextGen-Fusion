@@ -1,11 +1,11 @@
 /**
- * The services offered on the Australian pages. Labels and URL segments only:
- * the copy for each city × service page lives in that city's file.
+ * The services offered on every city page (Australia, India). Labels and URL
+ * segments only: the copy for each city × service page lives in that city's file.
  *
- * URL segments use the words Australians search ("google-ads", not "ppc").
+ * URL segments use the words people search ("google-ads", not "ppc").
  * `serviceSlug` is the matching /services/ page.
  */
-export const auServiceSlugs = [
+export const cityServiceSlugs = [
   "website-development",
   "web-design",
   "ecommerce-development",
@@ -23,18 +23,18 @@ export const auServiceSlugs = [
   "website-maintenance",
 ] as const
 
-export type AuServiceSlug = (typeof auServiceSlugs)[number]
+export type CityServiceSlug = (typeof cityServiceSlugs)[number]
 
-export type AuServiceGroup = "build" | "grow" | "run"
+export type CityServiceGroup = "build" | "grow" | "run"
 
-export type AuService = {
-  slug: AuServiceSlug
+export type CityService = {
+  slug: CityServiceSlug
   label: string
-  group: AuServiceGroup
+  group: CityServiceGroup
   serviceSlug: string
 }
 
-export const auServices: AuService[] = [
+export const cityServices: CityService[] = [
   { slug: "website-development", label: "Website Development", group: "build", serviceSlug: "website-development-services" },
   { slug: "web-design", label: "Web Design", group: "build", serviceSlug: "web-design-services" },
   { slug: "ecommerce-development", label: "Ecommerce Development", group: "build", serviceSlug: "ecommerce-web-development-services" },
@@ -52,12 +52,12 @@ export const auServices: AuService[] = [
   { slug: "website-maintenance", label: "Website Maintenance", group: "run", serviceSlug: "website-maintenance-services" },
 ]
 
-export const auServiceGroups: { group: AuServiceGroup; label: string }[] = [
+export const cityServiceGroups: { group: CityServiceGroup; label: string }[] = [
   { group: "build", label: "Build what you sell on" },
   { group: "grow", label: "Bring in customers" },
   { group: "run", label: "Run it with less effort" },
 ]
 
-export function getAuService(slug: string): AuService | undefined {
-  return auServices.find((service) => service.slug === slug)
+export function getCityService(slug: string): CityService | undefined {
+  return cityServices.find((service) => service.slug === slug)
 }

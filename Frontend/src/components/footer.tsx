@@ -38,6 +38,9 @@ const locations: { group: string; links: FooterLink[] }[] = [
       { label: "Lucknow", href: "/website-development-company-in-lucknow/" },
       { label: "Mumbai", href: "/website-development-company-in-mumbai/" },
       { label: "Uttar Pradesh", href: "/website-development-company-in-uttar-pradesh/" },
+      { label: "Delhi", href: "/india/delhi/" },
+      { label: "Bengaluru", href: "/india/bengaluru/" },
+      { label: "All Indian cities", href: "/india/" },
     ],
   },
   {

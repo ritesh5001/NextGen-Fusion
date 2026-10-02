@@ -1,20 +1,13 @@
-import type { AuFaq, AuProblem, AuSection } from "./types"
+import type { CityHub } from "@/data/city-pages/types"
 
 /** Copy for /australia/. Problems here link to the main /services/ pages. */
-export const auHub: {
-  metaTitle: string
-  metaDescription: string
-  h1: string
-  intro: string[]
-  sections: AuSection[]
-  essentials: { heading: string; body: string }[]
-  problems: (AuProblem & { serviceSlug: string; serviceLabel: string })[]
-  faqs: AuFaq[]
-} = {
+export const auHub: CityHub = {
   metaTitle: "Website Development, SEO & Digital Marketing for Australian Businesses",
   metaDescription:
     "Websites, online stores, SEO, Google Ads and automation for businesses in Sydney, Melbourne, Brisbane, Perth, Adelaide and across Australia, served remotely from India.",
   h1: "Helping Australian businesses grow online",
+  heroPresence: "Served remotely from Lucknow and Mumbai, India",
+  heroHours: "Australian afternoons and evenings, Monday to Saturday",
   intro: [
     "NextGen Fusion builds websites, online stores and software, and runs SEO, Google Ads and social media, for businesses across Australia. We start with the problem that is holding your business back, not with a package to sell.",
     "We are a small team working from Lucknow and Mumbai, India. We have no Australian office, and we would rather tell you that here. The person who scopes your project builds it and answers your messages after launch.",
@@ -28,6 +21,19 @@ export const auHub: {
         "Every account, including the domain, hosting, analytics, ad accounts and payment gateway, is set up in your business's name. We work inside your accounts and never hold them.",
       ],
     },
+  ],
+  essentialsHeading: "What an Australian website has to get right",
+  regionalHeading: "Regional Australia",
+  regionalIntro:
+    "Regional businesses often have the most to gain online, because a well-built site and Google Business Profile can make them the obvious choice in their town. We work with businesses in these centres and anywhere else in Australia:",
+  regionalCentres: [
+    { state: "New South Wales", places: ["Central Coast", "Albury", "Wagga Wagga", "Coffs Harbour", "Port Macquarie", "Orange", "Dubbo"] },
+    { state: "Victoria", places: ["Geelong", "Ballarat", "Bendigo", "Shepparton", "Mildura"] },
+    { state: "Queensland", places: ["Townsville", "Cairns", "Toowoomba", "Mackay", "Rockhampton", "Bundaberg"] },
+    { state: "Western Australia", places: ["Bunbury", "Geraldton", "Kalgoorlie", "Karratha", "Port Hedland"] },
+    { state: "South Australia", places: ["Mount Gambier", "Whyalla", "Port Lincoln"] },
+    { state: "Tasmania", places: ["Launceston", "Devonport", "Burnie"] },
+    { state: "Northern Territory", places: ["Alice Springs", "Katherine"] },
   ],
   essentials: [
     {

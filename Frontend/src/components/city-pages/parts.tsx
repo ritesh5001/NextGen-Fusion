@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { ChevronRight, Clock, MapPin, MessageCircle } from "lucide-react"
 import { PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
-import type { AuFaq, AuSection } from "@/data/australia"
+import type { CityFaq, CitySection } from "@/data/city-pages/types"
 import { getProjectBySlug } from "@/lib/static-projects"
 
-export type AuCrumb = { name: string; href: string }
+export type Crumb = { name: string; href: string }
 
-export function AuBreadcrumbs({ crumbs }: { crumbs: AuCrumb[] }) {
+export function CityBreadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
   return (
     <nav aria-label="Breadcrumb">
       <ol className="flex flex-wrap items-center gap-1 text-sm text-gray-500">
@@ -29,24 +29,26 @@ export function AuBreadcrumbs({ crumbs }: { crumbs: AuCrumb[] }) {
   )
 }
 
-export function AuHero({
+export function CityHero({
   crumbs,
   eyebrow,
   h1,
   intro,
+  presence,
   hours,
   whatsappMessage,
 }: {
-  crumbs: AuCrumb[]
+  crumbs: Crumb[]
   eyebrow: string
   h1: string
   intro: string[]
+  presence: string
   hours: string
   whatsappMessage: string
 }) {
   return (
     <section className="mx-auto max-w-4xl px-4 pt-28 pb-12 sm:px-6 lg:px-8">
-      <AuBreadcrumbs crumbs={crumbs} />
+      <CityBreadcrumbs crumbs={crumbs} />
       <p className="mt-8 text-sm font-medium uppercase tracking-wide text-purple-600">{eyebrow}</p>
       <h1 className="mt-3 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl">{h1}</h1>
       {intro.map((paragraph) => (
@@ -76,7 +78,7 @@ export function AuHero({
       <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
         <span className="inline-flex items-center gap-2">
           <MapPin className="h-4 w-4 text-purple-600" aria-hidden="true" />
-          Served remotely from Lucknow and Mumbai, India
+          {presence}
         </span>
         <span className="inline-flex items-center gap-2">
           <Clock className="h-4 w-4 text-purple-600" aria-hidden="true" />
@@ -87,7 +89,7 @@ export function AuHero({
   )
 }
 
-export function AuSections({ sections }: { sections: AuSection[] }) {
+export function CitySections({ sections }: { sections: CitySection[] }) {
   return (
     <>
       {sections.map((section) => (
@@ -98,13 +100,26 @@ export function AuSections({ sections }: { sections: AuSection[] }) {
               {paragraph}
             </p>
           ))}
+          {section.links && section.links.length > 0 && (
+            <div className="mt-5 flex flex-wrap gap-3">
+              {section.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="inline-block rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-900 transition-colors hover:border-gray-900"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </>
   )
 }
 
-export function AuCaseStudies({ slugs, heading }: { slugs: string[]; heading: string }) {
+export function CityCaseStudies({ slugs, heading }: { slugs: string[]; heading: string }) {
   const projects = slugs.map((slug) => getProjectBySlug(slug)).filter((p) => p !== undefined)
   if (projects.length === 0) return null
   return (
@@ -127,7 +142,7 @@ export function AuCaseStudies({ slugs, heading }: { slugs: string[]; heading: st
   )
 }
 
-export function AuFaqs({ faqs }: { faqs: AuFaq[] }) {
+export function CityFaqs({ faqs }: { faqs: CityFaq[] }) {
   return (
     <div className="mb-14">
       <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Frequently asked questions</h2>
@@ -143,7 +158,7 @@ export function AuFaqs({ faqs }: { faqs: AuFaq[] }) {
   )
 }
 
-export function AuLinkList({ heading, links }: { heading: string; links: { href: string; label: string }[] }) {
+export function CityLinkList({ heading, links }: { heading: string; links: { href: string; label: string }[] }) {
   return (
     <div className="mb-10">
       <h2 className="text-xl font-bold text-gray-900">{heading}</h2>
@@ -163,7 +178,7 @@ export function AuLinkList({ heading, links }: { heading: string; links: { href:
   )
 }
 
-export function faqSchema(url: string, faqs: AuFaq[]) {
+export function faqSchema(url: string, faqs: CityFaq[]) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -173,5 +188,26 @@ export function faqSchema(url: string, faqs: AuFaq[]) {
       name: faq.question,
       acceptedAnswer: { "@type": "Answer", text: faq.answer },
     })),
+  }
+}
+
+/** The City node used as areaServed, with a street-level locality only where we have an office. */
+export function cityAreaServed(
+  city: { name: string; stateCode: string },
+  countryCode: string,
+  local?: { locality: string; region: string; postalCode?: string },
+) {
+  return {
+    "@type": "City",
+    name: city.name,
+    address: local
+      ? {
+          "@type": "PostalAddress",
+          addressLocality: local.locality,
+          addressRegion: local.region,
+          ...(local.postalCode ? { postalCode: local.postalCode } : {}),
+          addressCountry: countryCode,
+        }
+      : { "@type": "PostalAddress", addressRegion: city.stateCode, addressCountry: countryCode },
   }
 }

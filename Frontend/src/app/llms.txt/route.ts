@@ -1,7 +1,9 @@
 import { serviceNavItems } from "@/data/services-nav"
 import { guideLinks } from "@/data/guides"
 import { locationPages } from "@/data/locations"
-import { AUSTRALIA_PATH, auCities, auCityPath } from "@/data/australia"
+import { australia } from "@/data/australia"
+import { india } from "@/data/india"
+import { cityPath } from "@/data/city-pages/paths"
 import { team } from "@/data/team"
 import { staticProjects } from "@/lib/static-projects"
 import { absoluteUrl } from "@/lib/seo"
@@ -56,10 +58,15 @@ ${line("/services", "Full services index")}
 
 ${locationPages.map((l) => line(`/${l.slug}`, l.title)).join("\n")}
 
+## India by city
+
+${line(india.path, "India", "websites, SEO, ecommerce, apps and automation for businesses in 20 Indian cities")}
+${india.cities.map((c) => line(cityPath(india, c), `${c.name}, ${c.state}`, c.summary)).join("\n")}
+
 ## Australia
 
-${line(AUSTRALIA_PATH, "Australia", "websites, SEO, ecommerce and automation for Australian businesses, served remotely")}
-${auCities.map((c) => line(auCityPath(c), `${c.name}, ${c.stateCode}`, c.summary)).join("\n")}
+${line(australia.path, "Australia", "websites, SEO, ecommerce and automation for Australian businesses, served remotely")}
+${australia.cities.map((c) => line(cityPath(australia, c), `${c.name}, ${c.stateCode}`, c.summary)).join("\n")}
 
 ## Company
 

@@ -1,7 +1,7 @@
 import { serviceRoute } from "@/components/city-pages/routes"
-import { australia } from "@/data/australia"
+import { india } from "@/data/india"
 
-const route = serviceRoute(australia)
+const route = serviceRoute(india)
 
 export const dynamicParams = false
 export const generateStaticParams = route.generateStaticParams
