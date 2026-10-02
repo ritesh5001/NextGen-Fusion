@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -27,7 +27,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
   // Fallback if no portfolios
   if (portfolios.length === 0) {
     return (
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.2, duration: 0.8 }}
@@ -36,11 +36,11 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
         <div className="flex items-center justify-center h-64">
           <div className="text-gray-500">No portfolio to display</div>
         </div>
-      </motion.div>
+      </m.div>
     );
   }
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 2.2, duration: 0.8 }}
@@ -54,7 +54,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
         {/* Marquee container */}
         <div className="flex">
           {/* First set of cards */}
-          <motion.div
+          <m.div
             className="flex"
             animate={{
               x: [0, -100 * portfolios.length],
@@ -99,10 +99,10 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
                 </div>
               </Link>
             ))}
-          </motion.div>
+          </m.div>
 
           {/* Second set of cards for seamless loop */}
-          <motion.div
+          <m.div
             className="flex"
             animate={{
               x: [0, -100 * portfolios.length],
@@ -147,9 +147,9 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
                 </div>
               </Link>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

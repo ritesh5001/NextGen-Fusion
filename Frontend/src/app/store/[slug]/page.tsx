@@ -87,6 +87,7 @@ export default async function StoreProductPage({ params }: PageProps) {
                   width={1200}
                   height={750}
                   priority
+                  fetchPriority="high"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   unoptimized={product.cover_image.startsWith('http')}
                   className="w-full object-cover"

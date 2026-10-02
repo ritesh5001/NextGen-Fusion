@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useScroll, useTransform, useInView } from "framer-motion"
+import { m, useScroll, useTransform, useInView } from "framer-motion"
 import { useRef } from "react"
 import Link from "next/link"
 import BadgeSubtitle from "./badge-subtitle"
@@ -172,7 +172,7 @@ export default function ServicesSection() {
   ]
 
   return (
-    <motion.section 
+    <m.section 
       id="services" 
       className="bg-white py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       initial="hidden"
@@ -181,7 +181,7 @@ export default function ServicesSection() {
       variants={containerVariants}
     >
       {/* Retro Grid Background */}
-      <motion.div 
+      <m.div 
         className="absolute inset-0 h-96"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -195,27 +195,27 @@ export default function ServicesSection() {
           lightLineColor="#9ca3af"
           darkLineColor="#374151"
         />
-      </motion.div>
+      </m.div>
       
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <motion.div
+        <m.div
           className="text-left mb-16"
           variants={itemVariants}
         >
-          <motion.div 
+          <m.div 
             className="mb-4"
             variants={textVariants}
           >
             <BadgeSubtitle>Services</BadgeSubtitle>
-          </motion.div>
-          <motion.h2
+          </m.div>
+          <m.h2
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight"
             variants={textVariants}
           >
             <div className="flex flex-wrap items-center gap-3 md:gap-4">
               <span>What We</span>{" "}
-              <motion.div
+              <m.div
                 className="relative inline-block mx-1"
                 variants={iconVariants}
                 whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
@@ -225,24 +225,24 @@ export default function ServicesSection() {
                   alt=""
                   variants={iconVariants}
                 />
-              </motion.div>
+              </m.div>
               <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
                 Do for You
               </span>
             </div>
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             className="text-gray-600 text-sm sm:text-base lg:text-lg max-w-3xl leading-relaxed"
             variants={textVariants}
           >
             Most projects start as one of three jobs: build a site, get an existing one producing
             enquiries, or build something that is not a website at all. Every service below is quoted
             in writing after a short conversation, with one fixed price and one delivery window.
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
 
         {/* Services Grid */}
-        <motion.div
+        <m.div
           ref={ref}
           className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-0 divide-y divide-gray-100/50 sm:divide-y-0 sm:divide-x divide-gray-100/50"
           variants={containerVariants}
@@ -256,7 +256,7 @@ export default function ServicesSection() {
 
             return (
               <Link key={index} href={href} prefetch={false} className="block">
-                <motion.div
+                <m.div
                   className="group relative p-4 sm:p-6 lg:p-8 cursor-pointer overflow-hidden transition-all duration-500"
                   variants={cardVariants}
                   initial="hidden"
@@ -267,7 +267,7 @@ export default function ServicesSection() {
                   onClick={() => handleCardClick(index)}
                 >
                   {/* Hover overlay effect */}
-                  <motion.div
+                  <m.div
                     className="absolute inset-0 bg-gradient-to-br from-[#2B35AB]/3 via-[#8A38F5]/3 to-[#13CBD4]/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     initial={false}
                     animate={isActive ? { opacity: 1 } : { opacity: 0 }}
@@ -275,9 +275,9 @@ export default function ServicesSection() {
                   {/* Service Content */}
                   <div className="relative z-10">
                     {/* Service Icon */}
-                    <motion.div className="mb-6 sm:mb-8" variants={iconVariants}>
+                    <m.div className="mb-6 sm:mb-8" variants={iconVariants}>
                       <div className="relative w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 flex items-center justify-center">
-                        <motion.div
+                        <m.div
                           className="absolute inset-0 bg-gradient-to-br from-[#2B35AB]/5 via-[#8A38F5]/5 to-[#13CBD4]/5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500"
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.3 }}
@@ -285,15 +285,15 @@ export default function ServicesSection() {
                         <div className="relative z-10 w-6 h-6 sm:w-7 sm:h-7 lg:w-9 lg:h-9 flex items-center justify-center">
                           <OptimizedIcon
                             src={service.icon || "/placeholder.svg"}
-                            alt={service.title}
+                            alt=""
                             variants={iconVariants}
                           />
                         </div>
                       </div>
-                    </motion.div>
+                    </m.div>
 
                     {/* Service Content */}
-                    <motion.div variants={textVariants} className="text-left">
+                    <m.div variants={textVariants} className="text-left">
                       <h3 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 mb-2 sm:mb-3 group-hover:bg-gradient-to-r group-hover:from-[#2B35AB] group-hover:via-[#8A38F5] group-hover:to-[#13CBD4] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                         {service.title}
                       </h3>
@@ -302,16 +302,16 @@ export default function ServicesSection() {
                           {service.description}
                         </p>
                       </div>
-                    </motion.div>
+                    </m.div>
                   </div>
-                </motion.div>
+                </m.div>
               </Link>
             )
           })}
-        </motion.div>
+        </m.div>
 
         {/* View all services */}
-        <motion.div className="mt-12 text-left" variants={textVariants}>
+        <m.div className="mt-12 text-left" variants={textVariants}>
           <Link
             href="/services/"
             prefetch={false}
@@ -319,8 +319,8 @@ export default function ServicesSection() {
           >
             View all services
           </Link>
-        </motion.div>
+        </m.div>
       </div>
-    </motion.section>
+    </m.section>
   )
 }

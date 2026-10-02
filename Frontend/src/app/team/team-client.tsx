@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
@@ -49,30 +49,30 @@ export default function TeamClient() {
       
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-        <motion.div 
+        <m.div 
           className="max-w-7xl mx-auto text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.h1 
+          <m.h1 
             className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4"
             variants={itemVariants}
           >
             Meet Our Experienced Team
-          </motion.h1>
-          <motion.p 
+          </m.h1>
+          <m.p 
             className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto"
             variants={itemVariants}
           >
             Talented professionals dedicated to delivering exceptional digital solutions. Each member brings years of expertise and innovation to every project.
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
       </section>
 
       {/* Team Grid */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <motion.div 
+        <m.div 
           className="max-w-7xl mx-auto"
           variants={containerVariants}
           initial="hidden"
@@ -81,7 +81,7 @@ export default function TeamClient() {
         >
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member) => (
-              <motion.div 
+              <m.div 
                 key={member.id}
                 variants={itemVariants}
                 whileHover={{ y: -10 }}
@@ -110,20 +110,20 @@ export default function TeamClient() {
                       <p className="text-gray-600 text-sm flex-grow mb-4">{member.bio}</p>
                       
                       {/* View Profile Button */}
-                      <motion.div
+                      <m.div
                         className="flex items-center text-blue-600 font-semibold group/btn"
                         whileHover={{ x: 5 }}
                       >
                         <span className="group-hover/btn:underline">View Profile</span>
                         <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                      </motion.div>
+                      </m.div>
                     </div>
                   </div>
                 </Link>
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </section>
     </div>
   )

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { ExternalLink } from "lucide-react"
 import Image from "next/image"
 import { apiService, ShowcaseItem } from "@/lib/api"
@@ -120,7 +120,7 @@ export default function ShowcasePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <motion.main
+      <m.main
         className="pt-32 pb-16 px-4 sm:px-6 lg:px-8"
         initial="hidden"
         animate="visible"
@@ -128,31 +128,31 @@ export default function ShowcasePage() {
       >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <motion.div 
+          <m.div 
             className="text-center mb-16"
             variants={itemVariants}
           >
-            <motion.h1 
+            <m.h1 
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
               variants={itemVariants}
             >
               Our <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">Showcase</span>
-            </motion.h1>
-            <motion.p 
+            </m.h1>
+            <m.p 
               className="text-gray-600 text-lg max-w-2xl mx-auto"
               variants={itemVariants}
             >
               Explore our latest projects and creative work. Each piece represents our commitment to excellence and innovation.
-            </motion.p>
-          </motion.div>
+            </m.p>
+          </m.div>
 
           {/* Grid */}
-          <motion.div 
+          <m.div 
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
             variants={containerVariants}
           >
             {showcaseData.map((item, index) => (
-              <motion.div
+              <m.div
                 key={item.id}
                 className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300"
                 variants={cardVariants}
@@ -162,7 +162,7 @@ export default function ShowcasePage() {
                 transition={{ delay: index * 0.1 }}
               >
                 {/* Image - Full size */}
-                <motion.div 
+                <m.div 
                   className="relative aspect-square overflow-hidden"
                   variants={imageVariants}
                 >
@@ -175,7 +175,7 @@ export default function ShowcasePage() {
                   {/* Bottom gradient and title (match portfolio preview style) */}
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex flex-col">
                     <h3 className="text-white font-semibold text-base sm:text-lg mb-2">{item.title}</h3>
-                    <motion.button
+                    <m.button
                       onClick={() => handleGoToLink(item.url)}
                       className="self-start bg-white text-gray-900 px-4 py-2 rounded-lg font-medium flex items-center gap-2 shadow-lg"
                       whileHover={{ scale: 1.05 }}
@@ -183,16 +183,16 @@ export default function ShowcasePage() {
                     >
                       <span>View Project</span>
                       <ExternalLink className="w-4 h-4" />
-                    </motion.button>
+                    </m.button>
                   </div>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
 
           {/* Empty State */}
           {showcaseData.length === 0 && (
-            <motion.div 
+            <m.div 
               className="text-center py-16"
               variants={itemVariants}
             >
@@ -203,10 +203,10 @@ export default function ShowcasePage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No showcase items found</h3>
               <p className="text-gray-600">Check back later for our latest projects.</p>
-            </motion.div>
+            </m.div>
           )}
         </div>
-      </motion.main>
+      </m.main>
 
     </div>
   )

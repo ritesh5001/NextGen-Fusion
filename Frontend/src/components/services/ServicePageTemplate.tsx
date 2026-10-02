@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import {
   ArrowRight,
   BarChart3,
@@ -161,11 +161,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
       <main className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-24">
 
-          {/* Hero */}
-          <motion.section
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
+          {/* Hero — static on purpose: its paragraph is the mobile LCP element,
+              and a framer entrance kept it invisible until the motion features
+              had loaded. */}
+          <section
             className="relative overflow-hidden rounded-3xl border border-gray-100 bg-gradient-to-br from-[#f8faff] via-white to-[#f4f7ff] p-8 sm:p-12 lg:p-16"
           >
             <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#8A38F5]/10 blur-3xl" />
@@ -190,17 +189,17 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="/work"
+                  href="/work/"
                   className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors"
                 >
                   View Case Studies
                 </Link>
               </div>
             </div>
-          </motion.section>
+          </section>
 
           {/* About + Who it's for */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <div className="grid lg:grid-cols-2 gap-8">
               <div className="rounded-2xl border border-gray-100 p-8 bg-white shadow-sm">
                 <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#2B35AB]/10 text-[#2B35AB]">
@@ -217,10 +216,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 <p className="mt-4 text-gray-600 leading-relaxed">{data.whoForDescription}</p>
               </div>
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Pain Points */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Problems We Solve</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.painPointsHeading}</h2>
             <div className="mt-8 grid md:grid-cols-2 gap-4">
@@ -231,19 +230,19 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Solution */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Our Solution</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">How We Deliver Better {data.badge}</h2>
             <div className="mt-8 rounded-2xl border border-gray-100 p-8 bg-gradient-to-br from-white to-gray-50">
               <p className="text-gray-700 leading-relaxed text-lg">{data.solutionDescription}</p>
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Features */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Key Features</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.featuresHeading}</h2>
             <div className="mt-8 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -257,10 +256,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Process */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Our Process</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.processHeading}</h2>
             <div className="mt-8 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -274,10 +273,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Benefits */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Benefits & ROI</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Business Outcomes You Can Expect</h2>
             <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -292,10 +291,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Technologies */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Technologies Used</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Tech Stack Behind Our {data.badge}</h2>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -308,12 +307,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </span>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Case Studies. Same rule as testimonials: only delivered, linkable
               work, and the section disappears rather than padding itself. */}
           {data.caseStudies.length > 0 && (
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Selected work</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Recent {data.badge} Projects</h2>
             <div className="mt-8 grid md:grid-cols-2 gap-6">
@@ -345,13 +344,13 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
           )}
 
           {/* Testimonials — rendered only when real quotes exist. An empty array
               removes the section rather than shipping anonymous filler. */}
           {data.testimonials.length > 0 && (
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Testimonials</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">What Clients Say About Our {data.badge}</h2>
             <div className="mt-8 grid md:grid-cols-3 gap-5">
@@ -363,12 +362,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
           )}
 
           {/* Deep dive */}
           {data.deepDive && (
-            <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+            <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
               <BadgeSubtitle>In practice</BadgeSubtitle>
               <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.deepDive.heading}</h2>
               <div className="mt-6 space-y-4">
@@ -376,12 +375,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                   <p key={paragraph} className="text-gray-600 leading-relaxed">{paragraph}</p>
                 ))}
               </div>
-            </motion.section>
+            </m.section>
           )}
 
           {/* Pricing band */}
           {data.pricing && (
-            <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+            <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
               <BadgeSubtitle>Pricing</BadgeSubtitle>
               <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.pricing.heading}</h2>
               <div className="mt-6 space-y-4">
@@ -395,12 +394,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
               >
                 Get a written quote
               </Link>
-            </motion.section>
+            </m.section>
           )}
 
           {/* Industries */}
           {data.industries && (
-            <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+            <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
               <BadgeSubtitle>Industries</BadgeSubtitle>
               <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.industries.heading}</h2>
               <p className="mt-4 text-gray-600 leading-relaxed">{data.industries.intro}</p>
@@ -411,12 +410,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                   </li>
                 ))}
               </ul>
-            </motion.section>
+            </m.section>
           )}
 
           {/* City pages */}
           {data.locationLinks && data.locationLinks.length > 0 && (
-            <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+            <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
               <BadgeSubtitle>Where we work</BadgeSubtitle>
               <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Looking for this service in your city?</h2>
               <ul className="mt-6 grid sm:grid-cols-2 gap-3">
@@ -431,11 +430,11 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                   </li>
                 ))}
               </ul>
-            </motion.section>
+            </m.section>
           )}
 
           {/* FAQ */}
-          <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>FAQ</BadgeSubtitle>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.badge} FAQs</h2>
             <div className="mt-8 space-y-4">
@@ -446,10 +445,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
           {/* Final CTA */}
-          <motion.section
+          <m.section
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -476,7 +475,7 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                 </Link>
               </div>
             </div>
-          </motion.section>
+          </m.section>
 
         </div>
       </main>

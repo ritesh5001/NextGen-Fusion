@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import {
   ArrowRight,
@@ -156,33 +156,33 @@ export default function CareersPage() {
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-        <motion.div
+        <m.div
           className="max-w-7xl mx-auto text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.span
+          <m.span
             className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800"
             variants={itemVariants}
           >
             We are hiring — {jobOpenings.length} open roles
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4"
             variants={itemVariants}
           >
             Build things that go live
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto"
             variants={itemVariants}
           >
             NextGen Fusion is a product and web studio in Lucknow and Mumbai. We build websites,
             e-commerce stores, and software for clients across India and beyond — and we are looking
             for people who want their work in front of real users, fast.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
             variants={itemVariants}
           >
@@ -199,13 +199,13 @@ export default function CareersPage() {
             >
               Apply now
             </Link>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </section>
 
       {/* Stats */}
       <section className="pb-16 px-4 sm:px-6 lg:px-8">
-        <motion.div
+        <m.div
           className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6"
           variants={containerVariants}
           initial="hidden"
@@ -213,28 +213,28 @@ export default function CareersPage() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {stats.map((stat) => (
-            <motion.div
+            <m.div
               key={stat.label}
               variants={itemVariants}
               className="rounded-xl bg-gray-50 p-6 text-center"
             >
               <p className="text-3xl sm:text-4xl font-bold text-gray-900">{stat.value}</p>
               <p className="mt-1 text-sm text-gray-600">{stat.label}</p>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </section>
 
       {/* Why work here */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <motion.div
+        <m.div
           className="max-w-7xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <motion.div className="text-center mb-12" variants={itemVariants}>
+          <m.div className="text-center mb-12" variants={itemVariants}>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               Why work at NextGen Fusion
             </h2>
@@ -242,11 +242,11 @@ export default function CareersPage() {
               We are small enough that what you do matters, and busy enough that you will never run
               out of things to learn.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map((benefit) => (
-              <motion.div
+              <m.div
                 key={benefit.title}
                 variants={itemVariants}
                 whileHover={{ y: -10 }}
@@ -262,31 +262,31 @@ export default function CareersPage() {
                 </div>
                 <h3 className="mt-4 text-xl font-bold text-gray-900">{benefit.title}</h3>
                 <p className="mt-2 text-gray-600 text-sm">{benefit.description}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* Open roles */}
       <section id="open-roles" className="py-16 px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        <motion.div
+        <m.div
           className="max-w-5xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <motion.div className="text-center mb-10" variants={itemVariants}>
+          <m.div className="text-center mb-10" variants={itemVariants}>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Open roles</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Pick a role to see the detail. If nothing fits but you think you should be here, send
               an open application — we read every one.
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Department filter */}
-          <motion.div
+          <m.div
             className="mb-8 flex flex-wrap items-center justify-center gap-2"
             variants={itemVariants}
           >
@@ -306,13 +306,13 @@ export default function CareersPage() {
                 {department}
               </button>
             ))}
-          </motion.div>
+          </m.div>
 
           <div className="space-y-4">
             {visibleJobs.map((job) => {
               const isExpanded = expandedId === job.id
               return (
-                <motion.div
+                <m.div
                   key={job.id}
                   variants={itemVariants}
                   className="rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-lg"
@@ -395,65 +395,65 @@ export default function CareersPage() {
                       </button>
                     </div>
                   )}
-                </motion.div>
+                </m.div>
               )
             })}
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* Hiring process */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <motion.div
+        <m.div
           className="max-w-7xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <motion.div className="text-center mb-12" variants={itemVariants}>
+          <m.div className="text-center mb-12" variants={itemVariants}>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               How hiring works here
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Four steps, usually inside two weeks. You will always know where you stand.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {hiringSteps.map((step) => (
-              <motion.div key={step.step} variants={itemVariants} className="relative">
+              <m.div key={step.step} variants={itemVariants} className="relative">
                 <span className="text-5xl font-bold text-gray-200">{step.step}</span>
                 <h3 className="mt-2 text-xl font-bold text-gray-900">{step.title}</h3>
                 <p className="mt-2 text-sm text-gray-600">{step.description}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* Application form */}
       <section id="apply" className="py-16 px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        <motion.div
+        <m.div
           className="max-w-3xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <motion.div className="text-center mb-10" variants={itemVariants}>
+          <m.div className="text-center mb-10" variants={itemVariants}>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Apply now</h2>
             <p className="text-lg text-gray-600">
               Fill this in and attach your resume. We read every application and reply within a
               week, either way.
             </p>
-          </motion.div>
+          </m.div>
 
-          <motion.div variants={itemVariants}>
+          <m.div variants={itemVariants}>
             <ApplicationForm key={selectedRoleId} defaultRoleId={selectedRoleId} />
-          </motion.div>
+          </m.div>
 
-          <motion.p className="mt-6 text-center text-sm text-gray-500" variants={itemVariants}>
+          <m.p className="mt-6 text-center text-sm text-gray-500" variants={itemVariants}>
             Trouble with the form?{" "}
             <a
               href={openApplicationMailto()}
@@ -462,8 +462,8 @@ export default function CareersPage() {
               Email us at {CAREERS_EMAIL}
             </a>{" "}
             with your resume attached.
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
       </section>
     </div>
   )

@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useNearViewport } from "@/hooks/use-near-viewport"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, ArrowUpRight, FileText, Globe } from "lucide-react"
@@ -38,6 +39,7 @@ function Chip({
 
 function DeliveredCard({ project }: { project: DeliveredProject }) {
   const [errored, setErrored] = useState(false)
+  const [mediaRef, near] = useNearViewport<HTMLDivElement>()
   const caseStudyHref = project.caseStudySlug ? `/work/${project.caseStudySlug}/` : undefined
 
   // One primary link stretched over the whole card (case study when there is
@@ -47,12 +49,12 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
   // stretched ::after already makes the whole card clickable, but tap-target
   // audits measure the link's own box.
   const primaryClass =
-    "inline-flex min-h-6 items-center after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-purple-500"
+    "inline-block max-w-full truncate py-0.5 align-top after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-purple-500"
 
   return (
     <div className="group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
-      <div className="relative aspect-[16/10] overflow-hidden bg-gray-50">
-        {errored ? (
+      <div ref={mediaRef} className="relative aspect-[16/10] overflow-hidden bg-gray-50">
+        {!near ? null : errored ? (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2B35AB]/10 via-[#8A38F5]/10 to-[#13CBD4]/10 px-3 text-center text-sm font-semibold text-gray-500">
             {project.host}
           </div>
@@ -100,13 +102,13 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
             href={project.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative z-10 flex min-h-6 w-fit max-w-full items-center gap-0.5 truncate text-xs text-gray-600 hover:text-gray-900 hover:underline"
+            className="relative z-10 flex min-h-6 w-fit max-w-full items-center gap-0.5 truncate py-1 text-xs text-gray-600 hover:text-gray-900 hover:underline"
           >
             Live site: {project.host}
             <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
           </a>
         ) : (
-          <p className="truncate text-xs text-gray-600">{project.host}</p>
+          <p className="truncate py-1 text-xs text-gray-600">{project.host}</p>
         )}
         <span className="mt-1.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
           {project.subcategory ?? CATEGORY_LABELS[project.category]}

@@ -8,10 +8,16 @@ import Script from "next/script"
 export const GA_MEASUREMENT_ID = "G-F54LGZJNLS"
 
 /**
- * GA4 + Microsoft Clarity.
+ * GA4 + Microsoft Clarity, loaded after the page is usable.
  *
- * Clarity stays env-gated and renders nothing until its project ID is set:
- *   NEXT_PUBLIC_CLARITY_ID=xxxxxxxxxx
+ * gtag.js is ~180 KB and was the largest script on every page, parsed during
+ * load on phones. Now the `gtag()` queue exists immediately (so trackEvent and
+ * the page_view config are recorded from the start), but the library itself is
+ * fetched on the first interaction — tap, scroll, key — or 8s after load,
+ * whichever comes first. Queued calls are sent when it arrives. A visitor who
+ * leaves within 8s without touching the page is not counted.
+ *
+ * Clarity stays env-gated: NEXT_PUBLIC_CLARITY_ID=xxxxxxxxxx
  *
  * Conversion events are fired via `trackEvent` in src/lib/analytics.ts.
  */
@@ -19,36 +25,42 @@ export function Analytics() {
   const gaId = GA_MEASUREMENT_ID
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID
 
-  return (
-    <>
-      {gaId && (
-        <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-            strategy="afterInteractive"
-          />
-          <Script id="ga4-init" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${gaId}');
-            `}
-          </Script>
-        </>
-      )}
+  const loader = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', '${gaId}');
+    (function () {
+      var done = false;
+      var events = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+      function inject(src) {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = src;
+        document.head.appendChild(s);
+      }
+      function load() {
+        if (done) return;
+        done = true;
+        events.forEach(function (e) { window.removeEventListener(e, load); });
+        inject('https://www.googletagmanager.com/gtag/js?id=${gaId}');
+        ${
+          clarityId
+            ? `(function(c,l,a,r,i){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};inject('https://www.clarity.ms/tag/'+i);})(window,document,'clarity','script','${clarityId}');`
+            : ""
+        }
+      }
+      events.forEach(function (e) { window.addEventListener(e, load, { once: true, passive: true }); });
+      function later() { setTimeout(load, 8000); }
+      if (document.readyState === 'complete') later();
+      else window.addEventListener('load', later, { once: true });
+    })();
+  `
 
-      {clarityId && (
-        <Script id="clarity-init" strategy="afterInteractive">
-          {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "${clarityId}");
-          `}
-        </Script>
-      )}
-    </>
+  return (
+    <Script id="analytics-loader" strategy="afterInteractive">
+      {loader}
+    </Script>
   )
 }

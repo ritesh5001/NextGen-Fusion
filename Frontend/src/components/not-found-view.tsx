@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { ArrowLeft, Home } from "lucide-react"
 
@@ -150,7 +150,7 @@ export function NotFoundView() {
       <div className="min-h-screen bg-white flex items-center justify-center px-4" style={{ paddingTop: '0 !important', paddingBottom: '0 !important' }}>
       <div className="max-w-4xl mx-auto text-center">
         {/* 404 Animation */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -159,10 +159,10 @@ export function NotFoundView() {
           <div className="text-8xl sm:text-9xl md:text-[12rem] font-bold text-gray-200 leading-none">
             404
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Main Content */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -175,16 +175,16 @@ export function NotFoundView() {
             The page you&apos;re looking for seems to have vanished into the digital void. 
             Don&apos;t worry, even the best developers get lost sometimes!
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Illustration */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mb-12"
         >
-          <motion.div
+          <m.div
             animate={{ 
               y: [0, -10, 0],
               opacity: [1, 0.7, 1]
@@ -196,25 +196,25 @@ export function NotFoundView() {
             }}
           >
             <div className="text-6xl sm:text-7xl md:text-8xl">👻</div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
 
         {/* Action Buttons */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <Link href="/">
-            <motion.button
+            <m.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Home className="w-5 h-5" />
               Back to Home
-            </motion.button>
+            </m.button>
           </Link>
 
           <button
@@ -224,17 +224,17 @@ export function NotFoundView() {
             <ArrowLeft className="w-5 h-5" />
             Go Back
           </button>
-        </motion.div>
+        </m.div>
 
         {/* Fun Message */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
           className="mt-12 text-sm text-gray-500"
         >
           <p>Lost? Don&apos;t worry, we&apos;ll help you find your way back to amazing digital experiences!</p>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   </>

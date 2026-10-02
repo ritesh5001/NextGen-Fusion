@@ -1,10 +1,29 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { staticProjects } from "@/lib/static-projects";
+import type { StaticProject } from "@/lib/static-projects";
+import { useNearViewport } from "@/hooks/use-near-viewport";
+
+/** Cover image mounted only when the card nears the viewport (see useNearViewport). */
+function DeferredCover({ src, alt }: { src: string; alt: string }) {
+  const [ref, near] = useNearViewport<HTMLDivElement>();
+  return (
+    <div ref={ref} className="absolute inset-0">
+      {near && (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
+      )}
+    </div>
+  );
+}
 
 const container = {
   hidden: { opacity: 0 },
@@ -16,27 +35,33 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.55 } },
 };
 
-export default function WorkSection() {
-  const featured = staticProjects.filter((p) => p.featured);
+/** The fields this section renders; passed from the server so the full case
+ *  study data never ships to the browser. */
+export type FeaturedProject = Pick<
+  StaticProject,
+  "slug" | "title" | "category" | "coverImage" | "domain" | "results" | "shortDescription" | "tags"
+>;
+
+export default function WorkSection({ featured }: { featured: FeaturedProject[] }) {
 
   return (
     <section className="bg-white py-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
+        <m.div
           className="mb-14"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={container}
         >
-          <motion.div variants={item} className="mb-3">
+          <m.div variants={item} className="mb-3">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
               Projects delivered
             </span>
-          </motion.div>
+          </m.div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
-            <motion.h2
+            <m.h2
               variants={item}
               className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
             >
@@ -44,8 +69,8 @@ export default function WorkSection() {
               <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
                 deliver results
               </span>
-            </motion.h2>
-            <motion.div variants={item} whileHover={{ scale: 1.05 }}>
+            </m.h2>
+            <m.div variants={item} whileHover={{ scale: 1.05 }}>
               <Link
                 href="/work/"
                 prefetch={false}
@@ -54,12 +79,12 @@ export default function WorkSection() {
                 View all projects
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-            </motion.div>
+            </m.div>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Featured row */}
-        <motion.div
+        <m.div
           className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"
           initial="hidden"
           whileInView="visible"
@@ -67,16 +92,13 @@ export default function WorkSection() {
           variants={container}
         >
           {featured.map((project) => (
-            <motion.div key={project.slug} variants={item}>
+            <m.div key={project.slug} variants={item}>
               <Link href={`/work/${project.slug}/`} prefetch={false} className="group block">
                 {/* Image */}
                 <div className="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[16/10] mb-5 shadow-lg shadow-gray-200/60">
-                  <Image
+                  <DeferredCover
                     src={project.coverImage}
                     alt={`${project.title} — ${project.category} project by NextGen Fusion`}
-                    fill
-                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -125,9 +147,9 @@ export default function WorkSection() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
 
         {/* Breadth (the full delivered-projects screenshot wall) is merged in
             directly below this section in home-client, so no separate CTA here. */}

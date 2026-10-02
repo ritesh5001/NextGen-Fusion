@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { inter, trap } from "./fonts";
+import { trap } from "./fonts";
 import "./globals.css";
 import "../styles/optimized-icons.css";
 import ConsoleEasterEgg from "@/components/console-easter-egg";
 import ErrorBoundary from "@/components/error-boundary";
 import "@/lib/error-handler";
 import LenisProvider from "@/components/lenis-provider";
+import { MotionProvider } from "@/components/motion-provider";
 import LayoutChrome from "@/components/layout-chrome";
 import { Analytics } from "@/components/analytics";
 import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
@@ -267,7 +268,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-IN"
-      className={`${trap.variable} ${inter.variable} font-sans`}
+      className={`${trap.variable} font-sans`}
     >
       <head>
         {/* Meta tags tambahan untuk compatibility */}
@@ -292,8 +293,10 @@ export default function RootLayout({
         <Analytics />
         <ErrorBoundary>
           <LenisProvider>
-            <ConsoleEasterEgg />
-            <LayoutChrome>{children}</LayoutChrome>
+            <MotionProvider>
+              <ConsoleEasterEgg />
+              <LayoutChrome>{children}</LayoutChrome>
+            </MotionProvider>
           </LenisProvider>
         </ErrorBoundary>
       </body>

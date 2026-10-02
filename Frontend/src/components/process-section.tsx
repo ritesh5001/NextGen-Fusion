@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import BadgeSubtitle from "./badge-subtitle"
 
 const steps = [
@@ -38,17 +38,17 @@ export default function ProcessSection() {
   return (
     <section className="bg-white py-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <motion.div
+        <m.div
           className="mb-14 text-center"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={container}
         >
-          <motion.div variants={item} className="mb-4">
+          <m.div variants={item} className="mb-4">
             <BadgeSubtitle>How we work</BadgeSubtitle>
-          </motion.div>
-          <motion.h2
+          </m.div>
+          <m.h2
             variants={item}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
           >
@@ -56,10 +56,10 @@ export default function ProcessSection() {
             <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
               three simple steps
             </span>
-          </motion.h2>
-        </motion.div>
+          </m.h2>
+        </m.div>
 
-        <motion.div
+        <m.div
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
           initial="hidden"
           whileInView="visible"
@@ -67,7 +67,7 @@ export default function ProcessSection() {
           variants={container}
         >
           {steps.map((step) => (
-            <motion.div
+            <m.div
               key={step.number}
               variants={item}
               className="relative rounded-2xl border border-gray-100 bg-white p-8 shadow-sm"
@@ -77,9 +77,9 @@ export default function ProcessSection() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
               <p className="text-gray-600 leading-relaxed">{step.description}</p>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   )

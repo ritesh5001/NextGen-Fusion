@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState, type ReactNode } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { X, CalendarDays, PhoneCall, ArrowRight, CheckCircle2, Loader2 } from "lucide-react"
 import { API_BASE_URL } from "@/lib/api"
 import { trackEvent } from "@/lib/analytics"
@@ -28,11 +28,9 @@ type BookingSlot = {
 
 const LENIS_SCROLL_LOCK_EVENT = "lenis-scroll-lock"
 
-export function openBookingModal(detail: Partial<BookingState> = {}) {
-  if (typeof window === "undefined") return
-  trackEvent("book_call")
-  window.dispatchEvent(new CustomEvent("open-booking-modal", { detail }))
-}
+// Re-exported for existing importers; new code should import from
+// "@/lib/booking" so the modal stays out of the first-load bundle.
+export { openBookingModal } from "@/lib/booking"
 
 export default function BookingModal() {
   const [open, setOpen] = useState(false)
@@ -203,13 +201,13 @@ export default function BookingModal() {
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
+        <m.div
           className="fixed inset-0 z-[80] flex items-end justify-center bg-black/55 p-0 sm:px-4 sm:py-4 md:items-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 32, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.98 }}
@@ -377,8 +375,8 @@ export default function BookingModal() {
                 )}
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

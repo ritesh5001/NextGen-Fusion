@@ -103,7 +103,7 @@ export default function WorkPage() {
                     className="inline-block py-1 text-gray-700 underline-offset-4 hover:text-gray-900 hover:underline"
                   >
                     {project.title}{" "}
-                    <span className="text-gray-400">· {project.category}</span>
+                    <span className="text-gray-600">· {project.category}</span>
                   </Link>
                 </li>
               ))}

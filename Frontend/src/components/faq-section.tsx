@@ -1,5 +1,5 @@
 "use client"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { Plus, Minus, MoreVertical } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
@@ -156,7 +156,7 @@ export default function FAQSection() {
   }, [])
 
   return (
-    <motion.section 
+    <m.section 
       id="faq" 
       className="relative bg-white py-16 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
       initial="hidden"
@@ -167,22 +167,22 @@ export default function FAQSection() {
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column - Header */}
-          <motion.div 
+          <m.div 
             className="lg:sticky lg:top-8"
             variants={itemVariants}
           >
-            <motion.div 
+            <m.div 
               className="mb-6"
               variants={textVariants}
             >
               <BadgeSubtitle>Frequently Asked Questions</BadgeSubtitle>
-            </motion.div>
-            <motion.h2 
+            </m.div>
+            <m.h2 
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6"
               variants={textVariants}
             >
               <div className="flex flex-wrap items-center gap-4">
-                <motion.div 
+                <m.div 
                   className="relative inline-block"
                   variants={iconVariants}
                 >
@@ -193,11 +193,11 @@ export default function FAQSection() {
                     height={48}
                     className="object-contain w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
                   />
-                </motion.div>
+                </m.div>
                 <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
                   Questions
                 </span>
-                <motion.div 
+                <m.div 
                   className="relative inline-block"
                   variants={iconVariants}
                 >
@@ -208,27 +208,27 @@ export default function FAQSection() {
                     height={48}
                     className="object-contain w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
                   />
-                </motion.div>
+                </m.div>
               </div>{" "}
                 <span className="inline-block">
                   about working with us, answered
                 </span>
-              </motion.h2>
-            </motion.div>
+              </m.h2>
+            </m.div>
 
           {/* Right Column - Chat Interface */}
-          <motion.div 
+          <m.div 
             className="flex justify-center lg:justify-end"
             variants={itemVariants}
           >
-            <motion.div 
+            <m.div 
               className="w-full max-w-md"
               variants={cardVariants}
             >
               {/* Chat Interface */}
               <div className="bg-white rounded-2xl shadow-lg overflow-hidden relative">
                 {/* Gradient Background */}
-                <motion.div 
+                <m.div 
                   className="absolute inset-0 bg-gradient-to-br from-purple-100 via-blue-50 to-blue-200 opacity-30"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 0.3 }}
@@ -237,14 +237,15 @@ export default function FAQSection() {
                 />
 
                 {/* Chat Header */}
-                <motion.div 
+                <m.div 
                   className="relative bg-white px-4 py-4 border-b border-gray-100"
                   variants={textVariants}
                 >
                   <div className="flex items-center justify-between">
-                    <motion.button 
+                    <m.button 
+                      type="button"
                       onClick={handleBackClick} 
-                      aria-label="Back to all questions"
+                      aria-label="Back"
                       className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-gray-100"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
@@ -252,15 +253,15 @@ export default function FAQSection() {
                       <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </svg>
-                    </motion.button>
+                    </m.button>
                     <div className="flex items-center gap-3">
-                      <motion.div 
+                      <m.div 
                         className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center"
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                       >
                         <span className="text-white text-xs font-bold">TC</span>
-                      </motion.div>
+                      </m.div>
                       <div className="text-center">
                         <div className="text-sm font-semibold text-gray-900">
                           {activeIndex !== null ? "NextGen Fusion" : "Your Questions"}
@@ -269,21 +270,22 @@ export default function FAQSection() {
                       </div>
                     </div>
                     <div className="relative" ref={dropdownRef}>
-                      <motion.button 
+                      <m.button 
+                        type="button"
                         onClick={toggleDropdown} 
-                        aria-label="About this chat"
+                        aria-label="More options"
                         aria-expanded={showDropdown}
                         className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-gray-100"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
                         <MoreVertical className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
-                      </motion.button>
+                      </m.button>
 
                       {/* Dropdown Menu */}
                       <AnimatePresence>
                         {showDropdown && (
-                          <motion.div 
+                          <m.div 
                             className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-4 px-4 z-10"
                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -297,30 +299,30 @@ export default function FAQSection() {
                                 Maybe some chat options or settings?
                               </span>
                             </p>
-                          </motion.div>
+                          </m.div>
                         )}
                       </AnimatePresence>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
 
                 {/* Today Badge */}
-                <motion.div 
+                <m.div 
                   className="relative px-4 py-2"
                   variants={textVariants}
                 >
                   <div className="flex justify-center">
                     <span className="bg-gray-800 text-white text-xs px-3 py-1 rounded-full">Today</span>
                   </div>
-                </motion.div>
+                </m.div>
 
                 {/* Chat Content */}
-                <motion.div 
+                <m.div 
                   className="relative p-4 space-y-3 min-h-[600px]"
                   variants={containerVariants}
                 >
                   {faqs.map((faq, index) => (
-                    <motion.div 
+                    <m.div 
                       key={index} 
                       className="space-y-2"
                       variants={faqVariants}
@@ -330,7 +332,7 @@ export default function FAQSection() {
                       transition={{ delay: index * 0.1 }}
                     >
                       {/* Question */}
-                      <motion.button
+                      <m.button
                         onClick={() => toggleFAQ(index)}
                         id={`faq-question-${index}`}
                         aria-expanded={activeIndex === index}
@@ -339,7 +341,7 @@ export default function FAQSection() {
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
                       >
-                        <motion.div 
+                        <m.div 
                           className="flex-shrink-0 mt-0.5"
                           animate={{ rotate: activeIndex === index ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
@@ -349,9 +351,9 @@ export default function FAQSection() {
                           ) : (
                           <Plus className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
                           )}
-                        </motion.div>
+                        </m.div>
                         <span className="text-xs sm:text-sm font-medium text-gray-900 leading-relaxed">{faq.question}</span>
-                      </motion.button>
+                      </m.button>
 
                       {/* Answer.
                           Always mounted, never conditionally rendered. Collapsing
@@ -360,7 +362,7 @@ export default function FAQSection() {
                           (Perplexity, ChatGPT search, Claude) can actually see it.
                           A `{activeIndex === index && ...}` guard here shipped a
                           homepage FAQ with eight questions and zero answers. */}
-                      <motion.div
+                      <m.div
                         id={`faq-answer-${index}`}
                         role="region"
                         aria-labelledby={`faq-question-${index}`}
@@ -372,15 +374,15 @@ export default function FAQSection() {
                         <div className="bg-blue-500/90 backdrop-blur-sm text-white p-3 rounded-xl ml-7 shadow-sm">
                           <p className="text-xs sm:text-sm leading-relaxed">{faq.answer}</p>
                         </div>
-                      </motion.div>
-                    </motion.div>
+                      </m.div>
+                    </m.div>
                   ))}
-                </motion.div>
+                </m.div>
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
       </div>
-    </motion.section>
+    </m.section>
   )
 }

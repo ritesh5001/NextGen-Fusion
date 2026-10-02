@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { Sparkles, Send, X, CalendarDays, PhoneCall } from "lucide-react"
 import { openBookingModal } from "./booking-modal"
 
@@ -117,7 +117,7 @@ export default function SalesChatbot() {
 
   return (
     <>
-      <motion.button
+      <m.button
         onClick={() => setOpen(true)}
         aria-label="Open sales assistant"
         className="fixed bottom-24 right-5 z-[70] flex h-16 w-16 items-center justify-center rounded-full bg-[#111318] text-white shadow-[0_18px_48px_rgba(0,0,0,0.28)] transition hover:bg-[#1a1d24] md:bottom-8"
@@ -125,11 +125,11 @@ export default function SalesChatbot() {
         whileTap={{ scale: 0.96 }}
       >
         <Sparkles className="h-7 w-7" />
-      </motion.button>
+      </m.button>
 
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -245,7 +245,7 @@ export default function SalesChatbot() {
                 </button>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

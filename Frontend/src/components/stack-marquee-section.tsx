@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Image from "next/image"
 import BadgeSubtitle from "./badge-subtitle"
 
@@ -94,7 +94,7 @@ export default function StackMarqueeSection() {
   ]
 
   return (
-    <motion.section
+    <m.section
       className="bg-white py-32 overflow-hidden"
       initial="hidden"
       whileInView="visible"
@@ -102,32 +102,32 @@ export default function StackMarqueeSection() {
       variants={containerVariants}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <motion.div
+        <m.div
           className="text-center"
           variants={itemVariants}
         >
-          <motion.div
+          <m.div
             className="mb-4"
             variants={textVariants}
           >
             <BadgeSubtitle>Tech Stack</BadgeSubtitle>
-          </motion.div>
-          <motion.h2
+          </m.div>
+          <m.h2
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6"
             variants={textVariants}
           >
             The tools that accompany our workflow.
-          </motion.h2>
-        </motion.div>
+          </m.h2>
+        </m.div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6">
-        <motion.div
+        <m.div
           className="space-y-8"
           variants={containerVariants}
         >
           {techStackLines.map((techLine, lineIndex) => (
-            <motion.div
+            <m.div
               key={lineIndex}
               className="flex overflow-hidden rounded-lg"
               style={{
@@ -150,7 +150,7 @@ export default function StackMarqueeSection() {
                 {[...Array(3)].map((_, duplicateIndex) => (
                   <div key={`${lineIndex}-${duplicateIndex}`} className="flex gap-8 sm:gap-12">
                     {techLine.map((tech, techIndex) => (
-                      <motion.div
+                      <m.div
                         key={`${tech.name}-${duplicateIndex}-${techIndex}`}
                         className="flex flex-col items-center gap-2 group"
                         variants={imageVariants}
@@ -180,14 +180,14 @@ export default function StackMarqueeSection() {
                         <span className="text-xs sm:text-sm font-medium text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                           {tech.name}
                         </span>
-                      </motion.div>
+                      </m.div>
                     ))}
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
 
       <style jsx>{`
@@ -217,6 +217,6 @@ export default function StackMarqueeSection() {
           animation: marquee-left 60s linear infinite;
         }
       `}</style>
-    </motion.section>
+    </m.section>
   )
 }

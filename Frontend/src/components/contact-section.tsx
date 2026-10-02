@@ -1,9 +1,10 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { ArrowRight, ArrowLeft, Target, Map, Lightbulb, Users, CheckCircle, AlertCircle, MapPin, Phone } from "lucide-react"
 import { useState } from "react"
+import { useNearViewport } from "@/hooks/use-near-viewport"
 import BadgeSubtitle from "./badge-subtitle"
 import PhoneInput from "./phone-input"
 import { apiService, ContactFormData } from "@/lib/api"
@@ -115,6 +116,9 @@ interface FormData {
 
 export default function ContactSection() {
   const { getIconSrc } = useMobileIcon()
+  // The artwork is a CSS background, which the browser fetches as soon as the
+  // element is styled, so it is only set once the panel nears the viewport.
+  const [panelRef, panelNear] = useNearViewport<HTMLDivElement>()
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -217,7 +221,7 @@ export default function ContactSection() {
   const isStep2Valid = formData.referralSource
 
   return (
-    <motion.section 
+    <m.section 
       id="contact-section" 
       className="bg-white pt-20 sm:pt-24 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 lg:px-8"
       initial="hidden"
@@ -227,17 +231,17 @@ export default function ContactSection() {
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <motion.div 
+        <m.div 
           className="text-center mb-8 sm:mb-12 md:mb-16"
           variants={itemVariants}
         >
-          <motion.div 
+          <m.div 
             className="mb-4"
             variants={textVariants}
           >
             <BadgeSubtitle>Contact Us</BadgeSubtitle>
-          </motion.div>
-          <motion.h2 
+          </m.div>
+          <m.h2 
             className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4 sm:mb-6"
             variants={textVariants}
           >
@@ -246,7 +250,7 @@ export default function ContactSection() {
             </div>{" "}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-1 sm:mt-2">
               <span>Let&apos;s</span>{" "}
-              <motion.div 
+              <m.div 
                 className="relative inline-block mx-1"
                 variants={iconVariants}
               >
@@ -257,7 +261,7 @@ export default function ContactSection() {
                   height={56}
                   className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 lg:w-14 lg:h-14" 
                 />
-              </motion.div>
+              </m.div>
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-400 bg-clip-text text-transparent">
                 Discuss
               </span>
@@ -265,27 +269,28 @@ export default function ContactSection() {
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-1 sm:mt-2">
               <span>and Cook It Up!</span>
             </div>
-          </motion.h2>
-          <motion.p 
+          </m.h2>
+          <m.p 
             className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed"
             variants={textVariants}
           >
             We&apos;re here to listen. Book a meeting with our team to discuss your vision, explore possibilities, and start
             creating something.
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mx-auto">
           {/* Left Column - Benefits */}
           <div 
-            className="relative rounded-lg overflow-hidden flex-1 w-full flex flex-col p-8 gap-7 text-white"
+            ref={panelRef}
+            className="relative rounded-lg overflow-hidden flex-1 w-full flex flex-col p-8 gap-7 text-white bg-[#2B35AB]"
             style={{
               // WebP, not the original PNG. As a CSS background this never
               // passes through /_next/image, so it skipped the AVIF pipeline
               // every other image on the site gets — and at 288 KB it was the
               // single largest request on the homepage, bigger than any JS
               // chunk. The WebP is 14 KB for the same 476x580 artwork.
-              backgroundImage: 'url(/images/contactdesc.webp)',
+              backgroundImage: panelNear ? 'url(/images/contactdesc.webp)' : undefined,
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'top',
@@ -321,14 +326,14 @@ export default function ContactSection() {
           </div>
 
           {/* Right Column - Form */}
-          <motion.div 
+          <m.div 
             className="bg-white rounded-xl sm:rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 shadow-sm min-h-[350px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px]"
             variants={cardVariants}
           >
             <AnimatePresence mode="wait">
               {/* Step 1: Contact Information */}
               {currentStep === 1 && (
-                <motion.div 
+                <m.div 
                   className="space-y-4 sm:space-y-6"
                   variants={formVariants}
                   initial="hidden"
@@ -336,16 +341,17 @@ export default function ContactSection() {
                   exit="exit"
                 >
                   <div className="flex justify-between items-start mb-4 sm:mb-6">
-                    <motion.div 
+                    <m.div 
                       className="relative"
                       variants={textVariants}
                     >
                       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
                         <span className="relative inline-block">
                           Pop
-                          <motion.img 
+                          <m.img 
                             src="/images/paperplane.svg" 
-                            alt="Paper plane" 
+                            alt="" 
+                            loading="lazy" 
                             className="absolute top-0 left-1 sm:left-2 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 z-10 transform rotate-12" 
                             animate={{ 
                               x: [0, 5, 0],
@@ -361,11 +367,11 @@ export default function ContactSection() {
                         {" "}Us a
                       </h3>
                       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Message</h3>
-                    </motion.div>
+                    </m.div>
                     <span className="text-xs sm:text-sm text-gray-500">1 of 2 Steps</span>
                   </div>
 
-                  <motion.div
+                  <m.div
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
@@ -379,9 +385,9 @@ export default function ContactSection() {
                       placeholder="Alex Morgan"
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 text-sm sm:text-base"
                     />
-                  </motion.div>
+                  </m.div>
 
-                  <motion.div
+                  <m.div
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
@@ -395,9 +401,9 @@ export default function ContactSection() {
                       placeholder="you@company.com"
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 text-sm sm:text-base"
                     />
-                  </motion.div>
+                  </m.div>
 
-                  <motion.div
+                  <m.div
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
@@ -408,9 +414,9 @@ export default function ContactSection() {
                       onChange={(value) => handleInputChange("phoneNumber", value)}
                       placeholder="Phone number"
                     />
-                  </motion.div>
+                  </m.div>
 
-                  <motion.div
+                  <m.div
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
@@ -424,15 +430,15 @@ export default function ContactSection() {
                       rows={3}
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 resize-none text-sm sm:text-base"
                     />
-                  </motion.div>
+                  </m.div>
 
-                  <motion.div
+                  <m.div
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: 0.5 }}
                   >
-                    <motion.button
+                    <m.button
                       onClick={handleNext}
                       disabled={!isStep1Valid}
                       className="w-full bg-gray-900 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
@@ -441,14 +447,14 @@ export default function ContactSection() {
                     >
                       Next Step
                       <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </motion.button>
-                  </motion.div>
-                </motion.div>
+                    </m.button>
+                  </m.div>
+                </m.div>
               )}
 
               {/* Step 2: Referral Source */}
               {currentStep === 2 && (
-                <motion.div 
+                <m.div 
                   className="space-y-4 sm:space-y-6"
                   variants={formVariants}
                   initial="hidden"
@@ -456,16 +462,17 @@ export default function ContactSection() {
                   exit="exit"
                 >
                   <div className="flex justify-between items-start mb-4 sm:mb-6">
-                    <motion.div 
+                    <m.div 
                       className="relative"
                       variants={textVariants}
                     >
                       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
                         <span className="relative inline-block">
                           How Did You
-                          <motion.img 
+                          <m.img 
                             src="/images/paperplane.svg" 
-                            alt="Paper plane" 
+                            alt="" 
+                            loading="lazy" 
                             className="absolute top-0 left-1 sm:left-2 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 z-10 transform rotate-12" 
                             animate={{ 
                               x: [0, 5, 0],
@@ -480,11 +487,11 @@ export default function ContactSection() {
                         </span>
                         {" "}Find Us?
                       </h3>
-                    </motion.div>
+                    </m.div>
                     <span className="text-xs sm:text-sm text-gray-500">2 of 2 Steps</span>
                   </div>
 
-                  <motion.div
+                  <m.div
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
@@ -493,7 +500,7 @@ export default function ContactSection() {
                     <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-3 sm:mb-4">Referral Source</label>
                     <div className="grid grid-cols-2 gap-2 sm:gap-3">
                       {referralOptions.map((option, index) => (
-                        <motion.button
+                        <m.button
                           key={option}
                           onClick={() => handleInputChange("referralSource", option)}
                           className={`p-2 sm:p-3 rounded-lg border-2 text-xs sm:text-sm font-medium transition-all duration-200 ${
@@ -508,13 +515,13 @@ export default function ContactSection() {
                           transition={{ delay: 0.1 + index * 0.05 }}
                         >
                           {option}
-                        </motion.button>
+                        </m.button>
                       ))}
                     </div>
-                  </motion.div>
+                  </m.div>
 
                   <div className="flex gap-2 sm:gap-3 pt-2 sm:pt-4">
-                    <motion.button
+                    <m.button
                       onClick={handleBack}
                       className="flex-1 bg-gray-100 text-gray-700 py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
                       whileHover={{ scale: 1.02 }}
@@ -522,8 +529,8 @@ export default function ContactSection() {
                     >
                       <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4" />
                       Back
-                    </motion.button>
-                    <motion.button
+                    </m.button>
+                    <m.button
                       onClick={handleSubmit}
                       disabled={!isStep2Valid || isSubmitting}
                       className="flex-1 bg-gray-900 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
@@ -532,14 +539,14 @@ export default function ContactSection() {
                     >
                       {isSubmitting ? 'Submitting...' : 'Submit'}
                       {!isSubmitting && <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />}
-                    </motion.button>
+                    </m.button>
                   </div>
-                </motion.div>
+                </m.div>
               )}
 
               {/* Error Message */}
               {submitStatus === 'error' && (
-                <motion.div 
+                <m.div 
                   className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -550,19 +557,19 @@ export default function ContactSection() {
                     <p className="text-sm font-medium text-red-800">Submission Failed</p>
                     <p className="text-sm text-red-600">{errorMessage}</p>
                   </div>
-                </motion.div>
+                </m.div>
               )}
 
               {/* Step 3: Success */}
               {currentStep === 3 && submitStatus === 'success' && (
-                <motion.div 
+                <m.div 
                   className="text-center space-y-4 sm:space-y-6"
                   variants={formVariants}
                   initial="hidden"
                   animate="visible"
                   exit="exit"
                 >
-                  <motion.div
+                  <m.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, type: "spring" }}
@@ -570,27 +577,27 @@ export default function ContactSection() {
                     <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
                     </div>
-                  </motion.div>
+                  </m.div>
                   
-                  <motion.h3 
+                  <m.h3 
                     className="text-xl sm:text-2xl font-bold text-gray-900"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                   >
                     Message Sent Successfully!
-                  </motion.h3>
+                  </m.h3>
                   
-                  <motion.p 
+                  <m.p 
                     className="text-gray-600 text-sm sm:text-base"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                   >
                     Thank you for reaching out! We&apos;ll get back to you within {OFFICE_HOURS.replyWithin}.
-                  </motion.p>
+                  </m.p>
                   
-                  <motion.button
+                  <m.button
                     onClick={handleReset}
                     className="bg-gray-900 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 text-sm sm:text-base"
                     whileHover={{ scale: 1.05 }}
@@ -600,42 +607,42 @@ export default function ContactSection() {
                     transition={{ delay: 0.4 }}
                   >
                     Send Another Message
-                  </motion.button>
-                </motion.div>
+                  </m.button>
+                </m.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Offices Section */}
         <div className="mt-16 sm:mt-20 md:mt-24 pt-12 sm:pt-16 md:pt-20 border-t border-gray-200">
-          <motion.div 
+          <m.div 
             className="text-center mb-8 sm:mb-12 md:mb-16"
             variants={itemVariants}
           >
-            <motion.div 
+            <m.div 
               className="mb-4"
               variants={textVariants}
             >
               <BadgeSubtitle>Our Offices</BadgeSubtitle>
-            </motion.div>
-            <motion.h2 
+            </m.div>
+            <m.h2 
               className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
               variants={textVariants}
             >
               Visit Us at Our Locations
-            </motion.h2>
-            <motion.p 
+            </m.h2>
+            <m.p 
               className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto"
               variants={textVariants}
             >
               Connect with us at either of our offices for in-person consultations and support.
-            </motion.p>
-          </motion.div>
+            </m.p>
+          </m.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {offices.map((office, index) => (
-              <motion.div
+              <m.div
                 key={office.city}
                 className="border border-gray-200 rounded-xl p-6 sm:p-8 hover:shadow-lg transition-shadow duration-300 bg-white"
                 initial={{ opacity: 0, y: 20 }}
@@ -675,11 +682,11 @@ export default function ContactSection() {
                     </a>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
       </div>
-    </motion.section>
+    </m.section>
   )
 }

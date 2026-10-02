@@ -3,6 +3,7 @@ import HomeClient from "@/components/home-client"
 import { JsonLd } from "@/components/json-ld"
 import { homeFaqs } from "@/data/home-faqs"
 import { officeSchemas } from "@/lib/office-schema"
+import { staticProjects } from "@/lib/static-projects"
 import { DEFAULT_OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 
 
@@ -66,11 +67,18 @@ const homeSchema = [
   // renders; the trails on deeper pages are the ones that matter.
 ]
 
+// Only the fields the homepage renders cross to the client.
+const featuredProjects = staticProjects
+  .filter((p) => p.featured)
+  .map(({ slug, title, category, coverImage, domain, results, shortDescription, tags }) => ({
+    slug, title, category, coverImage, domain, results, shortDescription, tags,
+  }))
+
 export default function Home() {
   return (
     <>
       <JsonLd data={homeSchema} />
-      <HomeClient />
+      <HomeClient projectCount={staticProjects.length} featuredProjects={featuredProjects} />
     </>
   )
 }
