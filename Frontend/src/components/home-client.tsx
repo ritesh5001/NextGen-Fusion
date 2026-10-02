@@ -19,7 +19,7 @@ const DeliveredWall = dynamic(() => import("@/components/delivered-wall"))
 
 export default function HomeClient() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white">
+    <main className="min-h-screen overflow-x-hidden bg-white">
       <div id="hero">
         <HeroSection />
       </div>
@@ -48,6 +48,6 @@ export default function HomeClient() {
       <div id="contact">
         <ContactSection />
       </div>
-    </div>
+    </main>
   )
 }

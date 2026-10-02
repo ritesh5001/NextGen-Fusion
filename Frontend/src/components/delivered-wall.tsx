@@ -43,8 +43,11 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
   // One primary link stretched over the whole card (case study when there is
   // one, otherwise the live site). The live-site link on case-study cards sits
   // above it with z-10, so there is never an <a> nested inside another <a>.
+  // min-h-6 keeps the visible link at least 24px tall (WCAG 2.5.8); the
+  // stretched ::after already makes the whole card clickable, but tap-target
+  // audits measure the link's own box.
   const primaryClass =
-    "after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-purple-500"
+    "inline-flex min-h-6 items-center after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-purple-500"
 
   return (
     <div className="group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
@@ -97,15 +100,15 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
             href={project.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative z-10 flex w-fit max-w-full items-center gap-0.5 truncate text-xs text-gray-400 hover:text-gray-900 hover:underline"
+            className="relative z-10 flex min-h-6 w-fit max-w-full items-center gap-0.5 truncate text-xs text-gray-600 hover:text-gray-900 hover:underline"
           >
             Live site: {project.host}
             <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
           </a>
         ) : (
-          <p className="truncate text-xs text-gray-400">{project.host}</p>
+          <p className="truncate text-xs text-gray-600">{project.host}</p>
         )}
-        <span className="mt-1.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
+        <span className="mt-1.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
           {project.subcategory ?? CATEGORY_LABELS[project.category]}
         </span>
       </div>

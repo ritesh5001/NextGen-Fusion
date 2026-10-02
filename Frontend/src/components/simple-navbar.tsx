@@ -78,7 +78,7 @@ export default function SimpleNavbar() {
   }
 
   return (
-    <>
+    <header>
       {/* Desktop Navbar - Tetap di atas */}
       <motion.div
         className={`hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center ${isScrolled ? 'py-2' : 'py-4'}`}
@@ -113,7 +113,7 @@ export default function SimpleNavbar() {
               className="cursor-pointer"
               aria-label="NextGen Fusion — home"
             >
-              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={128} height={72} priority className="h-8 w-auto" />
+              <Image src="/images/site-logo.png" alt="" width={128} height={72} priority className="h-8 w-auto" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -235,7 +235,7 @@ export default function SimpleNavbar() {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-semibold text-gray-800">Menu</h3>
-                  <button onClick={toggleMobileMenu} className="p-2 text-gray-800 hover:bg-gray-100 rounded-full transition-colors">
+                  <button onClick={toggleMobileMenu} aria-label="Close menu" className="p-2 text-gray-800 hover:bg-gray-100 rounded-full transition-colors">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -315,17 +315,26 @@ export default function SimpleNavbar() {
         >
           <div className="flex min-w-0 items-center justify-between gap-2">
             {/* Logo */}
-            <div
-              onClick={handleLogoClick}
+            <Link
+              href="/"
+              onClick={(e) => {
+                if (isHomePage) {
+                  e.preventDefault()
+                  handleLogoClick()
+                }
+              }}
               className="min-w-0 shrink cursor-pointer"
+              aria-label="NextGen Fusion — home"
             >
-              <Image src="/images/site-logo.png" alt="NextGen Fusion" width={96} height={54} className="h-5 w-auto" />
-            </div>
+              <Image src="/images/site-logo.png" alt="" width={96} height={54} className="h-5 w-auto" />
+            </Link>
 
             {/* Tombol Hamburger di kanan logo */}
             <motion.button
               onClick={toggleMobileMenu}
               className="p-2 rounded-full hover:bg-white/20 transition-colors"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
               whileTap={{ scale: 0.95 }}
             >
               {isMobileMenuOpen ? (
@@ -347,6 +356,7 @@ export default function SimpleNavbar() {
                   border: "1px solid rgba(255, 255, 255, 0.4)", /* Border lebih terang */
                 }}
                 onClick={() => window.open('tel:+917348228167', '_self')}
+                aria-label="Call NextGen Fusion"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -364,6 +374,6 @@ export default function SimpleNavbar() {
           </div>
         </motion.div>
       </div>
-    </>
+    </header>
   )
 }
