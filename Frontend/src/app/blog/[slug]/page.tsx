@@ -36,7 +36,7 @@ export const revalidate = 3600
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const posts = await apiService.getBlogPosts()
+  const posts = await apiService.getBlogPostsStrict()
   const blogPost = posts.find((p: any) => p?.is_active && p.slug === slug)
 
   if (!blogPost) return {}
@@ -75,9 +75,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
 
-    try {
-    // Fetch data directly from API
-    const allBlogPosts = await apiService.getBlogPosts()
+    // Strict: a Backend failure throws (an error page, and ISR keeps serving
+    // the last good copy) rather than reading as "no posts" and caching a 404.
+    const allBlogPosts = await apiService.getBlogPostsStrict()
     const activeBlogPosts = allBlogPosts.filter((p: any) => p?.is_active)
     const blogPost = activeBlogPosts.find((p: any) => p.slug === slug)
     const currentIndex = activeBlogPosts.findIndex((p: any) => p.slug === slug)
@@ -445,8 +445,4 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         <ScrollToTop />
       </div>
     )
-  } catch (error) {
-    console.error('Error loading blog post:', error)
-    notFound()
-  }
 }

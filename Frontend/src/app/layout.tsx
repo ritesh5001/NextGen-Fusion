@@ -123,7 +123,7 @@ const structuredData = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Website Development Company in Lucknow | NextGen Fusion",
+    default: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
     template: "%s | NextGen Fusion",
   },
   description:
@@ -203,7 +203,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: siteUrl,
     siteName: "NextGen Fusion",
-    title: "Website Development Company in Lucknow | NextGen Fusion",
+    title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: OG_IMAGES,
@@ -212,7 +212,7 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "Website Development Company in Lucknow | NextGen Fusion",
+    title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: [DEFAULT_OG_IMAGE],

@@ -281,7 +281,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
             <h3 className="text-2xl font-bold text-gray-900 mb-4">Interested in working together?</h3>
             <p className="text-gray-600 mb-6">Get in touch to learn more about our services and how we can help your business grow.</p>
             <a
-              href="/contact"
+              href="/contact/"
               className={`inline-block px-8 py-3 bg-gradient-to-r ${member.color} text-white font-semibold rounded-lg hover:shadow-lg transition-all`}
             >
               Let&#39;s Connect <ExternalLink className="w-4 h-4 inline ml-2" />

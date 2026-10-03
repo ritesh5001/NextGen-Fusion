@@ -73,9 +73,13 @@ export function formatInr(value: number): string {
   return `₹${(value ?? 0).toLocaleString('en-IN')}`
 }
 
-export async function getStoreProducts(): Promise<StoreProduct[]> {
+/** `timeoutMs` aborts a stalled Backend; the sitemap passes it so a slow store API skips that section. */
+export async function getStoreProducts(options?: { timeoutMs?: number }): Promise<StoreProduct[]> {
   try {
-    const res = await fetch(`${API_BASE}/store/products`, { next: { revalidate: 60 } })
+    const res = await fetch(`${API_BASE}/store/products`, {
+      next: { revalidate: 60 },
+      ...(options?.timeoutMs ? { signal: AbortSignal.timeout(options.timeoutMs) } : {}),
+    })
     if (!res.ok) return []
     const json = await res.json()
     return ((json.data as StoreProduct[]) || []).filter(isStoreProductAllowed)
