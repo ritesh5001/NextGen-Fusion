@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
-import { sendBookingConfirmedEmail } from '../lib/booking-email'
+import { safeTimezone, sendBookingConfirmedEmail, sendBookingGuestConfirmation } from '../lib/booking-email'
 import { buildAgencyKnowledge, buildFallbackAnswer } from '../lib/agency-knowledge'
 import { chatLimiter, formLimiter } from '../lib/rate-limit'
 import { requireTurnstile } from '../lib/turnstile'
@@ -373,10 +373,21 @@ router.post('/bookings/request', formLimiter, requireTurnstile, async (req, res)
   try {
     const sb = getSupabaseAdmin()
     const requestType = trimString(req.body?.requestType, 40) === 'callback' ? 'callback' : 'meeting'
-    const scheduledAt = trimString(req.body?.scheduledAt, 80) || null
-    const endsAt = trimString(req.body?.endsAt, 80) || null
-    const timezone = trimString(req.body?.timezone, 80) || BOOKING_TIMEZONE
-    const slotLabel = trimString(req.body?.slotLabel, 180) || null
+    // Only a slot this server would offer can be booked; the end time and
+    // label come from the server, not from what the browser sent.
+    const requestedStart = trimString(req.body?.scheduledAt, 80)
+    const requestedDate = requestedStart
+      ? new Intl.DateTimeFormat('en-CA', { timeZone: BOOKING_TIMEZONE }).format(new Date(requestedStart))
+      : ''
+    const slot = requestedStart && !Number.isNaN(Date.parse(requestedStart))
+      ? getBookableSlots(requestedDate).find((s) => Date.parse(s.startsAt) === Date.parse(requestedStart))
+      : undefined
+    const scheduledAt = slot?.startsAt ?? null
+    const endsAt = slot?.endsAt ?? null
+    const slotLabel = slot?.label ?? null
+    // The visitor's own zone, used to show them the time in their email.
+    const timezone = safeTimezone(trimString(req.body?.timezone, 80), BOOKING_TIMEZONE)
+    const callMethod = trimString(req.body?.callMethod, 60) || null
     const payload = {
       conversation_id: trimString(req.body?.conversationId, 80) || null,
       name: trimString(req.body?.name, 120),
@@ -387,7 +398,8 @@ router.post('/bookings/request', formLimiter, requireTurnstile, async (req, res)
       project_summary: trimString(req.body?.projectSummary, 2000) || null,
       budget: trimString(req.body?.budget, 200) || null,
       timeline: trimString(req.body?.timeline, 200) || null,
-      preferred_contact_time: trimString(req.body?.preferredContactTime, 200) || null,
+      preferred_contact_time:
+        requestType === 'meeting' ? (callMethod ? `Call via ${callMethod}` : null) : trimString(req.body?.preferredContactTime, 200) || null,
       timezone,
       scheduled_at: requestType === 'meeting' ? scheduledAt : null,
       ends_at: requestType === 'meeting' ? endsAt : null,
@@ -403,7 +415,7 @@ router.post('/bookings/request', formLimiter, requireTurnstile, async (req, res)
       return
     }
     if (requestType === 'meeting' && (!scheduledAt || !endsAt || !slotLabel)) {
-      res.status(400).json({ error: 'scheduledAt, endsAt, and slotLabel are required for meeting bookings' })
+      res.status(400).json({ error: 'That time is no longer available. Please choose another slot.' })
       return
     }
 
@@ -441,7 +453,7 @@ router.post('/bookings/request', formLimiter, requireTurnstile, async (req, res)
 
     if (requestType === 'meeting') {
       try {
-        await sendBookingConfirmedEmail({
+        const emailArgs = {
           name: payload.name,
           email: payload.email,
           phone: payload.phone,
@@ -449,9 +461,17 @@ router.post('/bookings/request', formLimiter, requireTurnstile, async (req, res)
           projectSummary: payload.project_summary,
           budget: payload.budget,
           timeline: payload.timeline,
-          slotLabel: payload.slot_label || '',
-          timezone: payload.timezone || BOOKING_TIMEZONE,
-        })
+          callMethod,
+          startsAt: scheduledAt as string,
+          endsAt: endsAt as string,
+          timezone,
+        }
+        // The visitor's confirmation is sent first and on its own: a failure
+        // in the team alert must not leave them without one, and vice versa.
+        await sendBookingGuestConfirmation({ ...emailArgs, bookingId: String(data.id) }).catch((err) =>
+          console.error('[bookings] guest confirmation failed:', err instanceof Error ? err.message : err),
+        )
+        await sendBookingConfirmedEmail(emailArgs)
         await sb
           .from('booking_requests')
           .update({ email_notification_sent_at: new Date().toISOString() })

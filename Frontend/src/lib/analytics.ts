@@ -11,6 +11,8 @@ export type ConversionEvent =
   | "estimator_submit"
   | "contact_submit"
   | "book_call"
+  /** A call or callback actually booked, not just the modal opened. */
+  | "book_call_confirmed"
   | "career_application_submit"
   | "store_product_view"
 
