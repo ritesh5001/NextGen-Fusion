@@ -108,6 +108,51 @@
   }
 }
 
+/* Client logo strip (social-proof-section.tsx): the list is rendered twice and
+   slides left by exactly one copy, so the loop is seamless. Each item carries
+   its own right padding instead of a flex gap, which keeps the two halves the
+   same width. Pauses on hover and keyboard focus. */
+@keyframes logo-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-marquee-viewport {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.logo-marquee {
+  display: flex;
+  width: max-content;
+  animation: logo-marquee 55s linear infinite;
+}
+
+.logo-marquee-viewport:hover .logo-marquee,
+.logo-marquee-viewport:focus-within .logo-marquee {
+  animation-play-state: paused;
+}
+
+/* No motion: a still, centred grid of the logos, shown once. */
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee-viewport {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .logo-marquee {
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 12px;
+    padding: 0 16px;
+    animation: none;
+  }
+  .logo-marquee-dup {
+    display: none;
+  }
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

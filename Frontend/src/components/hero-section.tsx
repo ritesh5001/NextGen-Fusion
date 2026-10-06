@@ -96,6 +96,9 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
       Based in Lucknow? See our{" "}
       <Link
         href="/website-development-company-in-lucknow/"
+        // Visible on load, so a default prefetch fetched the whole Lucknow
+        // page while the homepage was still painting.
+        prefetch={false}
         className="font-medium text-[#2B35AB] underline underline-offset-4 hover:text-[#8A38F5]"
       >
         website development company in Lucknow
@@ -112,12 +115,13 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
       >
         Book a Free Call
       </button>
-      <a
+      <Link
         href="/work/"
+        prefetch={false}
         className="px-8 py-3.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-[background-color,transform] hover:scale-[1.03] active:scale-[0.98] text-base sm:text-lg"
       >
         See Our Work
-      </a>
+      </Link>
     </div>
 
     {/* Proof line directly under the CTA */}
