@@ -9,7 +9,7 @@ import LenisProvider from "@/components/lenis-provider";
 import { MotionProvider } from "@/components/motion-provider";
 import LayoutChrome from "@/components/layout-chrome";
 import { Analytics } from "@/components/analytics";
-import { DEFAULT_OG_IMAGE, OG_IMAGES, SITE_TAGLINE, siteUrl } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, OG_IMAGES, SERVICE_AREA_CODES, SERVICE_AREA_NODES, SITE_TAGLINE, siteUrl } from "@/lib/seo";
 import { brandProfiles, CONTACT_EMAIL, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { personId, team, TEAM_SIZE } from "@/data/team";
 import { serviceNavItems } from "@/data/services-nav";
@@ -39,7 +39,7 @@ const structuredData = {
       slogan: SITE_TAGLINE,
       url: siteUrl,
       description:
-        "NextGen Fusion is a web development, AI and digital solutions company for growing businesses. It builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps, AI automation and custom software, and runs SEO and digital marketing, for clients in India, the Gulf, Australia and beyond. The team works from Lucknow and Mumbai, India.",
+        "NextGen Fusion is a web development, AI and digital solutions company for growing businesses. It works remotely from India with international clients, serving businesses in the United States, Canada, the United Kingdom, Europe, the UAE and Australia as well as India. It builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps, AI automation and custom software, and runs SEO and digital marketing.",
       // Google requires a raster logo; the SVG here was silently ignored.
       logo: { "@id": `${siteUrl}/#logo` },
       image: { "@id": `${siteUrl}/#logo` },
@@ -50,15 +50,8 @@ const structuredData = {
       // "who does X in Lucknow" style retrieval.
       knowsAbout: serviceNavItems.map((service) => service.label),
       knowsLanguage: ["en", "hi"],
-      areaServed: [
-        { "@type": "Country", name: "India" },
-        // Served remotely from the Indian offices; no address in any of them.
-        { "@type": "Country", name: "United Arab Emirates" },
-        { "@type": "Country", name: "Singapore" },
-        { "@type": "Country", name: "Australia" },
-        { "@type": "Country", name: "Oman" },
-        { "@type": "Place", name: "Worldwide" },
-      ],
+      // Served remotely from the Indian offices; no address outside India.
+      areaServed: SERVICE_AREA_NODES,
       // The primary address is the Lucknow office: it carries the primary phone,
       // the Google Business Profile and the brand's "Lucknow" alternateName.
       // Each office is its own ProfessionalService node (lib/office-schema.ts).
@@ -95,7 +88,7 @@ const structuredData = {
         // Worldwide claim one node above it — telling Google and every AI
         // system simultaneously that the studio serves the world and can only
         // be contacted from India.
-        areaServed: ["IN", "AE", "SG", "AU", "OM", "Worldwide"],
+        areaServed: SERVICE_AREA_CODES,
         availableLanguage: ["English", "Hindi"],
       })),
       // NOTE: aggregateRating deliberately omitted. Google's structured-data
@@ -114,8 +107,8 @@ const structuredData = {
       url: siteUrl,
       name: "NextGen Fusion",
       description:
-        "Websites, online stores, apps and SEO for businesses in India — built in Lucknow and Mumbai.",
-      inLanguage: "en-IN",
+        "Websites, online stores, apps, AI automation and SEO for growing businesses in India and internationally, from a remote team in India.",
+      inLanguage: "en",
       publisher: { "@id": `${siteUrl}/#organization` },
       // No potentialAction/SearchAction: there is no on-site search endpoint,
       // and declaring one that 404s is worse than declaring none.
@@ -130,7 +123,7 @@ export const metadata: Metadata = {
     template: "%s | NextGen Fusion",
   },
   description:
-    `${SITE_TAGLINE}. Websites, online stores, apps, AI automation and SEO for businesses worldwide.`,
+    "Web development, AI and digital solutions for international clients in the US, Canada, UK, Europe, UAE and Australia, from a remote team in India.",
   authors: [{ name: "NextGen Fusion" }],
   creator: "NextGen Fusion",
   publisher: "NextGen Fusion",
@@ -208,7 +201,7 @@ export const metadata: Metadata = {
     siteName: "NextGen Fusion",
     title: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "Websites, online stores, apps, AI automation and SEO for growing businesses worldwide.",
+      "Websites, online stores, apps and AI automation for international clients, built by a remote team in India.",
     images: OG_IMAGES,
   },
 
@@ -217,7 +210,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "Websites, online stores, apps, AI automation and SEO for growing businesses worldwide.",
+      "Websites, online stores, apps and AI automation for international clients, built by a remote team in India.",
     images: [DEFAULT_OG_IMAGE],
   },
 

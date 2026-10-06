@@ -838,7 +838,147 @@ const shopifyService: GuidePage = {
   ],
 }
 
-export const guidePages: GuidePage[] = [costGuide, dubaiCostGuide, singaporeCostGuide, storeVsMarketplace, marketplaceService, nextjsService, shopifyService]
+// ─── International clients ───────────────────────────────────────────────────
+//
+// For buyers in the US, Canada, the UK, Europe, the UAE and Australia. Proof is
+// limited to delivered sites that are live: Royal Vastar (UK) and Souk Profumi
+// (Italy) on the /work/ wall, and the Cleanship case study (UAE).
+
+/** Our working day in a zone that is `offset` minutes from India. */
+const inZone = (offset: number) => officeHoursAt(offset)
+
+const offshoreService: GuidePage = {
+  path: "/offshore-web-development-company-india",
+  kind: "service",
+  label: "Offshore web development",
+  metaTitle: "Offshore Web Development Company in India",
+  metaDescription:
+    "Hire a remote web development and AI team in India: websites, stores and apps for businesses in the US, Canada, UK, Europe, UAE and Australia.",
+  eyebrow: "International clients",
+  h1: "Offshore web development from India for businesses in the US, UK, Europe, UAE and Australia",
+  intro: [
+    "NextGen Fusion is a web development, AI and digital solutions team that works remotely from Lucknow and Mumbai, India, with international clients. We build websites, online stores, web apps and AI automation, and run SEO, for businesses in the United States, Canada, the United Kingdom, Europe, the UAE and Australia.",
+    "We have no office outside India, and we would rather say that on the first page than in the contract. What you get instead: the people who scope your project write the code, everything is set up in your company's name, and you get a fixed written quote before any work starts.",
+  ],
+  updated: "2026-10-06",
+  sections: [
+    {
+      heading: "How working with us from abroad works",
+      body: [
+        "You send a short written brief: what the business sells, who buys from it and what the site has to do. We reply with what we would build, one fixed price and one delivery window, usually within one working day. Work starts on a 50% advance, and you approve the design and the build at agreed milestones.",
+        "Day to day we work in writing, by email and WhatsApp, with video calls booked at a time that suits you. Every account (domain, hosting, code repository, analytics, payment gateway) is opened in your company's name, and we work inside it. Nothing has to be handed over if you ever stop working with us.",
+      ],
+      links: [
+        { label: "Get a written quote", href: "/contact/" },
+        { label: "Projects we've delivered", href: "/work/" },
+      ],
+    },
+    {
+      heading: "Where our working day falls in your time zone",
+      body: [
+        `Our day runs ${OFFICE_HOURS.label}. The table shows the same hours in your time, in winter and in summer where the clocks change. The UK, Europe and the UAE get live overlap during their working day; Australia gets its afternoon and evening; for the US and Canada we book calls in your morning and keep working while you sleep.`,
+      ],
+      table: {
+        caption: "Our working hours (Monday to Saturday) in your local time",
+        columns: ["Where you are", "Winter", "Summer"],
+        rows: [
+          ["UK (London)", `${inZone(-330)} GMT`, `${inZone(-270)} BST`],
+          ["Central Europe (Berlin, Paris, Rome)", `${inZone(-270)} CET`, `${inZone(-210)} CEST`],
+          ["UAE (Dubai)", `${inZone(-90)} GST`, `${inZone(-90)} GST`],
+          ["US and Canada, Eastern (New York, Toronto)", `${inZone(-630)} EST`, `${inZone(-570)} EDT`],
+          ["US and Canada, Pacific (San Francisco, Vancouver)", `${inZone(-810)} PST`, `${inZone(-750)} PDT`],
+          ["Australia, Eastern (Sydney, Melbourne)", `${inZone(330)} AEDT`, `${inZone(270)} AEST`],
+        ],
+        note: "Australian summer (daylight saving) runs October to April, the opposite of the northern hemisphere. Eastern and Pacific times start the previous evening.",
+      },
+    },
+    {
+      heading: "Sites we have delivered outside India",
+      body: [
+        "Royal Vastar is a fashion store for customers in the United Kingdom, and Souk Profumi sells fragrances in Italy. Both are live and listed on our work page. Cleanship, a marine services company in the UAE, has a full case study: 310 service and port pages across 13 UAE ports, with UAE and India contact paths.",
+      ],
+      links: [
+        { label: "Royal Vastar (UK)", href: "https://royalvaster.co.uk" },
+        { label: "Souk Profumi (Italy)", href: "https://soukprofumi.it" },
+        { label: "Cleanship case study (UAE)", href: "/work/cleanship/" },
+      ],
+    },
+    {
+      heading: "Contracts, ownership and data protection",
+      body: [
+        "You own the code and every account from the first day, and we are happy to sign an NDA before you share anything sensitive. The written quote sets out scope, price, milestones and what happens after launch.",
+        "If your site collects personal data from people in the UK or the EU, GDPR applies to you as the business collecting it. We build consent into forms, cookies and analytics, keep personal data in accounts you control, and can sign a data processing agreement with you.",
+      ],
+    },
+    {
+      heading: "Accessibility for US, UK and European markets",
+      body: [
+        "The European Accessibility Act has applied to many online stores and services sold to EU consumers since June 2025, and website accessibility claims are common in the US. We design and build to WCAG 2.2 AA, which covers the requirements most of these rules point to and also makes a site clearer and faster for everyone.",
+      ],
+      links: [{ label: "WCAG 2.2 overview (W3C)", href: "https://www.w3.org/WAI/standards-guidelines/wcag/" }],
+    },
+    {
+      heading: "What you give up by hiring a team in India",
+      body: [
+        "Meetings are on video, not across a table, and the US West Coast gets little live overlap with our day, so more of the work happens in writing. We cannot give you a local address or put you in \"near me\" map results in your city; that needs your own Google Business Profile at your own address, which we can help you set up.",
+        "What does not change: the same people answer after launch, prices are fixed in writing, and you can see every delivered site on our work page before you decide.",
+      ],
+    },
+  ],
+  caseStudiesHeading: "Builds for international markets",
+  caseStudies: [
+    {
+      slug: "cleanship",
+      title: "Cleanship",
+      body: "A UAE marine services company: 310 service and port landing pages across 13 UAE ports, with UAE and India contact paths.",
+    },
+    {
+      slug: "maribiz-ai",
+      title: "MariBiz.ai",
+      body: "A global B2B maritime marketplace with an RFQ engine, real-time messaging and 3,226+ vendors.",
+    },
+    {
+      slug: "terrestrialyt",
+      title: "TerrestrialYT",
+      body: "A merchandise store with global shipping and a four-platform social integration for an international audience.",
+    },
+  ],
+  faqs: [
+    {
+      question: "Is it safe to hire a web development company in India?",
+      answer: "It is safe when the terms protect you. With us, the domain, hosting, code and payment accounts are in your company's name from day one, the price is fixed in writing before work starts, and you can check every site we have delivered on our work page.",
+    },
+    {
+      question: "Do you have an office in the US, UK or Australia?",
+      answer: "No. We are a remote team in Lucknow and Mumbai, India, and work with international clients over email, WhatsApp and video calls. We do not claim a local address anywhere outside India.",
+    },
+    {
+      question: "Which countries do you work with?",
+      answer: "We take on projects for businesses in the United States, Canada, the United Kingdom, Europe, the UAE and Australia, as well as India. Delivered sites outside India include Royal Vastar (UK), Souk Profumi (Italy) and Cleanship (UAE).",
+    },
+    {
+      question: "How do quotes and payments work for international clients?",
+      answer: "You get one fixed price in writing after a short brief, usually within one working day. The currency and payment method are agreed in that quote, and work starts on a 50% advance with the rest tied to milestones.",
+    },
+    {
+      question: "Can you work with our GDPR obligations?",
+      answer: "Yes. We build consent into forms, cookies and analytics, keep personal data in accounts you control, and can sign a data processing agreement. GDPR responsibility for your site stays with your business as the controller.",
+    },
+    {
+      question: "How do we communicate across time zones?",
+      answer: "Mostly in writing, by email and WhatsApp, with video calls booked at a time that suits you. The UK, Europe and the UAE overlap our working day; Australia gets its afternoon and evening; US and Canadian clients get a written update at the start of their day.",
+    },
+  ],
+  related: [
+    { label: "Website development services", href: "/services/website-development-services/" },
+    { label: "AI automation", href: "/services/ai-automation-development-services/" },
+    { label: "Next.js development", href: "/services/nextjs-development-services/" },
+    { label: "Websites for Australian businesses", href: "/australia/" },
+    { label: "Website development in the UAE", href: "/website-development-company-in-uae/" },
+  ],
+}
+
+export const guidePages: GuidePage[] = [costGuide, dubaiCostGuide, singaporeCostGuide, storeVsMarketplace, marketplaceService, nextjsService, shopifyService, offshoreService]
 
 export function getGuidePage(path: string): GuidePage {
   const page = guidePages.find((p) => p.path === path)

@@ -21,7 +21,7 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
           <div className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></div>
         </div>
         <p className="text-xs font-medium text-gray-700">
-          Next.js, WordPress, Shopify &amp; AI · Working worldwide
+          Remote team in India · International clients
           <span className="hidden sm:inline text-gray-600"> · Available for work</span>
         </p>
       </div>

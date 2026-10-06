@@ -12,14 +12,14 @@ export const metadata: Metadata = {
   // segment, so the brand has to be spelled out here.
   title: "Web Development & AI Solutions | NextGen Fusion",
   description:
-    "Web development, AI and digital solutions for growing businesses: fast websites, online stores, apps and automation, with SEO and support after launch.",
+    "Web development, AI and digital solutions for businesses in the US, UK, Europe, UAE, Australia and India, from a remote team in India, supported after launch.",
   alternates: {
     canonical: `${siteUrl}/`,
   },
   openGraph: {
     title: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "Websites, online stores, apps and AI automation for growing businesses, supported after launch.",
+      "Websites, online stores, apps and AI automation for international clients, built by a remote team in India and supported after launch.",
     url: `${siteUrl}/`,
     siteName: "NextGen Fusion",
     locale: "en_IN",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "Websites, online stores, apps and AI automation for growing businesses, supported after launch.",
+      "Websites, online stores, apps and AI automation for international clients, built by a remote team in India and supported after launch.",
     images: [DEFAULT_OG_IMAGE],
   },
 }
@@ -53,10 +53,10 @@ const homeSchema = [
     "@type": "WebPage",
     "@id": `${siteUrl}/#webpage`,
     url: `${siteUrl}/`,
-    name: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
+    name: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "Websites, online stores, apps and AI automation for growing businesses, supported after launch.",
-    inLanguage: "en-IN",
+      "Websites, online stores, apps and AI automation for international clients, built by a remote team in India and supported after launch.",
+    inLanguage: "en",
     isPartOf: { "@id": `${siteUrl}/#website` },
     about: { "@id": ORGANIZATION_ID },
     primaryImageOfPage: { "@id": `${siteUrl}/#logo` },

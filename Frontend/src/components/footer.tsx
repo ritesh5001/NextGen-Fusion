@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { brandProfiles, CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { serviceNavItems } from "@/data/services-nav";
 import { SITE_TAGLINE } from "@/lib/seo";
@@ -77,6 +78,7 @@ const locations: { group: string; links: FooterLink[] }[] = [
 
 const resources: FooterLink[] = [
   { label: "Our work", href: "/work/" },
+  { label: "International clients", href: "/offshore-web-development-company-india/" },
   { label: "Blog", href: "/blog/" },
   { label: "Website cost in India", href: "/website-development-cost-in-india/" },
   { label: "Website cost in the UAE", href: "/website-development-cost-in-dubai/" },
@@ -136,12 +138,13 @@ export default function Footer() {
         {/* Brand and links */}
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
-            <a href="/" className="text-2xl font-bold tracking-tight text-white">
+            <Link href="/" prefetch={false} className="text-2xl font-bold tracking-tight text-white">
               NextGen Fusion
-            </a>
+            </Link>
             <p className="mt-4 max-w-sm text-base font-semibold leading-snug text-white">{SITE_TAGLINE}</p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-300">
-              Working with growing businesses in India, the Gulf, Australia and beyond.
+              A remote team in India working with international clients. We serve businesses in the
+              US, Canada, the UK, Europe, the UAE and Australia.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a

@@ -1,5 +1,5 @@
 import { CONTACT_EMAIL, OFFICE_HOURS, offices, type Office } from "@/data/offices"
-import { ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { ORGANIZATION_ID, SERVICE_AREA_CODES, siteUrl } from "@/lib/seo"
 
 export function officeId(city: string): string {
   return `${siteUrl}/#office-${city.toLowerCase()}`
@@ -38,7 +38,7 @@ export function officeSchema(office: Office) {
     },
     geo: { "@type": "GeoCoordinates", latitude, longitude },
     ...(office.mapUrl ? { hasMap: office.mapUrl } : {}),
-    areaServed: ["IN", "AE", "SG", "AU", "OM", "Worldwide"],
+    areaServed: SERVICE_AREA_CODES,
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",

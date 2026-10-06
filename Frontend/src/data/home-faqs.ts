@@ -21,6 +21,21 @@ const platform = priceTier("platform")
 
 export const homeFaqs: HomeFaq[] = [
   {
+    question: "Do you work with clients outside India?",
+    answer:
+      "Yes. We are a remote team in Lucknow and Mumbai, India, working with international clients: delivered sites include Royal Vastar in the UK, Souk Profumi in Italy and Cleanship in the UAE. We take on projects for businesses in the US, Canada, the UK, Europe, the UAE and Australia, over email, WhatsApp and video calls. We have no offices outside India, and we say so up front.",
+  },
+  {
+    question: "How do you handle time zones?",
+    answer:
+      "Our working day overlaps the morning in the UK and Europe, the whole working day in the UAE and the afternoon and evening in Australia. For the US and Canada we book calls in your morning and keep working while you sleep, so a written update is waiting at the start of your day.",
+  },
+  {
+    question: "Who owns the website if we hire you from abroad?",
+    answer:
+      "You do, wherever you are. The domain, hosting, code repository, analytics and payment accounts are set up in your company's name from day one, and we work inside them. We are happy to sign an NDA before you share anything sensitive.",
+  },
+  {
     question: "What industries do you serve?",
     answer:
       "Mostly ecommerce and D2C retail — ethnic and wedding wear, sarees and textiles, kidswear, gifting, solar products and agri-inputs — plus engineering contractors, an ed-tech learning platform, HR-tech SaaS and a maritime B2B marketplace. Every one of those has a full case study on our Work page.",

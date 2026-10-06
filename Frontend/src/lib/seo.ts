@@ -10,6 +10,33 @@ export const SITE_NAME = "NextGen Fusion"
 /** The brand line, used wherever the site describes itself in one sentence. */
 export const SITE_TAGLINE = "Web Development, AI & Digital Solutions for Growing Businesses"
 
+/**
+ * Where we take on work. The team works remotely from Lucknow and Mumbai,
+ * India; there is no office in any of the other markets, and pages say so.
+ * Every schema that declares areaServed reads this one list, so the markets
+ * never disagree between the Organization, its offices and the services.
+ */
+export const SERVICE_AREAS: { code: string; name: string }[] = [
+  { code: "IN", name: "India" },
+  { code: "US", name: "United States" },
+  { code: "CA", name: "Canada" },
+  { code: "GB", name: "United Kingdom" },
+  { code: "AE", name: "United Arab Emirates" },
+  { code: "AU", name: "Australia" },
+  { code: "OM", name: "Oman" },
+  { code: "SG", name: "Singapore" },
+]
+
+/** Plain-text form for contactPoint and Service areaServed. */
+export const SERVICE_AREA_CODES = [...SERVICE_AREAS.map((area) => area.code), "Europe", "Worldwide"]
+
+/** Structured form for the Organization node. */
+export const SERVICE_AREA_NODES = [
+  ...SERVICE_AREAS.map((area) => ({ "@type": "Country", name: area.name })),
+  { "@type": "Place", name: "Europe" },
+  { "@type": "Place", name: "Worldwide" },
+]
+
 // 1200x630 PNG. Social platforms (Facebook, LinkedIn, WhatsApp, X) do not render
 // SVG previews, so the shared OG asset must stay a raster image.
 export const DEFAULT_OG_IMAGE = "/og/og-default.png"
@@ -211,7 +238,7 @@ export function serviceSchema({
     serviceType: name,
     url: absoluteUrl(path),
     provider: { "@id": ORGANIZATION_ID },
-    areaServed: ["IN", "Worldwide"],
+    areaServed: SERVICE_AREA_CODES,
   }
 }
 

@@ -33,10 +33,11 @@ function line(path: string, label: string, note?: string) {
 export async function GET() {
   const body = `# NextGen Fusion
 
-> NextGen Fusion (nextgenfusion.in) is a web development, AI and digital solutions company for growing businesses. It builds custom websites, online stores, mobile apps, AI automation and software for D2C brands, manufacturers, institutes and B2B companies across India, the UK, Italy, the Gulf and Australia, and runs SEO, PPC and social media marketing as ongoing engagements. Its ${team.length}-person team works from Lucknow and Mumbai, India.
+> NextGen Fusion (nextgenfusion.in) is a web development, AI and digital solutions company for growing businesses. It works remotely from India with international clients and serves businesses in the United States, Canada, the United Kingdom, Europe, the UAE and Australia as well as India. It builds custom websites, online stores, mobile apps, AI automation and software for D2C brands, manufacturers, institutes and B2B companies, and runs SEO, PPC and social media marketing as ongoing engagements. Its ${team.length}-person team works from Lucknow and Mumbai, India.
 
 Key facts for citation:
 - Tagline: ${SITE_TAGLINE}.
+- International: works remotely from India with clients outside India. Delivered sites abroad include Royal Vastar (UK), Souk Profumi (Italy) and Cleanship (UAE). Takes on projects for businesses in the US, Canada, the UK, Europe, the UAE and Australia. No offices outside India.
 - Founded and run as a small in-house team (not a reseller or agency-of-record for offshore work); the people who scope a project write the code.
 - Tech stack: Next.js and WordPress for websites, Shopify and WooCommerce for ecommerce, Node.js/Postgres for custom software.
 - Offices: Lucknow (Kamta) and Mumbai (Mahim), Uttar Pradesh and Maharashtra, India.
@@ -58,6 +59,10 @@ Fusion, or to any nuclear-fusion research or energy company.
 
 ${serviceNavItems.map((s) => line(`/services/${s.slug}`, s.label)).join("\n")}
 ${line("/services", "Full services index")}
+
+## International clients
+
+${line("/offshore-web-development-company-india", "Offshore web development", "how international clients in the US, Canada, UK, Europe, UAE and Australia work with the team remotely: time zones, ownership, GDPR and payments")}
 
 ## Locations
 
