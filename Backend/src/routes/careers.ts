@@ -73,7 +73,17 @@ function handleResumeUpload(req: Request, res: Response, next: NextFunction) {
 }
 
 // Public endpoint used by the /careers application form.
-router.post('/career-applications', handleResumeUpload, async (req, res) => {
+// Hiring is switched off unless CAREER_APPLICATIONS_OPEN=true. Checked before
+// the upload middleware so a closed endpoint never accepts a resume file.
+function requireApplicationsOpen(_req: Request, res: Response, next: NextFunction) {
+  if (process.env.CAREER_APPLICATIONS_OPEN !== 'true') {
+    res.status(410).json({ error: 'We are not accepting job applications right now.' })
+    return
+  }
+  next()
+}
+
+router.post('/career-applications', requireApplicationsOpen, handleResumeUpload, async (req, res) => {
   try {
     const payload = {
       role_id: trimString(req.body?.role_id),

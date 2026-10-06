@@ -10,6 +10,7 @@ import { team } from "@/data/team"
 import { guidePages } from "@/data/guides"
 import { australia } from "@/data/australia"
 import { india } from "@/data/india"
+import { oman } from "@/data/oman"
 import { cityPath, cityServicePath, generatedServicePairs } from "@/data/city-pages/paths"
 import type { CityRegion } from "@/data/city-pages/types"
 
@@ -49,6 +50,7 @@ const LOCATIONS_LAST_MODIFIED = "2026-09-16"
 const INTERNATIONAL_LAST_MODIFIED = "2026-09-29"
 const AUSTRALIA_LAST_MODIFIED = "2026-10-02"
 const INDIA_LAST_MODIFIED = "2026-10-02"
+const OMAN_LAST_MODIFIED = "2026-10-06"
 // Case studies are edited on their own cadence; they were inheriting the
 // services date and claiming an edit they had not had.
 const WORK_LAST_MODIFIED = "2026-08-14"
@@ -89,6 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // city × service (city × service pairs owned by older pages are skipped).
     ...regionEntries(australia, AUSTRALIA_LAST_MODIFIED),
     ...regionEntries(india, INDIA_LAST_MODIFIED),
+    ...regionEntries(oman, OMAN_LAST_MODIFIED),
     ...staticProjects.map((p) => entry(`/work/${p.slug}`, WORK_LAST_MODIFIED)),
     // Team profiles were absent from the sitemap entirely while also declaring
     // /team/ as their canonical — between the two, four pages of real

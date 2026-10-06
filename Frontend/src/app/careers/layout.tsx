@@ -1,17 +1,21 @@
 import type { Metadata } from "next"
 import { JsonLd } from "@/components/json-ld"
-import { jobOpenings } from "@/data/careers"
+import { APPLICATIONS_OPEN, jobOpenings } from "@/data/careers"
 import { offices } from "@/data/offices"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 
 export const metadata: Metadata = buildMetadata({
-  title: "Careers — Open Roles in Lucknow, Mumbai & Remote",
-  description:
-    "We are hiring developers, designers and marketers in Lucknow, Mumbai and remote — engineering, UI/UX, SEO, paid ads and content roles.",
+  title: APPLICATIONS_OPEN
+    ? "Careers — Open Roles in Lucknow, Mumbai & Remote"
+    : "Careers at NextGen Fusion — Lucknow & Mumbai",
+  description: APPLICATIONS_OPEN
+    ? "We are hiring developers, designers and marketers in Lucknow, Mumbai and remote — engineering, UI/UX, SEO, paid ads and content roles."
+    : "What it is like to work at NextGen Fusion, a web and product studio in Lucknow and Mumbai. We are not hiring right now; new roles will be listed here.",
   path: "/careers",
   ogTitle: "Careers at NextGen Fusion",
-  ogDescription:
-    "Build websites, stores, and digital products that go live for real clients. Open roles across engineering, design, marketing, and content.",
+  ogDescription: APPLICATIONS_OPEN
+    ? "Build websites, stores, and digital products that go live for real clients. Open roles across engineering, design, marketing, and content."
+    : "Build websites, stores, and digital products that go live for real clients. We are not hiring right now.",
 })
 
 const EMPLOYMENT_TYPE: Record<string, string> = {
@@ -38,7 +42,9 @@ function placeFor(location: string) {
 }
 
 // Only roles with real dates emit JobPosting. See the note on JobOpening.
-const datedOpenings = jobOpenings.filter((job) => job.postedOn && job.validThrough)
+const datedOpenings = APPLICATIONS_OPEN
+  ? jobOpenings.filter((job) => job.postedOn && job.validThrough)
+  : []
 
 const schema = [
   {
@@ -47,20 +53,23 @@ const schema = [
     "@id": `${absoluteUrl("/careers")}#collection`,
     url: absoluteUrl("/careers"),
     name: "Careers at NextGen Fusion",
-    description:
-      "Open engineering, design, marketing and content roles across the Lucknow and Mumbai offices and remote.",
+    description: APPLICATIONS_OPEN
+      ? "Open engineering, design, marketing and content roles across the Lucknow and Mumbai offices and remote."
+      : "Working at NextGen Fusion. Applications are closed while we are not hiring.",
     isPartOf: { "@id": `${siteUrl}/#website` },
     about: { "@id": ORGANIZATION_ID },
-    mainEntity: {
-      "@type": "ItemList",
-      numberOfItems: jobOpenings.length,
-      itemListElement: jobOpenings.map((job, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        name: job.title,
-        url: `${absoluteUrl("/careers")}#${job.id}`,
-      })),
-    },
+    ...(APPLICATIONS_OPEN ? {
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: jobOpenings.length,
+        itemListElement: jobOpenings.map((job, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: job.title,
+          url: `${absoluteUrl("/careers")}#${job.id}`,
+        })),
+      },
+    } : {}),
   },
   ...datedOpenings.map((job) => ({
     "@context": "https://schema.org",

@@ -54,6 +54,7 @@ const structuredData = {
         { "@type": "Country", name: "United Arab Emirates" },
         { "@type": "Country", name: "Singapore" },
         { "@type": "Country", name: "Australia" },
+        { "@type": "Country", name: "Oman" },
         { "@type": "Place", name: "Worldwide" },
       ],
       // The primary address is the Lucknow office: it carries the primary phone,
@@ -95,7 +96,7 @@ const structuredData = {
         // Worldwide claim one node above it — telling Google and every AI
         // system simultaneously that the studio serves the world and can only
         // be contacted from India.
-        areaServed: ["IN", "AE", "SG", "AU", "Worldwide"],
+        areaServed: ["IN", "AE", "SG", "AU", "OM", "Worldwide"],
         availableLanguage: ["English", "Hindi"],
       })),
       // NOTE: aggregateRating deliberately omitted. Google's structured-data
@@ -130,7 +131,7 @@ const structuredData = {
           addressCountry: office.postal.country,
         },
         geo: { "@type": "GeoCoordinates", latitude, longitude },
-        areaServed: ["IN", "AE", "SG", "AU", "Worldwide"],
+        areaServed: ["IN", "AE", "SG", "AU", "OM", "Worldwide"],
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",

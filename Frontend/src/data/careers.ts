@@ -30,6 +30,16 @@ export interface JobOpening {
 
 export const CAREERS_EMAIL = "contact@nextgenfusion.in"
 
+/**
+ * Master switch for hiring. While false, /careers keeps its page (and its
+ * links) but drops the role list, the form and the email address, and says
+ * plainly that applications are closed. The Backend refuses submissions on its
+ * own (CAREER_APPLICATIONS_OPEN), so a form left open in an old tab or a bot
+ * posting straight to the API is turned away too. Reopening means flipping
+ * both.
+ */
+export const APPLICATIONS_OPEN = false
+
 export const jobDepartments: JobDepartment[] = [
   "Engineering",
   "Design",

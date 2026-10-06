@@ -18,6 +18,7 @@ import {
 import { ApplicationForm } from "@/components/careers/application-form"
 import { cn } from "@/lib/utils"
 import {
+  APPLICATIONS_OPEN,
   CAREERS_EMAIL,
   jobDepartments,
   jobOpenings,
@@ -166,7 +167,9 @@ export default function CareersPage() {
             className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800"
             variants={itemVariants}
           >
-            We are hiring — {jobOpenings.length} open roles
+            {APPLICATIONS_OPEN
+              ? `We are hiring — ${jobOpenings.length} open roles`
+              : "Not hiring right now"}
           </m.span>
           <m.h1
             className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4"
@@ -179,9 +182,12 @@ export default function CareersPage() {
             variants={itemVariants}
           >
             NextGen Fusion is a product and web studio in Lucknow and Mumbai. We build websites,
-            e-commerce stores, and software for clients across India and beyond — and we are looking
-            for people who want their work in front of real users, fast.
+            e-commerce stores, and software for clients across India and beyond
+            {APPLICATIONS_OPEN
+              ? " — and we are looking for people who want their work in front of real users, fast."
+              : "."}
           </m.p>
+          {APPLICATIONS_OPEN && (
           <m.div
             className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
             variants={itemVariants}
@@ -200,6 +206,7 @@ export default function CareersPage() {
               Apply now
             </Link>
           </m.div>
+          )}
         </m.div>
       </section>
 
@@ -268,6 +275,21 @@ export default function CareersPage() {
         </m.div>
       </section>
 
+      {!APPLICATIONS_OPEN && (
+        <section id="open-roles" className="py-16 px-4 sm:px-6 lg:px-8 scroll-mt-24">
+          <div className="max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-gray-50 p-8 text-center sm:p-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Applications are closed
+            </h2>
+            <p className="mt-4 text-lg text-gray-600">
+              We are not hiring for any role at the moment, so we are not reviewing applications
+              by form or by email. When we open a role again it will be listed here.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {APPLICATIONS_OPEN && (<>
       {/* Open roles */}
       <section id="open-roles" className="py-16 px-4 sm:px-6 lg:px-8 scroll-mt-24">
         <m.div
@@ -465,6 +487,7 @@ export default function CareersPage() {
           </m.p>
         </m.div>
       </section>
+      </>)}
     </div>
   )
 }

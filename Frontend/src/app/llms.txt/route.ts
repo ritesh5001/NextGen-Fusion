@@ -3,6 +3,7 @@ import { guideLinks } from "@/data/guides"
 import { locationPages } from "@/data/locations"
 import { australia } from "@/data/australia"
 import { india } from "@/data/india"
+import { oman } from "@/data/oman"
 import { cityPath } from "@/data/city-pages/paths"
 import { team } from "@/data/team"
 import { staticProjects } from "@/lib/static-projects"
@@ -67,6 +68,11 @@ ${india.cities.map((c) => line(cityPath(india, c), `${c.name}, ${c.state}`, c.su
 
 ${line(australia.path, "Australia", "websites, SEO, ecommerce and automation for Australian businesses, served remotely")}
 ${australia.cities.map((c) => line(cityPath(australia, c), `${c.name}, ${c.stateCode}`, c.summary)).join("\n")}
+
+## Oman
+
+${line(oman.path, "Oman", "websites, ecommerce, SEO, apps and automation for Omani businesses in Arabic and English, served remotely")}
+${oman.cities.map((c) => line(cityPath(oman, c), `${c.name}, ${c.stateCode}`, c.summary)).join("\n")}
 
 ## Company
 

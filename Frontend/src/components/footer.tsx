@@ -63,6 +63,15 @@ const locations: { group: string; links: FooterLink[] }[] = [
       { label: "All Australian cities", href: "/australia/" },
     ],
   },
+  {
+    group: "Oman",
+    links: [
+      { label: "Muscat", href: "/oman/muscat/" },
+      { label: "Salalah", href: "/oman/salalah/" },
+      { label: "Sohar", href: "/oman/sohar/" },
+      { label: "All Omani cities", href: "/oman/" },
+    ],
+  },
 ];
 
 const resources: FooterLink[] = [
