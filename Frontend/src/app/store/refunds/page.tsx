@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { absoluteUrl, siteUrl } from "@/lib/seo"
+import { buildMetadata } from "@/lib/seo"
 
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: 'Refund Policy — NextGen Fusion Store',
   description: 'Refund policy for digital products purchased from the NextGen Fusion store.',
-  alternates: { canonical: absoluteUrl("/store/refunds") },
-}
+  path: '/store/refunds',
+  ogEyebrow: 'NextGen Fusion Store',
+})
 
 // NOTE FOR THE OWNER: starter template. Review with a legal professional and
 // edit the bracketed placeholders before relying on it.

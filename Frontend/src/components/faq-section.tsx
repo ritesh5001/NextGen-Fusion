@@ -195,7 +195,7 @@ export default function FAQSection() {
                   />
                 </m.div>
                 <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                  Ask
+                  Questions
                 </span>
                 <m.div 
                   className="relative inline-block"
@@ -210,8 +210,8 @@ export default function FAQSection() {
                   />
                 </m.div>
               </div>{" "}
-                <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                  the answers
+                <span className="inline-block">
+                  about working with us, answered
                 </span>
               </m.h2>
             </m.div>
@@ -266,7 +266,7 @@ export default function FAQSection() {
                         <div className="text-sm font-semibold text-gray-900">
                           {activeIndex !== null ? "NextGen Fusion" : "Your Questions"}
                         </div>
-                        <div className="text-xs text-gray-400">Usually replies within a day</div>
+                        <div className="text-xs text-gray-600">Usually replies within a day</div>
                       </div>
                     </div>
                     <div className="relative" ref={dropdownRef}>

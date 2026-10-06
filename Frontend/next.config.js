@@ -4,6 +4,11 @@ const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:4000'
 const nextConfig = {
   // SSR mode (menghapus output: 'export')
   trailingSlash: true,
+  // Next's own trailing-slash redirect runs before every custom redirect, so a
+  // legacy URL typed without the slash took two hops (/about-us → /about-us/ →
+  // /about/). It is switched off here and re-added, unchanged, as the last
+  // entries in redirects() below, so legacy rules match first in one hop.
+  skipTrailingSlashRedirect: true,
   eslint: {
     // Ignore ESLint errors during builds (useful when tests/dev files have strict rules)
     ignoreDuringBuilds: true,
@@ -128,6 +133,9 @@ const nextConfig = {
       // hard-404'd.
       // Pricing is discussed in conversation, never published: the old page redirects to Contact.
       { source: '/pricing', destination: '/contact/', permanent: true },
+      // Common paths from older site builders and directory listings. Both 404'd.
+      { source: '/about-us', destination: '/about/', permanent: true },
+      { source: '/contact-us', destination: '/contact/', permanent: true },
       { source: '/blogs', destination: '/blog/', permanent: true },
       { source: '/blogs/:slug*', destination: '/blog/:slug*/', permanent: true },
       { source: '/projects', destination: '/work/', permanent: true },
@@ -143,6 +151,9 @@ const nextConfig = {
       // listing is the honest equivalent.
       { source: '/portofolio', destination: '/work/', permanent: true },
       { source: '/portofolio/:slug*', destination: '/work/', permanent: true },
+      // The old WordPress portfolio archive, reported as 404 in Search Console.
+      { source: '/portfolio', destination: '/work/', permanent: true },
+      { source: '/portfolio/:slug*', destination: '/work/', permanent: true },
       // Legacy WordPress permalinks from the previous site. These 404'd, so any
       // authority they held was being discarded. Pointed at the section that
       // replaced them, not the homepage (Google reads that as a soft 404).
@@ -159,8 +170,8 @@ const nextConfig = {
       { source: '/portfolio-category/:slug*', destination: '/work/', permanent: true },
       { source: '/case-study', destination: '/work/', permanent: true },
       { source: '/case-studies', destination: '/work/', permanent: true },
-      { source: '/offer', destination: '/pricing/', permanent: true },
-      { source: '/offers', destination: '/pricing/', permanent: true },
+      { source: '/offer', destination: '/contact/', permanent: true },
+      { source: '/offers', destination: '/contact/', permanent: true },
       { source: '/category/:slug*', destination: '/blog/', permanent: true },
       { source: '/tag/:slug*', destination: '/blog/', permanent: true },
       { source: '/author/:slug*', destination: '/about/', permanent: true },
@@ -169,6 +180,28 @@ const nextConfig = {
       // Google. The team index is the honest replacement.
       { source: '/team/mohammad-iqbal', destination: '/team/', permanent: true },
       { source: '/team/vivek-gautam', destination: '/team/', permanent: true },
+
+      // ── Trailing slash (must stay last) ──────────────────────────────────
+      // Next's built-in trailingSlash redirects, copied from
+      // next/dist/lib/load-custom-routes.js and moved after the rules above
+      // (see skipTrailingSlashRedirect). Files lose a trailing slash; every
+      // other path gains one. Paths ending in /feed are left alone so the
+      // middleware can answer 410 Gone directly, without a slash hop first.
+      {
+        source: '/:file((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+)/',
+        destination: '/:file',
+        permanent: true,
+        // Never for _next/data requests, matching the built-in rule.
+        missing: [{ type: 'header', key: 'x-nextjs-data' }],
+      },
+      {
+        // The trailing (?!/) is the one change from the built-in: Next lets a
+        // custom source match with an optional trailing slash, which without
+        // it would redirect /about/ to itself.
+        source: '/:notfile((?!\\.well-known(?:/.*)?)(?!(?:.*/)?feed$)(?:[^/]+/)*[^/\\.]+(?!/))',
+        destination: '/:notfile/',
+        permanent: true,
+      },
     ]
   },
   // Same-origin /api proxy to the Backend. Filesystem route handlers under

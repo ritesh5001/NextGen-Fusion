@@ -7,7 +7,13 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { buildMetadata } from "@/lib/seo"
 import { getCityService } from "@/data/city-pages/services"
-import { cityPath, cityServicePath, findCity, generatedServicePairs } from "@/data/city-pages/paths"
+import {
+  cityPath,
+  cityServicePath,
+  findCity,
+  generatedServicePairs,
+  isServicePageIndexed,
+} from "@/data/city-pages/paths"
 import { isExistingPage, type CityPage, type CityRegion } from "@/data/city-pages/types"
 import { CityHubPage } from "./hub-page"
 import { CityPageView } from "./city-page"
@@ -22,6 +28,7 @@ export function hubRoute<C extends CityPage>(region: CityRegion<C>) {
       title: region.hub.metaTitle,
       description: region.hub.metaDescription,
       path: region.path,
+      ogEyebrow: region.name,
     }) satisfies Metadata,
     Page: function Page() {
       return <CityHubPage region={region} />
@@ -36,9 +43,11 @@ export function cityRoute<C extends CityPage>(region: CityRegion<C>) {
       const city = findCity(region, (await params).city)
       if (!city) return {}
       return buildMetadata({
-        title: city.page.metaTitle,
+        title: region.cityTitle(city),
+        ogTitle: city.page.metaTitle,
         description: city.page.metaDescription,
         path: cityPath(region, city),
+        ogEyebrow: `${city.name}, ${city.state}`,
       })
     },
     Page: async function Page({ params }: CityParams) {
@@ -67,10 +76,16 @@ export function serviceRoute<C extends CityPage>(region: CityRegion<C>) {
     generateMetadata: async ({ params }: ServiceParams): Promise<Metadata> => {
       const found = await resolve(params)
       if (!found) return {}
+      const { city, service, page } = found
       return buildMetadata({
-        title: found.page.metaTitle,
-        description: found.page.metaDescription,
-        path: cityServicePath(region, found.city, found.service.slug),
+        // Keyword and city first; the longer data title, tagline included, is
+        // kept for social shares where there is room for it.
+        title: `${service.label} in ${city.name}`,
+        ogTitle: page.metaTitle,
+        description: page.metaDescription,
+        path: cityServicePath(region, city, service.slug),
+        ogEyebrow: `${service.label} · ${city.name}`,
+        noIndex: !isServicePageIndexed(region, city, service.slug),
       })
     },
     Page: async function Page({ params }: ServiceParams) {

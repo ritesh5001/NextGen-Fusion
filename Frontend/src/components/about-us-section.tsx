@@ -124,13 +124,14 @@ export default function AboutUsSection() {
                   />
                 </m.div>
                 <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                  Hello
+                  Hello,
                 </span>
-                <span>. We are</span>
+                <span>we&apos;re</span>
               </div>{" "}
-              <span className="text-gray-900">NextGen</span>{" "}
-              <br />
-              <span className="text-gray-900">Fusion</span>
+              <span className="text-gray-900">NextGen Fusion</span>
+              <span className="mt-3 block text-lg font-semibold text-gray-700 sm:text-xl md:text-2xl">
+                A web development studio in Lucknow &amp; Mumbai
+              </span>
             </m.h2>
           </m.div>
 

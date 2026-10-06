@@ -10,7 +10,7 @@ import { MotionProvider } from "@/components/motion-provider";
 import LayoutChrome from "@/components/layout-chrome";
 import { Analytics } from "@/components/analytics";
 import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
-import { brandProfiles, CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
+import { brandProfiles, CONTACT_EMAIL, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { personId, team, TEAM_SIZE } from "@/data/team";
 import { serviceNavItems } from "@/data/services-nav";
 
@@ -59,7 +59,7 @@ const structuredData = {
       ],
       // The primary address is the Lucknow office: it carries the primary phone,
       // the Google Business Profile and the brand's "Lucknow" alternateName.
-      // Mumbai is declared as its own ProfessionalService node below.
+      // Each office is its own ProfessionalService node (lib/office-schema.ts).
       address: (() => {
         const primary = offices.find((office) => office.city === "Lucknow") ?? offices[0];
         return {
@@ -71,9 +71,6 @@ const structuredData = {
           addressCountry: primary.postal.country,
         };
       })(),
-      location: offices.map((office) => ({
-        "@id": `${siteUrl}/#office-${office.city.toLowerCase()}`,
-      })),
       // Bare @id references. The full Person nodes are defined on /about/ and
       // on each /team/<slug>/ profile; repeating them on every page would put
       // four biographies into the markup of every URL on the site.
@@ -104,44 +101,8 @@ const structuredData = {
       // shipping placeholder numbers risks a manual action. Re-add only with
       // verified Google/Clutch review data plus visible reviews on the page.
     },
-    // One ProfessionalService per physical office, linked back to the
-    // Organization. These carry the local entity signals (address, geo, phone)
-    // that the Organization node alone cannot express.
-    ...offices.map((office) => {
-      const [latitude, longitude] = office.coordinates
-        .split(",")
-        .map((part) => Number(part.trim()));
-      return {
-        "@type": "ProfessionalService",
-        "@id": `${siteUrl}/#office-${office.city.toLowerCase()}`,
-        name: `NextGen Fusion — ${office.city}`,
-        // Its own city page, not the homepage. Two LocalBusiness nodes sharing
-        // one url is how Google ends up merging two offices into one location.
-        url: `${siteUrl}${office.landingPath}`,
-        image: { "@id": `${siteUrl}/#logo` },
-        parentOrganization: { "@id": `${siteUrl}/#organization` },
-        telephone: office.contact.phoneE164,
-        email: CONTACT_EMAIL,
-        address: {
-          "@type": "PostalAddress",
-          ...(office.postal.street ? { streetAddress: office.postal.street } : {}),
-          addressLocality: office.postal.locality,
-          addressRegion: office.postal.region,
-          ...(office.postal.postalCode ? { postalCode: office.postal.postalCode } : {}),
-          addressCountry: office.postal.country,
-        },
-        geo: { "@type": "GeoCoordinates", latitude, longitude },
-        areaServed: ["IN", "AE", "SG", "AU", "OM", "Worldwide"],
-        openingHoursSpecification: [
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: [...OFFICE_HOURS.days],
-            opens: OFFICE_HOURS.opens,
-            closes: OFFICE_HOURS.closes,
-          },
-        ],
-      };
-    }),
+    // The ProfessionalService node for each office lives on the homepage, the
+    // contact page and that office's city pages only (lib/office-schema.ts).
     // Service nodes live on their own service and city pages, not here: twelve
     // of them on every URL (privacy pages included) blurred which page is about
     // which service. SiteNavigationElement was dropped too — Google ignores it.
@@ -163,7 +124,7 @@ const structuredData = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Website Development Company in Lucknow & India | NextGen Fusion",
+    default: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
     template: "%s | NextGen Fusion",
   },
   description:
@@ -243,7 +204,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: siteUrl,
     siteName: "NextGen Fusion",
-    title: "Website Development Company in Lucknow & India | NextGen Fusion",
+    title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: OG_IMAGES,
@@ -252,7 +213,7 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "Website Development Company in Lucknow & India | NextGen Fusion",
+    title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
     description:
       "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
     images: [DEFAULT_OG_IMAGE],

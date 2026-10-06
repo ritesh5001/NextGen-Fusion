@@ -25,7 +25,7 @@ export default function HomeClient({
   featuredProjects: FeaturedProject[]
 }) {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white">
+    <main className="min-h-screen overflow-x-hidden bg-white">
       <div id="hero">
         <HeroSection projectCount={projectCount} />
       </div>
@@ -60,6 +60,6 @@ export default function HomeClient({
       <div id="contact" className="defer-render">
         <ContactSection />
       </div>
-    </div>
+    </main>
   )
 }

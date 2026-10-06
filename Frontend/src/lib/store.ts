@@ -54,16 +54,35 @@ export function isStoreProductIndexable(product: StoreProduct): boolean {
   )
 }
 
+/**
+ * Gambling products (casino and betting scripts such as Xaxino or BetLab) are
+ * kept off the storefront entirely. Even noindexed, a web agency's store linking
+ * to them reads as off-topic and low-trust to search engines and to buyers. The
+ * rows can stay in the database; anything matching here is treated as absent,
+ * so its listing card disappears and its product URL returns 404.
+ */
+const EXCLUDED_PRODUCT_PATTERN = /\b(casino|betting|bet|sportsbook|gambling|lottery|poker|xaxino|betlab)\b/i
+
+export function isStoreProductAllowed(product: Pick<StoreProduct, 'slug' | 'title' | 'category' | 'summary'>): boolean {
+  return ![product.slug, product.title, product.category, product.summary].some(
+    (field) => field && EXCLUDED_PRODUCT_PATTERN.test(field.replace(/[-_]/g, ' ')),
+  )
+}
+
 export function formatInr(value: number): string {
   return `₹${(value ?? 0).toLocaleString('en-IN')}`
 }
 
-export async function getStoreProducts(): Promise<StoreProduct[]> {
+/** `timeoutMs` aborts a stalled Backend; the sitemap passes it so a slow store API skips that section. */
+export async function getStoreProducts(options?: { timeoutMs?: number }): Promise<StoreProduct[]> {
   try {
-    const res = await fetch(`${API_BASE}/store/products`, { next: { revalidate: 60 } })
+    const res = await fetch(`${API_BASE}/store/products`, {
+      next: { revalidate: 60 },
+      ...(options?.timeoutMs ? { signal: AbortSignal.timeout(options.timeoutMs) } : {}),
+    })
     if (!res.ok) return []
     const json = await res.json()
-    return (json.data as StoreProduct[]) || []
+    return ((json.data as StoreProduct[]) || []).filter(isStoreProductAllowed)
   } catch {
     return []
   }
@@ -76,7 +95,8 @@ export async function getStoreProduct(slug: string): Promise<StoreProduct | null
     })
     if (!res.ok) return null
     const json = await res.json()
-    return (json.data as StoreProduct) || null
+    const product = (json.data as StoreProduct) || null
+    return product && isStoreProductAllowed(product) ? product : null
   } catch {
     return null
   }

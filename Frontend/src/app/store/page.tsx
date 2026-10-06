@@ -2,15 +2,16 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getStoreProducts, formatInr } from '@/lib/store'
-import { absoluteUrl, siteUrl } from "@/lib/seo"
+import { buildMetadata } from "@/lib/seo"
 
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: 'Store — Ready-to-Use CRM, ERP & Software',
   description:
     'Buy production-ready CRM, ERP, and software systems built by NextGen Fusion. Instant download, full source code, one-time price.',
-  alternates: { canonical: absoluteUrl("/store") },
-}
+  path: '/store',
+  ogEyebrow: 'NextGen Fusion Store',
+})
 
 export default async function StorePage() {
   const products = await getStoreProducts()

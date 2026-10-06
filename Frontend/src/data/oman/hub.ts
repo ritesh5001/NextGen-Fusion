@@ -2,7 +2,7 @@ import type { CityHub } from "@/data/city-pages/types"
 
 /** Copy for /oman/. Problems here link to the main /services/ pages. */
 export const omHub: CityHub = {
-  metaTitle: "Website Design & Development Company in Oman — Web, SEO & Apps",
+  metaTitle: "Website Design & Development Company in Oman",
   metaDescription:
     "Website design, ecommerce, SEO, digital marketing and app development for businesses in Muscat, Salalah, Sohar, Nizwa and across Oman, built in Arabic and English.",
   h1: "Website design, ecommerce, SEO and apps for businesses across Oman",

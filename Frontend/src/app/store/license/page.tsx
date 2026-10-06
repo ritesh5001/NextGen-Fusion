@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { absoluteUrl, siteUrl } from "@/lib/seo"
+import { buildMetadata } from "@/lib/seo"
 
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: 'License Agreement — NextGen Fusion Store',
   description: 'End User License Agreement for digital products purchased from the NextGen Fusion store.',
-  alternates: { canonical: absoluteUrl("/store/license") },
-}
+  path: '/store/license',
+  ogEyebrow: 'NextGen Fusion Store',
+})
 
 // NOTE FOR THE OWNER: this is a starter template. Review it with a legal
 // professional and edit the bracketed placeholders (jurisdiction, contact,

@@ -3,7 +3,7 @@ import type { CityHub } from "@/data/city-pages/types"
 
 /** Copy for /india/. Problems here link to the main /services/ pages. */
 export const inHub: CityHub = {
-  metaTitle: "Website Development, SEO & Digital Marketing Company in India",
+  metaTitle: "Website Development & SEO Company in India",
   metaDescription:
     "Websites, online stores, SEO, Google Ads, apps and automation for businesses in Delhi, Mumbai, Bengaluru, Hyderabad, Pune and 15 more Indian cities.",
   h1: "Helping Indian businesses grow online, city by city",

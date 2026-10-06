@@ -1,4 +1,4 @@
-import { isStoreProductIndexable, type StoreProduct } from "@/lib/store"
+import { isStoreProductAllowed, isStoreProductIndexable, type StoreProduct } from "@/lib/store"
 
 const product = (overrides: Partial<StoreProduct> = {}): StoreProduct => ({
   id: "1",
@@ -46,5 +46,18 @@ describe("isStoreProductIndexable", () => {
 
   it("does not count whitespace padding as description length", () => {
     expect(isStoreProductIndexable(product({ ...ready, description: `  ${" ".repeat(2000)}short  ` }))).toBe(false)
+  })
+})
+
+describe("isStoreProductAllowed", () => {
+  it("hides casino and betting scripts", () => {
+    expect(isStoreProductAllowed(product({ slug: "xaxino-casino-script", title: "Xaxino" }))).toBe(false)
+    expect(isStoreProductAllowed(product({ slug: "betlab", title: "BetLab Sports Betting Platform" }))).toBe(false)
+    expect(isStoreProductAllowed(product({ category: "Gambling" }))).toBe(false)
+  })
+
+  it("keeps ordinary software", () => {
+    expect(isStoreProductAllowed(product())).toBe(true)
+    expect(isStoreProductAllowed(product({ title: "Alphabet Learning App", summary: "Better bookings" }))).toBe(true)
   })
 })

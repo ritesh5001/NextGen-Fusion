@@ -1,6 +1,10 @@
 export interface Office {
   city: string
-  /** Human-readable address as shown on the page. */
+  /**
+   * Human-readable address as shown on the page. Built from `postal` so the
+   * page, the footer and the schema can never disagree; keep `postal` word for
+   * word identical to the office's Google Business Profile.
+   */
   address: string
   /** Structured form, for PostalAddress schema. `street` is omitted where we
    *  genuinely do not have a street-level address to publish. */
@@ -12,6 +16,8 @@ export interface Office {
     country: string
   }
   coordinates: string
+  /** The office's Google Business Profile / Maps share link, once known. */
+  mapUrl?: string
   /** City landing page for this office. Each ProfessionalService node needs its
    *  own `url`: both pointing at the homepage let Google collapse two locations
    *  into one entity, which is the opposite of why we publish two. */
@@ -26,11 +32,15 @@ export interface Office {
   }
 }
 
-export const offices: Office[] = [
+function formatAddress(postal: Office["postal"]): string {
+  return [postal.street, postal.locality, `${postal.region}${postal.postalCode ? ` ${postal.postalCode}` : ""}`]
+    .filter(Boolean)
+    .join(", ")
+}
+
+const officeData: Omit<Office, "address">[] = [
   {
     city: "Lucknow",
-    address:
-      "3rd Floor, Galaxy Apartment, Dayal Residency, Shankar Puri, Kamta, Lucknow, Uttar Pradesh 226028",
     postal: {
       street: "3rd Floor, Galaxy Apartment, Dayal Residency, Shankar Puri, Kamta",
       locality: "Lucknow",
@@ -48,8 +58,6 @@ export const offices: Office[] = [
   },
   {
     city: "Mumbai",
-    address:
-      "GNM/95/347, Floor No: Ground, Banwari Compound, Mahim Rly Stn (E), Mahim, Mumbai 400016",
     postal: {
       street: "GNM/95/347, Ground Floor, Banwari Compound, Mahim Rly Stn (E), Mahim",
       locality: "Mumbai",
@@ -66,6 +74,8 @@ export const offices: Office[] = [
     },
   },
 ]
+
+export const offices: Office[] = officeData.map((office) => ({ ...office, address: formatAddress(office.postal) }))
 
 /**
  * The one statement of when we are available. Schema, the contact page, the
@@ -107,11 +117,19 @@ export const CONTACT_EMAIL = "contact@nextgenfusion.in"
  *
  * Other companies trade as "NextGen Fusion" (a US Inc, a Colorado Facebook page),
  * so each verified profile here is how Google ties the name to this agency.
- * Add the URL only once the profile is live, and keep the name, address and
- * phone on it identical to `offices` above. Next to add: Google Business
- * Profile, LinkedIn, Clutch, GoodFirms, DesignRush, TechBehemoths, JustDial,
- * IndiaMART, Crunchbase.
+ * Paste each URL once the profile is live; entries left empty are skipped, so
+ * nothing half-finished reaches the footer or the schema. Google Business
+ * Profile matters most: it corroborates the Lucknow address, and its name,
+ * address and phone must match `offices` above word for word. After these:
+ * DesignRush, TechBehemoths, JustDial, IndiaMART, Crunchbase.
  */
-export const brandProfiles: { label: string; href: string }[] = [
+const brandProfileLinks: { label: string; href: string }[] = [
+  { label: "Google Business Profile", href: "" },
+  { label: "LinkedIn", href: "" },
+  { label: "Facebook", href: "" },
   { label: "Instagram", href: "https://www.instagram.com/nextgenfusion.devs/" },
+  { label: "Clutch", href: "" },
+  { label: "GoodFirms", href: "" },
 ]
+
+export const brandProfiles = brandProfileLinks.filter((profile) => profile.href)

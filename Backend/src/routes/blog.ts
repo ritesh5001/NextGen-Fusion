@@ -3,6 +3,7 @@ import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { pingIndexNow } from '../lib/indexnow'
+import { revalidateFrontend } from '../lib/revalidate'
 
 const router = Router()
 
@@ -155,6 +156,7 @@ router.post('/admin/blog-posts', requireAuth, async (req, res) => {
       return
     }
     if (data?.is_active && data.slug) pingIndexNow([`/blog/${data.slug}/`])
+    if (data?.slug) revalidateFrontend(data.slug)
     res.status(201).json({ data })
   } catch (err) {
     logRouteError('blog:create', err)
@@ -187,6 +189,8 @@ router.patch('/admin/blog-posts/:id', requireAuth, async (req, res) => {
       return
     }
     if (data?.is_active && data.slug) pingIndexNow([`/blog/${data.slug}/`])
+    // Also on unpublish, so a post taken down stops being served from cache.
+    if (data?.slug) revalidateFrontend(data.slug)
     res.json({ data })
   } catch (err) {
     logRouteError('blog:update', err)

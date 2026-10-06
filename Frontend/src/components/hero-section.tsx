@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { openBookingModal } from "@/lib/booking"
 
 /**
@@ -19,26 +20,29 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
           <div className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></div>
           <div className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></div>
         </div>
-        {/* The H1 is brand copy with no location in it; this line carries the
-            query the homepage is meant to rank for. */}
         <p className="text-xs font-medium text-gray-700">
-          Website development company in Lucknow, India
+          Next.js, WordPress &amp; Shopify · Lucknow &amp; Mumbai
           <span className="hidden sm:inline text-gray-600"> · Available for work</span>
         </p>
       </div>
     </div>
 
-    {/* H1 — carries search intent. Deliberately static: it is the LCP element
-        on mobile, and any entrance animation on it delays LCP. */}
+    {/* H1 — leads with the query the homepage ranks for and matches the
+        <title>; a heading with no keyword was one reason Google kept rewriting
+        the title in results. Deliberately static: it is the LCP element on
+        mobile, and any entrance animation on it delays LCP. */}
     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-5 max-w-5xl mx-auto">
-      Websites &amp; Online Stores That Don&apos;t Get Abandoned{" "}
-      <span
-        className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"
-        style={{
-          backgroundImage: "linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)",
-        }}
-      >
-        After Launch
+      <span className="block">Website Development Company in Lucknow</span>
+      <span className="mt-3 block text-xl font-semibold text-gray-700 sm:text-2xl md:text-3xl lg:text-4xl">
+        Websites &amp; online stores that don&apos;t get abandoned{" "}
+        <span
+          className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent"
+          style={{
+            backgroundImage: "linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)",
+          }}
+        >
+          after launch
+        </span>
       </span>
     </h1>
 
@@ -84,6 +88,19 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
     <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-10 hero-rise hero-delay-4">
       Conversion-focused websites for growing D2C and ecommerce brands across India and
       worldwide — designed, built, and supported end to end.
+    </p>
+
+    {/* The Lucknow landing page owns the "website development company in
+        Lucknow" query; the homepage links to it rather than competing for it. */}
+    <p className="-mt-6 mb-10 text-base text-gray-600 hero-rise hero-delay-4">
+      Based in Lucknow? See our{" "}
+      <Link
+        href="/website-development-company-in-lucknow/"
+        className="font-medium text-[#2B35AB] underline underline-offset-4 hover:text-[#8A38F5]"
+      >
+        website development company in Lucknow
+      </Link>{" "}
+      page.
     </p>
 
     {/* CTA Buttons — one primary, one lighter secondary */}

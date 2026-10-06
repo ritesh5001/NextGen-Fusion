@@ -1,22 +1,30 @@
 import type { MetadataRoute } from "next"
 import { absoluteUrl } from "@/lib/seo"
 import { staticProjects } from "@/lib/static-projects"
-import { apiService } from "@/lib/api"
+import { apiService, BLOG_POSTS_TAG } from "@/lib/api"
 import { getStoreProducts, isStoreProductIndexable } from "@/lib/store"
 import { serviceSlugs } from "@/data/services-nav"
 import { locationPages } from "@/data/locations"
-import { activeCategorySlugs } from "@/lib/blog"
+import { activeCategorySlugs, isCategoryIndexable } from "@/lib/blog"
 import { team } from "@/data/team"
 import { guidePages } from "@/data/guides"
 import { australia } from "@/data/australia"
 import { india } from "@/data/india"
 import { oman } from "@/data/oman"
-import { cityPath, cityServicePath, generatedServicePairs } from "@/data/city-pages/paths"
+import {
+  cityPath,
+  cityServicePath,
+  cityUpdated,
+  generatedServicePairs,
+  isServicePageIndexed,
+} from "@/data/city-pages/paths"
 import type { CityRegion } from "@/data/city-pages/types"
 
 // Revalidate hourly so newly published blog posts, store products and
 // portfolio entries show up without a redeploy.
 export const revalidate = 3600
+
+const REMOTE_TIMEOUT_MS = 5000
 
 
 /**
@@ -48,9 +56,6 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
 const SERVICES_LAST_MODIFIED = "2026-09-16"
 const LOCATIONS_LAST_MODIFIED = "2026-09-16"
 const INTERNATIONAL_LAST_MODIFIED = "2026-09-29"
-const AUSTRALIA_LAST_MODIFIED = "2026-10-02"
-const INDIA_LAST_MODIFIED = "2026-10-02"
-const OMAN_LAST_MODIFIED = "2026-10-06"
 // Case studies are edited on their own cadence; they were inheriting the
 // services date and claiming an edit they had not had.
 const WORK_LAST_MODIFIED = "2026-08-14"
@@ -65,11 +70,16 @@ const entry = (path: string, lastModified: Date | string): Entry => ({
   lastModified,
 })
 
-function regionEntries(region: CityRegion, date: string): Entry[] {
+// Each city carries its own date (see CityPage.updated), so editing one city's
+// file moves only that city's URLs. Noindexed city × service pages are left
+// out: a sitemap listing pages that ask not to be indexed is a mixed signal.
+function regionEntries(region: CityRegion): Entry[] {
   return [
-    entry(region.path, date),
-    ...region.cities.map((city) => entry(cityPath(region, city), date)),
-    ...generatedServicePairs(region).map(({ city, service }) => entry(cityServicePath(region, city, service), date)),
+    entry(region.path, region.updated),
+    ...region.cities.map((city) => entry(cityPath(region, city), cityUpdated(region, city))),
+    ...generatedServicePairs(region)
+      .filter(({ city, service }) => isServicePageIndexed(region, city, service))
+      .map(({ city, service }) => entry(cityServicePath(region, city, service), cityUpdated(region, city))),
   ]
 }
 
@@ -89,9 +99,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ),
     // City pages by region: hub, one page per city and one per generated
     // city × service (city × service pairs owned by older pages are skipped).
-    ...regionEntries(australia, AUSTRALIA_LAST_MODIFIED),
-    ...regionEntries(india, INDIA_LAST_MODIFIED),
-    ...regionEntries(oman, OMAN_LAST_MODIFIED),
+    ...regionEntries(australia),
+    ...regionEntries(india),
+    ...regionEntries(oman),
     ...staticProjects.map((p) => entry(`/work/${p.slug}`, WORK_LAST_MODIFIED)),
     // Team profiles were absent from the sitemap entirely while also declaring
     // /team/ as their canonical — between the two, four pages of real
@@ -101,12 +111,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Remote content is best-effort: a Backend hiccup must not fail the build or
   // serve an empty sitemap, so each source degrades to "skip this section".
+  // Both fetches are cached (the blog one was no-store, which made the whole
+  // sitemap dynamic: every Googlebot hit waited on the Backend, and a slow one
+  // timed the function out with a 500) and give up after REMOTE_TIMEOUT_MS.
   const [blogPosts, storeEntries] = await Promise.all([
-    apiService.getActiveBlogPosts().catch(() => [] as Awaited<ReturnType<typeof apiService.getActiveBlogPosts>>),
+    apiService
+      .getActiveBlogPosts({ revalidate, tags: [BLOG_POSTS_TAG], timeoutMs: REMOTE_TIMEOUT_MS })
+      .catch(() => [] as Awaited<ReturnType<typeof apiService.getActiveBlogPosts>>),
     // 47 product pages that render server-side with full metadata and were
     // absent from the sitemap entirely — the highest commercial-intent URLs
     // on the site had no path in.
-    getStoreProducts()
+    getStoreProducts({ timeoutMs: REMOTE_TIMEOUT_MS })
       .then((products) =>
         products
           // Only products that pass the content gate — the rest are noindexed at
@@ -122,9 +137,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   )
   // Category archives — same freshness signal as /blog itself, since they're
   // just a filtered view of the same posts.
-  const blogCategoryEntries = activeCategorySlugs(blogPosts).map((slug) =>
-    entry(`/blog/category/${slug}`, STATIC_LAST_MODIFIED["/blog"]),
-  )
+  // Only archives with an introduction and enough posts; the rest are noindexed.
+  const blogCategoryEntries = activeCategorySlugs(blogPosts)
+    .filter((slug) => isCategoryIndexable(blogPosts, slug))
+    .map((slug) => entry(`/blog/category/${slug}`, STATIC_LAST_MODIFIED["/blog"]))
 
   return [...staticEntries, ...blogEntries, ...blogCategoryEntries, ...storeEntries]
 }

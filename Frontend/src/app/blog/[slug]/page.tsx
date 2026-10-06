@@ -10,7 +10,7 @@ import { normalizeImagePath } from "@/lib/utils"
 import ScrollToTop from "@/components/scroll-to-top"
 import { getTeamMemberByName } from "@/data/team"
 import { JsonLd } from "@/components/json-ld"
-import { absoluteUrl, articleSchema, assetUrl, breadcrumbSchema, DEFAULT_OG_IMAGE, siteUrl } from "@/lib/seo"
+import { absoluteUrl, articleSchema, assetUrl, breadcrumbSchema, fitDescription, fitTitle, ogImageUrl, siteUrl } from "@/lib/seo"
 import { categorySlug, relatedPosts } from "@/lib/blog"
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
@@ -36,32 +36,38 @@ export const revalidate = 3600
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const posts = await apiService.getBlogPosts()
+  const posts = await apiService.getBlogPostsStrict()
   const blogPost = posts.find((p: any) => p?.is_active && p.slug === slug)
 
   if (!blogPost) return {}
 
+  // A generated card with the post's own title: cover images are project
+  // screenshots in whatever shape they were taken, and posts without one all
+  // fell back to the same og-default.png.
+  const shareImage = ogImageUrl(blogPost.title, blogPost.category ? `Blog · ${blogPost.category}` : "Blog")
+  const description = fitDescription(blogPost.excerpt ?? "")
+
   return {
-    title: blogPost.title,
-    description: blogPost.excerpt,
+    title: fitTitle(blogPost.title),
+    description,
     alternates: {
       canonical: absoluteUrl(`/blog/${blogPost.slug}`),
     },
     openGraph: {
       title: `${blogPost.title} | NextGen Fusion`,
-      description: blogPost.excerpt,
-      url: `${siteUrl}/blog/${blogPost.slug}`,
+      description,
+      url: absoluteUrl(`/blog/${blogPost.slug}`),
       siteName: "NextGen Fusion",
       type: "article",
       publishedTime: blogPost.published_at,
       authors: [blogPost.author],
-      images: blogPost.cover_image ? [normalizeImagePath(blogPost.cover_image)] : [DEFAULT_OG_IMAGE],
+      images: [{ url: shareImage, width: 1200, height: 630, alt: blogPost.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${blogPost.title} | NextGen Fusion`,
-      description: blogPost.excerpt,
-      images: blogPost.cover_image ? [normalizeImagePath(blogPost.cover_image)] : [DEFAULT_OG_IMAGE],
+      description,
+      images: [shareImage],
     },
   }
 }
@@ -69,9 +75,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
 
-    try {
-    // Fetch data directly from API
-    const allBlogPosts = await apiService.getBlogPosts()
+    // Strict: a Backend failure throws (an error page, and ISR keeps serving
+    // the last good copy) rather than reading as "no posts" and caching a 404.
+    const allBlogPosts = await apiService.getBlogPostsStrict()
     const activeBlogPosts = allBlogPosts.filter((p: any) => p?.is_active)
     const blogPost = activeBlogPosts.find((p: any) => p.slug === slug)
     const currentIndex = activeBlogPosts.findIndex((p: any) => p.slug === slug)
@@ -439,8 +445,4 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         <ScrollToTop />
       </div>
     )
-  } catch (error) {
-    console.error('Error loading blog post:', error)
-    notFound()
-  }
 }
