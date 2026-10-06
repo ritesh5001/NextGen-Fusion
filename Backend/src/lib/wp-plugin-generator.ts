@@ -582,7 +582,7 @@ export async function generatePluginFiles(
       `panels with close-on-outside-click, all JS inline; use the ${prefix}-hdr- class prefix. ` +
       `Render the 4-column footer (Brand+socials, Quick Links, Policies, Contact) using get_permalink, ` +
       `bottom bar "© <year> ${inputs.businessName}. Developed by NextGen Fusion" linking ` +
-      `"NextGen Fusion" to https://nextgenfusionl.in, and the pulsing WhatsApp button (#25D366); use ` +
+      `"NextGen Fusion" to https://www.nextgenfusion.in, and the pulsing WhatsApp button (#25D366); use ` +
       `${prefix}-ftr- and ${prefix}-wa- prefixes. Also register [${prefix}_header] and [${prefix}_footer] ` +
       `shortcodes pointing to the same render functions. No output buffering; only wp_body_open and ` +
       `wp_footer hooks. Return JSON {"content": "..."} with the full PHP file including <?php.`,

@@ -4,22 +4,22 @@ import { JsonLd } from "@/components/json-ld"
 import { homeFaqs } from "@/data/home-faqs"
 import { officeSchemas } from "@/lib/office-schema"
 import { staticProjects } from "@/lib/static-projects"
-import { DEFAULT_OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { DEFAULT_OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, SITE_TAGLINE, siteUrl } from "@/lib/seo"
 
 
 export const metadata: Metadata = {
   // The root layout's `%s | NextGen Fusion` template does not apply to the root
   // segment, so the brand has to be spelled out here.
-  title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
+  title: "Web Development & AI Solutions | NextGen Fusion",
   description:
-    "Website development company in Lucknow building fast Next.js, WordPress and Shopify sites and online stores across India, with SEO and support after launch.",
+    "Web development, AI and digital solutions for growing businesses: fast websites, online stores, apps and automation, with SEO and support after launch.",
   alternates: {
     canonical: `${siteUrl}/`,
   },
   openGraph: {
-    title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
+    title: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "Websites and online stores built in Lucknow for businesses across India, and supported after launch.",
+      "Websites, online stores, apps and AI automation for growing businesses, supported after launch.",
     url: `${siteUrl}/`,
     siteName: "NextGen Fusion",
     locale: "en_IN",
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
+    title: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "Websites and online stores built in Lucknow for businesses across India, and supported after launch.",
+      "Websites, online stores, apps and AI automation for growing businesses, supported after launch.",
     images: [DEFAULT_OG_IMAGE],
   },
 }
@@ -55,7 +55,7 @@ const homeSchema = [
     url: `${siteUrl}/`,
     name: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
     description:
-      "Websites and online stores built in Lucknow for businesses across India, and supported after launch.",
+      "Websites, online stores, apps and AI automation for growing businesses, supported after launch.",
     inLanguage: "en-IN",
     isPartOf: { "@id": `${siteUrl}/#website` },
     about: { "@id": ORGANIZATION_ID },

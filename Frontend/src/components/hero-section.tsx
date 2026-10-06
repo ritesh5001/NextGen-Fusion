@@ -21,7 +21,7 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
           <div className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></div>
         </div>
         <p className="text-xs font-medium text-gray-700">
-          Next.js, WordPress &amp; Shopify · Lucknow &amp; Mumbai
+          Next.js, WordPress, Shopify &amp; AI · Working worldwide
           <span className="hidden sm:inline text-gray-600"> · Available for work</span>
         </p>
       </div>
@@ -32,7 +32,7 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
         the title in results. Deliberately static: it is the LCP element on
         mobile, and any entrance animation on it delays LCP. */}
     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-5 max-w-5xl mx-auto">
-      <span className="block">Website Development Company in Lucknow</span>
+      <span className="block">Web Development &amp; AI Solutions for Growing Businesses</span>
       <span className="mt-3 block text-xl font-semibold text-gray-700 sm:text-2xl md:text-3xl lg:text-4xl">
         Websites &amp; online stores that don&apos;t get abandoned{" "}
         <span

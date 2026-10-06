@@ -7,6 +7,8 @@ import type { Metadata } from "next"
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.nextgenfusion.in"
 
 export const SITE_NAME = "NextGen Fusion"
+/** The brand line, used wherever the site describes itself in one sentence. */
+export const SITE_TAGLINE = "Web Development, AI & Digital Solutions for Growing Businesses"
 
 // 1200x630 PNG. Social platforms (Facebook, LinkedIn, WhatsApp, X) do not render
 // SVG previews, so the shared OG asset must stay a raster image.

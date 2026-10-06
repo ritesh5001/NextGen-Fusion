@@ -67,7 +67,7 @@ export const team: TeamMember[] = [
       "Technical SEO",
     ],
     linkedinUrl: "https://www.linkedin.com/in/ritesh5001/",
-    verifiedProfiles: ["https://www.linkedin.com/in/ritesh5001/"],
+    verifiedProfiles: ["https://www.linkedin.com/in/ritesh5001/", "https://github.com/ritesh5001"],
   },
   {
     slug: "sajal-singh",

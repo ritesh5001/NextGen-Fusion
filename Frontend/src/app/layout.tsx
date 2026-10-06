@@ -9,7 +9,7 @@ import LenisProvider from "@/components/lenis-provider";
 import { MotionProvider } from "@/components/motion-provider";
 import LayoutChrome from "@/components/layout-chrome";
 import { Analytics } from "@/components/analytics";
-import { DEFAULT_OG_IMAGE, OG_IMAGES, siteUrl } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, OG_IMAGES, SITE_TAGLINE, siteUrl } from "@/lib/seo";
 import { brandProfiles, CONTACT_EMAIL, offices, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { personId, team, TEAM_SIZE } from "@/data/team";
 import { serviceNavItems } from "@/data/services-nav";
@@ -31,13 +31,15 @@ const structuredData = {
       "@type": "Organization",
       "@id": `${siteUrl}/#organization`,
       name: "NextGen Fusion",
-      // Several other companies trade as "NextGen Fusion" and the bare token
-      // reads as nuclear fusion to a language model. The qualified alternate
-      // name gives retrieval something disambiguating to match on.
-      alternateName: "NextGen Fusion — Web Development Agency, Lucknow",
+      // Several other companies trade as "NextGen Fusion". The brand is
+      // positioned globally, so what tells this one apart is not a city but
+      // the domain, the named founders (founder, below) and the verified
+      // profiles in sameAs. The offices stay in their own schema nodes.
+      alternateName: "NextGen Fusion — Web Development & AI Solutions",
+      slogan: SITE_TAGLINE,
       url: siteUrl,
       description:
-        "Web development, ecommerce and SEO studio in Lucknow and Mumbai, India, serving businesses across India, the UAE and Singapore. Builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps and custom software for D2C brands, manufacturers, institutes and B2B companies, with post-launch support.",
+        "NextGen Fusion is a web development, AI and digital solutions company for growing businesses. It builds custom websites on Next.js and WordPress, online stores on Shopify and WooCommerce, Android apps, AI automation and custom software, and runs SEO and digital marketing, for clients in India, the Gulf, Australia and beyond. The team works from Lucknow and Mumbai, India.",
       // Google requires a raster logo; the SVG here was silently ignored.
       logo: { "@id": `${siteUrl}/#logo` },
       image: { "@id": `${siteUrl}/#logo` },
@@ -124,11 +126,11 @@ const structuredData = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
+    default: `NextGen Fusion | ${SITE_TAGLINE}`,
     template: "%s | NextGen Fusion",
   },
   description:
-    "NextGen Fusion builds high-performance websites, SEO campaigns, mobile apps, software, and digital products for businesses that need measurable growth.",
+    `${SITE_TAGLINE}. Websites, online stores, apps, AI automation and SEO for businesses worldwide.`,
   authors: [{ name: "NextGen Fusion" }],
   creator: "NextGen Fusion",
   publisher: "NextGen Fusion",
@@ -204,18 +206,18 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: siteUrl,
     siteName: "NextGen Fusion",
-    title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
+    title: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
+      "Websites, online stores, apps, AI automation and SEO for growing businesses worldwide.",
     images: OG_IMAGES,
   },
 
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "NextGen Fusion | Web, App & Ecommerce Development, Lucknow & Mumbai",
+    title: `NextGen Fusion | ${SITE_TAGLINE}`,
     description:
-      "High-performance websites, SEO, mobile apps, software, and digital products built for measurable business growth.",
+      "Websites, online stores, apps, AI automation and SEO for growing businesses worldwide.",
     images: [DEFAULT_OG_IMAGE],
   },
 

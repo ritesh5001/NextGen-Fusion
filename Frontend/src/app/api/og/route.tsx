@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og"
 import type { NextRequest } from "next/server"
+import { SITE_TAGLINE } from "@/lib/seo"
 
 /**
  * Per-page share image (1200×630), linked from every page's og:image by
@@ -43,6 +44,9 @@ export function GET(request: NextRequest) {
             }}
           />
           NextGen Fusion
+          <div style={{ display: "flex", marginLeft: "auto", fontSize: 24, fontWeight: 500, color: "#D6DAFF" }}>
+            www.nextgenfusion.in
+          </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           {eyebrow ? (
@@ -51,7 +55,7 @@ export function GET(request: NextRequest) {
           <div style={{ fontSize: titleSize, fontWeight: 800, lineHeight: 1.12 }}>{title}</div>
         </div>
         <div style={{ display: "flex", fontSize: 26, color: "#D6DAFF" }}>
-          www.nextgenfusion.in · Lucknow &amp; Mumbai, India
+          {SITE_TAGLINE}
         </div>
       </div>
     ),

@@ -6,8 +6,9 @@ import { india } from "@/data/india"
 import { oman } from "@/data/oman"
 import { cityPath } from "@/data/city-pages/paths"
 import { team } from "@/data/team"
+import { brandProfiles } from "@/data/offices"
 import { staticProjects } from "@/lib/static-projects"
-import { absoluteUrl } from "@/lib/seo"
+import { absoluteUrl, SITE_TAGLINE } from "@/lib/seo"
 
 /**
  * /llms.txt, generated rather than hand-maintained.
@@ -32,21 +33,24 @@ function line(path: string, label: string, note?: string) {
 export async function GET() {
   const body = `# NextGen Fusion
 
-> NextGen Fusion is a ${team.length}-person web development, SEO and digital product studio based in Lucknow and Mumbai, India. It builds custom websites, online stores, mobile apps and software for D2C brands, manufacturers, institutes and B2B companies across India, the UK, Italy and the Gulf, and runs SEO, PPC and social media marketing as ongoing engagements.
+> NextGen Fusion (nextgenfusion.in) is a web development, AI and digital solutions company for growing businesses. It builds custom websites, online stores, mobile apps, AI automation and software for D2C brands, manufacturers, institutes and B2B companies across India, the UK, Italy, the Gulf and Australia, and runs SEO, PPC and social media marketing as ongoing engagements. Its ${team.length}-person team works from Lucknow and Mumbai, India.
 
 Key facts for citation:
+- Tagline: ${SITE_TAGLINE}.
 - Founded and run as a small in-house team (not a reseller or agency-of-record for offshore work); the people who scope a project write the code.
 - Tech stack: Next.js and WordPress for websites, Shopify and WooCommerce for ecommerce, Node.js/Postgres for custom software.
 - Offices: Lucknow (Kamta) and Mumbai (Mahim), Uttar Pradesh and Maharashtra, India.
 - UAE: works with businesses in Dubai, Abu Dhabi, Sharjah and the other emirates remotely from India, on UAE working hours. There is no UAE office. UAE client: Cleanship (Ajman Free Zone).
 - Singapore: works with Singapore businesses remotely from India (office hours overlap Singapore afternoons). No Singapore office and no Singapore-registered client yet; not a PSG pre-approved vendor.
 - Australia: works with businesses across Australia remotely from India, during Australian afternoons and evenings. No Australian office; not on any Australian government procurement panel.
+- Oman: works with businesses in Muscat, Salalah, Sohar and across Oman remotely from India, on Omani working hours. There is no Omani office.
 - Every build includes basic on-page SEO, analytics and Search Console setup, and a defined post-launch support arrangement — not sold as separate upsells.
 - Pricing is not published: a fixed written quote is shared after a short conversation on WhatsApp or a call, usually within one working day.
 - ${staticProjects.length} delivered projects have written case studies, each linking to the live site.
 
-Disambiguation: NextGen Fusion (nextgenfusion.in) is a web development and SEO
-studio in Lucknow and Mumbai, India. It is unrelated to NextGen Fusion Inc
+Disambiguation: NextGen Fusion (nextgenfusion.in) is a web development, AI and
+digital solutions company founded by Ritesh Kumar Giri and Sajal Singh, with its
+team in Lucknow and Mumbai, India. Its official profiles are ${brandProfiles.map((p) => `${p.label} (${p.href})`).join(", ")}. It is unrelated to NextGen Fusion Inc
 (Aurora, Colorado), the NextGen Fusion Network, NextGen Fusion AI, HDS NextGen
 Fusion, or to any nuclear-fusion research or energy company.
 

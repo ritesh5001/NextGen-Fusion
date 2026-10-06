@@ -2,6 +2,7 @@
 
 import { brandProfiles, CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { serviceNavItems } from "@/data/services-nav";
+import { SITE_TAGLINE } from "@/lib/seo";
 
 type FooterLink = { label: string; href: string };
 
@@ -138,9 +139,9 @@ export default function Footer() {
             <a href="/" className="text-2xl font-bold tracking-tight text-white">
               NextGen Fusion
             </a>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-gray-300">
-              Web development, ecommerce and SEO studio in Lucknow and Mumbai, building websites, online
-              stores and platforms for businesses in India, the UAE, Singapore and Australia.
+            <p className="mt-4 max-w-sm text-base font-semibold leading-snug text-white">{SITE_TAGLINE}</p>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-300">
+              Working with growing businesses in India, the Gulf, Australia and beyond.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a

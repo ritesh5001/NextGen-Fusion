@@ -125,9 +125,11 @@ export const CONTACT_EMAIL = "contact@nextgenfusion.in"
  */
 const brandProfileLinks: { label: string; href: string }[] = [
   { label: "Google Business Profile", href: "" },
-  { label: "LinkedIn", href: "" },
-  { label: "Facebook", href: "" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/nextgen-fusion/" },
+  // The canonical page URL, not the /share/ redirect link Facebook hands out.
+  { label: "Facebook", href: "https://www.facebook.com/p/NextGen-Fusion-61585893445996/" },
   { label: "Instagram", href: "https://www.instagram.com/nextgenfusion.devs/" },
+  { label: "X", href: "https://x.com/nextgenfusion" },
   { label: "Clutch", href: "" },
   { label: "GoodFirms", href: "" },
 ]
