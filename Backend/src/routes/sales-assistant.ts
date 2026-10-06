@@ -3,6 +3,8 @@ import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { sendBookingConfirmedEmail } from '../lib/booking-email'
 import { buildAgencyKnowledge, buildFallbackAnswer } from '../lib/agency-knowledge'
+import { chatLimiter, formLimiter } from '../lib/rate-limit'
+import { requireTurnstile } from '../lib/turnstile'
 
 const router = Router()
 
@@ -163,7 +165,7 @@ async function generateAssistantReply(args: {
   return JSON.parse(content.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, ''))
 }
 
-router.post('/chatbot/message', async (req, res) => {
+router.post('/chatbot/message', chatLimiter, async (req, res) => {
   try {
     const sb = getSupabaseAdmin()
     const conversationId = trimString(req.body?.conversationId, 80)
@@ -367,7 +369,7 @@ router.get('/bookings/availability', async (req, res) => {
   }
 })
 
-router.post('/bookings/request', async (req, res) => {
+router.post('/bookings/request', formLimiter, requireTurnstile, async (req, res) => {
   try {
     const sb = getSupabaseAdmin()
     const requestType = trimString(req.body?.requestType, 40) === 'callback' ? 'callback' : 'meeting'

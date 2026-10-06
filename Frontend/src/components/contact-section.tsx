@@ -3,7 +3,7 @@
 import { m, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { ArrowRight, ArrowLeft, Target, Map, Lightbulb, Users, CheckCircle, AlertCircle, MapPin, Phone } from "lucide-react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useNearViewport } from "@/hooks/use-near-viewport"
 import BadgeSubtitle from "./badge-subtitle"
 import PhoneInput from "./phone-input"
@@ -11,6 +11,8 @@ import { apiService, ContactFormData } from "@/lib/api"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { OFFICE_HOURS, offices } from "@/data/offices"
 import { trackEvent } from "@/lib/analytics"
+import { Turnstile, type TurnstileHandle } from "./turnstile"
+import { TURNSTILE_ENABLED } from "@/lib/turnstile"
 
 // Animation variants
 const containerVariants = {
@@ -123,6 +125,9 @@ export default function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const captchaRef = useRef<TurnstileHandle>(null)
+  const captchaReady = !TURNSTILE_ENABLED || captchaToken !== null
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     email: "",
@@ -189,7 +194,7 @@ export default function ContactSection() {
   }
 
   const handleSubmit = async () => {
-    if (!isStep1Valid || !isStep2Valid) return
+    if (!isStep1Valid || !isStep2Valid || !captchaReady) return
 
     setIsSubmitting(true)
     setSubmitStatus('idle')
@@ -204,7 +209,7 @@ export default function ContactSection() {
         information_source: formData.referralSource,
       }
 
-      await apiService.submitContactForm(contactFormData)
+      await apiService.submitContactForm(contactFormData, captchaToken)
       trackEvent("contact_submit")
       setSubmitStatus('success')
       setCurrentStep(3) // Show success step
@@ -212,6 +217,7 @@ export default function ContactSection() {
       console.error('Form submission error:', error)
       setSubmitStatus('error')
       setErrorMessage(error instanceof Error ? error.message : 'Failed to submit form. Please try again.')
+      captchaRef.current?.reset()
     } finally {
       setIsSubmitting(false)
     }
@@ -520,6 +526,8 @@ export default function ContactSection() {
                     </div>
                   </m.div>
 
+                  <Turnstile ref={captchaRef} action="contact" onToken={setCaptchaToken} className="pt-2" />
+
                   <div className="flex gap-2 sm:gap-3 pt-2 sm:pt-4">
                     <m.button
                       onClick={handleBack}
@@ -532,7 +540,7 @@ export default function ContactSection() {
                     </m.button>
                     <m.button
                       onClick={handleSubmit}
-                      disabled={!isStep2Valid || isSubmitting}
+                      disabled={!isStep2Valid || isSubmitting || !captchaReady}
                       className="flex-1 bg-gray-900 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}

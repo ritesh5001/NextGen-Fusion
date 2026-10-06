@@ -1,10 +1,12 @@
 "use client"
 
-import { useEffect, useMemo, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { AnimatePresence, m } from "framer-motion"
 import { X, CalendarDays, PhoneCall, ArrowRight, CheckCircle2, Loader2 } from "lucide-react"
 import { API_BASE_URL } from "@/lib/api"
 import { trackEvent } from "@/lib/analytics"
+import { Turnstile, type TurnstileHandle } from "@/components/turnstile"
+import { TURNSTILE_ENABLED, turnstileHeaders } from "@/lib/turnstile"
 
 type BookingState = {
   open: boolean
@@ -38,6 +40,9 @@ export default function BookingModal() {
   const [loading, setLoading] = useState(false)
   const [slotsLoading, setSlotsLoading] = useState(false)
   const [error, setError] = useState("")
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const captchaRef = useRef<TurnstileHandle>(null)
+  const captchaReady = !TURNSTILE_ENABLED || captchaToken !== null
   const [bookingResponse, setBookingResponse] = useState<any>(null)
   const [slots, setSlots] = useState<BookingSlot[]>([])
   const [form, setForm] = useState({
@@ -174,7 +179,7 @@ export default function BookingModal() {
 
   async function submitBookingRequest(e: React.FormEvent) {
     e.preventDefault()
-    if (!form.name || !form.email) return
+    if (!form.name || !form.email || !captchaReady) return
     if (form.requestType === "meeting" && (!form.scheduledAt || !form.endsAt || !form.slotLabel)) {
       setError("Please select an available slot.")
       return
@@ -184,7 +189,7 @@ export default function BookingModal() {
     try {
       const res = await fetch(`${API_BASE_URL}/bookings/request`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...turnstileHeaders(captchaToken) },
         body: JSON.stringify(form),
       })
       const json = await res.json()
@@ -193,6 +198,7 @@ export default function BookingModal() {
       setStep("success")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save booking request")
+      captchaRef.current?.reset()
     } finally {
       setLoading(false)
     }
@@ -341,10 +347,11 @@ export default function BookingModal() {
                         </Field>
                       </>
                     )}
+                    <Turnstile ref={captchaRef} action="booking" onToken={setCaptchaToken} />
                     {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
                     </div>
                     <div className="border-t border-[#ebe3d2] bg-white/96 px-4 py-4 backdrop-blur sm:px-6 md:px-8">
-                      <button type="submit" disabled={loading} className={primaryButtonClass}>
+                      <button type="submit" disabled={loading || !captchaReady} className={primaryButtonClass}>
                       {loading ? "Saving..." : form.requestType === "meeting" ? "Confirm booking" : "Request callback"}
                       <ArrowRight className="h-4 w-4" />
                     </button>

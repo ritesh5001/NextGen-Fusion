@@ -16,11 +16,13 @@ import {
   TrendingUp,
   type LucideIcon,
 } from "lucide-react"
-import { useMemo, useState, type ReactNode } from "react"
+import { useMemo, useRef, useState, type ReactNode } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import { apiService, ProjectEstimatorData, ProjectEstimatorResponse } from "@/lib/api"
 import { computeBallpark, computeSupport, formatCurrency, PAYMENT_TERMS } from "@/lib/estimator-pricing"
 import { trackEvent } from "@/lib/analytics"
+import { Turnstile, type TurnstileHandle } from "./turnstile"
+import { TURNSTILE_ENABLED } from "@/lib/turnstile"
 
 const sectionVariants = {
   hidden: { opacity: 0 },
@@ -180,6 +182,9 @@ export default function ProjectEstimatorSection() {
   const [form, setForm] = useState<EstimatorForm>(initialForm)
   const [showDetail, setShowDetail] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const captchaRef = useRef<TurnstileHandle>(null)
+  const captchaReady = !TURNSTILE_ENABLED || captchaToken !== null
   const [error, setError] = useState("")
   const [result, setResult] = useState<ProjectEstimatorResponse | null>(null)
 
@@ -205,16 +210,17 @@ export default function ProjectEstimatorSection() {
     form.name.trim().length >= 2 && form.email.trim().length >= 5 && form.goals.trim().length >= 12
 
   async function handleEstimate() {
-    if (!resolved || !isStepTwoValid) return
+    if (!resolved || !isStepTwoValid || !captchaReady) return
     setLoading(true)
     setError("")
     try {
-      const response = await apiService.estimateProject(resolved)
+      const response = await apiService.estimateProject(resolved, captchaToken)
       trackEvent("estimator_submit", { project_type: resolved.projectType })
       setResult(response)
       setStep(3)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to generate estimate")
+      captchaRef.current?.reset()
     } finally {
       setLoading(false)
     }
@@ -543,6 +549,10 @@ export default function ProjectEstimatorSection() {
                 </div>
               )}
 
+              {step === 2 && (
+                <Turnstile ref={captchaRef} action="estimator" onToken={setCaptchaToken} className="mt-5" />
+              )}
+
               <div className="mt-8 flex flex-col gap-3 border-t border-gray-100 pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-sm text-gray-500">
                   {step === 1 && "Shape the brief — the price updates as you go."}
@@ -563,7 +573,7 @@ export default function ProjectEstimatorSection() {
                     </button>
                   )}
                   {step === 2 && (
-                    <button onClick={handleEstimate} disabled={!isStepTwoValid || loading} className={primaryButtonClass}>
+                    <button onClick={handleEstimate} disabled={!isStepTwoValid || loading || !captchaReady} className={primaryButtonClass}>
                       {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                       {loading ? "Estimating..." : "Generate estimate"}
                     </button>

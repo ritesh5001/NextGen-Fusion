@@ -1,7 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { Suspense, useState } from 'react'
+import { Suspense, useRef, useState } from 'react'
+import { Turnstile, type TurnstileHandle } from '@/components/turnstile'
+import { TURNSTILE_ENABLED, turnstileHeaders } from '@/lib/turnstile'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 const inputCls =
@@ -16,18 +18,22 @@ function SignupForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const captchaRef = useRef<TurnstileHandle>(null)
+  const captchaReady = !TURNSTILE_ENABLED || captchaToken !== null
 
   const rawRedirect = searchParams.get('redirect') || ''
   const safeRedirect = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/portal'
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!captchaReady) return
     setLoading(true)
     setError('')
     try {
       const res = await fetch('/api/client/signup', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json', ...turnstileHeaders(captchaToken) },
         body: JSON.stringify({ name, company, email, password }),
       })
       const json = await res.json()
@@ -41,6 +47,8 @@ function SignupForm() {
       setError('Unable to connect. Try again.')
     } finally {
       setLoading(false)
+      // Tokens are single-use: get a fresh one for the next attempt.
+      captchaRef.current?.reset()
     }
   }
 
@@ -93,9 +101,10 @@ function SignupForm() {
               placeholder="At least 8 characters"
             />
           </div>
+          <Turnstile ref={captchaRef} action="signup" onToken={setCaptchaToken} />
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !captchaReady}
             className="w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg hover:bg-slate-800 disabled:opacity-60 transition"
           >
             {loading ? 'Creating account...' : 'Create account'}

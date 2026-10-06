@@ -10,6 +10,7 @@ import {
 import { isR2Configured, presignR2Download } from '../lib/r2'
 import { sendProductDeliveryEmail } from '../lib/email'
 import { downloadSecret, verifyDownloadToken, buildDownloadUrl } from '../lib/store-download'
+import { checkoutLimiter, emailLimiter } from '../lib/rate-limit'
 
 const router = Router()
 
@@ -68,7 +69,7 @@ router.get('/store/products/:slug', async (req, res) => {
 // the client — and a pending purchase row is written BEFORE payment so every
 // paid order has an entitlement record for download/license.
 // ─────────────────────────────────────────────────────────────────────────────
-router.post('/store/checkout', async (req, res) => {
+router.post('/store/checkout', checkoutLimiter, async (req, res) => {
   try {
     const keys = getRazorpayKeys()
     if (!keys) {
@@ -151,7 +152,7 @@ router.post('/store/checkout', async (req, res) => {
   }
 })
 
-router.post('/store/verify', async (req, res) => {
+router.post('/store/verify', checkoutLimiter, async (req, res) => {
   try {
     const keys = getRazorpayKeys()
     if (!keys) {
@@ -306,7 +307,7 @@ router.get('/store/download', async (req, res) => {
 })
 
 // Re-send download links for all paid purchases tied to an email (guest re-download).
-router.post('/store/purchases/resend', async (req, res) => {
+router.post('/store/purchases/resend', emailLimiter, async (req, res) => {
   try {
     const email = cleanStr(req.body?.email, 200).toLowerCase()
     if (!EMAIL_RE.test(email)) {

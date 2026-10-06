@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import { forwardClientHeaders } from '@/lib/proxy-headers'
 
 function buildBackendUrl(pathname: string): string {
   const baseUrl = process.env.BACKEND_URL || 'http://localhost:4000'
@@ -9,9 +10,12 @@ export async function POST(req: NextRequest) {
   const backendUrl = buildBackendUrl('/api/admin/login')
   const body = await req.text()
 
+  const upstreamHeaders = new Headers({ 'Content-Type': 'application/json' })
+  forwardClientHeaders(req.headers, upstreamHeaders)
+
   const upstream = await fetch(backendUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: upstreamHeaders,
     body,
     cache: 'no-store',
   })

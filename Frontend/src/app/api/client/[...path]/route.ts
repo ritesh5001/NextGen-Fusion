@@ -1,3 +1,4 @@
+import { forwardClientHeaders } from "@/lib/proxy-headers"
 function buildBackendUrl(pathname: string, search: string): string {
   const baseUrl = process.env.BACKEND_URL || 'http://localhost:4000'
   const normalizedBase = baseUrl.replace(/\/$/, '')
@@ -8,6 +9,7 @@ async function proxyRequest(req: Request, method: string, path: string) {
   const { search } = new URL(req.url)
   const backendUrl = buildBackendUrl(`/api/client/${path}`, search)
   const headers = new Headers()
+  forwardClientHeaders(req.headers, headers)
 
   const reqContentType = req.headers.get('content-type')
   if (reqContentType) headers.set('content-type', reqContentType)

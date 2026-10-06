@@ -1,3 +1,4 @@
+import { turnstileHeaders } from '@/lib/turnstile'
 const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nextgenfusion.in'
 const DEFAULT_API_BASE_URL = process.env.NODE_ENV === 'production'
   ? `${DEFAULT_SITE_URL}/api`
@@ -551,18 +552,20 @@ export interface ProjectEstimatorResponse {
     }
   }
 
-  async submitContactForm(formData: ContactFormData): Promise<ContactFormResponse> {
+  async submitContactForm(formData: ContactFormData, turnstileToken: string | null = null): Promise<ContactFormResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/contact-forms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...turnstileHeaders(turnstileToken),
         },
         body: JSON.stringify(formData),
       })
 
       if (!response.ok) {
-        throw new Error(`Contact form submission failed: ${response.status}`)
+        const failure = await response.json().catch(() => ({}))
+        throw new Error(failure?.error || `Contact form submission failed: ${response.status}`)
       }
 
       const result = await response.json()
@@ -575,6 +578,7 @@ export interface ProjectEstimatorResponse {
 
   async submitCareerApplication(
     formData: CareerApplicationData,
+    turnstileToken: string | null = null,
   ): Promise<CareerApplicationResponse> {
     const body = new FormData()
     body.append('role_id', formData.role_id)
@@ -591,6 +595,7 @@ export interface ProjectEstimatorResponse {
     // No Content-Type header: the browser must set the multipart boundary itself.
     const response = await fetch(`${API_BASE_URL}/career-applications`, {
       method: 'POST',
+      headers: turnstileHeaders(turnstileToken),
       body,
     })
 
@@ -601,12 +606,13 @@ export interface ProjectEstimatorResponse {
     return result.data
   }
 
-  async estimateProject(formData: ProjectEstimatorData): Promise<ProjectEstimatorResponse> {
+  async estimateProject(formData: ProjectEstimatorData, turnstileToken: string | null = null): Promise<ProjectEstimatorResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/project-estimator`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...turnstileHeaders(turnstileToken),
         },
         body: JSON.stringify(formData),
       })

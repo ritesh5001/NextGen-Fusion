@@ -5,6 +5,8 @@ import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { getErrorMessage, logRouteError } from '../lib/http-errors'
 import { sendCareerAdminAlert, sendCareerApplicantAck } from '../lib/career-email'
+import { formLimiter } from '../lib/rate-limit'
+import { requireTurnstile } from '../lib/turnstile'
 
 const router = Router()
 
@@ -83,7 +85,7 @@ function requireApplicationsOpen(_req: Request, res: Response, next: NextFunctio
   next()
 }
 
-router.post('/career-applications', requireApplicationsOpen, handleResumeUpload, async (req, res) => {
+router.post('/career-applications', formLimiter, requireApplicationsOpen, requireTurnstile, handleResumeUpload, async (req, res) => {
   try {
     const payload = {
       role_id: trimString(req.body?.role_id),

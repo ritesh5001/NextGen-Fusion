@@ -6,6 +6,8 @@ import crypto from 'crypto'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { COOKIE_NAME } from '../middleware/auth'
 import { sendPasswordResetEmail } from '../lib/email'
+import { emailLimiter, formLimiter, loginLimiter } from '../lib/rate-limit'
+import { requireTurnstile } from '../lib/turnstile'
 
 const router = Router()
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000
@@ -63,7 +65,7 @@ async function createClientSession(res: Response, client: {
   })
 }
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
   try {
     const { email, password } = req.body
     if (!email || !password) {
@@ -97,7 +99,7 @@ router.post('/login', async (req, res) => {
   }
 })
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', formLimiter, requireTurnstile, async (req, res) => {
   try {
     const email = normalizeEmail(req.body?.email)
     const name = typeof req.body?.name === 'string' ? req.body.name.trim() : ''
@@ -147,7 +149,7 @@ router.post('/signup', async (req, res) => {
   }
 })
 
-router.post('/forgot-password', async (req, res) => {
+router.post('/forgot-password', emailLimiter, requireTurnstile, async (req, res) => {
   try {
     const email = normalizeEmail(req.body?.email)
     if (!validEmail(email)) {
@@ -183,7 +185,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 })
 
-router.post('/reset-password', async (req, res) => {
+router.post('/reset-password', loginLimiter, async (req, res) => {
   try {
     const token = typeof req.body?.token === 'string' ? req.body.token.trim() : ''
     const password = typeof req.body?.password === 'string' ? req.body.password : ''

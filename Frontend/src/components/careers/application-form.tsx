@@ -6,6 +6,8 @@ import { apiService } from "@/lib/api"
 import { cn } from "@/lib/utils"
 import { jobOpenings } from "@/data/careers"
 import { trackEvent } from "@/lib/analytics"
+import { Turnstile, type TurnstileHandle } from "@/components/turnstile"
+import { TURNSTILE_ENABLED } from "@/lib/turnstile"
 
 const MAX_RESUME_MB = 5
 const MAX_RESUME_BYTES = MAX_RESUME_MB * 1024 * 1024
@@ -33,6 +35,9 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const captchaRef = useRef<TurnstileHandle>(null)
+  const captchaReady = !TURNSTILE_ENABLED || captchaToken !== null
 
   function validateResume(file: File): string | null {
     const lower = file.name.toLowerCase()
@@ -82,7 +87,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
     if (!resume) nextErrors.resume = "Attach your resume"
 
     setErrors(nextErrors)
-    if (Object.keys(nextErrors).length > 0 || !resume) return
+    if (Object.keys(nextErrors).length > 0 || !resume || !captchaReady) return
 
     const role = jobOpenings.find((job) => job.id === roleId)
 
@@ -99,13 +104,14 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         portfolio_url: String(data.get("portfolio_url") || "").trim(),
         cover_note: String(data.get("cover_note") || "").trim(),
         resume,
-      })
+      }, captchaToken)
       trackEvent("career_application_submit", { role_id: roleId })
       setSubmitted(true)
       form.reset()
       clearResume()
       setRoleId("")
     } catch (error) {
+      captchaRef.current?.reset()
       setSubmitError(
         error instanceof Error
           ? error.message
@@ -335,13 +341,15 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         </p>
       )}
 
+      <Turnstile ref={captchaRef} action="careers" onToken={setCaptchaToken} className="mt-6" />
+
       <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-gray-500">
           We use your details only to consider you for this role.
         </p>
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || !captchaReady}
           className="inline-flex w-full items-center justify-center rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {submitting ? (

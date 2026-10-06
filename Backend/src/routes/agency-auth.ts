@@ -3,6 +3,7 @@ import { SignJWT } from 'jose'
 import bcrypt from 'bcryptjs'
 import { getSupabaseAdmin } from '../lib/supabase'
 import { COOKIE_NAME } from '../middleware/auth'
+import { loginLimiter } from '../lib/rate-limit'
 
 const router = Router()
 
@@ -14,7 +15,7 @@ function getSecret(): Uint8Array {
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
   try {
     const { email, password } = req.body
     if (!email || !password) {

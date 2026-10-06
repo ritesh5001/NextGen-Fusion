@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { SignJWT } from 'jose'
 import { COOKIE_NAME, requireAuth } from '../middleware/auth'
+import { loginLimiter } from '../lib/rate-limit'
 
 const router = Router()
 const COOKIE_MAX_AGE_SEC = 60 * 60 * 24 * 7 // 7 days
@@ -11,7 +12,7 @@ function getSecret(): Uint8Array {
   return new TextEncoder().encode(secret)
 }
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
   try {
     const { password } = req.body
     if (!password || typeof password !== 'string') {

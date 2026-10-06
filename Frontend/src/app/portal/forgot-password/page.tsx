@@ -1,7 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { Turnstile, type TurnstileHandle } from '@/components/turnstile'
+import { TURNSTILE_ENABLED, turnstileHeaders } from '@/lib/turnstile'
 
 const inputCls =
   'w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400'
@@ -11,16 +13,20 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const captchaRef = useRef<TurnstileHandle>(null)
+  const captchaReady = !TURNSTILE_ENABLED || captchaToken !== null
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!captchaReady) return
     setLoading(true)
     setError('')
     setMessage('')
     try {
       const res = await fetch('/api/client/forgot-password', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json', ...turnstileHeaders(captchaToken) },
         body: JSON.stringify({ email }),
       })
       const json = await res.json()
@@ -33,6 +39,8 @@ export default function ForgotPasswordPage() {
       setError('Unable to connect. Try again.')
     } finally {
       setLoading(false)
+      // Tokens are single-use: get a fresh one for the next attempt.
+      captchaRef.current?.reset()
     }
   }
 
@@ -69,9 +77,10 @@ export default function ForgotPasswordPage() {
               placeholder="you@yourcompany.com"
             />
           </div>
+          <Turnstile ref={captchaRef} action="forgot_password" onToken={setCaptchaToken} />
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !captchaReady}
             className="w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg hover:bg-slate-800 disabled:opacity-60 transition"
           >
             {loading ? 'Sending...' : 'Send reset link'}

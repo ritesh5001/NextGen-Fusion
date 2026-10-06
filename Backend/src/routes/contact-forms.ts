@@ -2,6 +2,8 @@ import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
 import { sendContactFormEmail, defaultAcknowledgementBody, defaultAcknowledgementSubject } from '../lib/contact-form-email'
 import { getSupabaseAdmin } from '../lib/supabase'
+import { formLimiter } from '../lib/rate-limit'
+import { requireTurnstile } from '../lib/turnstile'
 
 const router = Router()
 
@@ -25,7 +27,7 @@ function pickSubmission(body: any): Record<string, unknown> {
 }
 
 // Public endpoint used by the website contact form.
-router.post('/contact-forms', async (req, res) => {
+router.post('/contact-forms', formLimiter, requireTurnstile, async (req, res) => {
   try {
     const payload = pickSubmission(req.body)
     if (!payload.name || !payload.email || !payload.phone || !payload.message || !payload.information_source) {

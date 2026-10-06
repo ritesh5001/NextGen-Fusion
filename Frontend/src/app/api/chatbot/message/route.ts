@@ -1,3 +1,4 @@
+import { forwardClientHeaders } from "@/lib/proxy-headers"
 function buildBackendUrl(pathname: string): string {
   const baseUrl = process.env.BACKEND_URL || 'http://localhost:4000'
   return `${baseUrl.replace(/\/$/, '')}${pathname}`
@@ -16,6 +17,7 @@ export async function POST(req: Request) {
 
   const responseBody = await upstream.text()
   const headers = new Headers()
+  forwardClientHeaders(req.headers, headers)
   const contentType = upstream.headers.get('content-type')
   if (contentType) headers.set('content-type', contentType)
 

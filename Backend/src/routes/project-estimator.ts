@@ -1,6 +1,8 @@
 import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
 import { getSupabaseAdmin } from '../lib/supabase'
+import { formLimiter } from '../lib/rate-limit'
+import { requireTurnstile } from '../lib/turnstile'
 
 const router = Router()
 
@@ -465,7 +467,7 @@ async function generateWithGrok(input: EstimatorInput, baseline: EstimateResult)
   }
 }
 
-router.post('/project-estimator', async (req, res) => {
+router.post('/project-estimator', formLimiter, requireTurnstile, async (req, res) => {
   try {
     const input = sanitizeInput(req.body)
     if (!input) {
