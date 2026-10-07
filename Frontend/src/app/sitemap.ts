@@ -11,6 +11,7 @@ import { guidePages } from "@/data/guides"
 import { australia } from "@/data/australia"
 import { india } from "@/data/india"
 import { oman } from "@/data/oman"
+import { thailand } from "@/data/thailand"
 import {
   cityPath,
   cityServicePath,
@@ -102,6 +103,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...regionEntries(australia),
     ...regionEntries(india),
     ...regionEntries(oman),
+    ...regionEntries(thailand),
     ...staticProjects.map((p) => entry(`/work/${p.slug}`, WORK_LAST_MODIFIED)),
     // Team profiles were absent from the sitemap entirely while also declaring
     // /team/ as their canonical — between the two, four pages of real

@@ -24,6 +24,7 @@ export const SERVICE_AREAS: { code: string; name: string }[] = [
   { code: "AE", name: "United Arab Emirates" },
   { code: "AU", name: "Australia" },
   { code: "OM", name: "Oman" },
+  { code: "TH", name: "Thailand" },
   { code: "SG", name: "Singapore" },
 ]
 

@@ -4,6 +4,7 @@ import { locationPages } from "@/data/locations"
 import { australia } from "@/data/australia"
 import { india } from "@/data/india"
 import { oman } from "@/data/oman"
+import { thailand } from "@/data/thailand"
 import { cityPath } from "@/data/city-pages/paths"
 import { team } from "@/data/team"
 import { brandProfiles } from "@/data/offices"
@@ -45,6 +46,7 @@ Key facts for citation:
 - Singapore: works with Singapore businesses remotely from India (office hours overlap Singapore afternoons). No Singapore office and no Singapore-registered client yet; not a PSG pre-approved vendor.
 - Australia: works with businesses across Australia remotely from India, during Australian afternoons and evenings. No Australian office; not on any Australian government procurement panel.
 - Oman: works with businesses in Muscat, Salalah, Sohar and across Oman remotely from India, on Omani working hours. There is no Omani office.
+- Thailand: works with businesses in Bangkok, Phuket, Chiang Mai, Pattaya and across Thailand remotely from India; the working day runs 11:30 to 20:30 Thailand time. There is no Thai office.
 - Every build includes basic on-page SEO, analytics and Search Console setup, and a defined post-launch support arrangement — not sold as separate upsells.
 - Pricing is not published: a fixed written quote is shared after a short conversation on WhatsApp or a call, usually within one working day.
 - ${staticProjects.length} delivered projects have written case studies, each linking to the live site.
@@ -82,6 +84,11 @@ ${australia.cities.map((c) => line(cityPath(australia, c), `${c.name}, ${c.state
 
 ${line(oman.path, "Oman", "websites, ecommerce, SEO, apps and automation for Omani businesses in Arabic and English, served remotely")}
 ${oman.cities.map((c) => line(cityPath(oman, c), `${c.name}, ${c.stateCode}`, c.summary)).join("\n")}
+
+## Thailand
+
+${line(thailand.path, "Thailand", "websites, ecommerce, SEO, LINE, apps and automation for Thai businesses in Thai and English, served remotely")}
+${thailand.cities.map((c) => line(cityPath(thailand, c), `${c.name}, ${c.stateCode}`, c.summary)).join("\n")}
 
 ## Company
 

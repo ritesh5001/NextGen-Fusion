@@ -74,6 +74,15 @@ const locations: { group: string; links: FooterLink[] }[] = [
       { label: "All Omani cities", href: "/oman/" },
     ],
   },
+  {
+    group: "Thailand",
+    links: [
+      { label: "Bangkok", href: "/thailand/bangkok/" },
+      { label: "Phuket", href: "/thailand/phuket/" },
+      { label: "Chiang Mai", href: "/thailand/chiang-mai/" },
+      { label: "All Thai cities", href: "/thailand/" },
+    ],
+  },
 ];
 
 const resources: FooterLink[] = [
