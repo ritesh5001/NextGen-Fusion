@@ -141,6 +141,118 @@ export const categoryCopy: Record<string, CategoryCopy> = {
       { label: "Marketplace development services", href: "/services/marketplace-development-services/" },
     ],
   },
+  "website-redesign": {
+    title: "Website Redesign Guides: When to Fix, When to Rebuild",
+    heading: "Website Redesign",
+    description:
+      "Signs your website is costing you customers, how to decide between fixing and rebuilding, and how to redesign without losing your Google rankings.",
+    intro: [
+      "Most websites don't need a full redesign. They need the few problems that lose customers fixed: an unclear first screen, a broken mobile layout, a contact form that quietly stopped sending.",
+      "These guides help you work out which problems you have, what to keep, and how to rebuild safely when a rebuild really is the answer.",
+    ],
+    links: [
+      { label: "Web design services", href: "/services/web-design-services/" },
+      { label: "Website development services", href: "/services/website-development-services/" },
+    ],
+  },
+  "ai-automation": {
+    title: "AI & Automation Guides for Small Businesses",
+    heading: "AI & Automation",
+    description:
+      "Practical guides to AI chatbots, agents, WhatsApp automation and workflow tools: what they do well, where they go wrong, and how to start small.",
+    intro: [
+      "AI is most useful in a business when it takes repetitive work off people: answering the same questions, sorting enquiries, drafting replies, moving data between tools.",
+      "These guides explain what to automate first, how to keep answers reliable and data private, and when a person should stay in the loop.",
+    ],
+    links: [
+      { label: "AI automation services", href: "/services/ai-automation-development-services/" },
+      { label: "API integration services", href: "/services/api-integration-services/" },
+    ],
+  },
+  "wordpress-woocommerce": {
+    title: "WordPress & WooCommerce Guides: Speed, Security & Fixes",
+    heading: "WordPress & WooCommerce",
+    description:
+      "Fix slow, hacked or broken WordPress and WooCommerce sites: speed, plugins, updates, checkout problems and when to go headless.",
+    intro: [
+      "WordPress runs a huge share of business websites, and most of its problems come from what's been added over the years: plugins, page builders, skipped updates and cheap hosting.",
+      "These guides walk through the fixes in the order that makes the biggest difference, from the team that maintains WordPress and WooCommerce sites every month.",
+    ],
+    links: [
+      { label: "Website maintenance", href: "/services/website-maintenance-services/" },
+      { label: "E-commerce development", href: "/services/ecommerce-web-development-services/" },
+    ],
+  },
+  "ux-conversion": {
+    title: "UX & Conversion Guides: Turn Visitors Into Customers",
+    heading: "UX & Conversion",
+    description:
+      "How design affects enquiries and sales: hero sections, navigation, trust signals, calls to action, mobile-first design and accessibility.",
+    intro: [
+      "Good UX rarely brings more visitors. It turns more of the visitors you already have into enquiries and sales, which is why it often pays back faster than more advertising.",
+      "These guides cover the parts of a page that decide whether people act, with fixes you can test one at a time.",
+    ],
+    links: [
+      { label: "Web design services", href: "/services/web-design-services/" },
+      { label: "Free SEO checker", href: "/free-seo-checker/" },
+    ],
+  },
+  "custom-software": {
+    title: "Custom Software & SaaS Guides for Founders",
+    heading: "Custom Software",
+    description:
+      "When to build custom software, how to scope a SaaS MVP, choosing a tech stack, multi-tenancy, scaling and writing requirements developers can quote on.",
+    intro: [
+      "Custom software pays off when your process is genuinely different or your tools cost more in workarounds than a build would. It goes wrong when the first version tries to do everything.",
+      "These guides help founders and operators scope, plan and build software that gets used, with the trade-offs explained in plain English.",
+    ],
+    links: [
+      { label: "Software development services", href: "/services/software-development-services/" },
+      { label: "Next.js development", href: "/services/nextjs-development-services/" },
+    ],
+  },
+  "website-maintenance": {
+    title: "Website Maintenance Guides: Security, Speed & Uptime",
+    heading: "Website Maintenance",
+    description:
+      "Keep a business website secure, fast and online: security checklists, backups, SSL, hosting, email deliverability and what to do when things break.",
+    intro: [
+      "A website left alone doesn't stay the same. Software falls behind, certificates lapse, forms stop sending and speed slowly degrades, until something breaks in front of customers.",
+      "These guides cover the habits that prevent that, and the steps to follow when something has already gone wrong.",
+    ],
+    links: [
+      { label: "Website maintenance services", href: "/services/website-maintenance-services/" },
+      { label: "Cloud solutions", href: "/services/cloud-solutions/" },
+    ],
+  },
+  "hiring-a-developer": {
+    title: "Hiring a Web Developer: Guides for Buyers",
+    heading: "Hiring a Developer",
+    description:
+      "How to hire a web developer or agency safely: briefs, questions to ask, contracts, pricing models, ownership and running remote projects.",
+    intro: [
+      "Most bad experiences with developers start with a vague brief, an unchecked assumption and an agreement that didn't say who owns what.",
+      "These guides are the checklists we'd want our own clients to use on us, whether you hire a freelancer, an agency or a team abroad.",
+    ],
+    links: [
+      { label: "Get a written quote", href: "/contact/" },
+      { label: "Working with international clients", href: "/offshore-web-development-company-india/" },
+    ],
+  },
+  "mobile-apps": {
+    title: "Mobile App Guides: Planning, Building & Launching",
+    heading: "Mobile Apps",
+    description:
+      "Whether you need an app, how to choose React Native, Flutter or native, PWAs, app store approval, onboarding and what drives app cost.",
+    intro: [
+      "Many businesses are better served by a fast mobile website than an app. When an app is the right call, its success is decided by scope, onboarding and the first week of use.",
+      "These guides help you decide, choose an approach and get through app store review without surprises.",
+    ],
+    links: [
+      { label: "App development services", href: "/services/android-app-development-services/" },
+      { label: "Software development services", href: "/services/software-development-services/" },
+    ],
+  },
 }
 
 /** Below this, an archive is a list of one or two cards whatever its intro says. */

@@ -207,12 +207,13 @@ const nextConfig = {
   // Same-origin /api proxy to the Backend. Filesystem route handlers under
   // src/app/api/* (admin, bookings, chatbot) take precedence over these; the
   // rewrites cover the endpoints that have no route handler (contact-forms,
-  // project-estimator, cron).
+  // project-estimator, site-check, cron).
   async rewrites() {
     return [
       { source: '/api/admin/:path*', destination: `${BACKEND_URL}/api/admin/:path*` },
       { source: '/api/contact-forms', destination: `${BACKEND_URL}/api/contact-forms` },
       { source: '/api/project-estimator', destination: `${BACKEND_URL}/api/project-estimator` },
+      { source: '/api/site-check', destination: `${BACKEND_URL}/api/site-check` },
       { source: '/api/chatbot/:path*', destination: `${BACKEND_URL}/api/chatbot/:path*` },
       { source: '/api/bookings/:path*', destination: `${BACKEND_URL}/api/bookings/:path*` },
       { source: '/api/cron/:path*', destination: `${BACKEND_URL}/api/cron/:path*` },

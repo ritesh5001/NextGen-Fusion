@@ -59,7 +59,8 @@ function pickPost(body: any) {
 }
 
 // Public list. The website filters to active posts itself, but we only ever
-// expose active ones so an unpublished draft can never leak through the API.
+// expose active ones so an unpublished draft can never leak through the API,
+// and none dated in the future, so a post can be scheduled by its date.
 router.get('/blog-posts', async (_req, res) => {
   try {
     const sb = getSupabaseAdmin()
@@ -67,6 +68,7 @@ router.get('/blog-posts', async (_req, res) => {
       .from('blog_posts')
       .select(COLUMNS)
       .eq('is_active', true)
+      .lte('published_at', new Date().toISOString())
       .order('display_order', { ascending: true })
       .order('published_at', { ascending: false })
 
@@ -96,6 +98,7 @@ router.get('/blog-posts/:id', async (req, res) => {
       .select(COLUMNS)
       .eq(column, id)
       .eq('is_active', true)
+      .lte('published_at', new Date().toISOString())
       .single()
 
     if (error || !data) {
@@ -155,7 +158,8 @@ router.post('/admin/blog-posts', requireAuth, async (req, res) => {
       })
       return
     }
-    if (data?.is_active && data.slug) pingIndexNow([`/blog/${data.slug}/`])
+    const isLive = data?.is_active && new Date(data.published_at) <= new Date()
+    if (isLive && data.slug) pingIndexNow([`/blog/${data.slug}/`])
     if (data?.slug) revalidateFrontend(data.slug)
     res.status(201).json({ data })
   } catch (err) {

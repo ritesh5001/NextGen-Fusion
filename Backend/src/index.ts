@@ -36,6 +36,7 @@ import clientBrandRoutes from './routes/client-brand'
 import productflowRoutes from './routes/productflow'
 import productflowWebhookRoutes from './routes/productflow-webhook'
 import { startImageCleanupWorker } from './lib/image-cleanup'
+import { startBlogCalendarPublisher } from './lib/blog-calendar/publisher'
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -137,4 +138,5 @@ app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`)
   startCampaignProcessor()
   startImageCleanupWorker()
+  startBlogCalendarPublisher()
 })
