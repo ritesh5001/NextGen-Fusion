@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { JsonLd } from "@/components/json-ld"
 import CTABanner from "@/components/cta-banner"
-import { absoluteUrl, assetUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
+import { absoluteUrl, assetUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, PROJECTS_DELIVERED, siteUrl } from "@/lib/seo"
 import { personId, team } from "@/data/team"
 import { offices } from "@/data/offices"
 import { staticProjects } from "@/lib/static-projects"
@@ -104,7 +104,14 @@ export default function AboutPage() {
             the people who built it are gone. That is the gap the company exists to close.
           </p>
 
-          <dl className="mt-12 grid gap-6 sm:grid-cols-2">
+          <dl className="mt-12 grid gap-6 sm:grid-cols-3">
+            <div className="rounded-2xl border border-gray-200 p-6">
+              <dt className="text-sm font-medium text-gray-500">Projects delivered</dt>
+              <dd className="mt-2 text-4xl font-bold text-gray-900">{PROJECTS_DELIVERED}</dd>
+              <p className="mt-2 text-sm text-gray-600">
+                Websites, online stores and web apps, live for clients in India and abroad.
+              </p>
+            </div>
             <div className="rounded-2xl border border-gray-200 p-6">
               <dt className="text-sm font-medium text-gray-500">Written case studies</dt>
               <dd className="mt-2 text-4xl font-bold text-gray-900">{caseStudyCount}</dd>

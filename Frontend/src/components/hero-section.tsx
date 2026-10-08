@@ -3,6 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { openBookingModal } from "@/lib/booking"
+import { PROJECTS_DELIVERED } from "@/lib/seo"
 
 /**
  * Entrance animations are plain CSS (`.hero-rise` in globals.css), not
@@ -11,7 +12,7 @@ import { openBookingModal } from "@/lib/booking"
  * blank hero — and it put the whole library in the homepage's first-load JS.
  * CSS animations start with the first paint and respect prefers-reduced-motion.
  */
-const HeroContent = ({ projectCount }: { projectCount: number }) => (
+const HeroContent = () => (
   <div className="max-w-7xl mx-auto text-center">
     {/* Available for work badge */}
     <div className="flex items-center justify-center mb-8 hero-rise">
@@ -126,13 +127,13 @@ const HeroContent = ({ projectCount }: { projectCount: number }) => (
 
     {/* Proof line directly under the CTA */}
     <p className="mt-5 text-sm text-gray-600 hero-rise hero-delay-4">
-      {projectCount} real projects delivered · 0 clients ghosted
+      {PROJECTS_DELIVERED} projects delivered · 0 clients ghosted
     </p>
   </div>
 )
 
 // Main Hero Section Component
-export default function HeroSection({ projectCount }: { projectCount: number }) {
+export default function HeroSection() {
   return (
     <div className="min-h-screen w-full bg-white flex items-center justify-center px-4 relative overflow-hidden">
       {/* Background Images
@@ -171,7 +172,7 @@ export default function HeroSection({ projectCount }: { projectCount: number }) 
       </div>
 
       <div className="w-full max-w-7xl mx-auto text-center relative z-10">
-        <HeroContent projectCount={projectCount} />
+        <HeroContent />
       </div>
     </div>
   )

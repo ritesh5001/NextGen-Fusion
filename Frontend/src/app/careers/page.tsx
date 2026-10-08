@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { PROJECTS_DELIVERED } from "@/lib/seo"
 import { m } from "framer-motion"
 import Link from "next/link"
 import {
@@ -47,7 +48,7 @@ const itemVariants = {
 }
 
 const stats = [
-  { value: "50+", label: "Live client websites" },
+  { value: PROJECTS_DELIVERED, label: "Projects delivered" },
   { value: "10+", label: "Full-stack applications" },
   { value: "2", label: "Offices in India" },
   { value: "100%", label: "Work that ships" },

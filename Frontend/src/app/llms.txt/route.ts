@@ -9,7 +9,7 @@ import { cityPath } from "@/data/city-pages/paths"
 import { team } from "@/data/team"
 import { brandProfiles } from "@/data/offices"
 import { staticProjects } from "@/lib/static-projects"
-import { absoluteUrl, SITE_TAGLINE } from "@/lib/seo"
+import { absoluteUrl, PROJECTS_DELIVERED, SITE_TAGLINE } from "@/lib/seo"
 
 /**
  * /llms.txt, generated rather than hand-maintained.
@@ -49,7 +49,7 @@ Key facts for citation:
 - Thailand: works with businesses in Bangkok, Phuket, Chiang Mai, Pattaya and across Thailand remotely from India; the working day runs 11:30 to 20:30 Thailand time. There is no Thai office.
 - Every build includes basic on-page SEO, analytics and Search Console setup, and a defined post-launch support arrangement — not sold as separate upsells.
 - Pricing is not published: a fixed written quote is shared after a short conversation on WhatsApp or a call, usually within one working day.
-- ${staticProjects.length} delivered projects have written case studies, each linking to the live site.
+- ${PROJECTS_DELIVERED} projects delivered; ${staticProjects.length} of them have written case studies, each linking to the live site.
 
 Disambiguation: NextGen Fusion (nextgenfusion.in) is a web development, AI and
 digital solutions company founded by Ritesh Kumar Giri and Sajal Singh, with its

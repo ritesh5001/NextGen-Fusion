@@ -17,6 +17,7 @@ import {
 } from "lucide-react"
 import { deliveredProjects } from "@/lib/delivered-projects"
 import { staticProjects } from "@/lib/static-projects"
+import { PROJECTS_DELIVERED } from "@/lib/seo"
 
 /**
  * Client logos, taken from each client's own website (or, where the site
@@ -48,16 +49,15 @@ const clientLogos: { slug: string; width: number; height: number }[] = [
 const titleBySlug = new Map(staticProjects.map((project) => [project.slug, project.title]))
 const logos = clientLogos.filter((logo) => titleBySlug.has(logo.slug))
 
-// Every number is counted from the site's own data at build time, so it moves
-// when a project is added and never overstates what /work/ can show.
-const liveSites = deliveredProjects.length
+// The delivered total is the company-wide figure (PROJECTS_DELIVERED); the
+// rest are counted from the site's own data at build time.
 const onlineStores = deliveredProjects.filter((project) => project.category === "ecommerce").length
 const caseStudies = staticProjects.length
 
 type Stat = { Icon: LucideIcon; value: string; label: string; detail: string }
 
 const stats: Stat[] = [
-  { Icon: MonitorSmartphone, value: `${liveSites}`, label: "Live websites delivered", detail: "Every one listed on our work page" },
+  { Icon: MonitorSmartphone, value: PROJECTS_DELIVERED, label: "Projects delivered", detail: "Websites, online stores and web apps" },
   { Icon: ShoppingBag, value: `${onlineStores}`, label: "Online stores built", detail: "Shopify, WooCommerce and custom" },
   { Icon: FileText, value: `${caseStudies}`, label: "Detailed case studies", detail: "Each links to the live site" },
   // India, the UAE (Cleanship), the UK and Italy: client domains on /work/.

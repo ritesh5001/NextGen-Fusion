@@ -10,6 +10,9 @@ export const SITE_NAME = "NextGen Fusion"
 /** The brand line, used wherever the site describes itself in one sentence. */
 export const SITE_TAGLINE = "Web Development, AI & Digital Solutions for Growing Businesses"
 
+/** Projects delivered to date, the one figure every page quotes. Change it here. */
+export const PROJECTS_DELIVERED = "100+"
+
 /**
  * Where we take on work. The team works remotely from Lucknow and Mumbai,
  * India; there is no office in any of the other markets, and pages say so.

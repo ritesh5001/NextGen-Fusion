@@ -7,6 +7,7 @@ import { AnimatedTooltip } from "./ui/animated-tooltip"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { team } from "@/data/team"
 import { staticProjects } from "@/lib/static-projects"
+import { PROJECTS_DELIVERED } from "@/lib/seo"
 
 // Animation variants
 const containerVariants = {
@@ -164,8 +165,9 @@ export default function AboutUsSection() {
               >
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Our Focus and Work</h3>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  Websites and online stores for D2C brands, manufacturers, institutes and B2B firms,
-                  with {staticProjects.length} of them written up as case studies you can check. We judge
+                  {PROJECTS_DELIVERED} websites, online stores and web apps delivered for D2C brands,
+                  manufacturers, institutes and B2B firms, with {staticProjects.length} of them written up
+                  as case studies you can check. We judge
                   a build by the enquiries and sales it brings in, not by how it looks in a pitch deck.
                 </p>
               </m.div>

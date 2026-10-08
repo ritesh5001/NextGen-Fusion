@@ -78,7 +78,7 @@ export default function Home() {
   return (
     <>
       <JsonLd data={homeSchema} />
-      <HomeClient projectCount={staticProjects.length} featuredProjects={featuredProjects} />
+      <HomeClient featuredProjects={featuredProjects} />
     </>
   )
 }

@@ -76,6 +76,7 @@ const topics: KnowledgeTopic[] = [
 const generalFacts = [
   'NextGen Fusion offers website development, e-commerce, web design, Android app development, AI automation, SEO, PPC, social media marketing, software development, API integration, cloud solutions, and website maintenance.',
   'The company positions work around conversion, performance, scalability, SEO readiness, and clean implementation.',
+  'NextGen Fusion has delivered 100+ projects (websites, online stores and web apps) for clients in India and abroad; detailed case studies are on the website at /work/.',
   'Discovery calls are used for deeper scoping when the requirement is large, budget-sensitive, or integration-heavy.',
   'For cost questions, the assistant should answer in USD and stay close to these ranges: WordPress or Shopify websites around $100-$200, SEO around $100, and custom-coded websites around $100-$2,000 depending on scope.',
   'For timeline questions, the assistant should give realistic ranges and mention what usually affects delivery speed.',

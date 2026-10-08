@@ -17,17 +17,11 @@ const ContactSection = dynamic(() => import("@/components/contact-section"))
 const WorkSection = dynamic(() => import("@/components/work-section"))
 const DeliveredWall = dynamic(() => import("@/components/delivered-wall"))
 
-export default function HomeClient({
-  projectCount,
-  featuredProjects,
-}: {
-  projectCount: number
-  featuredProjects: FeaturedProject[]
-}) {
+export default function HomeClient({ featuredProjects }: { featuredProjects: FeaturedProject[] }) {
   return (
     <main className="min-h-screen overflow-x-hidden bg-white">
       <div id="hero">
-        <HeroSection projectCount={projectCount} />
+        <HeroSection />
       </div>
       <SocialProofSection />
       <div id="work" className="defer-render">
