@@ -468,7 +468,7 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="/work"
+                  href="/work/"
                   className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-6 py-3 text-white font-semibold hover:bg-white/10 transition-colors"
                 >
                   View Our Work

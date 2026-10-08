@@ -127,7 +127,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
             </Link>
             <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
             <Link
-              href="/work"
+              href="/work/"
               className="hover:text-gray-700 transition-colors"
             >
               Work
@@ -536,7 +536,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
                   ))}
                 </div>
                 <Link
-                  href="/work"
+                  href="/work/"
                   className="inline-flex items-center gap-1 text-xs text-purple-600 hover:text-purple-800 font-semibold mt-5 transition-colors"
                 >
                   View all {allProjects.length} projects
@@ -556,7 +556,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
               More case studies
             </h2>
             <Link
-              href="/work"
+              href="/work/"
               className="text-sm text-purple-600 hover:text-purple-800 font-semibold transition-colors flex items-center gap-1"
             >
               View all
@@ -625,7 +625,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
               Start a conversation
             </Link>
             <Link
-              href="/work"
+              href="/work/"
               className="inline-flex items-center justify-center gap-2 border border-white/20 text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-colors text-sm"
             >
               Browse all projects

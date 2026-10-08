@@ -2,7 +2,8 @@ import CTABanner from "@/components/cta-banner"
 import { JsonLd } from "@/components/json-ld"
 import { absoluteUrl, breadcrumbSchema } from "@/lib/seo"
 import { cityServices, type CityService } from "@/data/city-pages/services"
-import { cityPath, cityServiceHref, cityServicePath } from "@/data/city-pages/paths"
+import { cityPath, cityServiceHref, cityServicePath, isServicePageIndexed } from "@/data/city-pages/paths"
+import { isExistingPage } from "@/data/city-pages/types"
 import type { CityPage, CityRegion, CityServicePage } from "@/data/city-pages/types"
 import { GrowthProblemFinder } from "./growth-problem-finder"
 import { SelfCheck } from "./self-check"
@@ -36,9 +37,19 @@ function schemaFor<C extends CityPage>({ region, city, service, page }: Props<C>
   ]
 }
 
+// Linking every service to every city is the footprint of a doorway network,
+// so siblings are limited to the same group and to cities whose page for this
+// service is indexed.
+const OTHER_CITIES_MAX = 5
+
 export function CityServicePageView<C extends CityPage>(props: Props<C>) {
   const { region, city, service, page } = props
   const topic = `${service.label} in ${city.name}`
+  const relatedServices = cityServices.filter((s) => s.group === service.group && s.slug !== service.slug)
+  const otherCities = region.cities
+    .filter((c) => c.slug !== city.slug)
+    .filter((c) => isExistingPage(c.services[service.slug]) || isServicePageIndexed(region, c, service.slug))
+    .slice(0, OTHER_CITIES_MAX)
 
   return (
     <>
@@ -80,20 +91,17 @@ export function CityServicePageView<C extends CityPage>(props: Props<C>) {
           <CityLinkList
             heading={`More for ${city.name} businesses`}
             links={[
-              ...cityServices
-                .filter((s) => s.slug !== service.slug)
-                .map((s) => ({ href: cityServiceHref(region, city, s.slug), label: s.label })),
+              ...relatedServices.map((s) => ({ href: cityServiceHref(region, city, s.slug), label: s.label })),
               { href: cityPath(region, city), label: `All services in ${city.name}` },
             ]}
           />
 
           <CityLinkList
-            heading={`${service.label} in other cities`}
+            heading={otherCities.length > 0 ? `${service.label} in other cities` : `More about ${service.label}`}
             links={[
-              ...region.cities
-                .filter((c) => c.slug !== city.slug)
-                .map((c) => ({ href: cityServiceHref(region, c, service.slug), label: c.name })),
+              ...otherCities.map((c) => ({ href: cityServiceHref(region, c, service.slug), label: c.name })),
               { href: `/services/${service.serviceSlug}/`, label: `More about ${service.label}` },
+              { href: `${region.path}/`, label: `All cities in ${region.name}` },
             ]}
           />
         </div>

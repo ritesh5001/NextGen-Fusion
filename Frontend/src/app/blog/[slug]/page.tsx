@@ -157,7 +157,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             {/* Navigation */}
             <div className="flex items-center justify-between mb-6">
               <Link
-                href="/blog"
+                href="/blog/"
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -394,7 +394,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-100">
                     <Link
-                      href="/blog"
+                      href="/blog/"
                       className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
                     >
                       View all posts

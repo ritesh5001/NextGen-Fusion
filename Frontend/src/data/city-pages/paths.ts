@@ -1,5 +1,6 @@
+import { getProjectBySlug } from "@/lib/static-projects"
 import type { CityServiceSlug } from "./services"
-import { isExistingPage, type CityPage, type CityRegion } from "./types"
+import { isExistingPage, type CityPage, type CityRegion, type CityServicePage } from "./types"
 
 export function cityPath(region: CityRegion, city: CityPage): string {
   return `${region.path}/${city.slug}/`
@@ -29,9 +30,50 @@ export function generatedServicePairs(region: CityRegion): { city: CityPage; ser
   )
 }
 
-/** Whether a generated city × service page is indexable (see CityRegion.indexServicePages). */
+/**
+ * Words of copy written for this page alone (hero, sections, problems,
+ * checklist, FAQs); the shared template around it is not counted.
+ */
+export function servicePageWords(page: CityServicePage): number {
+  return [
+    page.h1,
+    ...page.intro,
+    ...page.sections.flatMap((section) => [section.heading, ...section.body]),
+    ...page.problems.flatMap((problem) => [problem.symptom, problem.cause, ...problem.steps]),
+    ...page.checklist,
+    ...page.faqs.flatMap((faq) => [faq.question, faq.answer]),
+  ]
+    .join(" ")
+    .split(/\s+/)
+    .filter(Boolean).length
+}
+
+export const DESTINATION_MIN_WORDS = 250
+
+/**
+ * A page that stands on its own: enough copy of its own and a published case
+ * study as proof. Google's doorway test is whether a page is a destination or
+ * only a way into the site; a thin "<service> in <city>" page with nothing to
+ * show is the second kind, however unique its wording.
+ */
+export function isDestinationPage(page: CityServicePage): boolean {
+  const hasProof = (page.caseStudies ?? []).some((slug) => getProjectBySlug(slug) !== undefined)
+  return hasProof && servicePageWords(page) >= DESTINATION_MIN_WORDS
+}
+
+/**
+ * Whether a generated city × service page is indexable. Same rule in every
+ * region: where we have an office, where the region lists it for proven
+ * demand (see CityRegion.indexServicePages), or where the page is a
+ * destination. The rest stay live for visitors (noindex, follow) until their
+ * copy grows or a case study fits.
+ */
 export function isServicePageIndexed(region: CityRegion, city: CityPage, service: CityServiceSlug): boolean {
-  return region.indexServicePages === "all" || region.indexServicePages.includes(`${city.slug}/${service}`)
+  const page = city.services[service]
+  if (isExistingPage(page)) return false
+  if (region.indexServicePages === "all" || region.indexServicePages.includes(`${city.slug}/${service}`)) return true
+  if (region.localOffice?.(city)) return true
+  return isDestinationPage(page)
 }
 
 /** The sitemap date for a city and its pages. */

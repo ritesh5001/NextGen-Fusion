@@ -16,7 +16,7 @@ export default function RefundsPage() {
   return (
     <main className="min-h-screen bg-white">
       <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-24 pb-24">
-        <Link href="/store" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
+        <Link href="/store/" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
         <h1 className="mt-6 text-3xl font-bold text-gray-900 sm:text-4xl">Refund Policy</h1>
         <p className="mt-2 text-sm text-gray-400">Last updated: [DATE]</p>
 
@@ -63,7 +63,7 @@ export default function RefundsPage() {
           </p>
 
           <p className="pt-4 text-sm text-gray-400">
-            See also our <Link href="/store/license" className="text-purple-600 hover:underline">License Agreement</Link>.
+            See also our <Link href="/store/license/" className="text-purple-600 hover:underline">License Agreement</Link>.
           </p>
         </div>
       </article>

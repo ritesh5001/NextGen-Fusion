@@ -17,7 +17,7 @@ export default function LicensePage() {
   return (
     <main className="min-h-screen bg-white">
       <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-24 pb-24">
-        <Link href="/store" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
+        <Link href="/store/" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
         <h1 className="mt-6 text-3xl font-bold text-gray-900 sm:text-4xl">License Agreement</h1>
         <p className="mt-2 text-sm text-gray-400">Last updated: [DATE]</p>
 
@@ -60,7 +60,7 @@ export default function LicensePage() {
           <p>
             Each purchase includes a unique license key and a secure, limited-use download link. The license key
             identifies your entitlement for support and updates. Download links may expire or be usage-limited;
-            you can re-request them from the <Link href="/store/purchases" className="text-purple-600 hover:underline">retrieve purchases</Link> page.
+            you can re-request them from the <Link href="/store/purchases/" className="text-purple-600 hover:underline">retrieve purchases</Link> page.
           </p>
 
           <h2>6. Support &amp; updates</h2>
@@ -100,7 +100,7 @@ export default function LicensePage() {
           </p>
 
           <p className="pt-4 text-sm text-gray-400">
-            See also our <Link href="/store/refunds" className="text-purple-600 hover:underline">Refund Policy</Link>.
+            See also our <Link href="/store/refunds/" className="text-purple-600 hover:underline">Refund Policy</Link>.
           </p>
         </div>
       </article>

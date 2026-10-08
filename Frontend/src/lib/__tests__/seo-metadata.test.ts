@@ -1,5 +1,6 @@
 import { DESCRIPTION_MAX, fitDescription, fitTitle, TITLE_MAX } from "@/lib/seo"
-import { isServicePageIndexed } from "@/data/city-pages/paths"
+import { generatedServicePairs, isDestinationPage, isServicePageIndexed } from "@/data/city-pages/paths"
+import { isExistingPage } from "@/data/city-pages/types"
 import { australia } from "@/data/australia"
 import { india } from "@/data/india"
 
@@ -48,13 +49,22 @@ describe("fitDescription", () => {
 })
 
 describe("city × service indexing", () => {
-  it("keeps Australian city × service pages out of the index", () => {
-    const [city] = australia.cities
-    expect(isServicePageIndexed(australia, city, "seo")).toBe(false)
+  const regions = [australia, india]
+
+  it("indexes destination pages and keeps thin ones out", () => {
+    for (const region of regions) {
+      for (const { city, service } of generatedServicePairs(region)) {
+        const page = city.services[service]
+        if (isExistingPage(page) || region.localOffice?.(city)) continue
+        expect(isServicePageIndexed(region, city, service)).toBe(isDestinationPage(page))
+      }
+    }
   })
 
-  it("indexes Indian city × service pages", () => {
-    const [city] = india.cities
-    expect(isServicePageIndexed(india, city, "seo")).toBe(true)
+  it("indexes every service page in an office city", () => {
+    const lucknow = india.cities.find((city) => city.slug === "lucknow")!
+    const pairs = generatedServicePairs(india).filter(({ city }) => city === lucknow)
+    expect(pairs.length).toBeGreaterThan(0)
+    for (const { city, service } of pairs) expect(isServicePageIndexed(india, city, service)).toBe(true)
   })
 })

@@ -28,10 +28,9 @@ export const oman: CityRegion<OmCity> = {
   cities: [muscat, seeb, salalah, sohar, nizwa, sur, barka, ibri, buraimi, duqm],
   hub: omHub,
   cityTitle: (city) => `Web Design & Development in ${city.name}, Oman`,
-  // Same rule as Australia: no Omani office, so 150 parallel city × service
-  // pages from a remote agency read as doorway pages. They stay live for
-  // visitors and pass links (noindex, follow). Indexed are only the Muscat
-  // services where Google autocomplete for Oman showed real searches
+  // No Omani office: beyond pages passing the destination rule in
+  // city-pages/paths.ts, indexed are the Muscat services where Google
+  // autocomplete for Oman showed real searches
   // (Oct 2026: "website development/designing company in muscat", "digital
   // marketing agency in muscat", "mobile app development company in muscat",
   // "seo company in oman", "software company in oman", "ecommerce website oman").

@@ -43,7 +43,10 @@ export const india: CityRegion<InCity> = {
   // two never compete for the same search.
   cityTitle: (city) =>
     city.office ? `Digital Agency in ${city.name}: Web, SEO & Apps` : `Website Development Company in ${city.name}`,
-  indexServicePages: "all",
+  // Office cities (Lucknow, Mumbai) are indexed in full; elsewhere only pages
+  // passing the destination rule in city-pages/paths.ts. 290 parallel pages
+  // left Google's crawl queue stuck at "Discovered – currently not indexed".
+  indexServicePages: [],
   hours: () => OFFICE_HOURS.label,
   presence: (city) => {
     const office = officeOf(city)

@@ -28,10 +28,8 @@ export const thailand: CityRegion<ThCity> = {
   cities: [bangkok, phuket, chiangMai, pattaya, huaHin, kohSamui, krabi, khonKaen, hatYai, udonThani],
   hub: thHub,
   cityTitle: (city) => `Web Design & Development in ${city.name}, Thailand`,
-  // Same rule as Australia and Oman: no Thai office, so 150 parallel city ×
-  // service pages from a remote agency read as doorway pages. They stay live
-  // for visitors and pass links (noindex, follow). Indexed are the pages where
-  // Google autocomplete for Thailand showed real searches (Oct 2026): "web
+  // No Thai office: beyond pages passing the destination rule in
+  // city-pages/paths.ts, indexed are the pages where Google autocomplete for Thailand showed real searches (Oct 2026): "web
   // design company bangkok", "web development bangkok", "seo agency bangkok",
   // "social media agency bangkok", "google ads agency bangkok", "software house
   // bangkok", "shopify agency thailand", "ecommerce website thailand", and

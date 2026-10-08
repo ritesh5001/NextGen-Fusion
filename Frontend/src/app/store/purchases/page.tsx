@@ -32,7 +32,7 @@ export default function RetrievePurchasesPage() {
   return (
     <main className="min-h-screen bg-white">
       <div className="mx-auto max-w-md px-4 pt-28 pb-24">
-        <Link href="/store" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
+        <Link href="/store/" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
         <h1 className="mt-6 text-3xl font-bold text-gray-900">Retrieve your purchases</h1>
         <p className="mt-2 text-gray-500">
           Enter the email you used at checkout and we&apos;ll re-send your license keys and download links.

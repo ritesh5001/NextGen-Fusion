@@ -59,7 +59,7 @@ export default async function ShowcaseDetailPage(props: Props) {
 					<div className="text-center">
 						<h3 className="text-xl font-semibold text-gray-900 mb-2">Error</h3>
 						<p className="text-gray-600 mb-4">Showcase item not found</p>
-						<Link href="/showcase" className="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 inline-block">Back to Showcase</Link>
+						<Link href="/showcase/" className="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 inline-block">Back to Showcase</Link>
 					</div>
 				</div>
 			</div>
@@ -71,7 +71,7 @@ export default async function ShowcaseDetailPage(props: Props) {
 			<main className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
 				<div className="max-w-6xl mx-auto">
 					<div className="mb-8">
-						<Link href="/showcase" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200">
+						<Link href="/showcase/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200">
 							<ArrowLeft className="w-5 h-5" />
 							Back to Showcase
 						</Link>
@@ -159,7 +159,7 @@ export default async function ShowcaseDetailPage(props: Props) {
 									<ExternalLink className="w-5 h-5" />
 								</a>
 								<Link
-									href="/showcase"
+									href="/showcase/"
 									className="flex-1 bg-gray-100 text-gray-900 px-8 py-4 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200 text-center"
 								>
 									Back to Showcase

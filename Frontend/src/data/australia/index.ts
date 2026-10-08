@@ -34,11 +34,10 @@ export const australia: CityRegion<AuCity> = {
   cities: [sydney, melbourne, brisbane, perth, adelaide, goldCoast, canberra, newcastle, sunshineCoast, wollongong, hobart, darwin],
   hub: auHub,
   cityTitle: (city) => `Web Design & Development in ${city.name}`,
-  // No Australian office, so one indexable page per city. The 180 city ×
-  // service pages stay live for visitors and pass links, but are noindexed
-  // and out of the sitemap: from a small agency with no local address, that
-  // many near-parallel pages is what Google classes as doorway pages. Promote
-  // individual pages here ("sydney/seo") once they earn impressions.
+  // No Australian office: city × service pages are indexed only where they
+  // pass the destination rule in city-pages/paths.ts (their own copy plus a
+  // published case study). List a page here ("sydney/seo") once Search
+  // Console shows it earning impressions.
   indexServicePages: [],
   hours: workingHours,
   presence: () => "Served remotely from Lucknow and Mumbai, India",

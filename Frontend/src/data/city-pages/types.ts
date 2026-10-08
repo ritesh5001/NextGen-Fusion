@@ -122,11 +122,11 @@ export type CityRegion<C extends CityPage = CityPage> = {
    */
   cityTitle(city: C): string
   /**
-   * Which generated city × service pages may be indexed: "all", or a list of
-   * "<city>/<service>" keys. The rest stay live for visitors and pass links
-   * (noindex, follow) but are left out of the sitemap, so a region we serve
-   * remotely is not read as hundreds of doorway pages. Add a key once Search
-   * Console shows that page earning impressions or links.
+   * Generated city × service pages to index whatever the destination rule in
+   * paths.ts says: "all", or "<city>/<service>" keys with proven demand. Pages
+   * that are neither listed nor destinations stay live for visitors and pass
+   * links (noindex, follow) but are left out of the sitemap, so a region we
+   * serve remotely is not read as hundreds of doorway pages.
    */
   indexServicePages: "all" | readonly string[]
   countryCode: string

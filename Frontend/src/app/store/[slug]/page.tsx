@@ -155,8 +155,8 @@ export default async function StoreProductPage({ params }: PageProps) {
 
             <p className="mt-3 text-xs text-gray-400">
               By purchasing you agree to our{' '}
-              <Link href="/store/license" className="underline hover:text-gray-600">License Agreement</Link> and{' '}
-              <Link href="/store/refunds" className="underline hover:text-gray-600">Refund Policy</Link>.
+              <Link href="/store/license/" className="underline hover:text-gray-600">License Agreement</Link> and{' '}
+              <Link href="/store/refunds/" className="underline hover:text-gray-600">Refund Policy</Link>.
             </p>
 
             {product.features.length > 0 && (
