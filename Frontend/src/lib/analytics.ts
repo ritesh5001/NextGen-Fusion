@@ -15,6 +15,8 @@ export type ConversionEvent =
   | "book_call_confirmed"
   | "career_application_submit"
   | "store_product_view"
+  /** A free SEO checker run: interest, not yet a lead. */
+  | "seo_check"
 
 type GtagFn = (
   command: "event" | "config" | "js",

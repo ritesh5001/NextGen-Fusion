@@ -29,3 +29,6 @@ export const chatLimiter = limiter(5, 30, 'You are sending messages too quickly.
 
 /** Store checkout and payment verification. */
 export const checkoutLimiter = limiter(10, 20, 'Too many checkout attempts. Please try again in a few minutes.')
+
+/** The free SEO checker, which fetches a visitor-chosen site on every request. */
+export const toolLimiter = limiter(10, 10, 'You have run a lot of checks. Please wait a few minutes and try again.')

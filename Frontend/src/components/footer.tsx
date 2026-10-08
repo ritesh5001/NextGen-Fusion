@@ -89,6 +89,8 @@ const resources: FooterLink[] = [
   { label: "Our work", href: "/work/" },
   { label: "International clients", href: "/offshore-web-development-company-india/" },
   { label: "Blog", href: "/blog/" },
+  { label: "Free SEO checker", href: "/free-seo-checker/" },
+  { label: "WordPress vs Shopify vs custom", href: "/wordpress-vs-shopify-vs-custom-website/" },
   { label: "Website cost in India", href: "/website-development-cost-in-india/" },
   { label: "Website cost in the UAE", href: "/website-development-cost-in-dubai/" },
   { label: "Website cost in Singapore", href: "/website-development-cost-in-singapore/" },

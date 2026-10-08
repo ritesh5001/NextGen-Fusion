@@ -12,12 +12,13 @@ import {
   Zap,
   ArrowRight,
   MessageSquare,
+  Gauge,
 } from "lucide-react";
 import ScrollToTop from "@/components/scroll-to-top";
 import { staticProjects, getProjectBySlug } from "@/lib/static-projects";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, assetUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
-import type { StaticProject } from "@/lib/static-projects";
+import type { LighthouseScores, MeasuredResult, StaticProject } from "@/lib/static-projects";
 
 // The service page and Lucknow page each build type is sold on. Case studies
 // are the strongest proof on the site; linking them to the money pages passes
@@ -40,6 +41,65 @@ function relatedPagesFor(project: StaticProject) {
     { href: "/services/website-development-services/", label: "Website Development Services in India" },
     { href: "/website-development-company-in-lucknow/", label: "Website Development Company in Lucknow" },
   ];
+}
+
+const SCORE_LABELS: { key: Exclude<keyof LighthouseScores, "lcp">; label: string }[] = [
+  { key: "performance", label: "Performance" },
+  { key: "accessibility", label: "Accessibility" },
+  { key: "bestPractices", label: "Best practices" },
+  { key: "seo", label: "SEO" },
+];
+
+function scoreColour(score: number) {
+  if (score >= 90) return "text-emerald-600";
+  if (score >= 50) return "text-amber-600";
+  return "text-red-600";
+}
+
+function MeasuredPanel({ measured, liveUrl }: { measured: MeasuredResult; liveUrl: string }) {
+  const date = new Date(measured.date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+  return (
+    <section>
+      <div className="flex items-center gap-2 mb-5">
+        <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center">
+          <Gauge className="w-4 h-4 text-emerald-600" />
+        </div>
+        <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500">Measured, not claimed</h2>
+      </div>
+      <h3 className="text-2xl font-bold text-gray-900 mb-3">How the live site scores today</h3>
+      <p className="text-gray-600 leading-relaxed mb-6">
+        {measured.tool}, Google&apos;s open-source audit tool, run against the live site on{" "}
+        <time dateTime={measured.date}>{date}</time>. Scores move a few points between runs, so check them yourself.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {(["mobile", "desktop"] as const).map((device) => (
+          <div key={device} className="rounded-2xl border border-gray-100 bg-gray-50 p-5">
+            <p className="text-sm font-semibold text-gray-900 capitalize">{device}</p>
+            <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
+              {SCORE_LABELS.map(({ key, label }) => (
+                <div key={key}>
+                  <dt className="text-xs text-gray-500">{label}</dt>
+                  <dd className={`text-2xl font-bold ${scoreColour(measured[device][key])}`}>{measured[device][key]}</dd>
+                </div>
+              ))}
+              <div className="col-span-2">
+                <dt className="text-xs text-gray-500">Largest Contentful Paint</dt>
+                <dd className="text-sm font-semibold text-gray-900">{measured[device].lcp}</dd>
+              </div>
+            </dl>
+          </div>
+        ))}
+      </div>
+      <a
+        href={`https://pagespeed.web.dev/analysis?url=${encodeURIComponent(liveUrl)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-purple-600 hover:underline"
+      >
+        Re-run it on PageSpeed Insights <ExternalLink className="w-3.5 h-3.5" />
+      </a>
+    </section>
+  );
 }
 
 interface PageProps {
@@ -328,6 +388,8 @@ export default async function WorkDetailPage({ params }: PageProps) {
                 ))}
               </div>
             </section>
+
+            {project.measured && <MeasuredPanel measured={project.measured} liveUrl={project.liveUrl} />}
 
             {/* Screenshot 3 (if exists) */}
             {project.images[2] && (

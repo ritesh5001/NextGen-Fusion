@@ -109,6 +109,7 @@ ${guideLinks.map((g) => line(g.path, g.label, g.metaDescription)).join("\n")}
 
 ## Resources
 
+${line("/free-seo-checker", "Free SEO checker", "checks any web page for indexing, title, description, headings, schema, mobile setup, HTTPS, robots.txt and sitemap, with a plain-English fix for each problem")}
 ${line("/blog", "Blog", "guides on building, ranking and running a website")}
 ${line("/store", "Store", "ready-made software products with source code")}
 ${line("/support", "Support")}

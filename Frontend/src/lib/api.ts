@@ -129,6 +129,29 @@ export interface ContactFormResponse {
   updated_at: string
 }
 
+/** Mirrors Backend/src/lib/seo-audit.ts. */
+export type SeoCheckStatus = 'pass' | 'warn' | 'fail'
+
+export interface SeoCheck {
+  id: string
+  group: 'Search basics' | 'Content' | 'Technical' | 'Sharing'
+  label: string
+  status: SeoCheckStatus
+  detail: string
+  fix?: string
+}
+
+export interface SeoReport {
+  url: string
+  finalUrl: string
+  status: number
+  responseMs: number
+  redirects: string[]
+  score: number
+  checks: SeoCheck[]
+  checkedAt: string
+}
+
 export interface ProjectEstimatorData {
   name: string
   email: string
@@ -627,6 +650,18 @@ export interface ProjectEstimatorResponse {
       console.error('Failed to estimate project:', error)
       throw error
     }
+  }
+
+  /** The free SEO checker at /free-seo-checker/. */
+  async checkSite(url: string, turnstileToken: string | null = null): Promise<SeoReport> {
+    const response = await fetch(`${API_BASE_URL}/site-check`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...turnstileHeaders(turnstileToken) },
+      body: JSON.stringify({ url }),
+    })
+    const result = await response.json().catch(() => ({}))
+    if (!response.ok) throw new Error(result?.error || 'The check could not be completed. Please try again.')
+    return result.data as SeoReport
   }
 }
 

@@ -52,6 +52,7 @@ const STATIC_LAST_MODIFIED: Record<string, string> = {
   "/support": "2026-08-14",
   "/store/license": "2026-08-14",
   "/store/refunds": "2026-08-14",
+  "/free-seo-checker": "2026-10-08",
 }
 
 const SERVICES_LAST_MODIFIED = "2026-09-16"

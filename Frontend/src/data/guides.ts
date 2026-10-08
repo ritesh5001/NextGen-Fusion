@@ -1,6 +1,7 @@
 /**
- * Guide and specialist pages: the cost guides, the ecommerce-vs-marketplace
- * decision page, and the marketplace, Next.js and Shopify service pages.
+ * Guide and specialist pages: the cost guides, the two decision pages
+ * (ecommerce store vs marketplace; WordPress vs Shopify vs custom), and the
+ * marketplace, Next.js and Shopify service pages.
  *
  * NO PRICES. The business decision is that pricing is shared in conversation
  * (WhatsApp or a call), never published on the site. These pages describe what
@@ -978,7 +979,146 @@ const offshoreService: GuidePage = {
   ],
 }
 
-export const guidePages: GuidePage[] = [costGuide, dubaiCostGuide, singaporeCostGuide, storeVsMarketplace, marketplaceService, nextjsService, shopifyService, offshoreService]
+const platformComparison: GuidePage = {
+  path: "/wordpress-vs-shopify-vs-custom-website",
+  kind: "guide",
+  label: "WordPress vs Shopify vs custom",
+  metaTitle: "WordPress vs Shopify vs Custom Website: Which to Build (2026)",
+  metaDescription:
+    "WordPress, Shopify or custom code? A guide from a team that builds all three: who each suits, who edits it, speed, costs and ownership, with live examples.",
+  eyebrow: "Decision guide · 2026",
+  h1: "WordPress, Shopify or a custom-coded website: which should you build?",
+  intro: [
+    "The short answer: a content-led business site that your team updates is usually WordPress. A shop selling your own products is usually Shopify or WooCommerce. A site that has to do something no plugin does well — a marketplace, a course platform, hundreds of generated landing pages, or the fastest possible pages — is usually custom-coded.",
+    "We build all three, so this guide has no platform to sell you. Every example below is a build of ours you can open and judge for yourself.",
+  ],
+  updated: "2026-10-08",
+  sections: [
+    {
+      heading: "The three options side by side",
+      body: [
+        "The platform matters less than three questions: who will edit the site, what it has to do beyond showing pages, and how much you want to depend on monthly subscriptions.",
+      ],
+      table: {
+        caption: "WordPress vs Shopify vs custom-coded website",
+        columns: ["", "WordPress (and WooCommerce)", "Shopify", "Custom-coded (e.g. Next.js)"],
+        rows: [
+          ["Best for", "Business sites, blogs, service companies; stores with WooCommerce", "Online stores selling your own products", "Platforms, marketplaces, apps, very fast or unusual sites"],
+          ["Who edits it", "Your team, in a familiar editor", "Your team, in Shopify's admin", "A developer, unless we add an editing panel (CMS)"],
+          ["Ongoing costs", "Hosting, domain, premium plugin licences", "Monthly Shopify plan, paid apps, transaction fees where they apply", "Hosting and domain; changes are developer time"],
+          ["Speed", "Good when built carefully; slows as plugins pile up", "Good; themes and apps decide the rest", "Fastest when built well: only the code the page needs"],
+          ["You own", "Everything: code, content and data, on any host", "Your content and data; the store runs on Shopify", "Everything: code, content and data"],
+          ["Updates and security", "Core, theme and plugin updates every month", "Handled by Shopify", "Few moving parts; dependencies updated with the code"],
+          ["Typical timeline", launchWeeks, storeWeeks, platformWeeks],
+          ["Our examples", "Lady Scooty Trainer, DeeToo, Krushi Doctor", "Vashtara Heaven and other live stores", "NEXTmentor, Cleanship, MariBiz.ai"],
+        ],
+        note: "Timelines run from content sign-off and are our typical ranges for a business site, a store and a platform; your written quote names one delivery window.",
+      },
+    },
+    {
+      heading: "Choose WordPress when your team writes the content",
+      body: [
+        "WordPress runs a large share of the web for a reason: anyone who can use a word processor can update a page or publish a post, and it moves to any host you like. For a service business, a consultancy, a school or a manufacturer whose site mostly explains and persuades, it is usually the right call.",
+        "Lady Scooty Trainer is a typical example: the site for a women-only scooty training service across Delhi NCR, with course pages, service areas and a free-consultation funnel, all on WordPress.",
+        "Add WooCommerce and WordPress becomes a store you fully own. DeeToo (12 brands of mobile accessories) and Krushi Doctor (100+ agri products for farmers) both run on it.",
+        "The catch is maintenance. Every plugin is code someone else wrote; skip updates and the site slows down or gets hacked. Budget for monthly care, not just the build.",
+      ],
+      links: [
+        { label: "Lady Scooty Trainer case study", href: "/work/ladyscootytrainer/" },
+        { label: "DeeToo case study", href: "/work/deetoo/" },
+        { label: "Krushi Doctor case study", href: "/work/krushidoctor/" },
+      ],
+    },
+    {
+      heading: "Choose Shopify when selling is the whole point",
+      body: [
+        `Shopify takes hosting, security, checkout and updates off your hands, so your time goes into products and marketing. We have built ${shopifyCountText}; Vashtara Heaven, a kidswear store shipping straight from each designer's studio, has a full case study.`,
+        "The trade-off is rent. You pay a monthly plan and, usually, for a few apps, and you build within what Shopify allows. Check Shopify's own pricing page for current plans and transaction fees rather than any agency's summary, including this one.",
+        "Shopify or WooCommerce for an Indian store is its own question, with payment gateways, cash on delivery and GST in the mix; our blog post compares the two in detail.",
+      ],
+      links: [
+        { label: "Vashtara Heaven case study", href: "/work/vashtaraheaven/" },
+        { label: "Shopify development", href: "/services/shopify-development-services/" },
+        { label: "WooCommerce vs Shopify for India", href: "/blog/woocommerce-vs-shopify-india/" },
+        { label: "Shopify pricing (official)", href: "https://www.shopify.com/pricing" },
+      ],
+    },
+    {
+      heading: "Choose custom code when no plugin does what you need",
+      body: [
+        "Custom-coded means we write the site itself, usually in Next.js, instead of configuring a platform. It is more work up front and pays off when the site has to behave in a way platforms were not designed for.",
+        "NEXTmentor is a course platform with skill packs, serial-numbered certificates and a referral programme that pays learners commission. When we measured it with Google's Lighthouse on 8 October 2026, it scored 97 out of 100 for mobile performance and 100 on desktop. Cleanship needed a landing page for every service at every port it covers — 310 of them — generated from one data source rather than built by hand. MariBiz.ai is a B2B marketplace with a request-for-quote engine and real-time messaging.",
+        "The catch: without an editing panel, every text change goes through a developer. When your team will update content often, we add a CMS or pair a custom front end with a WordPress back end, as on TatVivah Trends.",
+      ],
+      links: [
+        { label: "NEXTmentor case study", href: "/work/nextmentor/" },
+        { label: "Cleanship case study", href: "/work/cleanship/" },
+        { label: "Next.js development", href: "/services/nextjs-development-services/" },
+      ],
+    },
+    {
+      heading: "Four questions that settle it",
+      body: [
+        "1. Will non-technical people update the site every week? Lean towards WordPress or Shopify.",
+        "2. Are you mainly selling your own products online? Shopify or WooCommerce. Other people's products, through their own logins? That is a marketplace, and usually custom.",
+        "3. Does the site need logins, dashboards, bookings with rules, or pages generated from data? Custom code, or WordPress with carefully chosen plugins if the logic is simple.",
+        "4. Would you rather pay a monthly platform fee or own every line of code? Shopify is rent with less to worry about; WordPress and custom code are ownership with upkeep.",
+      ],
+      links: [
+        { label: "Ecommerce store or marketplace?", href: "/ecommerce-store-vs-marketplace/" },
+        { label: "Free SEO checker for your current site", href: "/free-seo-checker/" },
+      ],
+    },
+  ],
+  caseStudiesHeading: "One of each, live today",
+  caseStudies: [
+    {
+      slug: "ladyscootytrainer",
+      title: "Lady Scooty Trainer — WordPress",
+      body: "The site for a women-only scooty training service across Delhi NCR: course pages, service areas and a free-consultation funnel.",
+    },
+    {
+      slug: "vashtaraheaven",
+      title: "Vashtara Heaven — Shopify",
+      body: "A kidswear store where each order ships from the designer studio that made it, with the multi-package model explained before checkout.",
+    },
+    {
+      slug: "nextmentor",
+      title: "NEXTmentor — custom Next.js",
+      body: "A course platform with skill packs, verifiable certificates and a referral programme; 97/100 mobile performance in Lighthouse when measured on 8 October 2026.",
+    },
+  ],
+  faqs: [
+    {
+      question: "Is WordPress or Shopify better for a small business?",
+      answer: "If the site mainly explains your services and your team will write the content, WordPress. If you mainly sell your own products online, Shopify (or WooCommerce on WordPress if you want to own and host everything).",
+    },
+    {
+      question: "Is a custom-coded website better for SEO than WordPress?",
+      answer: "Not automatically. Google ranks useful, fast, well-structured pages on any platform. Custom code makes very fast pages and large sets of data-driven pages easier; a carefully built WordPress site with few plugins ranks just as well for most businesses.",
+    },
+    {
+      question: "Can I move from WordPress or Shopify to a custom site later?",
+      answer: "Yes. Content, products and customers can be exported, and old URLs are redirected to the new ones so rankings carry over. Plan the redirects before launch, not after.",
+    },
+    {
+      question: "Which is cheapest to build?",
+      answer: `A WordPress or Shopify site is usually less build work than custom code, but ongoing costs differ: plugins and upkeep for WordPress, a monthly plan and apps for Shopify. We do not publish prices; message us on WhatsApp at ${PRIMARY_PHONE_DISPLAY} for a fixed written quote on whichever fits.`,
+    },
+    {
+      question: "Who owns the website?",
+      answer: "With us, you do: the domain, hosting, code and every account are in your company's name. On Shopify you own your content and data while the store runs on Shopify's platform.",
+    },
+  ],
+  related: [
+    { label: "Website development cost in India", href: "/website-development-cost-in-india/" },
+    { label: "Ecommerce store vs marketplace", href: "/ecommerce-store-vs-marketplace/" },
+    { label: "Free SEO checker", href: "/free-seo-checker/" },
+    { label: "Get a written quote", href: "/contact/" },
+  ],
+}
+
+export const guidePages: GuidePage[] = [costGuide, dubaiCostGuide, singaporeCostGuide, storeVsMarketplace, platformComparison, marketplaceService, nextjsService, shopifyService, offshoreService]
 
 export function getGuidePage(path: string): GuidePage {
   const page = guidePages.find((p) => p.path === path)

@@ -8,6 +8,27 @@ export type ResultStat = {
   label: string;
 };
 
+export type LighthouseScores = {
+  performance: number;
+  accessibility: number;
+  bestPractices: number;
+  seo: number;
+  /** Largest Contentful Paint as Lighthouse displays it, e.g. "1.8 s". */
+  lcp: string;
+};
+
+/**
+ * A Lighthouse run against the live site, so visitors can check the claim
+ * themselves. Record only real runs, with their date; re-measure rather than
+ * edit the numbers. Shown only where the build still holds up today.
+ */
+export type MeasuredResult = {
+  date: string;
+  tool: string;
+  mobile: LighthouseScores;
+  desktop: LighthouseScores;
+};
+
 export type StaticProject = {
   slug: string;
   domain: string;
@@ -33,6 +54,7 @@ export type StaticProject = {
    *  datePublished, which is omitted entirely when this is unset — so add it as
    *  you write each one rather than backfilling a guess. */
   publishedAt?: string;
+  measured?: MeasuredResult;
 };
 
 export const staticProjects: StaticProject[] = [
@@ -695,6 +717,12 @@ export const staticProjects: StaticProject[] = [
       },
     ],
     techStack: ["Next.js", "React", "Razorpay", "Vercel"],
+    measured: {
+      date: "2026-10-08",
+      tool: "Lighthouse 13.5",
+      mobile: { performance: 97, accessibility: 96, bestPractices: 100, seo: 100, lcp: "1.8 s" },
+      desktop: { performance: 100, accessibility: 93, bestPractices: 100, seo: 100, lcp: "0.6 s" },
+    },
     results: [
       { metric: "3", label: "Skill Packs Live" },
       { metric: "Up to 50%", label: "Referral Commission" },
@@ -1202,6 +1230,12 @@ export const staticProjects: StaticProject[] = [
       "Global Shipping APIs",
       "Responsive CSS",
     ],
+    measured: {
+      date: "2026-10-08",
+      tool: "Lighthouse 13.5",
+      mobile: { performance: 89, accessibility: 82, bestPractices: 96, seo: 100, lcp: "3.5 s" },
+      desktop: { performance: 97, accessibility: 82, bestPractices: 96, seo: 100, lcp: "1.2 s" },
+    },
     results: [
       { metric: "5+", label: "Merch Categories" },
       { metric: "Global", label: "Shipping Enabled" },
