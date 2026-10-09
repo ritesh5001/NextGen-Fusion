@@ -7,6 +7,7 @@ import { officeSchemas } from "@/lib/office-schema"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import { CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
 import { whatsappHref } from "@/lib/whatsapp"
+import { BrandProfileLinks } from "@/components/brand-profile-links"
 
 const PATH = "/contact"
 
@@ -90,6 +91,11 @@ export default function ContactPage() {
               <p className="mt-3 text-sm font-semibold text-gray-900">Two offices</p>
               <p className="mt-1 text-sm text-gray-600">Lucknow and Mumbai</p>
             </div>
+          </div>
+
+          <div className="mt-8">
+            <h2 className="text-sm font-semibold text-gray-900">Follow our work</h2>
+            <BrandProfileLinks className="mt-3" />
           </div>
         </section>
 

@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { brandProfiles, CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices";
+import { CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { serviceNavItems } from "@/data/services-nav";
 import { SITE_TAGLINE } from "@/lib/seo";
 import { whatsappHref } from "@/lib/whatsapp";
+import { BrandProfileLinks } from "@/components/brand-profile-links";
 
 type FooterLink = { label: string; href: string };
 
@@ -174,6 +175,7 @@ export default function Footer() {
                 WhatsApp us
               </a>
             </div>
+            <BrandProfileLinks tone="dark" className="mt-6" />
           </div>
 
           <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 lg:col-span-8">
@@ -262,18 +264,6 @@ export default function Footer() {
               <li key={link.href}>
                 <a href={link.href} className="transition-colors duration-200 hover:text-white">
                   {link.label}
-                </a>
-              </li>
-            ))}
-            {brandProfiles.map((profile) => (
-              <li key={profile.href}>
-                <a
-                  href={profile.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors duration-200 hover:text-white"
-                >
-                  {profile.label}
                 </a>
               </li>
             ))}

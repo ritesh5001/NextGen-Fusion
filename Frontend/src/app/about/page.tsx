@@ -7,6 +7,7 @@ import { absoluteUrl, assetUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID
 import { personId, team } from "@/data/team"
 import { offices } from "@/data/offices"
 import { staticProjects } from "@/lib/static-projects"
+import { BrandProfileLinks } from "@/components/brand-profile-links"
 
 const PATH = "/about"
 
@@ -220,6 +221,8 @@ export default function AboutPage() {
               </Link>
               .
             </p>
+            <h3 className="mt-10 text-lg font-bold text-gray-900">Find us online</h3>
+            <BrandProfileLinks className="mt-4" />
           </div>
         </section>
 
