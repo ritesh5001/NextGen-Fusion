@@ -3,9 +3,9 @@
 import { useId, useRef, useState, type KeyboardEvent } from "react"
 import Link from "next/link"
 import { ArrowRight, MessageCircle } from "lucide-react"
-import { PRIMARY_PHONE_E164 } from "@/data/offices"
 import { trackEvent } from "@/lib/analytics"
 import { cn } from "@/lib/utils"
+import { whatsappHref } from "@/lib/whatsapp"
 
 export type FinderProblem = {
   symptom: string
@@ -117,7 +117,7 @@ export function GrowthProblemFinder({ heading, intro, place, problems }: Props) 
 
               <div className="mt-7 flex flex-wrap gap-3">
                 <a
-                  href={`https://wa.me/${PRIMARY_PHONE_E164.replace("+", "")}?text=${encodeURIComponent(message)}`}
+                  href={whatsappHref(message)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => trackEvent("whatsapp_click", { source: "au_problem_finder", place })}

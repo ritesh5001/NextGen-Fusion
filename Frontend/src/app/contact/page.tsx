@@ -6,6 +6,7 @@ import { JsonLd } from "@/components/json-ld"
 import { officeSchemas } from "@/lib/office-schema"
 import { absoluteUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import { CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
+import { whatsappHref } from "@/lib/whatsapp"
 
 const PATH = "/contact"
 
@@ -67,7 +68,7 @@ export default function ContactPage() {
               <p className="mt-1 text-sm text-gray-600">{PRIMARY_PHONE_DISPLAY}</p>
             </a>
             <a
-              href={`https://wa.me/${PRIMARY_PHONE_E164.replace("+", "")}`}
+              href={whatsappHref()}
               target="_blank"
               rel="noopener noreferrer"
               className="group rounded-2xl border border-gray-200 p-5 transition-colors hover:border-gray-900"

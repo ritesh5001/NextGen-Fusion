@@ -3,6 +3,9 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+# Outbound redirects (WhatsApp). wa.me answers crawlers with 429, which audit
+# tools report as broken links; stopping bots here keeps them off wa.me.
+Disallow: /go/
 
 # Sitemap
 Sitemap: https://www.nextgenfusion.in/sitemap.xml
@@ -24,6 +27,7 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: Googlebot-Image
 Allow: /
@@ -55,81 +59,95 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: Claude-User
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: Claude-SearchBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: anthropic-ai
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: Perplexity-User
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: Amazonbot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: meta-externalagent
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/
 
 User-agent: DuckAssistBot
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /portal/
+Disallow: /go/

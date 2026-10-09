@@ -6,9 +6,9 @@ import { AlertTriangle, CheckCircle2, ExternalLink, Loader2, MessageCircle, Sear
 import { apiService, type SeoCheck, type SeoCheckStatus, type SeoReport } from "@/lib/api"
 import { trackEvent } from "@/lib/analytics"
 import { TURNSTILE_ENABLED } from "@/lib/turnstile"
-import { PRIMARY_PHONE_E164 } from "@/data/offices"
 import { cn } from "@/lib/utils"
 import { Turnstile, type TurnstileHandle } from "@/components/turnstile"
+import { whatsappHref } from "@/lib/whatsapp"
 
 const GROUPS: SeoCheck["group"][] = ["Search basics", "Content", "Technical", "Sharing"]
 
@@ -131,7 +131,7 @@ function Report({ report }: { report: SeoReport }) {
             <p className="mt-1 text-sm text-white/70">Send us the report and we&apos;ll tell you what to fix first, free.</p>
           </div>
           <a
-            href={`https://wa.me/${PRIMARY_PHONE_E164.replace("+", "")}?text=${encodeURIComponent(message)}`}
+            href={whatsappHref(message)}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackEvent("whatsapp_click", { source: "seo_checker" })}

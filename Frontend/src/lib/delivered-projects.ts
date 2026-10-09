@@ -214,7 +214,22 @@ function hostFromUrl(url: string): string {
 // Delivered sites whose store has since been closed by the owner (Shopify
 // returns "Store unavailable"). The /work page says everything on the wall is
 // live, so these stay off it until they reopen. Checked 2026-09-22.
-const CLOSED_HOSTS = new Set(["zarqaa.in", "qathirsnaturals.com"])
+// Also sites that are down: vibestyl.in, tastyhouse.in and hcbengineering.in
+// have no DNS records (NXDOMAIN) and clickngreet.in serves a 503 maintenance
+// page; site audits reported each as a broken external link. Checked 2026-10-09.
+const CLOSED_HOSTS = new Set([
+  "zarqaa.in",
+  "qathirsnaturals.com",
+  "vibestyl.in",
+  "tastyhouse.in",
+  "hcbengineering.in",
+  "clickngreet.in",
+])
+
+/** True when a delivered site is closed or offline, so pages must not link to it. */
+export function isSiteOffline(urlOrHost: string): boolean {
+  return CLOSED_HOSTS.has(hostFromUrl(urlOrHost))
+}
 
 // Case studies keyed by the host of their live site, so a wall card can say
 // whether a written case study sits behind it.

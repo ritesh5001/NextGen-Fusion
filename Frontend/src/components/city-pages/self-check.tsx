@@ -2,9 +2,9 @@
 
 import { useId, useState } from "react"
 import { Check, MessageCircle } from "lucide-react"
-import { PRIMARY_PHONE_E164 } from "@/data/offices"
 import { trackEvent } from "@/lib/analytics"
 import { cn } from "@/lib/utils"
+import { whatsappHref } from "@/lib/whatsapp"
 
 type Props = {
   heading: string
@@ -71,7 +71,7 @@ export function SelfCheck({ heading, items, topic }: Props) {
             </p>
             <p className="mt-1 leading-relaxed text-gray-600">{verdict(count, items.length)}</p>
             <a
-              href={`https://wa.me/${PRIMARY_PHONE_E164.replace("+", "")}?text=${encodeURIComponent(message)}`}
+              href={whatsappHref(message)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent("whatsapp_click", { source: "au_self_check", topic, score: count })}

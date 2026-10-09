@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { ChevronRight, Clock, MapPin, MessageCircle } from "lucide-react"
-import { PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices"
+import { PRIMARY_PHONE_DISPLAY } from "@/data/offices"
 import type { CityFaq, CityPage, CityRegion, CitySection } from "@/data/city-pages/types"
 import { officeSchema } from "@/lib/office-schema"
 import { getProjectBySlug } from "@/lib/static-projects"
+import { whatsappHref } from "@/lib/whatsapp"
 
 export type Crumb = { name: string; href: string }
 
@@ -60,7 +61,7 @@ export function CityHero({
 
       <div className="mt-8 flex flex-wrap gap-3">
         <a
-          href={`https://wa.me/${PRIMARY_PHONE_E164.replace("+", "")}?text=${encodeURIComponent(whatsappMessage)}`}
+          href={whatsappHref(whatsappMessage)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-700"

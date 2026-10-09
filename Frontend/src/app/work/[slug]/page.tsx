@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import ScrollToTop from "@/components/scroll-to-top";
 import { staticProjects, getProjectBySlug } from "@/lib/static-projects";
+import { isSiteOffline } from "@/lib/delivered-projects";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, assetUrl, breadcrumbSchema, buildMetadata, ORGANIZATION_ID, siteUrl } from "@/lib/seo"
 import type { LighthouseScores, MeasuredResult, StaticProject } from "@/lib/static-projects";
@@ -129,6 +130,8 @@ export default async function WorkDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
+  // The case study stands on its own; only the links to a dead site go.
+  const siteOffline = isSiteOffline(project.liveUrl);
 
   const allProjects = staticProjects;
   const currentIndex = allProjects.findIndex((p) => p.slug === slug);
@@ -218,15 +221,17 @@ export default async function WorkDetailPage({ params }: PageProps) {
               </h1>
               <p className="text-gray-500 text-base">{project.domain}</p>
             </div>
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-gray-900 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors flex-shrink-0 w-fit"
-            >
-              <ExternalLink className="w-4 h-4" />
-              Visit Live Website
-            </a>
+            {!siteOffline && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gray-900 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors flex-shrink-0 w-fit"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Visit Live Website
+              </a>
+            )}
           </div>
         </div>
       </header>
@@ -389,7 +394,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
               </div>
             </section>
 
-            {project.measured && <MeasuredPanel measured={project.measured} liveUrl={project.liveUrl} />}
+            {project.measured && !siteOffline && <MeasuredPanel measured={project.measured} liveUrl={project.liveUrl} />}
 
             {/* Screenshot 3 (if exists) */}
             {project.images[2] && (
@@ -492,20 +497,22 @@ export default async function WorkDetailPage({ params }: PageProps) {
                     {project.category}
                   </p>
                 </div>
-                <div>
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                    Live Website
-                  </p>
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-purple-600 hover:text-purple-800 font-semibold transition-colors inline-flex items-center gap-1"
-                  >
-                    {project.domain}
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
+                {!siteOffline && (
+                  <div>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                      Live Website
+                    </p>
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-purple-600 hover:text-purple-800 font-semibold transition-colors inline-flex items-center gap-1"
+                    >
+                      {project.domain}
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                )}
                 <div className="pt-1">
                   <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
                     Deliverables

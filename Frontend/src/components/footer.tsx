@@ -4,6 +4,7 @@ import Link from "next/link";
 import { brandProfiles, CONTACT_EMAIL, OFFICE_HOURS, offices, PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_E164 } from "@/data/offices";
 import { serviceNavItems } from "@/data/services-nav";
 import { SITE_TAGLINE } from "@/lib/seo";
+import { whatsappHref } from "@/lib/whatsapp";
 
 type FooterLink = { label: string; href: string };
 
@@ -111,7 +112,7 @@ const legal: FooterLink[] = [
   { label: "Refund policy", href: "/store/refunds/" },
 ];
 
-const WHATSAPP_URL = `https://wa.me/${PRIMARY_PHONE_E164.replace("+", "")}`;
+const WHATSAPP_URL = whatsappHref();
 
 const heading = "text-xs font-semibold uppercase tracking-[0.14em] text-white";
 const linkClass = "text-sm text-gray-300 transition-colors duration-200 hover:text-white";

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { BannerIcon } from "./ui/optimized-icon"
 import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import React from "react"
+import { whatsappHref } from "@/lib/whatsapp"
 
 interface CTABannerProps {
   className?: string
@@ -19,7 +20,6 @@ export default function CTABanner({
   backgroundImageUrl = "/images/bgbanner.webp",
   compact = false,
 }: CTABannerProps) {
-  const waNumber = "917348228167"
   const { getIconSrc } = useMobileIcon()
 
   return (
@@ -74,7 +74,7 @@ export default function CTABanner({
                 </Button>
               </Link>
               <a
-                href={`https://wa.me/${waNumber}?text=${encodeURIComponent("Hi! I came across NextGen Fusion and I'd like to discuss a project. Could we schedule a quick call?")}`}
+                href={whatsappHref("Hi! I came across NextGen Fusion and I'd like to discuss a project. Could we schedule a quick call?")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border-white/30 text-white hover:bg-white/10 px-8 py-3 rounded-lg font-semibold bg-black/30 w-full sm:w-auto flex items-center gap-2 justify-center border inline-flex"

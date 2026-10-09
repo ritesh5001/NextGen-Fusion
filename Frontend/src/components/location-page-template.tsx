@@ -6,6 +6,7 @@ import { absoluteUrl, breadcrumbSchema, ORGANIZATION_ID } from "@/lib/seo"
 import { officeId, officeSchema } from "@/lib/office-schema"
 import { offices } from "@/data/offices"
 import { getLocationPage, type LocationPage } from "@/data/locations"
+import { whatsappHref } from "@/lib/whatsapp"
 
 /** A page for a city in another country, served from an Indian office. */
 function isRemote(page: LocationPage) {
@@ -124,7 +125,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
               </span>
               {remote && (
                 <a
-                  href={`https://wa.me/${office.contact.phoneE164.replace("+", "")}`}
+                  href={whatsappHref(undefined, office.contact.phoneE164)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-gray-700 transition-colors hover:border-gray-900"
