@@ -5,7 +5,7 @@ import ShareButton from "@/components/blog/share-button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
 import Link from "next/link"
-import { apiService } from "@/lib/api"
+import { apiService, type BlogPost } from "@/lib/api"
 import { normalizeImagePath } from "@/lib/utils"
 import ScrollToTop from "@/components/scroll-to-top"
 import { getTeamMemberByName } from "@/data/team"
@@ -34,10 +34,23 @@ export const dynamicParams = true
 export const revalidate = 3600
 
 
+/**
+ * Active posts, making sure the requested one is included if it exists. The
+ * list is cached for up to an hour, so a post published since then was missing
+ * from it: the page 404'd and ISR cached that 404 for the hour. On a miss we
+ * ask the Backend for the single post before giving up.
+ */
+async function activePostsIncluding(slug: string): Promise<BlogPost[]> {
+  const posts = (await apiService.getBlogPostsStrict()).filter((p) => p?.is_active)
+  if (posts.some((p) => p.slug === slug)) return posts
+  const fresh = await apiService.getBlogPostBySlugFresh(slug)
+  return fresh?.is_active ? [fresh, ...posts] : posts
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const posts = await apiService.getBlogPostsStrict()
-  const blogPost = posts.find((p: any) => p?.is_active && p.slug === slug)
+  const posts = await activePostsIncluding(slug)
+  const blogPost = posts.find((p) => p.slug === slug)
 
   if (!blogPost) return {}
 
@@ -77,8 +90,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     // Strict: a Backend failure throws (an error page, and ISR keeps serving
     // the last good copy) rather than reading as "no posts" and caching a 404.
-    const allBlogPosts = await apiService.getBlogPostsStrict()
-    const activeBlogPosts = allBlogPosts.filter((p: any) => p?.is_active)
+    const activeBlogPosts = await activePostsIncluding(slug)
     const blogPost = activeBlogPosts.find((p: any) => p.slug === slug)
     const currentIndex = activeBlogPosts.findIndex((p: any) => p.slug === slug)
 

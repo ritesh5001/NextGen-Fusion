@@ -537,6 +537,22 @@ export interface ProjectEstimatorResponse {
     return json.data
   }
 
+  /**
+   * One post straight from the Backend, for when the cached list doesn't have
+   * it yet (published within the last hour). Null only for a real 404; any
+   * other failure throws, so a Backend hiccup never becomes a cached 404.
+   */
+  async getBlogPostBySlugFresh(slug: string): Promise<BlogPost | null> {
+    const response = await fetch(`${API_BASE_URL}/blog-posts/${encodeURIComponent(slug)}`, {
+      next: { revalidate: 60 },
+      headers: { 'Content-Type': 'application/json' },
+    })
+    if (response.status === 404) return null
+    if (!response.ok) throw new Error(`Blog post request failed: ${response.status}`)
+    const json = (await response.json()) as ApiResponse<BlogPost>
+    return json?.data ?? null
+  }
+
   async getBlogPost(id: number): Promise<BlogPost | null> {
     try {
       const response = await this.fetchApi<BlogPost>(`/blog-posts/${id}`)
