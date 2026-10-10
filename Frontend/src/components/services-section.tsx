@@ -203,6 +203,20 @@ export default function ServicesSection() {
           <Link href="/services/" prefetch={false} className="btn btn-ink">
             View all services
           </Link>
+          {/* The Lucknow landing page owns the "website development company in
+              Lucknow" query; the homepage links to it rather than competing
+              for it. (Moved here from the hero, text and link unchanged.) */}
+          <p className="mt-6 text-base text-ink-mute">
+            Based in Lucknow? See our{" "}
+            <Link
+              href="/website-development-company-in-lucknow/"
+              prefetch={false}
+              className="font-medium text-ink underline decoration-brand decoration-2 underline-offset-4 hover:text-brand"
+            >
+              website development company in Lucknow
+            </Link>{" "}
+            page.
+          </p>
         </m.div>
       </div>
     </m.section>

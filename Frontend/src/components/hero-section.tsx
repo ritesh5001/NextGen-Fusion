@@ -1,11 +1,16 @@
 "use client"
 
+import { useEffect, useRef } from "react"
+import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpRight, Check } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import { openBookingModal } from "@/lib/booking"
 import { PROJECTS_DELIVERED } from "@/lib/seo"
+import { prefersReducedMotion } from "@/lib/gsap"
+import { heroSerif } from "@/app/fonts"
 import { Magnetic } from "@/components/motion/magnetic"
-import { MaskWords } from "@/components/motion/mask-words"
+import { CountUp } from "@/components/motion/count-up"
+import { HeroMockups } from "@/components/motion/hero-mockups"
 
 /**
  * Entrance animations are plain CSS (`.hero-rise` in globals.css), not
@@ -14,7 +19,15 @@ import { MaskWords } from "@/components/motion/mask-words"
  * blank hero — and it put the whole library in the homepage's first-load JS.
  * CSS animations start with the first paint and respect prefers-reduced-motion.
  */
-const SIGNATURE = ["Sleek", "Fast", "Doesn't Ghost You"]
+
+// Squarish client marks that stay legible in a small circle.
+const PROOF_LOGOS = [
+  { slug: "krushidoctor", name: "Krushi Doctor" },
+  { slug: "ladyscootytrainer", name: "Lady Scooty Trainer" },
+  { slug: "vashtaraheaven", name: "Vashtara Heaven" },
+  { slug: "kalamohini", name: "Kala Mohini" },
+  { slug: "samaraha", name: "Samaraha" },
+]
 
 const HeroContent = () => (
   // A column so phones can lift the call to action above the bottom bar
@@ -34,59 +47,32 @@ const HeroContent = () => (
       </div>
     </div>
 
-    {/* H1 — leads with the query the homepage ranks for and matches the
-        <title>; a heading with no keyword was one reason Google kept rewriting
-        the title in results. Deliberately static: it is the LCP element on
-        mobile, and any entrance animation on it delays LCP. */}
-    <h1 className="mb-7 max-sm:order-2">
-      <span className="display block text-[2.25rem] sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
+    {/* H1 — the query the homepage ranks for ("Web Development & AI Solutions
+        for Growing Businesses", matching the <title>) is kept, verbatim and
+        first, as the headline's lead line; the sharper line sits under it in
+        display type. A heading with no keyword was one reason Google kept
+        rewriting the title in results, so it stays inside the H1 rather than
+        moving to a badge.
+        Deliberately static: this block is the LCP element, and any entrance
+        animation on it delays LCP. Only the accent word eases into focus, and
+        it starts partly visible, never at opacity 0. */}
+    <h1 className="mb-6 max-sm:order-2">
+      <span className="mb-4 block text-base font-medium tracking-tight text-ink-soft sm:text-lg">
         Web Development &amp; AI Solutions for Growing Businesses
       </span>
-      {/* The headline line above is the LCP element and is never animated;
-          this supporting line rises word by word behind a mask instead. */}
-      <span className="mask-words mx-auto mt-5 block max-w-2xl text-xl leading-snug tracking-tight text-ink-soft sm:text-2xl lg:text-[1.7rem]">
-        <MaskWords text="Websites & online stores that don't get abandoned" />{" "}
-        <span className="whitespace-nowrap">
-          <MaskWords text="after launch" start={7} wordClassName="text-gradient" />
+      <span className="display block text-[2.75rem] sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
+        Built to sell.
+        <span className={`hero-focus ${heroSerif.className} text-gradient block pr-[0.12em] text-[1.1em] leading-[1.02]`}>
+          Never abandoned.
         </span>
       </span>
     </h1>
 
-    {/* Brand signature — decoration, not a heading. */}
-    <ul className="mb-7 flex flex-wrap justify-center gap-2 max-sm:order-4">
-      {SIGNATURE.map((word, index) => (
-        <li
-          key={word}
-          className={`glass inline-flex items-center gap-2 rounded-full py-1.5 pl-1.5 pr-4 text-sm font-medium text-ink hero-rise hero-delay-${index + 1}`}
-        >
-          <span className="icon-badge h-6 w-6">
-            <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
-          </span>
-          {word}
-        </li>
-      ))}
-    </ul>
-
-    {/* Subtitle — outcome, not feature list */}
-    <p className="mx-auto mb-4 max-w-2xl text-lg leading-relaxed text-ink-soft hero-rise hero-delay-4 max-sm:order-4">
-      Conversion-focused websites for growing D2C and ecommerce brands across India and
-      worldwide — designed, built, and supported end to end.
-    </p>
-
-    {/* The Lucknow landing page owns the "website development company in
-        Lucknow" query; the homepage links to it rather than competing for it. */}
-    <p className="mb-9 text-base text-ink-mute hero-rise hero-delay-4 max-sm:order-4 max-sm:mb-0">
-      Based in Lucknow? See our{" "}
-      <Link
-        href="/website-development-company-in-lucknow/"
-        // Visible on load, so a default prefetch fetched the whole Lucknow
-        // page while the homepage was still painting.
-        prefetch={false}
-        className="font-medium text-ink underline decoration-brand decoration-2 underline-offset-4 hover:text-brand"
-      >
-        website development company in Lucknow
-      </Link>{" "}
-      page.
+    {/* One sentence: what, for whom, and that we stay after launch. */}
+    <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-ink-soft hero-rise hero-delay-4 max-sm:order-4 max-sm:mb-0 max-sm:mt-8">
+      Conversion-focused websites and online stores for growing D2C and ecommerce brands across
+      India and worldwide — designed, built and supported end to end, so they don&apos;t get
+      abandoned after launch.
     </p>
 
     {/* CTA Buttons — one primary, one lighter secondary */}
@@ -110,17 +96,66 @@ const HeroContent = () => (
       </Magnetic>
     </div>
 
-    {/* Proof line directly under the CTA */}
-    <p className="mt-5 text-sm text-ink-mute hero-rise hero-delay-4 max-sm:order-3 max-sm:mb-8 max-sm:mt-4">
-      {PROJECTS_DELIVERED} projects delivered · 0 clients ghosted
-    </p>
+    {/* Proof: overlapping client marks plus the figure. */}
+    <div className="mt-7 flex flex-col items-center gap-3 hero-rise hero-delay-4 max-sm:order-3 max-sm:mt-5 sm:flex-row sm:justify-center">
+      <ul aria-hidden="true" className="flex -space-x-2.5">
+        {PROOF_LOGOS.map((logo) => (
+          <li key={logo.slug} className="flex h-10 w-10 items-center justify-center rounded-full bg-white p-1.5 shadow-sm ring-2 ring-white">
+            <Image src={`/images/clients/${logo.slug}.webp`} alt="" width={28} height={28} sizes="28px" className="h-full w-full object-contain" />
+          </li>
+        ))}
+      </ul>
+      <p className="text-sm text-ink-mute">
+        <CountUp value={PROJECTS_DELIVERED} immediate className="font-medium text-ink" /> projects
+        delivered for brands in India, the UAE, the UK &amp; Italy · 0 clients ghosted
+      </p>
+    </div>
   </div>
 )
 
 // Main Hero Section Component
 export default function HeroSection() {
+  const slab = useRef<HTMLDivElement>(null)
+
+  // Spotlight and tilt follow the pointer. Mouse only, and not for reduced
+  // motion; touch and keyboard users get the same hero without them.
+  useEffect(() => {
+    const el = slab.current
+    if (!el || prefersReducedMotion() || !window.matchMedia("(pointer: fine)").matches) return
+    let frame = 0
+    const onMove = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        const box = el.getBoundingClientRect()
+        const x = event.clientX - box.left
+        const y = event.clientY - box.top
+        el.style.setProperty("--sx", `${x}px`)
+        el.style.setProperty("--sy", `${y}px`)
+        el.style.setProperty("--tx", ((x / box.width) * 2 - 1).toFixed(3))
+        el.style.setProperty("--ty", ((y / box.height) * 2 - 1).toFixed(3))
+        el.dataset.hover = "true"
+      })
+    }
+    const onLeave = () => {
+      cancelAnimationFrame(frame)
+      el.dataset.hover = "false"
+      el.style.setProperty("--tx", "0")
+      el.style.setProperty("--ty", "0")
+    }
+    el.addEventListener("pointermove", onMove, { passive: true })
+    el.addEventListener("pointerleave", onLeave)
+    return () => {
+      cancelAnimationFrame(frame)
+      el.removeEventListener("pointermove", onMove)
+      el.removeEventListener("pointerleave", onLeave)
+    }
+  }, [])
+
   return (
-    <div className="relative w-full px-3 pb-12 pt-3 sm:px-6 sm:pt-6 lg:px-8 lg:pb-20 xl:pt-28">
+    // xl top padding is 24px more than before, so the floating navbar clears
+    // the hero card's rounded top edge.
+    <div className="relative w-full px-3 pb-12 pt-3 sm:px-6 sm:pt-6 lg:px-8 lg:pb-20 xl:pt-[8.5rem]">
       <div className="relative mx-auto max-w-7xl">
         {/* Colour for the glass to blur: CSS gradients, so there is nothing to
             download and nothing here can become the LCP element. */}
@@ -131,8 +166,19 @@ export default function HeroSection() {
           <div className="orb orb-pink orb-drift-slow bottom-[-8%] left-[10%] h-[36%] w-[30%]" />
         </div>
 
-        <div className="glass-blur rounded-[32px] px-5 pb-10 pt-8 sm:rounded-[48px] sm:px-10 sm:py-16 lg:py-20">
+        <div
+          ref={slab}
+          className="hero-slab glass-blur relative isolate overflow-hidden rounded-[32px] px-5 pt-8 sm:rounded-[48px] sm:px-10 sm:pt-16 lg:pt-20"
+        >
+          {/* Depth: a faint dot grid, film grain, and a spotlight that trails
+              the cursor. All CSS, all decorative. */}
+          <div aria-hidden="true" className="hero-dots pointer-events-none absolute inset-0 -z-10" />
+          <div aria-hidden="true" className="hero-grain pointer-events-none absolute inset-0 -z-10" />
+          <div aria-hidden="true" className="hero-spot pointer-events-none absolute inset-0 -z-10" />
           <HeroContent />
+          <div className="mock-stage">
+            <HeroMockups />
+          </div>
         </div>
       </div>
     </div>

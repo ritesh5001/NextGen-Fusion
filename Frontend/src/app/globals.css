@@ -1652,3 +1652,126 @@ html.cursor-down .cursor-ring {
     transform: none;
   }
 }
+
+/* ── Hero depth, accent and mockups (hero-section.tsx, hero-mockups.tsx) ── */
+
+/* The italic serif accent eases into focus. It starts partly visible — never
+   at opacity 0 — so the headline block is already painted for LCP. */
+[data-js="true"] .hero-focus {
+  animation: hero-focus 0.9s cubic-bezier(0.25, 1, 0.5, 1) 0.35s both;
+}
+[data-js="true"]:not([data-intro="done"]) .hero-focus {
+  animation-delay: 1.05s;
+}
+@keyframes hero-focus {
+  from { filter: blur(12px); opacity: 0.25; transform: translateY(8px); }
+  to { filter: none; opacity: 1; transform: none; }
+}
+
+.hero-dots {
+  background-image: radial-gradient(rgb(13 16 32 / 0.12) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(75% 70% at 50% 35%, #000 0%, transparent 100%);
+  mask-image: radial-gradient(75% 70% at 50% 35%, #000 0%, transparent 100%);
+}
+.hero-grain {
+  opacity: 0.05;
+  background-size: 160px 160px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.hero-spot {
+  opacity: 0;
+  transition: opacity 0.4s;
+  background: radial-gradient(440px circle at var(--sx, 50%) var(--sy, 30%), rgb(255 255 255 / 0.75), rgb(255 255 255 / 0) 62%);
+}
+.hero-slab[data-hover="true"] .hero-spot {
+  opacity: 1;
+}
+
+/* Fan of client sites. Rows are cropped by the slab's bottom edge so the
+   cards look like they rise from it. */
+.mock-stage {
+  --cw: clamp(128px, 27vw, 340px);
+  margin-top: 2.5rem;
+  perspective: 1100px;
+}
+.mock-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: calc(var(--cw) * 0.52);
+  transform: rotateY(calc(var(--tx, 0) * 5deg)) rotateX(calc(var(--ty, 0) * -3deg));
+  transition: transform 0.3s ease-out;
+}
+.mock-row > li {
+  flex: none;
+  width: var(--cw);
+  margin-left: -9%;
+}
+.mock-row > li:first-child {
+  margin-left: 0;
+}
+.mock-card {
+  transform: translate3d(calc(var(--tx, 0) * var(--d) * 1px), calc(var(--ty, 0) * var(--d) * 0.5px), 0) rotate(var(--r));
+  transition: transform 0.3s ease-out;
+}
+.mock-frame {
+  display: block;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(13 16 32 / 0.08),
+    0 30px 60px -24px rgb(28 55 201 / 0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.mock-frame:hover {
+  transform: translateY(-8px);
+}
+.mock-bar {
+  display: flex;
+  gap: 4px;
+  padding: 7px 9px;
+  background: #f3f4f8;
+}
+.mock-bar i {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgb(13 16 32 / 0.18);
+}
+.mock-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+}
+[data-js="true"] .mock-in {
+  animation: mock-in 0.9s cubic-bezier(0.25, 1, 0.5, 1) both;
+  animation-delay: calc(0.6s + var(--i, 0) * 0.09s);
+}
+[data-js="true"]:not([data-intro="done"]) .mock-in {
+  animation-delay: calc(1.3s + var(--i, 0) * 0.09s);
+}
+@keyframes mock-in {
+  from { opacity: 0; transform: translateY(70px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-js="true"] .hero-focus,
+  [data-js="true"] .mock-in {
+    animation: none;
+  }
+  .mock-row,
+  .mock-card {
+    transition: none;
+  }
+}
+@media (max-width: 639px) {
+  /* Wider than the phone on purpose: the centre card shows in full and its
+     neighbours are cropped by the slab, which reads as a fan. */
+  .mock-stage { --cw: 58vw; margin-top: 2rem; }
+  .mock-row > li { margin-left: -16%; }
+}
