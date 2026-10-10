@@ -7,7 +7,9 @@ import {
   ArrowUpRight,
   Bot,
   Cloud,
+  Boxes,
   Code2,
+  Globe,
   MousePointerClick,
   PenTool,
   Plug,
@@ -15,10 +17,15 @@ import {
   Share2,
   ShoppingCart,
   Smartphone,
+  TrendingUp,
   Wrench,
 } from "lucide-react"
 import BadgeSubtitle from "./badge-subtitle"
 import { serviceRoutes } from "./services/service-data"
+import { DrawIcon } from "@/components/motion/draw-icon"
+
+// One large line icon per pillar, drawn into the wash when it scrolls in.
+const PILLAR_ICONS = [Globe, TrendingUp, Boxes]
 
 // Animation variants
 const containerVariants = {
@@ -166,9 +173,15 @@ export default function ServicesSection() {
             outline is unchanged. */}
         <div className="grid gap-4 lg:grid-cols-3">
           {PILLARS.map((pillar, index) => (
-            <m.div key={pillar.label} variants={itemVariants} className="svc-pillar glass flex flex-col rounded-[36px] p-3">
+            <m.div key={pillar.label} variants={itemVariants} className="svc-pillar glass group flex flex-col rounded-[36px] p-3">
               <div className={`${pillar.wash} svc-wash relative flex min-h-36 flex-col justify-between overflow-hidden rounded-[28px] p-6`}>
                 <span className="text-sm font-medium text-white/85">0{index + 1}</span>
+                <DrawIcon className="absolute right-6 top-5 text-white/90" delay={index * 0.15}>
+                  {(() => {
+                    const PillarIcon = PILLAR_ICONS[index % PILLAR_ICONS.length]
+                    return <PillarIcon className="h-14 w-14" strokeWidth={1.25} aria-hidden="true" />
+                  })()}
+                </DrawIcon>
                 <p className="text-2xl font-normal leading-tight tracking-tight text-white">{pillar.label}</p>
               </div>
               <ul className="svc-list flex-1 divide-y divide-ink/10 px-3 pt-2">
@@ -180,7 +193,9 @@ export default function ServicesSection() {
                     <li key={service.title}>
                       <Link href={href} prefetch={false} className="svc-row group flex gap-4 py-5">
                         <span className="svc-icon icon-badge h-10 w-10">
-                          <service.Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                          <DrawIcon>
+                            <service.Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                          </DrawIcon>
                         </span>
                         <span className="min-w-0 flex-1">
                           <h3 className="flex items-start justify-between gap-3 text-base font-medium leading-snug tracking-tight text-ink">

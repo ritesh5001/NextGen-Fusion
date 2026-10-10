@@ -51,7 +51,10 @@ export function CountUp({ value, className = "", immediate = false }: { value: s
             const eased = 1 - Math.pow(1 - t, 3)
             el.dataset.n = format(target * eased)
             if (t < 1) frame = requestAnimationFrame(tick)
-            else delete el.dataset.counting
+            else {
+              delete el.dataset.counting
+              el.dataset.done = "true"
+            }
           }
           frame = requestAnimationFrame(tick)
         }

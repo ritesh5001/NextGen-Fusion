@@ -1,12 +1,12 @@
 "use client"
 
 import { m, AnimatePresence } from "framer-motion"
-import { ArrowRight, ArrowLeft, Target, Map, Lightbulb, Users, CheckCircle, AlertCircle, MapPin, Phone } from "lucide-react"
+import { ArrowRight, ArrowLeft, Target, Map, Lightbulb, Users, CheckCircle, AlertCircle } from "lucide-react"
 import { useRef, useState } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import PhoneInput from "./phone-input"
 import { apiService, ContactFormData } from "@/lib/api"
-import { OFFICE_HOURS, offices } from "@/data/offices"
+import { OFFICE_HOURS } from "@/data/offices"
 import { trackEvent } from "@/lib/analytics"
 import { Turnstile, type TurnstileHandle } from "./turnstile"
 import { TURNSTILE_ENABLED } from "@/lib/turnstile"
@@ -222,9 +222,11 @@ export default function ContactSection() {
           <m.div className="mb-5" variants={textVariants}>
             <BadgeSubtitle>Contact Us</BadgeSubtitle>
           </m.div>
-          <m.h2 className="display mx-auto mb-5 max-w-3xl text-4xl sm:text-5xl lg:text-6xl" variants={textVariants}>
-            Time to Stop Scrolling, Let&apos;s <span className="text-gradient">Discuss</span> and Cook It Up!
-          </m.h2>
+          <ScaleIn from={0.86}>
+            <m.h2 className="display mx-auto mb-5 max-w-3xl text-5xl sm:text-6xl lg:text-7xl" variants={textVariants}>
+              Let&apos;s build <span className="text-gradient">what&apos;s next.</span>
+            </m.h2>
+          </ScaleIn>
           <m.p 
             className="text-ink-soft text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
             variants={textVariants}
@@ -533,75 +535,6 @@ export default function ContactSection() {
         </div>
         </ScaleIn>
 
-        {/* Offices Section */}
-        <div className="mt-20 sm:mt-24">
-          <m.div 
-            className="text-center mb-10 sm:mb-14"
-            variants={itemVariants}
-          >
-            <m.div className="mb-5" variants={textVariants}>
-              <BadgeSubtitle>Our Offices</BadgeSubtitle>
-            </m.div>
-            <m.h2 
-              className="display mb-4 text-3xl sm:text-4xl lg:text-5xl"
-              variants={textVariants}
-            >
-              Visit Us at Our Locations
-            </m.h2>
-            <m.p 
-              className="text-ink-soft text-base sm:text-lg max-w-2xl mx-auto"
-              variants={textVariants}
-            >
-              Connect with us at either of our offices for in-person consultations and support.
-            </m.p>
-          </m.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {offices.map((office, index) => (
-              <m.div
-                key={office.city}
-                className="glass rounded-[32px] p-6 sm:p-8"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="icon-badge h-12 w-12">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="display text-3xl">
-                      {office.city}
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-ink-mute flex-shrink-0 mt-0.5" />
-                    <p className="text-ink-soft text-sm leading-relaxed">
-                      {office.address}
-                    </p>
-                  </div>
-
-                  <div className="border-t border-ink/10 pt-4">
-                    <p className="text-sm font-medium text-ink-soft mb-3">
-                      <strong>Managed by:</strong> {office.contact.name}
-                    </p>
-                    <a
-                      href={`tel:${office.contact.phone}`}
-                      className="btn btn-ink btn-sm"
-                    >
-                      <Phone className="w-4 h-4" />
-                      {office.contact.phone}
-                    </a>
-                  </div>
-                </div>
-              </m.div>
-            ))}
-          </div>
-        </div>
       </div>
     </m.section>
   )

@@ -20,6 +20,7 @@ import { staticProjects } from "@/lib/static-projects"
 import { PROJECTS_DELIVERED } from "@/lib/seo"
 import { CountUp } from "@/components/motion/count-up"
 import { ScrollSpotlight } from "@/components/motion/scroll-spotlight"
+import { DrawIcon } from "@/components/motion/draw-icon"
 
 /**
  * Client logos, taken from each client's own website (or, where the site
@@ -117,7 +118,7 @@ function LogoTile({ slug, width, height, duplicate }: { slug: string; width: num
 // globals.css), so this section adds no JavaScript to the homepage.
 export default function SocialProofSection() {
   return (
-    <section aria-labelledby="social-proof-heading" className="py-16 sm:py-24">
+    <section aria-labelledby="social-proof-heading" className="pb-16 pt-6 sm:pb-24 sm:pt-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="eyebrow">Trusted by growing brands</p>
@@ -149,10 +150,12 @@ export default function SocialProofSection() {
         <div className="lg:sticky lg:top-28 lg:self-start">
           <h3 className="display text-3xl sm:text-4xl lg:text-5xl">What clients run on what we built</h3>
           <ul className="mt-8 space-y-2">
-            {standards.map(({ Icon, text }) => (
+            {standards.map(({ Icon, text }, index) => (
               <li key={text} className="glass flex items-center gap-3 rounded-full py-2 pl-2 pr-5 text-sm text-ink">
                 <span className="icon-badge h-8 w-8">
-                  <Icon className="h-4 w-4" aria-hidden="true" />
+                  <DrawIcon delay={index * 0.18}>
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </DrawIcon>
                 </span>
                 <span>{text}</span>
               </li>
@@ -173,7 +176,9 @@ export default function SocialProofSection() {
                   </span>
                 </span>
                 <span className="icon-badge hidden h-11 w-11 sm:inline-flex">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+                  <DrawIcon delay={0.5}>
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </DrawIcon>
                 </span>
               </li>
             ))}

@@ -34,6 +34,7 @@ export default function LayoutChrome({ children }: { children: React.ReactNode }
         <span className="preloader-label">NextGen Fusion</span>
         <span className="preloader-count" />
       </div>
+      <div aria-hidden="true" className="scroll-progress" />
       <IntegratedNavbar />
       {children}
       <BookingModal />

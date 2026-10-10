@@ -42,6 +42,8 @@ export function ProjectShowcase({
 }) {
   const root = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
+  const [cuts, setCuts] = useState(0)
+  const lastActive = useRef(0)
   const jump = useRef<(index: number) => void>(() => {})
 
   useEffect(() => {
@@ -75,7 +77,14 @@ export function ProjectShowcase({
           animation: tl,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onUpdate: (self) => setActive(Math.round(self.progress * last)),
+          onUpdate: (self) => {
+            const next = Math.round(self.progress * last)
+            if (next !== lastActive.current) {
+              lastActive.current = next
+              setCuts((n) => n + 1)
+            }
+            setActive(next)
+          },
         })
 
         jump.current = (index: number) => {
@@ -132,6 +141,7 @@ export function ProjectShowcase({
 
         <div className="showcase-stage">
           <div className="showcase-screens" data-cursor="View">
+            {cuts > 0 && <span key={cuts} className="showcase-flash" aria-hidden="true" />}
             {items.map((item, i) => (
               <Link
                 key={item.key}

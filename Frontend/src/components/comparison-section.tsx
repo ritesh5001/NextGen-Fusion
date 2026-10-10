@@ -2,11 +2,14 @@
 
 import { m } from "framer-motion"
 import Image from "next/image"
+import { useEffect, useRef } from "react"
 import { Check, X } from "lucide-react"
 import Link from "next/link"
 import BadgeSubtitle from "./badge-subtitle"
 import { OFFICE_HOURS } from "@/data/offices"
 import { priceTier } from "@/lib/estimator-pricing"
+import { DrawIcon } from "@/components/motion/draw-icon"
+import { loadGsap, prefersReducedMotion } from "@/lib/gsap"
 
 // Every claim in the table points at something a visitor can check. No prices
 // are shown anywhere on the site; they are shared in conversation.
@@ -146,6 +149,41 @@ const rowVariants = {
 const MotionTr = m.tr
 
 export default function ComparisonSection() {
+  const table = useRef<HTMLTableElement>(null)
+
+  // Desktop: while the table is mid-screen, the row crossing the middle is lit
+  // and the others recede. Outside that window every row is at full strength.
+  useEffect(() => {
+    const el = table.current
+    if (!el || prefersReducedMotion()) return
+    let revert = () => {}
+    let cancelled = false
+    loadGsap().then(({ gsap, ScrollTrigger }) => {
+      if (cancelled) return
+      const mm = gsap.matchMedia()
+      mm.add("(min-width: 1024px)", () => {
+        const rows = Array.from(el.querySelectorAll<HTMLElement>("tbody tr"))
+        const whole = ScrollTrigger.create({
+          trigger: el,
+          start: "top 65%",
+          end: "bottom 35%",
+          onToggle: (self) => (self.isActive ? el.setAttribute("data-on", "") : el.removeAttribute("data-on")),
+        })
+        const each = rows.map((row) => ScrollTrigger.create({ trigger: row, start: "top 58%", end: "bottom 42%", toggleClass: { targets: row, className: "is-lit" } }))
+        return () => {
+          whole.kill()
+          each.forEach((t) => t.kill())
+          el.removeAttribute("data-on")
+        }
+      })
+      revert = () => mm.revert()
+    })
+    return () => {
+      cancelled = true
+      revert()
+    }
+  }, [])
+
   return (
     <m.section 
       className="px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
@@ -192,7 +230,7 @@ export default function ComparisonSection() {
           className="glass hidden sm:block overflow-hidden rounded-[32px] p-2"
           variants={tableVariants}
         >
-          <table className="w-full">
+          <table ref={table} className="compare-spot w-full">
             {/* Header Row */}
             <thead>
               <MotionTr
@@ -242,7 +280,9 @@ export default function ComparisonSection() {
                   <td className={`bg-brand/[0.07] p-6 ${index === comparisonData.length - 1 ? "rounded-b-[24px]" : ""}`}>
                     <div className="flex items-start gap-3">
                       <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full icon-badge">
-                        <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
+                        <DrawIcon delay={index * 0.12}>
+                          <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
+                        </DrawIcon>
                       </span>
                       <div>
                         <p className="text-sm leading-relaxed text-ink">{item.livingTech}</p>
@@ -253,7 +293,9 @@ export default function ComparisonSection() {
                   <td className="p-6">
                     <div className="flex items-start gap-3">
                       <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-canvas-deep text-ink-mute">
-                        <X className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
+                        <DrawIcon delay={index * 0.12 + 0.1}>
+                          <X className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
+                        </DrawIcon>
                       </span>
                       <p className="text-sm leading-relaxed text-ink-mute">{item.others}</p>
                     </div>

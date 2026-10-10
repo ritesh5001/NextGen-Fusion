@@ -14,7 +14,9 @@ import { loadGsap, prefersReducedMotion } from "@/lib/gsap"
 export function VelocityMarquee({ words }: { words: string[] }) {
   const root = useRef<HTMLDivElement>(null)
   const track = useRef<HTMLDivElement>(null)
-  const line = words.join("  ·  ") + "  ·  "
+  // Each word (and each separator dot) is its own span so it can light up as it
+  // crosses the middle of the screen. Two copies make the loop seamless.
+  const items = words.flatMap((word) => [word, "·"])
 
   useEffect(() => {
     const trackEl = track.current
@@ -47,7 +49,22 @@ export function VelocityMarquee({ words }: { words: string[] }) {
           })
         },
       })
+      // Light up whichever word is crossing the centre. A handful of rect
+      // reads per frame, and only while the band is on screen.
+      const wordEls = Array.from(root.current.querySelectorAll<HTMLElement>(".marquee-word"))
+      const centreTrigger = ScrollTrigger.create({ trigger: root.current, start: "top bottom", end: "bottom top" })
+      const light = () => {
+        if (!centreTrigger.isActive) return
+        const mid = window.innerWidth / 2
+        for (const el of wordEls) {
+          const box = el.getBoundingClientRect()
+          el.classList.toggle("is-center", box.left < mid && box.right > mid)
+        }
+      }
+      gsap.ticker.add(light)
       cleanup = () => {
+        gsap.ticker.remove(light)
+        centreTrigger.kill()
         trigger.kill()
         loop.kill()
       }
@@ -62,8 +79,9 @@ export function VelocityMarquee({ words }: { words: string[] }) {
   return (
     <div ref={root} aria-hidden="true" className="overflow-hidden py-6 sm:py-10">
       <div ref={track} className="flex w-max">
-        <span data-text={line} className="marquee-text" />
-        <span data-text={line} className="marquee-text" />
+        {[0, 1].map((copy) =>
+          items.map((item, i) => <span key={`${copy}-${i}`} data-text={`${item}  `} className="marquee-word" />)
+        )}
       </div>
     </div>
   )

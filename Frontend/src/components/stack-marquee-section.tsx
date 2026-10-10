@@ -95,22 +95,22 @@ export default function StackMarqueeSection() {
 
   return (
     <m.section
-      className="py-20 sm:py-24 overflow-hidden"
+      className="py-10 sm:py-12 overflow-hidden"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={containerVariants}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-5">
         <m.div
           className="text-center"
           variants={itemVariants}
         >
-          <m.div className="mb-5" variants={textVariants}>
+          <m.div className="mb-3" variants={textVariants}>
             <BadgeSubtitle>Tech Stack</BadgeSubtitle>
           </m.div>
           <m.h2
-            className="display text-4xl sm:text-5xl lg:text-6xl"
+            className="display text-2xl sm:text-3xl"
             variants={textVariants}
           >
             The tools that accompany our workflow.
