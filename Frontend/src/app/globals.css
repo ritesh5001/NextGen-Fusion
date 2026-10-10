@@ -2069,3 +2069,9 @@ a:hover > .icon-tile,
 @media (max-width: 639px) and (prefers-reduced-motion: reduce) {
   .mock-row { animation: none; }
 }
+
+/* Phones: small buttons and footer links get a 44px touch area. */
+@media (max-width: 767px) {
+  .btn-sm { min-height: 44px; }
+  .footer-collapse a, footer address a { min-height: 44px; display: inline-flex; align-items: center; }
+}

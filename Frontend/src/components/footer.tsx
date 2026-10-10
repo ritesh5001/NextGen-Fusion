@@ -122,7 +122,7 @@ const WHATSAPP_URL = whatsappHref();
 const WORDMARK = "NextGen".split("");
 
 const heading = "text-sm font-medium text-brand-light";
-const linkClass = "ulink inline-block py-2.5 text-sm text-white/75 transition-colors duration-200 hover:text-white md:py-0";
+const linkClass = "ulink inline-block py-3 text-sm text-white/75 transition-colors duration-200 hover:text-white md:py-0";
 
 /**
  * A footer group that is a tappable accordion on phones and a plain heading
@@ -244,7 +244,7 @@ export default function Footer() {
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="inline-flex rounded-full bg-white/[0.07] px-3 py-1.5 text-xs text-white/80 transition-colors duration-200 hover:bg-white/15 hover:text-white"
+                        className="inline-flex items-center rounded-full bg-white/[0.07] px-3.5 py-1.5 text-xs text-white/80 max-md:min-h-11 transition-colors duration-200 hover:bg-white/15 hover:text-white"
                       >
                         {link.label}
                       </a>

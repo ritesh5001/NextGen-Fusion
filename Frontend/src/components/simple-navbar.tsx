@@ -299,14 +299,14 @@ export default function SimpleNavbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat with NextGen Fusion on WhatsApp"
-                className="rounded-full bg-white/80 p-2.5 text-[#128c4a] transition-transform active:scale-95"
+                className="rounded-full bg-white/80 p-3 text-[#128c4a] transition-transform active:scale-95"
               >
                 <WhatsAppIcon className="h-5 w-5" />
               </a>
               <a
                 href="tel:+917348228167"
                 aria-label="Call NextGen Fusion on +91 73482 28167"
-                className="rounded-full bg-white/80 p-2.5 transition-transform active:scale-95"
+                className="rounded-full bg-white/80 p-3 transition-transform active:scale-95"
               >
                 <Phone className="w-5 h-5 text-ink" aria-hidden="true" />
               </a>
