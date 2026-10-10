@@ -1189,6 +1189,7 @@ img[src$=".svg"] {
     padding: 0;
   }
   .showcase-result {
+    margin-top: 0;
     align-items: flex-end;
     text-align: right;
   }
