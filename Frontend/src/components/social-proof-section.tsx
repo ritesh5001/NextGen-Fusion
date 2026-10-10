@@ -161,6 +161,20 @@ export default function SocialProofSection() {
               </li>
             ))}
           </ul>
+          <div className="glass mt-8 rounded-[32px] p-6 sm:p-7">
+            <p className="text-xl font-medium tracking-tight text-ink">Want results like these?</p>
+            <p className="mt-2 text-ink-soft">
+              Read the case studies behind the numbers, or tell us what you need and get a written quote.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/work/" prefetch={false} className="btn btn-brand btn-sm">
+                See our work
+              </Link>
+              <Link href="/contact/" prefetch={false} className="btn btn-glass btn-sm">
+                Get a written quote
+              </Link>
+            </div>
+          </div>
         </div>
 
         <ScrollSpotlight>

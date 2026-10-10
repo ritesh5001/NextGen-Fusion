@@ -4,6 +4,9 @@ import { Plus, Minus, MoreVertical } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import { homeFaqs } from "@/data/home-faqs"
+import { OFFICE_HOURS } from "@/data/offices"
+import { openBookingModal } from "@/lib/booking"
+import { whatsappHref } from "@/lib/whatsapp"
 
 // Animation variants
 const containerVariants = {
@@ -175,6 +178,21 @@ export default function FAQSection() {
             <m.h2 className="display text-4xl sm:text-5xl lg:text-6xl" variants={textVariants}>
               <span className="text-gradient">Questions</span> about working with us, answered
             </m.h2>
+
+            <m.div variants={textVariants} className="glass mt-10 max-w-md rounded-[32px] p-6 sm:p-7">
+              <p className="text-xl font-medium tracking-tight text-ink">Didn&apos;t find your answer?</p>
+              <p className="mt-2 text-ink-soft">
+                Ask us directly. You get a written reply within {OFFICE_HOURS.replyWithin}, including a clear next step.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <button type="button" onClick={() => openBookingModal({ requestType: "meeting" })} className="btn btn-brand btn-sm">
+                  Book a Free Call
+                </button>
+                <a href={whatsappHref()} target="_blank" rel="noopener noreferrer" className="btn btn-glass btn-sm">
+                  WhatsApp us
+                </a>
+              </div>
+            </m.div>
             </m.div>
 
           {/* Right Column - Chat Interface */}

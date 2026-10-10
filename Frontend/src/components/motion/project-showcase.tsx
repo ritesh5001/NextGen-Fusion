@@ -6,6 +6,7 @@ import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
 import { loadGsap } from "@/lib/gsap"
 import { cn } from "@/lib/utils"
+import { useNearViewport } from "@/hooks/use-near-viewport"
 
 export type ShowcaseItem = {
   key: string
@@ -43,6 +44,9 @@ export function ProjectShowcase({
   const root = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
   const [cuts, setCuts] = useState(0)
+  // Every screen is fetched once the section is ~1.5 screens away, so each wipe
+  // reveals an image that is already there, not a blank panel that fills in later.
+  const [stageRef, near] = useNearViewport<HTMLDivElement>("1500px")
   const lastActive = useRef(0)
   const jump = useRef<(index: number) => void>(() => {})
 
@@ -139,7 +143,7 @@ export function ProjectShowcase({
           <div className="showcase-footer">{footer}</div>
         </div>
 
-        <div className="showcase-stage">
+        <div ref={stageRef} className="showcase-stage">
           <div className="showcase-screens" data-cursor="View">
             {cuts > 0 && <span key={cuts} className="showcase-flash" aria-hidden="true" />}
             {items.map((item, i) => (
@@ -167,7 +171,7 @@ export function ProjectShowcase({
                   sizes="(min-width: 1024px) 60vw, 1px"
                   className="object-cover object-top"
                   priority={false}
-                  loading={i < 2 ? "eager" : "lazy"}
+                  loading={near || i < 2 ? "eager" : "lazy"}
                 />
               </Link>
             ))}

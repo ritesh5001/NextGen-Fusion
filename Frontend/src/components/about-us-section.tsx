@@ -90,13 +90,13 @@ export default function AboutUsSection() {
               </m.p>
 
               {/* Larger portraits with names: each one is a link to the person's page. */}
-              <ul className="grid grid-cols-2 gap-3 sm:gap-4">
+              <ul className="grid auto-rows-fr grid-cols-2 gap-3 sm:gap-4">
                 {team.map((member) => (
                   <li key={member.slug}>
                     <Link
                       href={`/team/${member.slug}/`}
                       prefetch={false}
-                      className="glass group flex flex-col items-center gap-3 rounded-[24px] p-4 text-center transition hover:bg-white"
+                      className="glass group flex h-full flex-col items-center justify-start gap-3 rounded-[24px] p-4 text-center transition hover:bg-white"
                     >
                       <Image
                         src={member.image}

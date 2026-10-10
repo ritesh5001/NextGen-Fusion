@@ -1114,8 +1114,10 @@ html.cursor-down .cursor-ring {
   }
   .showcase-index {
     display: grid;
-    margin-top: auto;
-    padding: 0;
+    /* Auto margins on both sides centre the list between the heading and the
+       footer, so the left column no longer has a gap under the description. */
+    margin-block: auto;
+    padding: 1.5rem 0 0;
     list-style: none;
   }
   .showcase-index li {
@@ -1130,7 +1132,7 @@ html.cursor-down .cursor-ring {
     align-items: baseline;
     gap: 10px;
     width: 100%;
-    padding: 7px 0;
+    padding: clamp(7px, 1.3vh, 12px) 0;
     text-align: left;
     color: rgb(255 255 255 / 0.45);
     transition: color 0.3s;
@@ -1144,7 +1146,7 @@ html.cursor-down .cursor-ring {
     color: var(--color-brand-light);
   }
   .showcase-index-title {
-    font-size: clamp(15px, 1.25vw, 19px);
+    font-size: clamp(16px, 1.5vw, 22px);
     transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   .showcase-index-row.is-active .showcase-index-title {
