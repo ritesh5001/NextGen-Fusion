@@ -217,8 +217,10 @@ function hostFromUrl(url: string): string {
 // Also sites that are down: vibestyl.in, tastyhouse.in and hcbengineering.in
 // have no DNS records (NXDOMAIN) and clickngreet.in serves a 503 maintenance
 // page; site audits reported each as a broken external link. Checked 2026-10-09.
+// tatvivahtrends.com: Vercel answers DEPLOYMENT_NOT_FOUND. Checked 2026-10-10.
 const CLOSED_HOSTS = new Set([
   "zarqaa.in",
+  "tatvivahtrends.com",
   "qathirsnaturals.com",
   "vibestyl.in",
   "tastyhouse.in",
