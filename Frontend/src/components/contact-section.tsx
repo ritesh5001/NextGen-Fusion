@@ -1,7 +1,8 @@
 "use client"
 
 import { m, AnimatePresence } from "framer-motion"
-import { ArrowRight, ArrowLeft, Target, Map, Lightbulb, Users, CheckCircle, AlertCircle } from "lucide-react"
+import { ArrowRight, ArrowLeft, CheckCircle, AlertCircle } from "lucide-react"
+import { Lightbulb, MapTrifold, Target, UsersThree } from "@phosphor-icons/react"
 import { useRef, useState } from "react"
 import BadgeSubtitle from "./badge-subtitle"
 import PhoneInput from "./phone-input"
@@ -117,24 +118,24 @@ export default function ContactSection() {
 
   const benefits = [
     {
-      icon: <Target className="w-4 h-4" />,
+      icon: <Target className="h-5 w-5" weight="duotone" />,
       title: "A straight answer on fit",
       description:
         "We tell you on the first call whether we are the right team, including when the answer is that you do not need us.",
     },
     {
-      icon: <Map className="w-4 h-4" />,
+      icon: <MapTrifold className="h-5 w-5" weight="duotone" />,
       title: "A written scope",
       description:
         "What we would build, one fixed price and one delivery window, in writing, before you pay anything.",
     },
     {
-      icon: <Lightbulb className="w-4 h-4" />,
+      icon: <Lightbulb className="h-5 w-5" weight="duotone" />,
       title: "Builds like yours",
       description: "The case studies closest to your business, so you can see what we built for someone in your position.",
     },
     {
-      icon: <Users className="w-4 h-4" />,
+      icon: <UsersThree className="h-5 w-5" weight="duotone" />,
       title: "Support after launch",
       description: "A support plan quoted upfront with every project, so the site does not go stale the month after it ships.",
     },
@@ -255,8 +256,8 @@ export default function ContactSection() {
             
             <div className="relative flex flex-col gap-2">
               {benefits.map((benefit, index) => (
-                <div key={index} className="glass-ink flex items-start gap-4 rounded-[24px] p-4">
-                  <div className="icon-badge h-10 w-10">
+                <div key={index} className="glass-ink group flex items-start gap-4 rounded-[24px] p-4">
+                  <div className="icon-tile icon-tile-dark h-11 w-11">
                     {benefit.icon}
                   </div>
                   <div className="flex flex-1 flex-col justify-center gap-1.5">

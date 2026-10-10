@@ -217,7 +217,7 @@ export default function FAQSection() {
                       type="button"
                       onClick={handleBackClick} 
                       aria-label="Back"
-                      className="grid h-9 w-9 place-items-center rounded-full bg-canvas transition-colors hover:bg-canvas-deep"
+                      className="grid h-11 w-11 place-items-center rounded-full bg-canvas transition-colors hover:bg-canvas-deep"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
@@ -246,7 +246,7 @@ export default function FAQSection() {
                         onClick={toggleDropdown} 
                         aria-label="More options"
                         aria-expanded={showDropdown}
-                        className="grid h-9 w-9 place-items-center rounded-full bg-canvas transition-colors hover:bg-canvas-deep"
+                        className="grid h-11 w-11 place-items-center rounded-full bg-canvas transition-colors hover:bg-canvas-deep"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >

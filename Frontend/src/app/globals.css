@@ -981,7 +981,7 @@ html.cursor-down .cursor-ring {
 .marquee-text::before {
   content: attr(data-text);
   white-space: pre;
-  font-size: clamp(3.5rem, 11vw, 9.5rem);
+  font-size: clamp(2.5rem, 7.6vw, 6.6rem);
   font-weight: 400;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -1080,7 +1080,8 @@ html.cursor-down .cursor-ring {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.45rem 0.8rem;
+  min-height: 44px;
+  padding: 0.45rem 1rem;
   border: 1px solid rgb(255 255 255 / 0.18);
   border-radius: 999px;
   font-size: 13px;
@@ -1538,7 +1539,7 @@ html.cursor-down .cursor-ring {
     color: var(--color-brand);
   }
   .svc-row:hover .svc-arrow {
-    transform: rotate(45deg);
+    transform: translateX(4px);
     color: var(--color-brand);
   }
   .svc-row:hover .svc-icon {
@@ -1853,16 +1854,16 @@ html.cursor-down .cursor-ring {
 /* ── DrawIcon (draw-icon.tsx): line icons draw in once when scrolled to, and
    again on hover of their card. Hidden state only exists after the component
    has measured the shapes (.draw-ready), so with no JS nothing is hidden. ── */
-.draw-icon.draw-ready :is(path, line, circle, rect, polyline, polygon, ellipse) {
+.draw-icon.draw-ready:not(.draw-pop) :is(path, line, circle, rect, polyline, polygon, ellipse) {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }
-.draw-icon.draw-ready.is-drawn :is(path, line, circle, rect, polyline, polygon, ellipse) {
+.draw-icon.draw-ready.is-drawn:not(.draw-pop) :is(path, line, circle, rect, polyline, polygon, ellipse) {
   animation: draw-stroke 0.7s var(--ease) both;
   animation-delay: var(--draw-delay, 0s);
 }
-.group:hover .draw-icon.draw-ready.is-drawn :is(path, line, circle, rect, polyline, polygon, ellipse),
-a:hover > .draw-icon.draw-ready.is-drawn :is(path, line, circle, rect, polyline, polygon, ellipse) {
+.group:hover .draw-icon.draw-ready.is-drawn:not(.draw-pop) :is(path, line, circle, rect, polyline, polygon, ellipse),
+a:hover > .draw-icon.draw-ready.is-drawn:not(.draw-pop) :is(path, line, circle, rect, polyline, polygon, ellipse) {
   animation: draw-stroke 0.6s var(--ease) both;
 }
 @keyframes draw-stroke {
@@ -1920,7 +1921,7 @@ a:hover > .draw-icon.draw-ready.is-drawn :is(path, line, circle, rect, polyline,
 .marquee-word::before {
   content: attr(data-text);
   white-space: pre;
-  font-size: clamp(3.5rem, 11vw, 9.5rem);
+  font-size: clamp(2.5rem, 7.6vw, 6.6rem);
   font-weight: 400;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -1960,4 +1961,111 @@ a:hover > .draw-icon.draw-ready.is-drawn :is(path, line, circle, rect, polyline,
 }
 @media (prefers-reduced-motion: reduce) {
   .showcase-flash { display: none; }
+}
+
+/* ── Touch devices: the hover effects, driven by scroll position instead.
+   TouchInView (touch-in-view.tsx) puts .is-inview on the card at mid-screen. ── */
+@media (hover: none) {
+  .step-card.is-inview {
+    translate: 0 -6px;
+    box-shadow: 0 30px 50px -30px rgb(13 16 32 / 0.4);
+  }
+  .step-card.is-inview .step-ghost {
+    bottom: -1rem;
+    color: rgb(255 255 255 / 0.9);
+  }
+  .step-card.is-inview .step-icon {
+    opacity: 1;
+    transform: none;
+  }
+  .svc-row.is-inview .svc-title {
+    transform: translateX(6px);
+    color: var(--color-brand);
+  }
+  .svc-row.is-inview .svc-arrow {
+    transform: translateX(4px);
+    color: var(--color-brand);
+  }
+  .svc-row.is-inview .svc-icon {
+    background: var(--color-brand);
+    color: #fff;
+    transform: scale(1.08) rotate(-6deg);
+  }
+  .svc-pillar.is-inview .svc-wash {
+    background-position: 100% 100%;
+  }
+  .logo-tile.is-inview {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 40px -22px rgb(42 75 245 / 0.55);
+  }
+  .logo-tile.is-inview img {
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* Footer accordion (footer.tsx): no browser marker; the chevron turns when open. */
+.footer-collapse > summary { list-style: none; }
+.footer-collapse > summary::-webkit-details-marker { display: none; }
+.footer-collapse[open] .footer-chevron { transform: rotate(180deg); }
+
+/* Filled (duotone) icons: scale and fade in, again on hover. */
+.draw-icon.draw-pop.draw-ready:not(.is-drawn) {
+  opacity: 0;
+  transform: scale(0.6);
+}
+.draw-icon.draw-pop.draw-ready.is-drawn {
+  animation: icon-pop 0.55s var(--ease) both;
+  animation-delay: var(--draw-delay, 0s);
+}
+.group:hover .draw-icon.draw-pop.draw-ready.is-drawn,
+.svc-row.is-inview .draw-icon.draw-pop.draw-ready.is-drawn {
+  animation: icon-pop 0.45s var(--ease) both;
+}
+@keyframes icon-pop {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .draw-icon.draw-pop.draw-ready { opacity: 1; transform: none; animation: none !important; }
+}
+
+/* Icon tile: a soft tinted rounded square that fills solid on hover. */
+.icon-tile {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  color: var(--color-brand);
+  background-color: rgb(42 75 245 / 0.1);
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.group:hover .icon-tile,
+a:hover > .icon-tile,
+.icon-tile.is-inview {
+  color: #fff;
+  background-color: var(--color-brand);
+}
+.icon-tile-dark {
+  color: var(--color-brand-light);
+  background-color: rgb(255 255 255 / 0.1);
+}
+.group:hover .icon-tile-dark {
+  color: #fff;
+  background-color: var(--color-brand);
+}
+
+/* Marquee band: ~30% smaller, so it separates sections without a big empty gap. */
+@media (max-width: 639px) {
+  /* The hero mockups drift slowly side to side on phones, where there is no
+     pointer to tilt them. */
+  .mock-row { animation: mock-drift 9s ease-in-out infinite alternate; }
+  @keyframes mock-drift {
+    from { translate: -14px 0; }
+    to { translate: 14px 0; }
+  }
+}
+@media (max-width: 639px) and (prefers-reduced-motion: reduce) {
+  .mock-row { animation: none; }
 }

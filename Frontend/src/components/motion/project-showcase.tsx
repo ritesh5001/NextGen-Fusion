@@ -132,7 +132,7 @@ export function ProjectShowcase({
                 >
                   <span className="font-mono text-xs">{pad(i + 1)}</span>
                   <span className="showcase-index-title">{item.title}</span>
-                  <span className="font-mono text-[11px] uppercase tracking-wider">{item.category}</span>
+                  <span className="font-mono text-xs uppercase tracking-wider">{item.category}</span>
                 </button>
               </li>
             ))}
@@ -190,7 +190,7 @@ export function ProjectShowcase({
                   />
                 </div>
                 <div className="min-w-0">
-                  <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-brand-light lg:hidden">
+                  <p className="mb-2 font-mono text-xs uppercase tracking-wider text-brand-light lg:hidden">
                     {item.category}
                   </p>
                   <h3 className="text-2xl font-medium tracking-tight text-white lg:text-[clamp(26px,2.6vw,40px)] lg:leading-none">
@@ -204,7 +204,7 @@ export function ProjectShowcase({
                   {item.tags.length > 0 && (
                     <ul className="mt-3 flex flex-wrap gap-1.5">
                       {item.tags.map((tag) => (
-                        <li key={tag} className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[11px] text-white/80">
+                        <li key={tag} className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-xs text-white/80">
                           {tag}
                         </li>
                       ))}
@@ -215,7 +215,7 @@ export function ProjectShowcase({
                   {item.result && (
                     <p>
                       <span className="showcase-metric">{item.result.metric}</span>
-                      <span className="block font-mono text-[11px] uppercase tracking-wider text-white/55">
+                      <span className="block font-mono text-xs uppercase tracking-wider text-white/55">
                         {item.result.label}
                       </span>
                     </p>

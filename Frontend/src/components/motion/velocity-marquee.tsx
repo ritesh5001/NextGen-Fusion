@@ -77,7 +77,7 @@ export function VelocityMarquee({ words }: { words: string[] }) {
   }, [])
 
   return (
-    <div ref={root} aria-hidden="true" className="overflow-hidden py-6 sm:py-10">
+    <div ref={root} aria-hidden="true" className="overflow-hidden py-2 sm:py-4">
       <div ref={track} className="flex w-max">
         {[0, 1].map((copy) =>
           items.map((item, i) => <span key={`${copy}-${i}`} data-text={`${item}  `} className="marquee-word" />)

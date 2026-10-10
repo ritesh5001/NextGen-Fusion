@@ -10,6 +10,7 @@ import Footer from "@/components/footer"
 const BookingModal = dynamic(() => import("@/components/booking-modal"), { ssr: false })
 const SalesChatbot = dynamic(() => import("@/components/sales-chatbot"), { ssr: false })
 const FloatingWhatsApp = dynamic(() => import("@/components/floating-whatsapp"), { ssr: false })
+const TouchInView = dynamic(() => import("@/components/motion/touch-in-view").then((m) => m.TouchInView), { ssr: false })
 const CustomCursor = dynamic(() => import("@/components/motion/custom-cursor").then((m) => m.CustomCursor), { ssr: false })
 const HoverEffects = dynamic(() => import("@/components/motion/hover-effects").then((m) => m.HoverEffects), { ssr: false })
 const RouteTransitions = dynamic(() => import("@/components/motion/route-transitions").then((m) => m.RouteTransitions), { ssr: false })
@@ -45,6 +46,7 @@ export default function LayoutChrome({ children }: { children: React.ReactNode }
       />
       <Footer />
       <CustomCursor />
+      <TouchInView />
       <HoverEffects />
       <RouteTransitions />
     </div>

@@ -4,9 +4,9 @@ import { useEffect, useRef, type ReactNode } from "react"
 import { prefersReducedMotion } from "@/lib/gsap"
 
 /**
- * Wraps any line-art SVG icon (Lucide today; Iconly or any other set later,
- * since it only needs strokes) so its strokes draw in once when it scrolls
- * into view and again whenever its card is hovered.
+ * Wraps any SVG icon so it animates in once when it scrolls into view and
+ * again whenever its card is hovered (or, on a phone, is at mid-screen):
+ * strokes draw for line icons, filled duotone icons pop in.
  *
  * It measures nothing and animates nothing until mounted: the icon is plain
  * and fully visible in the server HTML, and `.draw-ready` — the only thing
@@ -19,9 +19,16 @@ export function DrawIcon({ children, delay = 0, className = "" }: { children: Re
   useEffect(() => {
     const el = ref.current
     if (!el || prefersReducedMotion()) return
-    const shapes = el.querySelectorAll("path, line, circle, rect, polyline, polygon, ellipse")
-    if (!shapes.length) return
-    shapes.forEach((shape) => shape.setAttribute("pathLength", "1"))
+    // Line icons (Lucide) draw their strokes; filled icons (Phosphor duotone)
+    // have nothing to trace, so they scale and fade in instead.
+    const filled = el.querySelector("svg")?.getAttribute("fill") === "currentColor"
+    if (filled) {
+      el.classList.add("draw-pop")
+    } else {
+      const shapes = el.querySelectorAll("path, line, circle, rect, polyline, polygon, ellipse")
+      if (!shapes.length) return
+      shapes.forEach((shape) => shape.setAttribute("pathLength", "1"))
+    }
     el.classList.add("draw-ready")
     el.style.setProperty("--draw-delay", `${delay}s`)
 
@@ -36,7 +43,7 @@ export function DrawIcon({ children, delay = 0, className = "" }: { children: Re
     observer.observe(el)
     return () => {
       observer.disconnect()
-      el.classList.remove("draw-ready", "is-drawn")
+      el.classList.remove("draw-ready", "draw-pop", "is-drawn")
     }
   }, [delay])
 

@@ -4,9 +4,11 @@ import { useState, useEffect, useRef } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpRight, X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
+import { ArrowRight, X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/lib/booking"
 import { Magnetic } from "@/components/motion/magnetic"
+import { whatsappHref } from "@/lib/whatsapp"
+import { WhatsAppIcon } from "@/components/icons/whatsapp-icon"
 
 type MenuItem = {
   name: string
@@ -182,7 +184,7 @@ export default function SimpleNavbar() {
             >
               Book a Call
               <span className="btn-dot" aria-hidden="true">
-                <ArrowUpRight className="h-3.5 w-3.5" />
+                <ArrowRight className="h-3.5 w-3.5" />
               </span>
             </button>
           </Magnetic>
@@ -271,7 +273,7 @@ export default function SimpleNavbar() {
                 }
               }}
               aria-label="NextGen Fusion — home"
-              className="min-w-0 shrink py-1"
+              className="min-w-0 shrink py-3"
             >
               <Image src="/images/site-logo.png" alt="" width={96} height={54} className="h-5 w-auto" />
             </Link>
@@ -292,6 +294,15 @@ export default function SimpleNavbar() {
             </button>
 
             <div className="flex items-center gap-2">
+              <a
+                href={whatsappHref("Hi! I came across NextGen Fusion and I'd like to discuss a project. Could we schedule a quick call?")}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat with NextGen Fusion on WhatsApp"
+                className="rounded-full bg-white/80 p-2.5 text-[#128c4a] transition-transform active:scale-95"
+              >
+                <WhatsAppIcon className="h-5 w-5" />
+              </a>
               <a
                 href="tel:+917348228167"
                 aria-label="Call NextGen Fusion on +91 73482 28167"

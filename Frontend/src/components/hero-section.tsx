@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { openBookingModal } from "@/lib/booking"
 import { PROJECTS_DELIVERED } from "@/lib/seo"
 import { prefersReducedMotion } from "@/lib/gsap"
@@ -52,7 +52,7 @@ const HeroContent = () => (
         the title in results. Deliberately static: this is the LCP element, and
         any entrance animation on it delays LCP. Only the accent phrase eases
         into focus, and it starts partly visible, never at opacity 0. */}
-    <h1 className="display mb-6 max-sm:order-2 text-[2.75rem] sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
+    <h1 className="display mb-6 max-sm:order-2 text-[2.25rem] sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
       <span className="block text-balance">Web development &amp; AI solutions</span>{" "}
       <span className={`hero-focus ${heroSerif.className} text-gradient block pr-[0.12em] text-[1.1em] leading-[1.02]`}>
         that grow your business.
@@ -60,7 +60,7 @@ const HeroContent = () => (
     </h1>
 
     {/* One description: what, for whom, and that we stay after launch. */}
-    <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-ink-soft hero-rise hero-delay-4 max-sm:order-4 max-sm:mb-0 max-sm:mt-8">
+    <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-ink-soft hero-rise hero-delay-4 max-sm:order-4 max-sm:mb-0 max-sm:mt-6 max-sm:text-base">
       Conversion-focused websites, online stores and AI automation for growing brands in India
       and worldwide. Designed, built and supported end to end.
     </p>
@@ -75,7 +75,7 @@ const HeroContent = () => (
         >
           Book a Free Call
           <span className="btn-dot" aria-hidden="true">
-            <ArrowUpRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4" />
           </span>
         </button>
       </Magnetic>

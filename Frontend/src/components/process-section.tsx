@@ -72,7 +72,7 @@ export default function ProcessSection() {
             const Icon = STEP_ICON[index % STEP_ICON.length]
             return (
             <m.div key={step.number} variants={item} className="step-card glass rounded-[32px] p-3">
-              <div className={`${STEP_WASH[index % STEP_WASH.length]} relative flex h-36 items-end overflow-hidden rounded-[24px] p-5`}>
+              <div className={`${STEP_WASH[index % STEP_WASH.length]} relative flex h-20 items-end overflow-hidden rounded-[24px] p-5 sm:h-36`}>
                 {/* Decorative: a large ghost of the step number and an icon
                     rise into the gradient on hover. */}
                 <span className="step-ghost" aria-hidden="true">{step.number}</span>

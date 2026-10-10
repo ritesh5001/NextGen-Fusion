@@ -1,20 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
-import {
-  ArrowUpRight,
-  FileText,
-  Gauge,
-  Globe2,
-  LifeBuoy,
-  MonitorSmartphone,
-  Search,
-  ShieldCheck,
-  ShoppingBag,
-  Sprout,
-  Ship,
-  Store,
-  type LucideIcon,
-} from "lucide-react"
+import { ArrowRight } from "lucide-react"
+import { Boat, Gauge, Lifebuoy, MagnifyingGlass, Plant, ShieldCheck, Storefront } from "@phosphor-icons/react/dist/ssr"
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react"
 import { deliveredProjects } from "@/lib/delivered-projects"
 import { staticProjects } from "@/lib/static-projects"
 import { PROJECTS_DELIVERED } from "@/lib/seo"
@@ -57,30 +45,30 @@ const logos = clientLogos.filter((logo) => titleBySlug.has(logo.slug))
 const onlineStores = deliveredProjects.filter((project) => project.category === "ecommerce").length
 const caseStudies = staticProjects.length
 
-type Stat = { Icon: LucideIcon; value: string; label: string; detail: string }
+type Stat = { value: string; label: string; detail: string }
 
 const stats: Stat[] = [
-  { Icon: MonitorSmartphone, value: PROJECTS_DELIVERED, label: "Projects delivered", detail: "Websites, online stores and web apps" },
-  { Icon: ShoppingBag, value: `${onlineStores}`, label: "Online stores built", detail: "Shopify, WooCommerce and custom" },
-  { Icon: FileText, value: `${caseStudies}`, label: "Detailed case studies", detail: "Each links to the live site" },
+  { value: PROJECTS_DELIVERED, label: "Projects delivered", detail: "Websites, online stores and web apps" },
+  { value: `${onlineStores}`, label: "Online stores built", detail: "Shopify, WooCommerce and custom" },
+  { value: `${caseStudies}`, label: "Detailed case studies", detail: "Each links to the live site" },
   // India, the UAE (Cleanship), the UK and Italy: client domains on /work/.
-  { Icon: Globe2, value: "4", label: "Countries", detail: "India, the UAE, the UK and Italy" },
+  { value: "4", label: "Countries", detail: "India, the UAE, the UK and Italy" },
 ]
 
-type Result = { Icon: LucideIcon; value: string; label: string; href: string }
+type Result = { Icon: PhosphorIcon; value: string; label: string; href: string }
 
 // Figures from the clients' published case studies.
 const results: Result[] = [
-  { Icon: Store, value: "3,226+", label: "vendors on MariBiz.ai, the maritime marketplace we built", href: "/work/maribiz-ai/" },
-  { Icon: Sprout, value: "1.2 lakh+", label: "farmers served by Krushi Doctor, on the store we built", href: "/work/krushidoctor/" },
-  { Icon: Ship, value: "310", label: "service and port pages we built for Cleanship", href: "/work/cleanship/" },
+  { Icon: Storefront, value: "3,226+", label: "vendors on MariBiz.ai, the maritime marketplace we built", href: "/work/maribiz-ai/" },
+  { Icon: Plant, value: "1.2 lakh+", label: "farmers served by Krushi Doctor, on the store we built", href: "/work/krushidoctor/" },
+  { Icon: Boat, value: "310", label: "service and port pages we built for Cleanship", href: "/work/cleanship/" },
 ]
 
-const standards: { Icon: LucideIcon; text: string }[] = [
+const standards: { Icon: PhosphorIcon; text: string }[] = [
   { Icon: ShieldCheck, text: "You own the domain, code and every account" },
   { Icon: Gauge, text: "Mobile-first, fast-loading builds" },
-  { Icon: Search, text: "SEO, analytics and Search Console set up on launch" },
-  { Icon: LifeBuoy, text: "Support after launch: 0 clients ghosted" },
+  { Icon: MagnifyingGlass, text: "SEO, analytics and Search Console set up on launch" },
+  { Icon: Lifebuoy, text: "Support after launch: 0 clients ghosted" },
 ]
 
 function LogoTile({ slug, width, height, duplicate }: { slug: string; width: number; height: number; duplicate: boolean }) {
@@ -152,9 +140,9 @@ export default function SocialProofSection() {
           <ul className="mt-8 space-y-2">
             {standards.map(({ Icon, text }, index) => (
               <li key={text} className="glass flex items-center gap-3 rounded-full py-2 pl-2 pr-5 text-sm text-ink">
-                <span className="icon-badge h-8 w-8">
+                <span className="icon-tile h-9 w-9">
                   <DrawIcon delay={index * 0.18}>
-                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    <Icon className="h-5 w-5" weight="duotone" aria-hidden="true" />
                   </DrawIcon>
                 </span>
                 <span>{text}</span>
@@ -178,26 +166,21 @@ export default function SocialProofSection() {
         </div>
 
         <ScrollSpotlight>
-          <ul className="space-y-3">
-            {stats.map(({ Icon, value, label, detail }) => (
-              <li key={label} data-row className="glass flex items-center gap-5 rounded-[28px] p-5 sm:gap-8 sm:p-7">
+          <ul className="grid grid-cols-2 gap-3 sm:block sm:space-y-3">
+            {stats.map(({ value, label, detail }) => (
+              <li key={label} data-row className="glass flex items-center gap-5 rounded-[28px] p-4 sm:gap-8 sm:p-7">
                 {/* Number over label on phones, side by side from sm up. */}
                 <span className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-8">
-                  <CountUp value={value} className="display min-w-[4ch] text-5xl sm:text-7xl" />
+                  <CountUp value={value} className="display min-w-[4ch] text-4xl sm:text-7xl" />
                   <span className="min-w-0 flex-1">
                     <span className="block text-base font-medium text-ink sm:text-lg">{label}</span>
                     <span className="mt-1 block text-sm text-ink-mute">{detail}</span>
                   </span>
                 </span>
-                <span className="icon-badge hidden h-11 w-11 sm:inline-flex">
-                  <DrawIcon delay={0.5}>
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                  </DrawIcon>
-                </span>
               </li>
             ))}
             {results.map(({ Icon, value, label, href }) => (
-              <li key={href} data-row>
+              <li key={href} data-row className="col-span-2 sm:col-span-1">
                 <Link
                   href={href}
                   prefetch={false}
@@ -210,8 +193,8 @@ export default function SocialProofSection() {
                     <span className="min-w-0 flex-1 text-sm leading-6 text-ink-soft sm:text-base">{label}</span>
                   </span>
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-brand group-hover:text-white">
-                    <Icon className="h-5 w-5 group-hover:hidden" aria-hidden="true" />
-                    <ArrowUpRight className="hidden h-5 w-5 group-hover:block" aria-hidden="true" />
+                    <Icon className="h-6 w-6 group-hover:hidden" weight="duotone" aria-hidden="true" />
+                    <ArrowRight className="hidden h-5 w-5 group-hover:block" aria-hidden="true" />
                   </span>
                 </Link>
               </li>

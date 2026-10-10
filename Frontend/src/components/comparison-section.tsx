@@ -306,82 +306,47 @@ export default function ComparisonSection() {
           </table>
         </m.div>
 
-        {/* Mobile Table */}
-        <m.div 
-          className="glass sm:hidden overflow-hidden rounded-[28px] p-1.5"
-          variants={tableVariants}
-        >
-          <table className="w-full">
-            {/* Header Row */}
-            <thead>
-              <MotionTr
-                variants={rowVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                <th className="p-3 text-left text-xs font-medium text-ink-mute">
-                  Comparison
-                </th>
-                <th className="rounded-t-[20px] bg-gradient-to-br from-brand to-violet p-3 text-left">
-                  <div className="flex items-center gap-2">
-                    <m.div
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Image 
-                        src="/images/site-logo.png" 
-                        alt="" 
-                        width={20}
-                        height={20}
-                        className="w-5 h-5 object-contain"
-                      />
-                    </m.div>
-                    <span className="font-medium text-white text-sm">NextGen Fusion</span>
+        {/* Phones: three narrow columns squeezed every answer to two or three
+            words a line, so each row becomes a card: the topic, our answer,
+            then what other agencies do, quietly, underneath. Same words. */}
+        <div className="space-y-3 sm:hidden">
+          {comparisonData.map((item, index) => (
+            <m.div
+              key={item.category}
+              variants={tableVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              className="glass overflow-hidden rounded-[28px]"
+            >
+              <p className="px-5 pb-2 pt-4 text-sm font-medium text-ink-mute">{item.category}</p>
+              <div className="bg-gradient-to-br from-brand/10 to-violet/10 px-5 py-4">
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full icon-badge">
+                    <DrawIcon delay={index * 0.12}>
+                      <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
+                    </DrawIcon>
+                  </span>
+                  <div>
+                    <p className="text-xs font-medium text-brand">NextGen Fusion</p>
+                    <p className="mt-1 text-[15px] leading-relaxed text-ink">{item.livingTech}</p>
+                    <RowLinks links={item.links} className="text-sm" />
                   </div>
-                </th>
-                <th className="p-3 text-left text-xs font-medium text-ink-mute">Other Agencies</th>
-              </MotionTr>
-            </thead>
-
-            {/* Body Rows */}
-            <tbody>
-              {comparisonData.map((item, index) => (
-                <MotionTr 
-                  key={item.category} 
-                  className="border-t border-ink/5"
-                  variants={rowVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover="hover"
-                >
-                  <td className="p-3 align-top font-medium text-ink text-sm">{item.category}</td>
-                  <td className={`bg-brand/[0.07] p-3 align-top ${index === comparisonData.length - 1 ? "rounded-b-[20px]" : ""}`}>
-                    <div className="flex items-start gap-2">
-                      <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full icon-badge">
-                        <Check className="h-2.5 w-2.5" strokeWidth={3} aria-hidden="true" />
-                      </span>
-                      <div>
-                        <p className="text-xs leading-relaxed text-ink">{item.livingTech}</p>
-                        <RowLinks links={item.links} className="text-xs" />
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-3 align-top">
-                    <div className="flex items-start gap-2">
-                      <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-canvas-deep text-ink-mute">
-                        <X className="h-2.5 w-2.5" strokeWidth={3} aria-hidden="true" />
-                      </span>
-                      <p className="text-xs leading-relaxed text-ink-mute">{item.others}</p>
-                    </div>
-                  </td>
-                </MotionTr>
-              ))}
-            </tbody>
-          </table>
-        </m.div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 px-5 py-4">
+                <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-canvas-deep text-ink-mute">
+                  <X className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-xs font-medium text-ink-mute">Other Agencies</p>
+                  <p className="mt-1 text-sm leading-relaxed text-ink-mute">{item.others}</p>
+                </div>
+              </div>
+            </m.div>
+          ))}
+        </div>
       </div>
     </m.section>
   )

@@ -65,8 +65,9 @@ export default function AboutUsSection() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-10 lg:gap-16 items-start">
-          {/* Left Column: the heading, then the people */}
-          <m.div variants={itemVariants}>
+          {/* Left Column: the heading, then the people. Sticky, so it stays in view
+              while the two longer statements on the right scroll past. */}
+          <m.div variants={itemVariants} className="lg:sticky lg:top-28 lg:self-start">
             <m.div className="mb-5" variants={textVariants}>
               <BadgeSubtitle>About Us</BadgeSubtitle>
             </m.div>

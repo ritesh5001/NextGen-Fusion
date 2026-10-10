@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { StaticProject } from "@/lib/static-projects";
 import {
   CATEGORY_LABELS,
@@ -99,7 +99,7 @@ export default function WorkSection({
         footer={
           <Link href="/work/" prefetch={false} className="btn btn-sm bg-white text-ink hover:bg-white/90">
             See all projects
-            <ArrowUpRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4" />
           </Link>
         }
       />

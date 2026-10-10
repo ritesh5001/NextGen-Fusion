@@ -197,7 +197,7 @@ export default function DeliveredWall({
                 className="btn btn-glass btn-sm shrink-0"
               >
                 See all projects
-                <ArrowUpRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             )}
           </div>
@@ -249,7 +249,7 @@ export default function DeliveredWall({
               className="btn btn-ink"
             >
               See all projects delivered
-              <ArrowUpRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         )}

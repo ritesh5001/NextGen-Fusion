@@ -2,30 +2,30 @@
 
 import { m } from "framer-motion"
 import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import {
   AppWindow,
-  ArrowUpRight,
-  Bot,
   Cloud,
-  Boxes,
-  Code2,
+  CursorClick,
+  Cube,
+  Code,
+  DeviceMobile,
   Globe,
-  MousePointerClick,
-  PenTool,
-  Plug,
-  Search,
-  Share2,
+  MagnifyingGlass,
+  PenNib,
+  PlugsConnected,
+  Robot,
+  ShareNetwork,
   ShoppingCart,
-  Smartphone,
-  TrendingUp,
+  TrendUp,
   Wrench,
-} from "lucide-react"
+} from "@phosphor-icons/react"
 import BadgeSubtitle from "./badge-subtitle"
 import { serviceRoutes } from "./services/service-data"
 import { DrawIcon } from "@/components/motion/draw-icon"
 
-// One large line icon per pillar, drawn into the wash when it scrolls in.
-const PILLAR_ICONS = [Globe, TrendingUp, Boxes]
+// One large duotone icon per pillar, popped into the wash when it scrolls in.
+const PILLAR_ICONS = [Globe, TrendUp, Cube]
 
 // Animation variants
 const containerVariants = {
@@ -37,6 +37,12 @@ const containerVariants = {
       delayChildren: 0.1
     }
   }
+}
+
+// Cards ease in with a slight scale; only headings fade up.
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
 }
 
 const itemVariants = {
@@ -79,7 +85,7 @@ export default function ServicesSection() {
     {
       title: "Website Development Services",
       description: "Build fast, scalable, and conversion-focused websites using modern frameworks, clean architecture, and SEO-ready structure.",
-      Icon: Code2,
+      Icon: Code,
     },
     {
       title: "E-commerce Web Development Services",
@@ -89,32 +95,32 @@ export default function ServicesSection() {
     {
       title: "Android App Development Services",
       description: "Android apps that run well on the mid-range phones your customers actually use, with push notifications and a back end you own.",
-      Icon: Smartphone,
+      Icon: DeviceMobile,
     },
     {
       title: "Web Design Services",
       description: "Layouts built around the one thing a visitor came to do, and tested on real phones rather than a resized browser.",
-      Icon: PenTool,
+      Icon: PenNib,
     },
     {
       title: "AI Automation and AI Development Services",
       description: "Take repetitive jobs off your team — sorting enquiries, writing product descriptions, building reports — where it saves real hours.",
-      Icon: Bot,
+      Icon: Robot,
     },
     {
       title: "SEO Services",
       description: "Improve your organic visibility with technical SEO, keyword strategy, on-page optimization, and content performance tracking.",
-      Icon: Search,
+      Icon: MagnifyingGlass,
     },
     {
       title: "PPC Services",
       description: "Run high-intent paid campaigns across Google and social platforms with ad optimization, budget control, and ROI-focused reporting.",
-      Icon: MousePointerClick,
+      Icon: CursorClick,
     },
     {
       title: "Social Media Marketing Services",
       description: "Content and campaigns on the platforms your buyers already use, reported against enquiries and sales rather than likes.",
-      Icon: Share2,
+      Icon: ShareNetwork,
     },
     {
       title: "Website Maintenance Services",
@@ -129,7 +135,7 @@ export default function ServicesSection() {
     {
       title: "API Integration Services",
       description: "Connect third-party tools, CRMs, payment systems, and internal platforms through reliable API integrations and secure data flows.",
-      Icon: Plug,
+      Icon: PlugsConnected,
     },
     {
       title: "Cloud Solutions",
@@ -173,13 +179,13 @@ export default function ServicesSection() {
             outline is unchanged. */}
         <div className="grid gap-4 lg:grid-cols-3">
           {PILLARS.map((pillar, index) => (
-            <m.div key={pillar.label} variants={itemVariants} className="svc-pillar glass group flex flex-col rounded-[36px] p-3">
+            <m.div key={pillar.label} variants={cardVariants} className="svc-pillar glass group flex flex-col rounded-[36px] p-3">
               <div className={`${pillar.wash} svc-wash relative flex min-h-36 flex-col justify-between overflow-hidden rounded-[28px] p-6`}>
                 <span className="text-sm font-medium text-white/85">0{index + 1}</span>
                 <DrawIcon className="absolute right-6 top-5 text-white/90" delay={index * 0.15}>
                   {(() => {
                     const PillarIcon = PILLAR_ICONS[index % PILLAR_ICONS.length]
-                    return <PillarIcon className="h-14 w-14" strokeWidth={1.25} aria-hidden="true" />
+                    return <PillarIcon className="h-16 w-16" weight="duotone" aria-hidden="true" />
                   })()}
                 </DrawIcon>
                 <p className="text-2xl font-normal leading-tight tracking-tight text-white">{pillar.label}</p>
@@ -191,18 +197,18 @@ export default function ServicesSection() {
                   const href = serviceRoutes[service.title] ?? "#"
                   return (
                     <li key={service.title}>
-                      <Link href={href} prefetch={false} className="svc-row group flex gap-4 py-5">
-                        <span className="svc-icon icon-badge h-10 w-10">
+                      <Link href={href} prefetch={false} className="svc-row group flex gap-4 py-3.5 sm:py-5">
+                        <span className="svc-icon icon-tile h-10 w-10">
                           <DrawIcon>
-                            <service.Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                            <service.Icon className="h-[22px] w-[22px]" weight="duotone" aria-hidden="true" />
                           </DrawIcon>
                         </span>
                         <span className="min-w-0 flex-1">
                           <h3 className="flex items-start justify-between gap-3 text-base font-medium leading-snug tracking-tight text-ink">
                             <span className="svc-title">{service.title}</span>
-                            <ArrowUpRight className="svc-arrow mt-0.5 h-4 w-4 shrink-0 text-ink-mute" aria-hidden="true" />
+                            <ArrowRight className="svc-arrow mt-0.5 h-4 w-4 shrink-0 text-ink-mute" aria-hidden="true" />
                           </h3>
-                          <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{service.description}</p>
+                          <p className="mt-1.5 text-sm leading-relaxed text-ink-soft max-sm:line-clamp-2">{service.description}</p>
                         </span>
                       </Link>
                     </li>
@@ -218,20 +224,7 @@ export default function ServicesSection() {
           <Link href="/services/" prefetch={false} className="btn btn-ink">
             View all services
           </Link>
-          {/* The Lucknow landing page owns the "website development company in
-              Lucknow" query; the homepage links to it rather than competing
-              for it. (Moved here from the hero, text and link unchanged.) */}
-          <p className="mt-6 text-base text-ink-mute">
-            Based in Lucknow? See our{" "}
-            <Link
-              href="/website-development-company-in-lucknow/"
-              prefetch={false}
-              className="font-medium text-ink underline decoration-brand decoration-2 underline-offset-4 hover:text-brand"
-            >
-              website development company in Lucknow
-            </Link>{" "}
-            page.
-          </p>
+
         </m.div>
       </div>
     </m.section>
