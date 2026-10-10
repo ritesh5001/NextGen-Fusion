@@ -175,7 +175,7 @@ function resolveEstimatorForm(form: EstimatorForm): ProjectEstimatorData | null 
   }
 }
 
-const GRADIENT = "bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4]"
+const GRADIENT = "bg-gradient-to-r from-brand via-violet to-cyan"
 
 export default function ProjectEstimatorSection() {
   const [step, setStep] = useState(1)
@@ -240,7 +240,7 @@ export default function ProjectEstimatorSection() {
   return (
     <m.section
       id="project-estimator"
-      className="relative overflow-hidden bg-white px-4 py-20 sm:px-6 md:py-28 lg:px-8"
+      className="relative overflow-hidden px-4 py-20 sm:px-6 md:py-28 lg:px-8"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -251,11 +251,11 @@ export default function ProjectEstimatorSection() {
       <div className="relative mx-auto max-w-7xl">
         <m.div className="max-w-3xl" variants={itemVariants}>
           <BadgeSubtitle>Project Estimator</BadgeSubtitle>
-          <h2 className="mt-5 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+          <h2 className="mt-5 text-3xl font-medium tracking-tight text-ink sm:text-4xl md:text-5xl">
             Get an instant{" "}
             <span className={`${GRADIENT} bg-clip-text text-transparent`}>price estimate</span> for your project.
           </h2>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-gray-600 sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base leading-7 text-ink-soft sm:text-lg">
             Answer a few quick questions and watch your estimate update live. No back-and-forth, no waiting.
           </p>
         </m.div>
@@ -264,9 +264,9 @@ export default function ProjectEstimatorSection() {
           {/* Tool */}
           <m.div
             variants={itemVariants}
-            className="order-2 rounded-3xl border border-gray-200 bg-white p-4 shadow-[0_30px_80px_rgba(17,19,24,0.08)] lg:order-1"
+            className="glass order-2 rounded-[36px] p-4 shadow-[0_30px_80px_rgba(17,19,24,0.08)] lg:order-1"
           >
-            <div className="rounded-[20px] border border-gray-100 bg-white p-5 sm:p-7">
+            <div className="glass rounded-[20px] p-5 sm:p-7">
               <AnimatePresence mode="wait">
                 {step === 1 && (
                   <m.div key="step-1" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
@@ -321,7 +321,7 @@ export default function ProjectEstimatorSection() {
                     </div>
 
                     <div className="mt-6">
-                      <label className="text-sm font-medium text-gray-700">Features you need</label>
+                      <label className="text-sm font-medium text-ink-soft">Features you need</label>
                       <div className="mt-3 flex flex-wrap gap-2">
                         {featureOptions.map((item) => (
                           <TagButton
@@ -335,11 +335,11 @@ export default function ProjectEstimatorSection() {
                     </div>
 
                     {/* Optional detail */}
-                    <div className="mt-6 border-t border-gray-100 pt-5">
+                    <div className="mt-6 border-t border-ink/10 pt-5">
                       <button
                         type="button"
                         onClick={() => setShowDetail((s) => !s)}
-                        className="flex w-full items-center justify-between text-sm font-medium text-gray-700 transition hover:text-gray-900"
+                        className="flex w-full items-center justify-between text-sm font-medium text-ink-soft transition hover:text-ink"
                       >
                         <span>Add detail for a sharper estimate (optional)</span>
                         <ChevronDown className={`h-4 w-4 transition-transform ${showDetail ? "rotate-180" : ""}`} />
@@ -376,7 +376,7 @@ export default function ProjectEstimatorSection() {
                               />
                             </div>
                             <div className="mt-5">
-                              <label className="text-sm font-medium text-gray-700">Integrations</label>
+                              <label className="text-sm font-medium text-ink-soft">Integrations</label>
                               <div className="mt-3 flex flex-wrap gap-2">
                                 {integrationOptions.map((item) => (
                                   <TagButton
@@ -463,13 +463,13 @@ export default function ProjectEstimatorSection() {
                   <m.div key="step-3" variants={panelVariants} initial="hidden" animate="visible" exit="exit">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <StepHeading title="Your estimate" subtitle="A first-pass scope and budget from your brief." />
-                      <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600">
+                      <div className="glass inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium text-ink-soft">
                         <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
                         Scope generated
                       </div>
                     </div>
 
-                    <div className="mt-6 overflow-hidden rounded-[24px] bg-[#0b0d12] p-6 text-white">
+                    <div className="mt-6 overflow-hidden rounded-[24px] bg-ink p-6 text-white">
                       <p className="text-xs uppercase tracking-[0.22em] text-white/50">Estimated investment</p>
                       <div className={`mt-3 text-3xl font-bold sm:text-4xl ${GRADIENT} bg-clip-text text-transparent`}>
                         {formatCurrency(result.estimated_cost_inr.min)} – {formatCurrency(result.estimated_cost_inr.max)}
@@ -490,29 +490,29 @@ export default function ProjectEstimatorSection() {
                     </div>
 
                     {/* Highlighted payment terms + ongoing support */}
-                    <div className={`mt-6 rounded-2xl p-[1.5px] ${GRADIENT}`}>
+                    <div className={`mt-6 rounded-[28px] p-[1.5px] ${GRADIENT}`}>
                       <div className="rounded-[15px] bg-white p-5">
                         <div className="flex items-start gap-3">
-                          <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-[#8A38F5]" />
+                          <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
                           <div>
-                            <p className="text-sm font-semibold text-gray-900">Payment terms</p>
-                            <p className="mt-1 text-sm leading-6 text-gray-600">
+                            <p className="text-sm font-semibold text-ink">Payment terms</p>
+                            <p className="mt-1 text-sm leading-6 text-ink-soft">
                               {result.payment_terms ?? "50% advance to start · 50% at payment-gateway integration"}
                             </p>
                           </div>
                         </div>
                         {result.support && (
-                          <div className="mt-4 flex items-start gap-3 border-t border-gray-100 pt-4">
+                          <div className="mt-4 flex items-start gap-3 border-t border-ink/10 pt-4">
                             <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" />
                             <div>
-                              <p className="text-sm font-semibold text-gray-900">
+                              <p className="text-sm font-semibold text-ink">
                                 {result.support.label} —{" "}
                                 <span className={`${GRADIENT} bg-clip-text text-transparent`}>
                                   {formatCurrency(result.support.amount)}/
                                   {result.support.cadence === "year" ? "yr" : "mo"}
                                 </span>
                               </p>
-                              <p className="mt-1 text-sm leading-6 text-gray-600">
+                              <p className="mt-1 text-sm leading-6 text-ink-soft">
                                 Recurring, billed separately from the one-time build.
                                 {result.support.note ? ` ${result.support.note}` : ""}
                               </p>
@@ -527,24 +527,24 @@ export default function ProjectEstimatorSection() {
                       <ListCard title="Scope breakdown" items={result.scope_breakdown} />
                     </div>
 
-                    <div className="mt-5 rounded-2xl border border-gray-200 bg-gray-50 p-5">
-                      <p className="text-sm font-semibold text-gray-900">Assumptions</p>
+                    <div className="glass mt-5 rounded-[28px] p-5">
+                      <p className="text-sm font-semibold text-ink">Assumptions</p>
                       <ul className="mt-3 space-y-2">
                         {result.assumptions.map((item) => (
-                          <li key={item} className="flex items-start gap-2 text-sm leading-6 text-gray-600">
-                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#8A38F5]" />
+                          <li key={item} className="flex items-start gap-2 text-sm leading-6 text-ink-soft">
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                             <span>{item}</span>
                           </li>
                         ))}
                       </ul>
-                      <p className="mt-4 text-sm font-medium text-gray-900">{result.next_step}</p>
+                      <p className="mt-4 text-sm font-medium text-ink">{result.next_step}</p>
                     </div>
                   </m.div>
                 )}
               </AnimatePresence>
 
               {error && (
-                <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <div className="mt-5 rounded-[28px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                   {error}
                 </div>
               )}
@@ -553,8 +553,8 @@ export default function ProjectEstimatorSection() {
                 <Turnstile ref={captchaRef} action="estimator" onToken={setCaptchaToken} className="mt-5" />
               )}
 
-              <div className="mt-8 flex flex-col gap-3 border-t border-gray-100 pt-6 sm:flex-row sm:items-center sm:justify-between">
-                <div className="text-sm text-gray-500">
+              <div className="mt-8 flex flex-col gap-3 border-t border-ink/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-sm text-ink-mute">
                   {step === 1 && "Shape the brief — the price updates as you go."}
                   {step === 2 && "Last step before your tailored estimate."}
                   {step === 3 && "Use this as the opener for a discovery call."}
@@ -595,7 +595,7 @@ export default function ProjectEstimatorSection() {
 
           {/* Live preview */}
           <m.div variants={itemVariants} className="order-1 lg:order-2">
-            <div className="lg:sticky lg:top-24 overflow-hidden rounded-3xl border border-white/10 bg-[#0b0d12] p-7 text-white shadow-[0_25px_80px_rgba(0,0,0,0.18)]">
+            <div className="lg:sticky lg:top-24 overflow-hidden rounded-[36px] border border-white/10 bg-ink p-7 text-white shadow-[0_25px_80px_rgba(0,0,0,0.18)]">
               <div className={`pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full ${GRADIENT} opacity-20 blur-3xl`} />
 
               <div className="relative">
@@ -702,8 +702,8 @@ export default function ProjectEstimatorSection() {
 function StepHeading({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div>
-      <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{title}</h3>
-      <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500 sm:text-base">{subtitle}</p>
+      <h3 className="text-2xl font-medium tracking-tight text-ink sm:text-3xl">{title}</h3>
+      <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-mute sm:text-base">{subtitle}</p>
     </div>
   )
 }
@@ -725,22 +725,21 @@ function SelectableCard({
     <button
       type="button"
       onClick={onClick}
-      className={`flex w-full items-start gap-3 rounded-2xl border px-4 py-4 text-left transition ${
+      className={`flex w-full items-start gap-3 rounded-[28px] border px-4 py-4 text-left transition ${
         active
-          ? "border-transparent bg-[#0b0d12] text-white shadow-[0_12px_30px_rgba(17,19,24,0.16)]"
-          : "border-gray-200 bg-white text-gray-900 hover:border-gray-300 hover:shadow-sm"
+          ? "border-transparent bg-ink text-white shadow-[0_12px_30px_rgba(17,19,24,0.16)]"
+          : "border-ink/10 bg-white text-ink hover:border-ink/10 hover:shadow-sm"
       }`}
     >
       <span
-        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
-          active ? `${GRADIENT} text-white` : "bg-gray-100 text-gray-600"
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[20px] ${ active ? `${GRADIENT} text-white` : "bg-white/70 text-ink-soft"
         }`}
       >
         <Icon className="h-4 w-4" />
       </span>
       <span>
         <span className="block text-sm font-semibold">{title}</span>
-        <span className={`mt-0.5 block text-xs leading-5 ${active ? "text-white/65" : "text-gray-500"}`}>
+        <span className={`mt-0.5 block text-xs leading-5 ${active ? "text-white/65" : "text-ink-mute"}`}>
           {subtitle}
         </span>
       </span>
@@ -761,7 +760,7 @@ function Segmented<T extends string>({
 }) {
   return (
     <div>
-      <label className="text-sm font-medium text-gray-700">{label}</label>
+      <label className="text-sm font-medium text-ink-soft">{label}</label>
       <div className="mt-3 flex flex-wrap gap-2">
         {options.map((item) => (
           <TagButton
@@ -781,10 +780,8 @@ function TagButton({ active, label, onClick }: { active: boolean; label: string;
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
-        active
-          ? `border-transparent ${GRADIENT} text-white shadow-sm`
-          : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+      className={`rounded-full border px-4 py-2 text-sm font-medium transition ${ active ? `border-transparent ${GRADIENT} text-white shadow-sm`
+          : "border-ink/10 bg-white text-ink-soft hover:border-ink/10"
       }`}
     >
       {label}
@@ -795,7 +792,7 @@ function TagButton({ active, label, onClick }: { active: boolean; label: string;
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-medium text-gray-700">{label}</span>
+      <span className="mb-2 block text-sm font-medium text-ink-soft">{label}</span>
       {children}
     </label>
   )
@@ -803,7 +800,7 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+    <div className="rounded-[28px] border border-white/10 bg-white/5 p-4">
       <div className="text-xs uppercase tracking-[0.18em] text-white/45">{label}</div>
       <div className="mt-2 text-lg font-semibold capitalize text-white">{value}</div>
     </div>
@@ -812,11 +809,11 @@ function MetricCard({ label, value }: { label: string; value: string }) {
 
 function ListCard({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5">
-      <p className="text-sm font-semibold text-gray-900">{title}</p>
+    <div className="glass rounded-[28px] p-5">
+      <p className="text-sm font-semibold text-ink">{title}</p>
       <ul className="mt-3 space-y-2">
         {items.map((item) => (
-          <li key={item} className="flex items-start gap-2 text-sm capitalize leading-6 text-gray-600">
+          <li key={item} className="flex items-start gap-2 text-sm capitalize leading-6 text-ink-soft">
             <span className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${GRADIENT}`} />
             <span>{item}</span>
           </li>
@@ -835,13 +832,13 @@ function Pill({ children }: { children: ReactNode }) {
 }
 
 const inputClass =
-  "w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-[#8A38F5] focus:bg-white focus:ring-2 focus:ring-[#8A38F5]/15"
+  "w-full rounded-2xl border border-ink/10 bg-white/50 px-4 py-3 text-sm text-ink outline-none transition focus:border-violet focus:bg-white focus:ring-2 focus:ring-violet/15"
 
 const textareaClass =
-  "w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm leading-6 text-gray-900 outline-none transition focus:border-[#8A38F5] focus:bg-white focus:ring-2 focus:ring-[#8A38F5]/15"
+  "w-full rounded-2xl border border-ink/10 bg-white/50 px-4 py-3 text-sm leading-6 text-ink outline-none transition focus:border-violet focus:bg-white focus:ring-2 focus:ring-violet/15"
 
 const primaryButtonClass =
-  "inline-flex items-center gap-2 rounded-full bg-[#111318] px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
+  "inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-white transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-50"
 
 const secondaryButtonClass =
-  "inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-800 transition hover:border-gray-300 hover:bg-gray-50"
+  "inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-5 py-3 text-sm font-medium text-ink transition hover:border-ink/10 hover:bg-white/50"

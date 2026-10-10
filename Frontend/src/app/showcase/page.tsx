@@ -107,11 +107,11 @@ export default function ShowcasePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading showcase...</p>
+            <p className="text-ink-soft">Loading showcase...</p>
           </div>
         </div>
       </div>
@@ -119,7 +119,7 @@ export default function ShowcasePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <m.main
         className="pt-32 pb-16 px-4 sm:px-6 lg:px-8"
         initial="hidden"
@@ -133,13 +133,13 @@ export default function ShowcasePage() {
             variants={itemVariants}
           >
             <m.h1 
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-ink mb-6"
               variants={itemVariants}
             >
-              Our <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">Showcase</span>
+              Our <span className="text-gradient">Showcase</span>
             </m.h1>
             <m.p 
-              className="text-gray-600 text-lg max-w-2xl mx-auto"
+              className="text-ink-soft text-lg max-w-2xl mx-auto"
               variants={itemVariants}
             >
               Explore our latest projects and creative work. Each piece represents our commitment to excellence and innovation.
@@ -154,7 +154,7 @@ export default function ShowcasePage() {
             {showcaseData.map((item, index) => (
               <m.div
                 key={item.id}
-                className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300"
+                className="glass group relative overflow-hidden rounded-[28px] transition-all duration-300"
                 variants={cardVariants}
                 initial="hidden"
                 whileInView="visible"
@@ -177,7 +177,7 @@ export default function ShowcasePage() {
                     <h3 className="text-white font-semibold text-base sm:text-lg mb-2">{item.title}</h3>
                     <m.button
                       onClick={() => handleGoToLink(item.url)}
-                      className="self-start bg-white text-gray-900 px-4 py-2 rounded-lg font-medium flex items-center gap-2 shadow-lg"
+                      className="glass self-start text-ink px-4 py-2 rounded-full font-medium flex items-center gap-2"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -201,8 +201,8 @@ export default function ShowcasePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No showcase items found</h3>
-              <p className="text-gray-600">Check back later for our latest projects.</p>
+              <h3 className="text-xl font-semibold text-ink mb-2">No showcase items found</h3>
+              <p className="text-ink-soft">Check back later for our latest projects.</p>
             </m.div>
           )}
         </div>

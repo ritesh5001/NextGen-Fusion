@@ -54,7 +54,7 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
     <div className="glass group relative rounded-[24px] p-2 transition-all hover:-translate-y-1 hover:bg-white">
       <div ref={mediaRef} className="relative aspect-[16/10] overflow-hidden rounded-[18px] bg-canvas-deep">
         {!near ? null : errored ? (
-          <div className="wash-pink flex h-full w-full items-center justify-center px-3 text-center text-sm font-medium text-ink">
+          <div className="wash-violet flex h-full w-full items-center justify-center px-3 text-center text-sm font-medium text-ink">
             {project.host}
           </div>
         ) : (
@@ -68,7 +68,7 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
           />
         )}
         {caseStudyHref ? (
-          <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-lime px-2.5 py-1 text-xs font-medium text-ink">
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-brand px-2.5 py-1 text-xs font-medium text-white">
             <FileText className="h-3 w-3" aria-hidden="true" />
             Case study
           </span>
@@ -78,7 +78,7 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
             Live site
           </span>
         )}
-        <div className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full bg-ink text-lime opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full icon-badge opacity-0 transition-opacity group-hover:opacity-100">
           {caseStudyHref ? <ArrowRight className="h-4 w-4" /> : <ArrowUpRight className="h-4 w-4" />}
         </div>
       </div>
@@ -180,7 +180,7 @@ export default function DeliveredWall({
                 {heading.includes(" ") ? (
                   <>
                     {heading.split(" ").slice(0, -1).join(" ")}{" "}
-                    <span className="mark-lime">{heading.split(" ").slice(-1)}</span>
+                    <span className="text-gradient">{heading.split(" ").slice(-1)}</span>
                   </>
                 ) : (
                   heading

@@ -103,24 +103,24 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
   return (
     <>
       <JsonLd data={schemaFor(page)} />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen">
         <section className="mx-auto max-w-4xl px-4 pt-28 pb-12 sm:px-6 lg:px-8">
-          <p className="text-sm font-medium uppercase tracking-wide text-purple-600">
+          <p className="text-sm font-medium uppercase tracking-wide text-brand">
             {area}
           </p>
-          <h1 className="mt-3 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl">
+          <h1 className="mt-3 text-4xl font-medium leading-tight text-ink sm:text-5xl tracking-tight">
             {page.h1}
           </h1>
           {page.intro.map((paragraph) => (
-            <p key={paragraph} className="mt-5 text-lg leading-relaxed text-gray-600">
+            <p key={paragraph} className="mt-5 text-lg leading-relaxed text-ink-soft">
               {paragraph}
             </p>
           ))}
 
           {office && (
             <div className="mt-8 flex flex-wrap gap-4 text-sm">
-              <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-gray-700">
-                <MapPin className="h-4 w-4 text-purple-600" aria-hidden="true" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-ink/10 px-4 py-2 text-ink-soft">
+                <MapPin className="h-4 w-4 text-brand" aria-hidden="true" />
                 {remote ? `Served remotely from ${office.city}, India` : office.address}
               </span>
               {remote && (
@@ -128,17 +128,17 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                   href={whatsappHref(undefined, office.contact.phoneE164)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-gray-700 transition-colors hover:border-gray-900"
+                  className="inline-flex items-center gap-2 rounded-full border border-ink/10 px-4 py-2 text-ink-soft transition-colors hover:border-gray-900"
                 >
-                  <MessageCircle className="h-4 w-4 text-purple-600" aria-hidden="true" />
+                  <MessageCircle className="h-4 w-4 text-brand" aria-hidden="true" />
                   WhatsApp {office.contact.phone}
                 </a>
               )}
               <a
                 href={`tel:${office.contact.phoneE164}`}
-                className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-gray-700 transition-colors hover:border-gray-900"
+                className="inline-flex items-center gap-2 rounded-full border border-ink/10 px-4 py-2 text-ink-soft transition-colors hover:border-gray-900"
               >
-                <Phone className="h-4 w-4 text-purple-600" aria-hidden="true" />
+                <Phone className="h-4 w-4 text-brand" aria-hidden="true" />
                 {office.contact.phone}
               </a>
             </div>
@@ -148,9 +148,9 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
         <section className="mx-auto max-w-4xl px-4 pb-4 sm:px-6 lg:px-8">
           {page.sections.map((section) => (
             <div key={section.heading} className="mb-12">
-              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">{section.heading}</h2>
+              <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">{section.heading}</h2>
               {section.body.map((paragraph) => (
-                <p key={paragraph} className="mt-4 leading-relaxed text-gray-600">
+                <p key={paragraph} className="mt-4 leading-relaxed text-ink-soft">
                   {paragraph}
                 </p>
               ))}
@@ -160,7 +160,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="inline-block rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-900 transition-colors hover:border-gray-900"
+                      className="inline-block rounded-full border border-ink/10 px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-gray-900"
                     >
                       {link.label}
                     </Link>
@@ -172,18 +172,18 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
 
           {page.caseStudies.length > 0 && (
             <div className="mb-12">
-              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+              <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">
                 Three builds, and what they took
               </h2>
-              <p className="mt-4 leading-relaxed text-gray-600">
+              <p className="mt-4 leading-relaxed text-ink-soft">
                 Full write-ups, not logos. These are chosen for how close they sit to the problems
                 {" "}
                 {area} businesses bring us — we have not tagged them by the client&apos;s city.
               </p>
               <div className="mt-6 space-y-6">
                 {page.caseStudies.map((study) => (
-                  <div key={study.slug} className="rounded-2xl border border-gray-200 p-6">
-                    <h3 className="text-lg font-bold text-gray-900">
+                  <div key={study.slug} className="rounded-[28px] border border-ink/10 p-6">
+                    <h3 className="text-lg font-medium text-ink tracking-tight">
                       <Link
                         href={`/work/${study.slug}/`}
                         className="inline-block py-1 hover:underline"
@@ -191,10 +191,10 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                         {study.title}
                       </Link>
                     </h3>
-                    <p className="mt-2 leading-relaxed text-gray-600">{study.body}</p>
+                    <p className="mt-2 leading-relaxed text-ink-soft">{study.body}</p>
                     <Link
                       href={`/work/${study.slug}/`}
-                      className="mt-3 inline-block py-1 text-sm font-medium text-purple-600 hover:underline"
+                      className="mt-3 inline-block py-1 text-sm font-medium text-brand hover:underline"
                     >
                       Read the {study.title} case study
                     </Link>
@@ -206,14 +206,14 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
 
           {page.localProof.length > 0 && (
             <div className="mb-12">
-              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+              <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">
                 Work delivered in and around {area}
               </h2>
               <ul className="mt-5 space-y-4">
                 {page.localProof.map((item) => (
-                  <li key={item.client} className="rounded-xl border border-gray-200 p-5">
-                    <p className="font-semibold text-gray-900">{item.client}</p>
-                    <p className="mt-1 text-gray-600">{item.detail}</p>
+                  <li key={item.client} className="rounded-[20px] border border-ink/10 p-5">
+                    <p className="font-semibold text-ink">{item.client}</p>
+                    <p className="mt-1 text-ink-soft">{item.detail}</p>
                   </li>
                 ))}
               </ul>
@@ -221,27 +221,27 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
           )}
 
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">
               Frequently asked questions
             </h2>
-            <dl className="mt-6 divide-y divide-gray-200 border-y border-gray-200">
+            <dl className="mt-6 divide-y divide-ink/10 border-y border-ink/10">
               {page.faqs.map((faq) => (
                 <div key={faq.question} className="py-5">
-                  <dt className="font-semibold text-gray-900">{faq.question}</dt>
-                  <dd className="mt-2 leading-relaxed text-gray-600">{faq.answer}</dd>
+                  <dt className="font-semibold text-ink">{faq.question}</dt>
+                  <dd className="mt-2 leading-relaxed text-ink-soft">{faq.answer}</dd>
                 </div>
               ))}
             </dl>
           </div>
 
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Related</h2>
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">Related</h2>
             <ul className="mt-5 grid gap-3 sm:grid-cols-2">
               {page.relatedServices.map((service) => (
                 <li key={service.slug}>
                   <Link
                     href={`/services/${service.slug}/`}
-                    className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                    className="block rounded-full border border-ink/10 px-5 py-4 font-medium text-ink transition-colors hover:border-gray-900"
                   >
                     {service.label}
                   </Link>
@@ -254,7 +254,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                   <li key={slug}>
                     <Link
                       href={`/${slug}/`}
-                      className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                      className="block rounded-full border border-ink/10 px-5 py-4 font-medium text-ink transition-colors hover:border-gray-900"
                     >
                       {related.title}
                     </Link>
@@ -265,7 +265,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
                 <li>
                   <Link
                     href={`/india/${page.city.toLowerCase()}/`}
-                    className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                    className="block rounded-full border border-ink/10 px-5 py-4 font-medium text-ink transition-colors hover:border-gray-900"
                   >
                     Every service we offer in {page.city}
                   </Link>
@@ -274,7 +274,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
               <li>
                 <Link
                   href="/work/"
-                  className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                  className="block rounded-full border border-ink/10 px-5 py-4 font-medium text-ink transition-colors hover:border-gray-900"
                 >
                   Projects we&apos;ve delivered
                 </Link>
@@ -282,7 +282,7 @@ export function LocationPageTemplate({ page }: { page: LocationPage }) {
               <li>
                 <Link
                   href="/contact/"
-                  className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                  className="block rounded-full border border-ink/10 px-5 py-4 font-medium text-ink transition-colors hover:border-gray-900"
                 >
                   Contact the {page.city} office
                 </Link>

@@ -41,11 +41,11 @@ export function BlogSearch({ total }: { total: number }) {
           placeholder="Search blog posts..."
           value={term}
           onChange={(e) => setTerm(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          className="w-full px-4 py-3 border border-ink/10 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
-      <p className="mt-8 text-gray-600" aria-live="polite">
+      <p className="mt-8 text-ink-soft" aria-live="polite">
         {term.trim() ? (
           <>
             Showing {visible} result{visible !== 1 ? "s" : ""} for &quot;{term}&quot;
@@ -59,8 +59,8 @@ export function BlogSearch({ total }: { total: number }) {
 
       {visible === 0 && term.trim() && (
         <div className="text-center py-16">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">No blog posts found</h2>
-          <p className="text-gray-600 mb-6">Try adjusting your search terms or browse all posts.</p>
+          <h2 className="text-xl font-semibold text-ink mb-2">No blog posts found</h2>
+          <p className="text-ink-soft mb-6">Try adjusting your search terms or browse all posts.</p>
           <Button onClick={() => setTerm("")} variant="outline">
             Clear Search
           </Button>

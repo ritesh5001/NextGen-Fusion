@@ -116,24 +116,24 @@ export default function ContactSection() {
 
   const benefits = [
     {
-      icon: <Target className="w-4 h-4 text-ink" />,
+      icon: <Target className="w-4 h-4" />,
       title: "A straight answer on fit",
       description:
         "We tell you on the first call whether we are the right team, including when the answer is that you do not need us.",
     },
     {
-      icon: <Map className="w-4 h-4 text-ink" />,
+      icon: <Map className="w-4 h-4" />,
       title: "A written scope",
       description:
         "What we would build, one fixed price and one delivery window, in writing, before you pay anything.",
     },
     {
-      icon: <Lightbulb className="w-4 h-4 text-ink" />,
+      icon: <Lightbulb className="w-4 h-4" />,
       title: "Builds like yours",
       description: "The case studies closest to your business, so you can see what we built for someone in your position.",
     },
     {
-      icon: <Users className="w-4 h-4 text-ink" />,
+      icon: <Users className="w-4 h-4" />,
       title: "Support after launch",
       description: "A support plan quoted upfront with every project, so the site does not go stale the month after it ships.",
     },
@@ -206,7 +206,7 @@ export default function ContactSection() {
   return (
     <m.section 
       id="contact-section" 
-      className="ambient-lime px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
+      className="px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -222,7 +222,7 @@ export default function ContactSection() {
             <BadgeSubtitle>Contact Us</BadgeSubtitle>
           </m.div>
           <m.h2 className="display mx-auto mb-5 max-w-3xl text-4xl sm:text-5xl lg:text-6xl" variants={textVariants}>
-            Time to Stop Scrolling, Let&apos;s <span className="mark-lime">Discuss</span> and Cook It Up!
+            Time to Stop Scrolling, Let&apos;s <span className="text-gradient">Discuss</span> and Cook It Up!
           </m.h2>
           <m.p 
             className="text-ink-soft text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
@@ -240,7 +240,7 @@ export default function ContactSection() {
           <div className="relative flex w-full flex-1 flex-col gap-8 overflow-hidden rounded-[36px] bg-ink p-7 text-white sm:p-9">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_100%_0%,rgba(220,245,74,0.28),rgba(220,245,74,0)_70%),radial-gradient(60%_50%_at_0%_100%,rgba(46,159,71,0.35),rgba(46,159,71,0)_70%)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_100%_0%,rgba(42,75,245,0.55),rgba(42,75,245,0)_70%),radial-gradient(60%_50%_at_0%_100%,rgba(138,92,246,0.45),rgba(138,92,246,0)_70%)]"
             />
             <div className="relative">
               <h3 className="text-3xl font-normal leading-tight tracking-tight sm:text-4xl">
@@ -252,7 +252,7 @@ export default function ContactSection() {
             <div className="relative flex flex-col gap-2">
               {benefits.map((benefit, index) => (
                 <div key={index} className="glass-ink flex items-start gap-4 rounded-[24px] p-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-lime">
+                  <div className="icon-badge h-10 w-10">
                     {benefit.icon}
                   </div>
                   <div className="flex flex-1 flex-col justify-center gap-1.5">
@@ -369,7 +369,7 @@ export default function ContactSection() {
                     <m.button
                       onClick={handleNext}
                       disabled={!isStep1Valid}
-                      className="w-full btn btn-lime disabled:cursor-not-allowed disabled:bg-canvas-deep disabled:text-ink-mute disabled:shadow-none"
+                      className="w-full btn btn-brand disabled:cursor-not-allowed disabled:bg-canvas-deep disabled:text-ink-mute disabled:shadow-none"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -449,7 +449,7 @@ export default function ContactSection() {
                     <m.button
                       onClick={handleSubmit}
                       disabled={!isStep2Valid || isSubmitting || !captchaReady}
-                      className="flex-1 btn btn-lime disabled:cursor-not-allowed disabled:bg-canvas-deep disabled:text-ink-mute disabled:shadow-none"
+                      className="flex-1 btn btn-brand disabled:cursor-not-allowed disabled:bg-canvas-deep disabled:text-ink-mute disabled:shadow-none"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -490,8 +490,8 @@ export default function ContactSection() {
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, type: "spring" }}
                   >
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-lime rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-ink" />
+                    <div className="icon-badge mx-auto mb-4 h-16 w-16 sm:h-20 sm:w-20">
+                      <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10" />
                     </div>
                   </m.div>
                   
@@ -564,8 +564,8 @@ export default function ContactSection() {
                 viewport={{ once: true }}
               >
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-full bg-lime flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-ink" />
+                  <div className="icon-badge h-12 w-12">
+                    <MapPin className="w-5 h-5" />
                   </div>
                   <div className="flex-1">
                     <h3 className="display text-3xl">

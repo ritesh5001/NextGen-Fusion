@@ -35,7 +35,7 @@ const item = {
 }
 
 // One wash per step, so the three cards read as a sequence at a glance.
-const STEP_WASH = ["wash-green", "wash-pink", "wash-teal"]
+const STEP_WASH = ["wash-blue", "wash-violet", "wash-cyan"]
 
 export default function ProcessSection() {
   return (
@@ -53,7 +53,7 @@ export default function ProcessSection() {
           </m.div>
           <m.h2 variants={item} className="display text-4xl sm:text-5xl lg:text-6xl">
             From idea to launch in{" "}
-            <span className="mark-lime whitespace-nowrap">three simple steps</span>
+            <span className="text-gradient whitespace-nowrap">three simple steps</span>
           </m.h2>
         </m.div>
 

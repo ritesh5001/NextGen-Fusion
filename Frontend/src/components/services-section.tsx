@@ -105,7 +105,7 @@ export default function ServicesSection() {
   return (
     <m.section
       id="services"
-      className="ambient-pink px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
+      className="px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -119,7 +119,7 @@ export default function ServicesSection() {
               <BadgeSubtitle>Services</BadgeSubtitle>
             </m.div>
             <m.h2 className="display text-4xl sm:text-5xl lg:text-6xl" variants={itemVariants}>
-              What We <span className="mark-lime whitespace-nowrap">Do for You</span>
+              What We <span className="text-gradient whitespace-nowrap">Do for You</span>
             </m.h2>
           </div>
           <m.p className="text-base leading-relaxed text-ink-soft sm:text-lg" variants={itemVariants}>
@@ -145,10 +145,10 @@ export default function ServicesSection() {
                   className="glass group flex h-full flex-col rounded-[28px] p-6 transition hover:-translate-y-1 hover:bg-white"
                 >
                   <div className="mb-8 flex items-center justify-between">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink text-lime">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full icon-badge">
                       <service.Icon className="h-5 w-5" aria-hidden="true" />
                     </span>
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-lime">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-brand group-hover:text-white">
                       <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                     </span>
                   </div>

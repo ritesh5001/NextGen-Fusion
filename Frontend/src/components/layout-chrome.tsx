@@ -21,7 +21,10 @@ export default function LayoutChrome({ children }: { children: React.ReactNode }
   return (
     // `public-site` scopes the canvas background to the marketing site; the
     // admin and portal keep their own white shell (see globals.css).
-    <div className="public-site bg-canvas text-ink">
+    <div className="public-site relative isolate text-ink">
+      {/* The colour field the glass cards sit on (see `.aurora` in globals.css).
+          Fixed, so the cards scroll over it. */}
+      <div aria-hidden="true" className="aurora pointer-events-none fixed inset-0 -z-10" />
       <IntegratedNavbar />
       {children}
       <BookingModal />

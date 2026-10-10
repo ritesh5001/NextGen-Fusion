@@ -60,7 +60,7 @@ export default function WorkSection({ featured }: { featured: FeaturedProject[] 
           </m.div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5">
             <m.h2 variants={item} className="display text-4xl sm:text-5xl lg:text-6xl">
-              Projects that <span className="mark-lime whitespace-nowrap">deliver results</span>
+              Projects that <span className="text-gradient whitespace-nowrap">deliver results</span>
             </m.h2>
             <m.div variants={item}>
               <Link href="/work/" prefetch={false} className="btn btn-glass btn-sm group">
@@ -94,7 +94,7 @@ export default function WorkSection({ featured }: { featured: FeaturedProject[] 
                   />
                   {/* Badges */}
                   <div className="absolute top-4 left-4 flex gap-2">
-                    <span className="rounded-full bg-lime px-3 py-1 text-xs font-medium text-ink">
+                    <span className="rounded-full bg-brand px-3 py-1 text-xs font-medium text-white">
                       Featured
                     </span>
                     <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-ink">
@@ -102,7 +102,7 @@ export default function WorkSection({ featured }: { featured: FeaturedProject[] 
                     </span>
                   </div>
                   {/* Arrow */}
-                  <div className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-lime text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <div className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-brand text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <ArrowRight className="w-5 h-5" />
                   </div>
                 </div>
@@ -112,7 +112,7 @@ export default function WorkSection({ featured }: { featured: FeaturedProject[] 
                   <p className="text-xs text-ink-mute mb-2">{project.domain}</p>
                   {project.results?.[0] && (
                     <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-ink">
-                      <span className="h-2 w-2 rounded-full bg-leaf" aria-hidden="true" />
+                      <span className="h-2 w-2 rounded-full bg-brand" aria-hidden="true" />
                       {project.results[0].metric} {project.results[0].label}
                     </p>
                   )}

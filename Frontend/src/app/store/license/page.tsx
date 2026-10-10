@@ -15,13 +15,13 @@ export const metadata: Metadata = buildMetadata({
 // effective date) before relying on it.
 export default function LicensePage() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen">
       <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-24 pb-24">
-        <Link href="/store/" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
-        <h1 className="mt-6 text-3xl font-bold text-gray-900 sm:text-4xl">License Agreement</h1>
+        <Link href="/store/" className="text-sm text-ink-mute hover:text-ink">← Back to store</Link>
+        <h1 className="mt-6 text-3xl font-medium text-ink sm:text-4xl tracking-tight">License Agreement</h1>
         <p className="mt-2 text-sm text-gray-400">Last updated: [DATE]</p>
 
-        <div className="mt-8 space-y-6 text-gray-600 leading-relaxed [&_h2]:mt-8 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-gray-900 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
+        <div className="mt-8 space-y-6 text-ink-soft leading-relaxed [&_h2]:mt-8 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-ink [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
           <p>
             This End User License Agreement (&quot;Agreement&quot;) is between you (&quot;Licensee&quot;) and
             NextGen Fusion (&quot;we&quot;, &quot;us&quot;). By purchasing, downloading, or using any digital
@@ -60,7 +60,7 @@ export default function LicensePage() {
           <p>
             Each purchase includes a unique license key and a secure, limited-use download link. The license key
             identifies your entitlement for support and updates. Download links may expire or be usage-limited;
-            you can re-request them from the <Link href="/store/purchases/" className="text-purple-600 hover:underline">retrieve purchases</Link> page.
+            you can re-request them from the <Link href="/store/purchases/" className="text-brand hover:underline">retrieve purchases</Link> page.
           </p>
 
           <h2>6. Support &amp; updates</h2>
@@ -96,11 +96,11 @@ export default function LicensePage() {
           <h2>11. Contact</h2>
           <p>
             Questions about licensing? Email{' '}
-            <a href="mailto:contact@nextgenfusion.in" className="text-purple-600 hover:underline">contact@nextgenfusion.in</a>.
+            <a href="mailto:contact@nextgenfusion.in" className="text-brand hover:underline">contact@nextgenfusion.in</a>.
           </p>
 
           <p className="pt-4 text-sm text-gray-400">
-            See also our <Link href="/store/refunds/" className="text-purple-600 hover:underline">Refund Policy</Link>.
+            See also our <Link href="/store/refunds/" className="text-brand hover:underline">Refund Policy</Link>.
           </p>
         </div>
       </article>

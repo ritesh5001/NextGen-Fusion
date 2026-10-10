@@ -30,16 +30,16 @@ export default function RetrievePurchasesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-md px-4 pt-28 pb-24">
-        <Link href="/store/" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
-        <h1 className="mt-6 text-3xl font-bold text-gray-900">Retrieve your purchases</h1>
-        <p className="mt-2 text-gray-500">
+        <Link href="/store/" className="text-sm text-ink-mute hover:text-ink">← Back to store</Link>
+        <h1 className="mt-6 text-3xl font-medium text-ink tracking-tight">Retrieve your purchases</h1>
+        <p className="mt-2 text-ink-mute">
           Enter the email you used at checkout and we&apos;ll re-send your license keys and download links.
         </p>
 
         {done ? (
-          <div className="mt-8 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+          <div className="mt-8 rounded-[20px] border border-green-200 bg-green-50 p-4 text-sm text-green-800">
             If any purchases are linked to <strong>{email}</strong>, we&apos;ve emailed your download links. Check your inbox (and spam).
           </div>
         ) : (
@@ -50,13 +50,13 @@ export default function RetrievePurchasesPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+              className="w-full rounded-lg border border-ink/10 bg-white px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10"
             />
             {error && <p className="text-sm text-red-600">{error}</p>}
             <button
               type="submit"
               disabled={busy}
-              className="w-full rounded-lg bg-slate-900 px-6 py-3 text-base font-medium text-white transition hover:bg-slate-800 disabled:opacity-60"
+              className="w-full rounded-full bg-ink px-6 py-3 text-base font-medium text-white transition hover:bg-slate-800 disabled:opacity-60"
             >
               {busy ? 'Sending…' : 'Email me my downloads'}
             </button>

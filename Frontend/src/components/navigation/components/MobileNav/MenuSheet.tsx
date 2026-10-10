@@ -36,12 +36,12 @@ const MainMenu = ({ menu, onSelect }: MainMenuProps) => (
       <Button
         key={channel.id}
         variant="ghost"
-        className="w-full justify-between text-base h-14 px-4 hover:bg-gray-50 dark:hover:bg-gray-800"
+        className="w-full justify-between text-base h-14 px-4 hover:bg-white/50 dark:hover:bg-ink"
         onClick={() => onSelect(channel.id)}
       >
         <span className="font-medium">{channel.label}</span>
         {channel.badge && (
-          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-white/70 dark:bg-gray-700 text-ink-soft dark:text-gray-300">
             {channel.badge}
           </span>
         )}
@@ -81,11 +81,11 @@ const SubMenuView = ({ lists, onItemClick }: SubMenuViewProps) => {
               return (
                 <Card
                   key={`${listIndex}-${itemIndex}-${item.label?.replace(/\s+/g, '-').toLowerCase()}`}
-                  className={`${isSpecialItem ? "col-span-2 relative overflow-hidden" : ""} ${isBlog ? "bg-[url('/images/blog.jpg')]" : isEducation ? "bg-[url('/images/education.jpg')]" : "bg-gray-100 dark:bg-gray-800"} bg-cover bg-center text-gray-900 dark:text-gray-100 flex flex-col gap-4 rounded-[1.25rem] p-3 pb-4 cursor-pointer transition-all hover:bg-opacity-90`}
+                  className={`${isSpecialItem ? "col-span-2 relative overflow-hidden" : ""} ${isBlog ? "bg-[url('/images/blog.jpg')]" : isEducation ? "bg-[url('/images/education.jpg')]" : "bg-white/70 dark:bg-ink"} bg-cover bg-center text-ink dark:text-gray-100 flex flex-col gap-4 rounded-[1.25rem] p-3 pb-4 cursor-pointer transition-all hover:bg-opacity-90`}
                   onClick={() => onItemClick?.(item)}
                 >
                   {isSpecialItem && (
-                    <div className="absolute inset-0 bg-black/40 z-0" />
+                    <div className="absolute inset-0 bg-ink/40 z-0" />
                   )}
                   {item.icon && (
                     <div className={`w-10 h-10 rounded-lg ${isSpecialItem ? 'bg-white/30' : 'bg-white/20'} flex items-center justify-center z-10`}>
@@ -93,7 +93,7 @@ const SubMenuView = ({ lists, onItemClick }: SubMenuViewProps) => {
                     </div>
                   )}
                   <div className="flex flex-col gap-0.5 px-1 z-10">
-                    <span className={`${isSpecialItem ? 'text-white' : 'text-gray-900 dark:text-gray-100'} flex items-center gap-2`}>
+                    <span className={`${isSpecialItem ? 'text-white' : 'text-ink dark:text-gray-100'} flex items-center gap-2`}>
                       <span className="font-medium text-sm">{item.label}</span>
                       {item.badge && (
                         <Badge className={`${isSpecialItem ? 'bg-white/30 text-white' : 'bg-white/20 text-white'} border-0 text-[10px] font-normal px-1.5 py-0.5`}>
@@ -102,7 +102,7 @@ const SubMenuView = ({ lists, onItemClick }: SubMenuViewProps) => {
                       )}
                     </span>
                     {item.callout && (
-                      <span className={`${isSpecialItem ? 'text-white/90' : 'text-gray-600 dark:text-gray-400'} text-xs opacity-80`}>
+                      <span className={`${isSpecialItem ? 'text-white/90' : 'text-ink-soft dark:text-gray-400'} text-xs opacity-80`}>
                         {item.callout}
                       </span>
                     )}
@@ -312,7 +312,7 @@ const MenuSheet = ({ menu = defaultMenu, onItemClick }: MenuSheetProps) => {
 
       <div
         className={`fixed inset-0 z-50 transition-all duration-300 ${
-          isVisible ? "bg-black/50 backdrop-blur-sm" : "bg-black/0 backdrop-blur-none pointer-events-none"
+          isVisible ? "bg-ink/50 backdrop-blur-sm" : "bg-ink/0 backdrop-blur-none pointer-events-none"
         }`}
         onClick={(e) => e.target === e.currentTarget && handleClose()}
       >

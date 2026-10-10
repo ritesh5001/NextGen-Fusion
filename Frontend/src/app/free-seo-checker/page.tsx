@@ -97,13 +97,13 @@ export default function Page() {
   return (
     <>
       <JsonLd data={schema} />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen">
         <section className="mx-auto max-w-4xl px-4 pt-28 pb-12 sm:px-6 lg:px-8">
-          <p className="text-sm font-medium uppercase tracking-wide text-purple-600">Free tool</p>
-          <h1 className="mt-3 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl">
+          <p className="text-sm font-medium uppercase tracking-wide text-brand">Free tool</p>
+          <h1 className="mt-3 text-4xl font-medium leading-tight text-ink sm:text-5xl tracking-tight">
             Free SEO checker: find what&apos;s stopping your website from ranking
           </h1>
-          <p className="mt-5 text-lg leading-relaxed text-gray-600">
+          <p className="mt-5 text-lg leading-relaxed text-ink-soft">
             Enter any web page. In about 20 seconds you get a score and a list of what is wrong, each with a plain-English
             fix you or your developer can act on. It reads the page the way Google&apos;s crawler does: the HTML your
             server sends, your robots.txt and your sitemap.
@@ -114,21 +114,21 @@ export default function Page() {
         </section>
 
         <section id="what-we-check" className="mx-auto max-w-4xl scroll-mt-28 px-4 pb-12 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">What the checker looks at, and why it matters</h2>
-          <div className="mt-6 overflow-hidden rounded-2xl border border-gray-200">
+          <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">What the checker looks at, and why it matters</h2>
+          <div className="mt-6 overflow-hidden rounded-[28px] border border-ink/10">
             <table className="w-full text-left text-sm">
               <caption className="sr-only">The checks the free SEO checker runs</caption>
-              <thead className="bg-gray-50">
+              <thead className="bg-white/50">
                 <tr>
-                  <th scope="col" className="w-1/3 px-3 py-3 font-semibold text-gray-900 sm:px-4">Check</th>
-                  <th scope="col" className="px-3 py-3 font-semibold text-gray-900 sm:px-4">Why it matters</th>
+                  <th scope="col" className="w-1/3 px-3 py-3 font-semibold text-ink sm:px-4">Check</th>
+                  <th scope="col" className="px-3 py-3 font-semibold text-ink sm:px-4">Why it matters</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-ink/10">
                 {CHECKS.map((check) => (
                   <tr key={check.name}>
-                    <th scope="row" className="px-3 py-3 align-top font-medium break-words text-gray-900 sm:px-4">{check.name}</th>
-                    <td className="px-3 py-3 leading-relaxed text-gray-600 sm:px-4">{check.why}</td>
+                    <th scope="row" className="px-3 py-3 align-top font-medium break-words text-ink sm:px-4">{check.name}</th>
+                    <td className="px-3 py-3 leading-relaxed text-ink-soft sm:px-4">{check.why}</td>
                   </tr>
                 ))}
               </tbody>
@@ -137,18 +137,18 @@ export default function Page() {
         </section>
 
         <section className="mx-auto max-w-4xl px-4 pb-12 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">What to fix first</h2>
-          <p className="mt-4 leading-relaxed text-gray-600">
+          <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">What to fix first</h2>
+          <p className="mt-4 leading-relaxed text-ink-soft">
             Start with anything marked <span className="font-medium text-red-600">Fix</span> under Search basics: a page
             that is blocked from Google, or has no title or description, cannot compete however good the rest is. Then
             work through the technical items, which usually take a developer an hour or two. Content fixes — more text,
             better headings, descriptions for images — are where rankings are won over the following months.
           </p>
-          <p className="mt-4 leading-relaxed text-gray-600">
+          <p className="mt-4 leading-relaxed text-ink-soft">
             This checker covers what is on the page. Two things it cannot see decide the rest: how fast the page feels in
             a real browser (test that on Google&apos;s PageSpeed Insights) and how many trusted websites link to yours.
             If you would like a person to look at all three, our{" "}
-            <Link href="/services/seo-services/" className="font-medium text-purple-600 hover:underline">
+            <Link href="/services/seo-services/" className="font-medium text-brand hover:underline">
               SEO team
             </Link>{" "}
             will review your site and tell you what to do first, free.
@@ -156,14 +156,14 @@ export default function Page() {
         </section>
 
         <section className="mx-auto max-w-4xl px-4 pb-12 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Questions</h2>
-          <div className="mt-6 divide-y divide-gray-200 rounded-2xl border border-gray-200">
+          <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">Questions</h2>
+          <div className="mt-6 divide-y divide-ink/10 rounded-[28px] border border-ink/10">
             {FAQS.map((faq) => (
               <details key={faq.question} className="group p-5">
-                <summary className="cursor-pointer list-none font-medium text-gray-900 marker:hidden">
+                <summary className="cursor-pointer list-none font-medium text-ink marker:hidden">
                   {faq.question}
                 </summary>
-                <p className="mt-3 leading-relaxed text-gray-600">{faq.answer}</p>
+                <p className="mt-3 leading-relaxed text-ink-soft">{faq.answer}</p>
               </details>
             ))}
           </div>

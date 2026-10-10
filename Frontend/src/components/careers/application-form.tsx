@@ -25,7 +25,7 @@ function formatBytes(bytes: number): string {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+  "w-full rounded-lg border border-ink/10 px-4 py-2.5 text-sm text-ink placeholder:text-gray-400 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
 
 export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string }) {
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -124,17 +124,17 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
 
   if (submitted) {
     return (
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-10 text-center">
+      <div className="rounded-[28px] border border-emerald-200 bg-emerald-50 p-10 text-center">
         <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-600" />
-        <h3 className="mt-4 text-2xl font-bold text-gray-900">Application received</h3>
-        <p className="mx-auto mt-2 max-w-md text-gray-600">
+        <h3 className="mt-4 text-2xl font-medium text-ink tracking-tight">Application received</h3>
+        <p className="mx-auto mt-2 max-w-md text-ink-soft">
           Thanks for applying. We read every application and will get back to you within a week,
           either way.
         </p>
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="mt-6 inline-flex items-center justify-center rounded-full border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
+          className="mt-6 inline-flex items-center justify-center rounded-full border border-ink/10 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-gray-900"
         >
           Submit another application
         </button>
@@ -146,11 +146,11 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8"
+      className="glass rounded-[28px] p-6 sm:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label htmlFor="role" className="mb-1.5 block text-sm font-medium text-gray-900">
+          <label htmlFor="role" className="mb-1.5 block text-sm font-medium text-ink">
             Role you are applying for <span className="text-red-500">*</span>
           </label>
           <select
@@ -175,7 +175,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         </div>
 
         <div>
-          <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-gray-900">
+          <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-ink">
             Full name <span className="text-red-500">*</span>
           </label>
           <input
@@ -191,7 +191,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         </div>
 
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-900">
+          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-ink">
             Email <span className="text-red-500">*</span>
           </label>
           <input
@@ -207,7 +207,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         </div>
 
         <div>
-          <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-gray-900">
+          <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-ink">
             Phone <span className="text-red-500">*</span>
           </label>
           <input
@@ -223,7 +223,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         </div>
 
         <div>
-          <label htmlFor="location" className="mb-1.5 block text-sm font-medium text-gray-900">
+          <label htmlFor="location" className="mb-1.5 block text-sm font-medium text-ink">
             Current location
           </label>
           <input
@@ -236,7 +236,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         </div>
 
         <div>
-          <label htmlFor="experience" className="mb-1.5 block text-sm font-medium text-gray-900">
+          <label htmlFor="experience" className="mb-1.5 block text-sm font-medium text-ink">
             Years of experience
           </label>
           <input
@@ -249,7 +249,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         </div>
 
         <div>
-          <label htmlFor="portfolio_url" className="mb-1.5 block text-sm font-medium text-gray-900">
+          <label htmlFor="portfolio_url" className="mb-1.5 block text-sm font-medium text-ink">
             Portfolio / GitHub / LinkedIn
           </label>
           <input
@@ -262,7 +262,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
         </div>
 
         <div className="sm:col-span-2">
-          <label htmlFor="cover_note" className="mb-1.5 block text-sm font-medium text-gray-900">
+          <label htmlFor="cover_note" className="mb-1.5 block text-sm font-medium text-ink">
             Why you are a good fit
           </label>
           <textarea
@@ -276,7 +276,7 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
 
         {/* Resume upload */}
         <div className="sm:col-span-2">
-          <span className="mb-1.5 block text-sm font-medium text-gray-900">
+          <span className="mb-1.5 block text-sm font-medium text-ink">
             Resume <span className="text-red-500">*</span>
           </span>
           <input
@@ -290,21 +290,21 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
           />
 
           {resume ? (
-            <div className="flex items-center justify-between gap-4 rounded-lg border border-gray-300 bg-gray-50 px-4 py-3">
+            <div className="glass flex items-center justify-between gap-4 rounded-lg px-4 py-3">
               <span className="flex min-w-0 items-center gap-3">
-                <FileText className="h-5 w-5 shrink-0 text-gray-500" />
+                <FileText className="h-5 w-5 shrink-0 text-ink-mute" />
                 <span className="min-w-0">
-                  <span className="block truncate text-sm font-medium text-gray-900">
+                  <span className="block truncate text-sm font-medium text-ink">
                     {resume.name}
                   </span>
-                  <span className="text-xs text-gray-500">{formatBytes(resume.size)}</span>
+                  <span className="text-xs text-ink-mute">{formatBytes(resume.size)}</span>
                 </span>
               </span>
               <button
                 type="button"
                 onClick={clearResume}
                 aria-label="Remove resume"
-                className="shrink-0 rounded-full p-1.5 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-900"
+                className="shrink-0 rounded-full p-1.5 text-ink-mute transition-colors hover:bg-gray-200 hover:text-ink"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -316,14 +316,14 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
                 "flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-8 text-center transition-colors",
                 errors.resume
                   ? "border-red-400 bg-red-50"
-                  : "border-gray-300 bg-gray-50 hover:border-gray-900",
+                  : "border-ink/10 bg-white/50 hover:border-gray-900",
               )}
             >
-              <Upload className="h-6 w-6 text-gray-500" />
-              <span className="mt-2 text-sm font-medium text-gray-900">
+              <Upload className="h-6 w-6 text-ink-mute" />
+              <span className="mt-2 text-sm font-medium text-ink">
                 Click to upload your resume
               </span>
-              <span className="mt-1 text-xs text-gray-500">
+              <span className="mt-1 text-xs text-ink-mute">
                 PDF, DOC, or DOCX — up to {MAX_RESUME_MB}MB
               </span>
             </label>
@@ -344,13 +344,13 @@ export function ApplicationForm({ defaultRoleId = "" }: { defaultRoleId?: string
       <Turnstile ref={captchaRef} action="careers" onToken={setCaptchaToken} className="mt-6" />
 
       <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-ink-mute">
           We use your details only to consider you for this role.
         </p>
         <button
           type="submit"
           disabled={submitting || !captchaReady}
-          className="inline-flex w-full items-center justify-center rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className="inline-flex w-full items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {submitting ? (
             <>

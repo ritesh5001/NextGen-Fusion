@@ -296,7 +296,7 @@ export default function BookingModal() {
     <AnimatePresence>
       {open && (
         <m.div
-          className="fixed inset-0 z-[80] flex items-end justify-center bg-black/55 md:items-center md:p-4"
+          className="fixed inset-0 z-[80] flex items-end justify-center bg-ink/55 md:items-center md:p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -318,9 +318,9 @@ export default function BookingModal() {
             data-lenis-prevent-touch
           >
             {/* What to expect: the reason to book, shown beside the form on large screens. */}
-            <aside className="hidden min-w-0 flex-col justify-between overflow-y-auto bg-[#111318] p-8 text-white lg:flex">
+            <aside className="hidden min-w-0 flex-col justify-between overflow-y-auto bg-ink p-8 text-white lg:flex">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#f2d799]">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-brand-light">
                   {isMeeting ? <CalendarDays className="h-3.5 w-3.5" /> : <PhoneCall className="h-3.5 w-3.5" />}
                   {isMeeting ? "Free discovery call" : "Request a callback"}
                 </div>
@@ -329,15 +329,15 @@ export default function BookingModal() {
                 </h2>
                 <ul className="mt-8 space-y-5 text-sm leading-6 text-white/80">
                   <li className="flex gap-3">
-                    <Clock className="mt-0.5 h-5 w-5 shrink-0 text-[#f2d799]" />
+                    <Clock className="mt-0.5 h-5 w-5 shrink-0 text-brand-light" />
                     <span>Free, 30 minutes, no obligation. On WhatsApp, a phone call or Google Meet.</span>
                   </li>
                   <li className="flex gap-3">
-                    <MessageSquareText className="mt-0.5 h-5 w-5 shrink-0 text-[#f2d799]" />
+                    <MessageSquareText className="mt-0.5 h-5 w-5 shrink-0 text-brand-light" />
                     <span>You talk to the people who would build it, not a salesperson.</span>
                   </li>
                   <li className="flex gap-3">
-                    <FileCheck2 className="mt-0.5 h-5 w-5 shrink-0 text-[#f2d799]" />
+                    <FileCheck2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-light" />
                     <span>A fixed written quote after the call, usually within one working day.</span>
                   </li>
                 </ul>
@@ -346,15 +346,15 @@ export default function BookingModal() {
             </aside>
 
             <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-              <div className="flex items-start justify-between gap-4 border-b border-gray-100 px-5 py-4 sm:px-6">
+              <div className="flex items-start justify-between gap-4 border-b border-ink/10 px-5 py-4 sm:px-6">
                 <div>
-                  <h2 id="booking-title" className="text-lg font-semibold text-gray-900 sm:text-xl">
+                  <h2 id="booking-title" className="text-lg font-semibold text-ink sm:text-xl">
                     {step === "success"
                       ? isMeeting ? "You're booked" : "Request received"
                       : isMeeting ? "Book a free 30-minute call" : "Request a callback"}
                   </h2>
                   {step === "form" && (
-                    <p className="mt-0.5 text-sm text-gray-600 lg:hidden">
+                    <p className="mt-0.5 text-sm text-ink-soft lg:hidden">
                       {isMeeting ? "Pick a time, tell us a little, and we'll come prepared." : "Leave your number and the best time to call."}
                     </p>
                   )}
@@ -363,7 +363,7 @@ export default function BookingModal() {
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Close"
-                  className="-mr-1 shrink-0 rounded-full p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
+                  className="-mr-1 shrink-0 rounded-full p-2 text-ink-mute transition hover:bg-white/70 hover:text-ink"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -384,8 +384,8 @@ export default function BookingModal() {
                               aria-pressed={selectedDateIndia === option.value}
                               className={`shrink-0 snap-start rounded-full border px-4 py-2 text-sm font-medium whitespace-nowrap transition ${
                                 selectedDateIndia === option.value
-                                  ? "border-gray-900 bg-gray-900 text-white"
-                                  : "border-gray-200 bg-white text-gray-800 hover:border-gray-400"
+                                  ? "border-gray-900 bg-ink text-white"
+                                  : "border-ink/10 bg-white text-ink hover:border-gray-400"
                               }`}
                             >
                               {option.label}
@@ -394,7 +394,7 @@ export default function BookingModal() {
                         </div>
                         <div className="mt-3">
                           {slotsLoading ? (
-                            <div className="flex items-center gap-2 py-3 text-sm text-gray-600">
+                            <div className="flex items-center gap-2 py-3 text-sm text-ink-soft">
                               <Loader2 className="h-4 w-4 animate-spin" />
                               Loading times…
                             </div>
@@ -406,7 +406,7 @@ export default function BookingModal() {
                               </button>
                             </p>
                           ) : slots.length === 0 ? (
-                            <p className="rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                            <p className="rounded-xl bg-white/50 px-4 py-3 text-sm text-ink-soft">
                               No times left on this day. Please pick another date.
                             </p>
                           ) : (
@@ -421,8 +421,8 @@ export default function BookingModal() {
                                     aria-pressed={form.scheduledAt === slot.startsAt}
                                     className={`min-h-11 rounded-xl border px-2 py-2 text-sm font-medium transition ${
                                       form.scheduledAt === slot.startsAt
-                                        ? "border-gray-900 bg-gray-900 text-white"
-                                        : "border-gray-200 bg-white text-gray-900 hover:border-gray-400"
+                                        ? "border-gray-900 bg-ink text-white"
+                                        : "border-ink/10 bg-white text-ink hover:border-gray-400"
                                     }`}
                                   >
                                     {timeLabel(slot.startsAt, timezone, otherDay)}
@@ -431,7 +431,7 @@ export default function BookingModal() {
                               })}
                             </div>
                           )}
-                          <p className="mt-2 text-xs text-gray-500">
+                          <p className="mt-2 text-xs text-ink-mute">
                             Times are shown in your time zone ({zoneName(timezone)}).
                           </p>
                         </div>
@@ -451,7 +451,7 @@ export default function BookingModal() {
 
                       {isMeeting && (
                         <fieldset>
-                          <legend className="mb-2 block text-sm font-medium text-gray-800">How should we connect?</legend>
+                          <legend className="mb-2 block text-sm font-medium text-ink">How should we connect?</legend>
                           <div className="flex flex-wrap gap-2">
                             {CALL_METHODS.map((method) => (
                               <button
@@ -461,8 +461,8 @@ export default function BookingModal() {
                                 aria-pressed={form.callMethod === method}
                                 className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                                   form.callMethod === method
-                                    ? "border-gray-900 bg-gray-900 text-white"
-                                    : "border-gray-200 bg-white text-gray-800 hover:border-gray-400"
+                                    ? "border-gray-900 bg-ink text-white"
+                                    : "border-ink/10 bg-white text-ink hover:border-gray-400"
                                 }`}
                               >
                                 {method}
@@ -511,7 +511,7 @@ export default function BookingModal() {
                           type="button"
                           onClick={() => setShowExtras((v) => !v)}
                           aria-expanded={showExtras}
-                          className="text-sm font-medium text-[#2B35AB] underline-offset-4 hover:underline"
+                          className="text-sm font-medium text-brand underline-offset-4 hover:underline"
                         >
                           {showExtras ? "Hide extra details" : "Add company, budget or timeline (optional)"}
                         </button>
@@ -539,12 +539,12 @@ export default function BookingModal() {
                     )}
                   </div>
 
-                  <div className="border-t border-gray-100 bg-white px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">
+                  <div className="border-t border-ink/10 bg-white px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">
                     {isMeeting && (
-                      <p className="mb-2 text-sm text-gray-600" aria-live="polite">
+                      <p className="mb-2 text-sm text-ink-soft" aria-live="polite">
                         {chosenSlotLabel ? (
                           <>
-                            Your call: <span className="font-semibold text-gray-900">{chosenSlotLabel}</span>
+                            Your call: <span className="font-semibold text-ink">{chosenSlotLabel}</span>
                           </>
                         ) : (
                           "Pick a time above"
@@ -567,13 +567,13 @@ export default function BookingModal() {
                   </div>
                   {isMeeting && result ? (
                     <>
-                      <p className="mt-5 text-xl font-semibold text-gray-900">{fullLabel(result.startsAt, timezone)}</p>
-                      <p className="mt-1 text-sm text-gray-600">
+                      <p className="mt-5 text-xl font-semibold text-ink">{fullLabel(result.startsAt, timezone)}</p>
+                      <p className="mt-1 text-sm text-ink-soft">
                         {zoneName(timezone)} · {form.callMethod}
                         {differentZone && <> · {timeLabel(result.startsAt, STUDIO_TIMEZONE, false)} in India</>}
                       </p>
-                      <p className="mt-4 max-w-md text-sm leading-6 text-gray-600">
-                        A confirmation is on its way to <span className="font-medium text-gray-900">{form.email}</span>. To change the time, just reply to it.
+                      <p className="mt-4 max-w-md text-sm leading-6 text-ink-soft">
+                        A confirmation is on its way to <span className="font-medium text-ink">{form.email}</span>. To change the time, just reply to it.
                       </p>
                       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                         <a href={googleCalendarLink(result)} target="_blank" rel="noopener noreferrer" className={primaryButtonClass}>
@@ -587,7 +587,7 @@ export default function BookingModal() {
                     </>
                   ) : (
                     <>
-                      <p className="mt-5 max-w-md text-sm leading-6 text-gray-600">
+                      <p className="mt-5 max-w-md text-sm leading-6 text-ink-soft">
                         Thanks, {form.name.split(" ")[0]}. We&apos;ll call you on {form.phone}
                         {form.preferredContactTime ? `, ${form.preferredContactTime.toLowerCase()}` : " soon"}.
                       </p>
@@ -607,21 +607,21 @@ export default function BookingModal() {
 }
 
 function SectionTitle({ children }: { children: ReactNode }) {
-  return <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">{children}</h3>
+  return <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-mute">{children}</h3>
 }
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-gray-800">{label}</span>
+      <span className="mb-1.5 block text-sm font-medium text-ink">{label}</span>
       {children}
     </label>
   )
 }
 
 const inputClass =
-  "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 sm:text-sm"
+  "w-full rounded-xl border border-ink/10 bg-white px-4 py-3 text-base text-ink outline-none transition placeholder:text-gray-400 focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 sm:text-sm"
 const primaryButtonClass =
-  "inline-flex w-full items-center justify-center gap-2 rounded-full bg-gray-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+  "inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
 const secondaryButtonClass =
-  "inline-flex w-full items-center justify-center rounded-full border border-gray-300 px-6 py-3.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50 sm:w-auto"
+  "inline-flex w-full items-center justify-center rounded-full border border-ink/10 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white/50 sm:w-auto"

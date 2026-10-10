@@ -23,7 +23,7 @@ export function BlogPostCard({ post }: { post: BlogPost }) {
     <article
       data-blog-card
       data-search-text={`${post.title} ${post.excerpt} ${post.author} ${post.category || ""}`}
-      className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100/50"
+      className="glass rounded-[28px] overflow-hidden border-ink/5"
     >
       <div className="relative overflow-hidden rounded-t-2xl bg-gradient-to-br from-purple-50 to-indigo-50">
         <Image
@@ -40,19 +40,19 @@ export function BlogPostCard({ post }: { post: BlogPost }) {
           {post.category ? (
             <Link
               href={`/blog/category/${categorySlug(post.category)}/`}
-              className="bg-white/90 backdrop-blur-sm text-purple-600 px-3 py-1 rounded-full text-xs font-medium shadow-lg hover:bg-white"
+              className="bg-white/90 backdrop-blur-sm text-brand px-3 py-1 rounded-full text-xs font-medium shadow-lg hover:bg-white"
             >
               {post.category}
             </Link>
           ) : (
-            <span className="bg-white/90 backdrop-blur-sm text-purple-600 px-3 py-1 rounded-full text-xs font-medium shadow-lg">
+            <span className="bg-white/90 backdrop-blur-sm text-brand px-3 py-1 rounded-full text-xs font-medium shadow-lg">
               Article
             </span>
           )}
         </div>
 
         <div className="absolute top-4 right-4">
-          <span className="bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+          <span className="bg-ink/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
             <Clock className="w-3 h-3" aria-hidden="true" />
             {formatReadTime(post.read_duration)}
           </span>
@@ -66,23 +66,23 @@ export function BlogPostCard({ post }: { post: BlogPost }) {
               <User className="w-4 h-4 text-white" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900">{post.author}</p>
-              <p className="text-xs text-gray-500">{formatDate(post.published_at)}</p>
+              <p className="text-sm font-medium text-ink">{post.author}</p>
+              <p className="text-xs text-ink-mute">{formatDate(post.published_at)}</p>
             </div>
           </div>
         </div>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 leading-tight">
-          <Link href={`/blog/${post.slug}/`} className="hover:text-purple-700">
+        <h2 className="text-xl font-medium text-ink mb-3 line-clamp-2 leading-tight tracking-tight">
+          <Link href={`/blog/${post.slug}/`} className="hover:text-brand">
             {post.title}
           </Link>
         </h2>
 
-        <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">{post.excerpt}</p>
+        <p className="text-ink-soft text-sm leading-relaxed mb-6 line-clamp-3">{post.excerpt}</p>
 
         <Link
           href={`/blog/${post.slug}/`}
-          className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-medium text-sm"
+          className="inline-flex items-center gap-2 text-brand hover:text-brand font-medium text-sm"
           aria-label={`Read ${post.title}`}
         >
           <span>Read Article</span>

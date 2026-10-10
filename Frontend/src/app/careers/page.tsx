@@ -60,7 +60,7 @@ const benefits = [
     title: "Your work goes live",
     description:
       "No sandbox projects. What you build this month is on a real client's domain next month, used by real customers.",
-    color: "from-blue-500 to-blue-600",
+    color: "from-brand to-blue-600",
   },
   {
     Icon: Laptop,
@@ -74,7 +74,7 @@ const benefits = [
     title: "Small team, real ownership",
     description:
       "You own features end to end instead of a slice of a ticket. Your name is on the decisions, not buried under four approval layers.",
-    color: "from-violet-500 to-violet-600",
+    color: "from-violet-500 to-violet",
   },
   {
     Icon: GraduationCap,
@@ -154,7 +154,7 @@ export default function CareersPage() {
   )
 
   return (
-    <div className="bg-white">
+    <div className="">
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
@@ -165,7 +165,7 @@ export default function CareersPage() {
           animate="visible"
         >
           <m.span
-            className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800"
+            className="inline-flex items-center rounded-full bg-brand/10 px-3 py-1 text-sm font-medium text-brand"
             variants={itemVariants}
           >
             {APPLICATIONS_OPEN
@@ -173,13 +173,13 @@ export default function CareersPage() {
               : "Not hiring right now"}
           </m.span>
           <m.h1
-            className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4"
+            className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold text-ink mb-4"
             variants={itemVariants}
           >
             Build things that go live
           </m.h1>
           <m.p
-            className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl text-ink-soft max-w-3xl mx-auto"
             variants={itemVariants}
           >
             NextGen Fusion is a product and web studio in Lucknow and Mumbai. We build websites,
@@ -195,14 +195,14 @@ export default function CareersPage() {
           >
             <Link
               href="#open-roles"
-              className="inline-flex items-center justify-center rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
+              className="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
             >
               View open roles
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
             <Link
               href="#apply"
-              className="inline-flex items-center justify-center rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
+              className="inline-flex items-center justify-center rounded-full border border-ink/10 px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-gray-900"
             >
               Apply now
             </Link>
@@ -224,17 +224,17 @@ export default function CareersPage() {
             <m.div
               key={stat.label}
               variants={itemVariants}
-              className="rounded-xl bg-gray-50 p-6 text-center"
+              className="rounded-[20px] bg-white/50 p-6 text-center"
             >
-              <p className="text-3xl sm:text-4xl font-bold text-gray-900">{stat.value}</p>
-              <p className="mt-1 text-sm text-gray-600">{stat.label}</p>
+              <p className="text-3xl sm:text-4xl font-bold text-ink">{stat.value}</p>
+              <p className="mt-1 text-sm text-ink-soft">{stat.label}</p>
             </m.div>
           ))}
         </m.div>
       </section>
 
       {/* Why work here */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
         <m.div
           className="max-w-7xl mx-auto"
           variants={containerVariants}
@@ -243,10 +243,10 @@ export default function CareersPage() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <m.div className="text-center mb-12" variants={itemVariants}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-medium text-ink mb-4 tracking-tight">
               Why work at NextGen Fusion
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-ink-soft max-w-3xl mx-auto">
               We are small enough that what you do matters, and busy enough that you will never run
               out of things to learn.
             </p>
@@ -258,7 +258,7 @@ export default function CareersPage() {
                 key={benefit.title}
                 variants={itemVariants}
                 whileHover={{ y: -10 }}
-                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300"
+                className="glass rounded-[20px] p-6 transition-all duration-300"
               >
                 <div
                   className={cn(
@@ -268,8 +268,8 @@ export default function CareersPage() {
                 >
                   <benefit.Icon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="mt-4 text-xl font-bold text-gray-900">{benefit.title}</h3>
-                <p className="mt-2 text-gray-600 text-sm">{benefit.description}</p>
+                <h3 className="mt-4 text-xl font-medium text-ink tracking-tight">{benefit.title}</h3>
+                <p className="mt-2 text-ink-soft text-sm">{benefit.description}</p>
               </m.div>
             ))}
           </div>
@@ -278,11 +278,11 @@ export default function CareersPage() {
 
       {!APPLICATIONS_OPEN && (
         <section id="open-roles" className="py-16 px-4 sm:px-6 lg:px-8 scroll-mt-24">
-          <div className="max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-gray-50 p-8 text-center sm:p-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <div className="glass max-w-3xl mx-auto rounded-[28px] p-8 text-center sm:p-10">
+            <h2 className="text-2xl sm:text-3xl font-medium text-ink tracking-tight">
               Applications are closed
             </h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <p className="mt-4 text-lg text-ink-soft">
               We are not hiring for any role at the moment, so we are not reviewing applications
               by form or by email. When we open a role again it will be listed here.
             </p>
@@ -301,8 +301,8 @@ export default function CareersPage() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <m.div className="text-center mb-10" variants={itemVariants}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Open roles</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-medium text-ink mb-4 tracking-tight">Open roles</h2>
+            <p className="text-lg text-ink-soft max-w-3xl mx-auto">
               Pick a role to see the detail. If nothing fits but you think you should be here, send
               an open application — we read every one.
             </p>
@@ -322,8 +322,8 @@ export default function CareersPage() {
                 className={cn(
                   "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                   activeDepartment === department
-                    ? "border-gray-900 bg-gray-900 text-white"
-                    : "border-gray-300 text-gray-700 hover:border-gray-900",
+                    ? "border-gray-900 bg-ink text-white"
+                    : "border-ink/10 text-ink-soft hover:border-gray-900",
                 )}
               >
                 {department}
@@ -338,7 +338,7 @@ export default function CareersPage() {
                 <m.div
                   key={job.id}
                   variants={itemVariants}
-                  className="rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-lg"
+                  className="glass rounded-[20px] transition-shadow"
                 >
                   <button
                     type="button"
@@ -348,8 +348,8 @@ export default function CareersPage() {
                     className="flex w-full items-start justify-between gap-4 p-6 text-left"
                   >
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900">{job.title}</h3>
-                      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600">
+                      <h3 className="text-xl font-medium text-ink tracking-tight">{job.title}</h3>
+                      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-soft">
                         <span className="inline-flex items-center gap-1.5">
                           <Briefcase className="h-4 w-4" />
                           {job.department}
@@ -362,31 +362,31 @@ export default function CareersPage() {
                           <Clock className="h-4 w-4" />
                           {job.type}
                         </span>
-                        <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">
+                        <span className="rounded-full bg-white/70 px-2.5 py-0.5 text-xs font-medium text-ink-soft">
                           {job.experience}
                         </span>
                       </div>
                     </div>
                     <ChevronDown
                       className={cn(
-                        "mt-1 h-5 w-5 shrink-0 text-gray-500 transition-transform duration-300",
+                        "mt-1 h-5 w-5 shrink-0 text-ink-mute transition-transform duration-300",
                         isExpanded && "rotate-180",
                       )}
                     />
                   </button>
 
                   {isExpanded && (
-                    <div id={`job-panel-${job.id}`} className="border-t border-gray-100 px-6 py-6">
-                      <p className="text-gray-600">{job.summary}</p>
+                    <div id={`job-panel-${job.id}`} className="border-t border-ink/10 px-6 py-6">
+                      <p className="text-ink-soft">{job.summary}</p>
 
                       <div className="mt-6 grid gap-6 md:grid-cols-2">
                         <div>
-                          <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-900">
+                          <h4 className="text-sm font-semibold uppercase tracking-wide text-ink">
                             What you will do
                           </h4>
                           <ul className="mt-3 space-y-2">
                             {job.responsibilities.map((item) => (
-                              <li key={item} className="flex gap-2 text-sm text-gray-600">
+                              <li key={item} className="flex gap-2 text-sm text-ink-soft">
                                 <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gray-400" />
                                 {item}
                               </li>
@@ -394,12 +394,12 @@ export default function CareersPage() {
                           </ul>
                         </div>
                         <div>
-                          <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-900">
+                          <h4 className="text-sm font-semibold uppercase tracking-wide text-ink">
                             What we are looking for
                           </h4>
                           <ul className="mt-3 space-y-2">
                             {job.requirements.map((item) => (
-                              <li key={item} className="flex gap-2 text-sm text-gray-600">
+                              <li key={item} className="flex gap-2 text-sm text-ink-soft">
                                 <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gray-400" />
                                 {item}
                               </li>
@@ -411,7 +411,7 @@ export default function CareersPage() {
                       <button
                         type="button"
                         onClick={() => applyForRole(job.id)}
-                        className="mt-6 inline-flex items-center justify-center rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
+                        className="mt-6 inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
                       >
                         Apply for this role
                         <ArrowRight className="ml-2 h-4 w-4" />
@@ -426,7 +426,7 @@ export default function CareersPage() {
       </section>
 
       {/* Hiring process */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
         <m.div
           className="max-w-7xl mx-auto"
           variants={containerVariants}
@@ -435,10 +435,10 @@ export default function CareersPage() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <m.div className="text-center mb-12" variants={itemVariants}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-medium text-ink mb-4 tracking-tight">
               How hiring works here
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-ink-soft max-w-3xl mx-auto">
               Four steps, usually inside two weeks. You will always know where you stand.
             </p>
           </m.div>
@@ -447,8 +447,8 @@ export default function CareersPage() {
             {hiringSteps.map((step) => (
               <m.div key={step.step} variants={itemVariants} className="relative">
                 <span className="text-5xl font-bold text-gray-200">{step.step}</span>
-                <h3 className="mt-2 text-xl font-bold text-gray-900">{step.title}</h3>
-                <p className="mt-2 text-sm text-gray-600">{step.description}</p>
+                <h3 className="mt-2 text-xl font-medium text-ink tracking-tight">{step.title}</h3>
+                <p className="mt-2 text-sm text-ink-soft">{step.description}</p>
               </m.div>
             ))}
           </div>
@@ -465,8 +465,8 @@ export default function CareersPage() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <m.div className="text-center mb-10" variants={itemVariants}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Apply now</h2>
-            <p className="text-lg text-gray-600">
+            <h2 className="text-3xl sm:text-4xl font-medium text-ink mb-4 tracking-tight">Apply now</h2>
+            <p className="text-lg text-ink-soft">
               Fill this in and attach your resume. We read every application and reply within a
               week, either way.
             </p>
@@ -476,11 +476,11 @@ export default function CareersPage() {
             <ApplicationForm key={selectedRoleId} defaultRoleId={selectedRoleId} />
           </m.div>
 
-          <m.p className="mt-6 text-center text-sm text-gray-500" variants={itemVariants}>
+          <m.p className="mt-6 text-center text-sm text-ink-mute" variants={itemVariants}>
             Trouble with the form?{" "}
             <a
               href={openApplicationMailto()}
-              className="font-medium text-gray-900 underline underline-offset-4"
+              className="font-medium text-ink underline underline-offset-4"
             >
               Email us at {CAREERS_EMAIL}
             </a>{" "}

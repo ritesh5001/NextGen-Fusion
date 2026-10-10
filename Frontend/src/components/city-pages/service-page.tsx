@@ -54,7 +54,7 @@ export function CityServicePageView<C extends CityPage>(props: Props<C>) {
   return (
     <>
       <JsonLd data={schemaFor(props)} />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen">
         <CityHero
           crumbs={[
             { name: "Home", href: "/" },

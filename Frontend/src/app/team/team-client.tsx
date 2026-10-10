@@ -28,8 +28,8 @@ const itemVariants = {
 
 // Card accent per member — presentation only, so it stays local to this page.
 const cardAccent: Record<string, string> = {
-  "ritesh-giri": "from-blue-500 to-blue-600",
-  "sajal-singh": "from-violet-500 to-violet-600",
+  "ritesh-giri": "from-brand to-blue-600",
+  "sajal-singh": "from-violet-500 to-violet",
 }
 
 // Identity (name, role, photo, bio) comes from the canonical team source so
@@ -40,12 +40,12 @@ const teamMembers = team.map((member) => ({
   role: member.role,
   image: member.image,
   bio: member.bio,
-  color: cardAccent[member.slug] ?? "from-blue-500 to-blue-600",
+  color: cardAccent[member.slug] ?? "from-brand to-blue-600",
 }))
 
 export default function TeamClient() {
   return (
-    <div className="bg-white">
+    <div className="">
       
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
@@ -56,13 +56,13 @@ export default function TeamClient() {
           animate="visible"
         >
           <m.h1 
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-ink mb-4"
             variants={itemVariants}
           >
             Meet Our Experienced Team
           </m.h1>
           <m.p 
-            className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl text-ink-soft max-w-3xl mx-auto"
             variants={itemVariants}
           >
             Talented professionals dedicated to delivering exceptional digital solutions. Each member brings years of expertise and innovation to every project.
@@ -88,9 +88,9 @@ export default function TeamClient() {
                 className="group cursor-pointer"
               >
                 <Link href={`/team/${member.id}`}>
-                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+                  <div className="glass rounded-[20px] overflow-hidden transition-all duration-300 h-full flex flex-col">
                     {/* Image Container */}
-                    <div className="relative h-64 overflow-hidden bg-gray-100">
+                    <div className="relative h-64 overflow-hidden bg-white/70">
                       <Image
                         src={member.image}
                         alt={member.name}
@@ -103,15 +103,15 @@ export default function TeamClient() {
 
                     {/* Content */}
                     <div className="p-6 flex flex-col flex-grow">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
+                      <h3 className="text-xl font-medium text-ink mb-2 tracking-tight">{member.name}</h3>
                       <p className={`text-sm font-semibold bg-gradient-to-r ${member.color} bg-clip-text text-transparent mb-3`}>
                         {member.role}
                       </p>
-                      <p className="text-gray-600 text-sm flex-grow mb-4">{member.bio}</p>
+                      <p className="text-ink-soft text-sm flex-grow mb-4">{member.bio}</p>
                       
                       {/* View Profile Button */}
                       <m.div
-                        className="flex items-center text-blue-600 font-semibold group/btn"
+                        className="flex items-center text-brand font-semibold group/btn"
                         whileHover={{ x: 5 }}
                       >
                         <span className="group-hover/btn:underline">View Profile</span>

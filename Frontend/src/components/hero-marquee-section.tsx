@@ -31,10 +31,10 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.2, duration: 0.8 }}
-        className="w-full overflow-hidden bg-gray-50 mt-32"
+        className="w-full overflow-hidden bg-white/50 mt-32"
       >
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-500">No portfolio to display</div>
+          <div className="text-ink-mute">No portfolio to display</div>
         </div>
       </m.div>
     );
@@ -44,7 +44,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 2.2, duration: 0.8 }}
-      className="w-full overflow-hidden bg-gray-50 mt-32"
+      className="w-full overflow-hidden bg-white/50 mt-32"
     >
       <div className="relative">
         {/* Gradient overlays for fade effect - positioned at screen edges */}
@@ -73,7 +73,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
                 key={`first-${index}`}
                 href="/work/"
                 prefetch={false}
-                className="flex-shrink-0 w-80 h-48 sm:w-96 sm:h-56 md:w-[28rem] md:h-72 lg:w-[32rem] lg:h-80 rounded-2xl mx-4 overflow-hidden border-2 border-black/20 hover:border-black/40 transition-all duration-300 group relative cursor-pointer"
+                className="flex-shrink-0 w-80 h-48 sm:w-96 sm:h-56 md:w-[28rem] md:h-72 lg:w-[32rem] lg:h-80 rounded-[28px] mx-4 overflow-hidden border-2 border-black/20 hover:border-black/40 transition-all duration-300 group relative cursor-pointer"
               >
                 <Image
                   src={
@@ -87,7 +87,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
                 />
 
                 {/* Category Badge */}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700 border border-gray-200">
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-ink-soft border border-ink/10">
                   {portfolio.category}
                 </div>
 
@@ -121,7 +121,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
                 key={`second-${index}`}
                 href="/work/"
                 prefetch={false}
-                className="flex-shrink-0 w-80 h-48 sm:w-96 sm:h-56 md:w-[28rem] md:h-72 lg:w-[32rem] lg:h-80 rounded-2xl mx-4 overflow-hidden border-2 border-black/20 hover:border-black/40 transition-all duration-300 group relative cursor-pointer"
+                className="flex-shrink-0 w-80 h-48 sm:w-96 sm:h-56 md:w-[28rem] md:h-72 lg:w-[32rem] lg:h-80 rounded-[28px] mx-4 overflow-hidden border-2 border-black/20 hover:border-black/40 transition-all duration-300 group relative cursor-pointer"
               >
                 <Image
                   src={
@@ -135,7 +135,7 @@ export default function HeroMarqueeSection({ initialPortfolios = [] }: Props) {
                 />
 
                 {/* Category Badge */}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700 border border-gray-200">
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-ink-soft border border-ink/10">
                   {portfolio.category}
                 </div>
 

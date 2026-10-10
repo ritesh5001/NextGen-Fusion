@@ -31,19 +31,19 @@ export const metadata: Metadata = {
 export default async function SupportPage() {
   const plans = await getPlans()
   return (
-    <section className="bg-white px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+    <section className="px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800">
+          <span className="inline-flex items-center rounded-full bg-brand/10 px-3 py-1 text-sm font-medium text-brand">
             Support & subscriptions
           </span>
-          <h1 className="mt-4 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+          <h1 className="mt-4 text-3xl font-medium leading-tight text-ink sm:text-4xl lg:text-5xl tracking-tight">
             Plans that keep your site{" "}
-            <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
+            <span className="text-gradient">
               growing
             </span>
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-ink-soft sm:text-lg">
             We don&apos;t ghost you after launch. Pick a plan and pay securely online — support,
             ongoing changes, or access to product-upload tools for your store.
           </p>

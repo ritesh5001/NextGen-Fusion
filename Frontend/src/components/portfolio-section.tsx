@@ -11,7 +11,7 @@ import { useMobileIcon } from "@/hooks/use-mobile-icon";
 // BadgeSubtitle component definition (in case it's missing)
 function BadgeSubtitle({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand/10 text-brand">
       {children}
     </span>
   );
@@ -150,7 +150,7 @@ export default function PortfolioSection({
   return (
     <m.section
       id="portofolio"
-      className="bg-white py-32 px-4 sm:px-6 lg:px-8"
+      className="py-32 px-4 sm:px-6 lg:px-8"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -164,7 +164,7 @@ export default function PortfolioSection({
           </m.div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
             <m.h2
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-ink leading-tight"
               variants={textVariants}
             >
               <div className="flex flex-wrap items-center gap-3 md:gap-4">
@@ -182,7 +182,7 @@ export default function PortfolioSection({
                     className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
                   />
                 </m.div>
-                <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
+                <span className="text-gradient">
                   Our
                 </span>
               </div>
@@ -201,7 +201,7 @@ export default function PortfolioSection({
                     className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
                   />
                 </m.div>
-                <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
+                <span className="text-gradient">
                   Projects
                 </span>
               </div>
@@ -214,7 +214,7 @@ export default function PortfolioSection({
               <Link
                 href="/work/"
                 prefetch={false}
-                className="flex items-center gap-2 text-gray-800 hover:text-purple-600 font-medium transition-colors group"
+                className="flex items-center gap-2 text-ink hover:text-brand font-medium transition-colors group"
               >
                 View all portfolio
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -240,7 +240,7 @@ export default function PortfolioSection({
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <div className="animate-pulse">
-                  <div className="bg-gray-200 rounded-2xl h-80 mb-4"></div>
+                  <div className="bg-gray-200 rounded-[28px] h-80 mb-4"></div>
                   <div className="h-6 bg-gray-200 rounded mb-2"></div>
                   <div className="h-4 bg-gray-200 rounded mb-3 w-3/4"></div>
                 </div>
@@ -264,7 +264,7 @@ export default function PortfolioSection({
               >
                 <Link href={project.link} prefetch={false} className="block">
                   <m.div
-                    className={`relative rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/10] w-full`}
+                    className={`relative rounded-[28px] overflow-hidden aspect-[4/3] md:aspect-[16/10] w-full`}
                     variants={imageVariants}
                   >
                     <Image
@@ -277,7 +277,7 @@ export default function PortfolioSection({
 
                     {/* Category Badge */}
                     <m.div
-                      className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-gray-700 border border-gray-200"
+                      className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-ink-soft border border-ink/10"
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
@@ -294,13 +294,13 @@ export default function PortfolioSection({
                       transition={{ duration: 0.3 }}
                     >
                       <div className="text-white">
-                        <h3 className="text-lg sm:text-xl font-bold mb-2">
+                        <h3 className="text-lg sm:text-xl font-medium mb-2 tracking-tight">
                           {project.title}
                         </h3>
                         <p className="text-white/80 text-xs sm:text-sm leading-relaxed line-clamp-2">
                           {project.description}
                         </p>
-                        <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-gray-900 shadow-sm">
+                        <span className="glass mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-ink">
                           Read More
                           <ArrowRight className="w-3.5 h-3.5" />
                         </span>

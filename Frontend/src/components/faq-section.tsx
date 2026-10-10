@@ -156,7 +156,7 @@ export default function FAQSection() {
               <BadgeSubtitle>Frequently Asked Questions</BadgeSubtitle>
             </m.div>
             <m.h2 className="display text-4xl sm:text-5xl lg:text-6xl" variants={textVariants}>
-              <span className="mark-lime">Questions</span> about working with us, answered
+              <span className="text-gradient">Questions</span> about working with us, answered
             </m.h2>
             </m.div>
 
@@ -170,7 +170,7 @@ export default function FAQSection() {
               variants={cardVariants}
             >
               {/* Chat Interface */}
-              <div className="wash-green relative rounded-[40px] p-3 sm:p-4">
+              <div className="wash-blue relative rounded-[40px] p-3 sm:p-4">
 
                 {/* Chat Header */}
                 <m.div 
@@ -192,11 +192,11 @@ export default function FAQSection() {
                     </m.button>
                     <div className="flex items-center gap-3">
                       <m.div 
-                        className="w-9 h-9 bg-lime rounded-full flex items-center justify-center"
+                        className="icon-badge h-9 w-9"
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <span className="text-ink text-xs font-semibold">TC</span>
+                        <span className="text-xs font-semibold">TC</span>
                       </m.div>
                       <div className="text-center">
                         <div className="text-sm font-medium text-ink">
@@ -278,7 +278,7 @@ export default function FAQSection() {
                         whileTap={{ scale: 0.99 }}
                       >
                         <m.div 
-                          className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${activeIndex === index ? "bg-ink text-lime" : "bg-lime text-ink"}`}
+                          className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${activeIndex === index ? "icon-badge" : "bg-brand/10 text-brand"}`}
                           animate={{ rotate: activeIndex === index ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
                         >

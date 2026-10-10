@@ -32,16 +32,16 @@ export function SelfCheck({ heading, items, topic }: Props) {
   const message = `Hi NextGen Fusion, I did your ${topic} self-check and ticked ${count} of ${items.length}. Can you tell me what to fix first?`
 
   return (
-    <section aria-labelledby={`${baseId}-heading`} className="mb-16 rounded-2xl border border-gray-200 p-6 sm:p-8">
-      <h2 id={`${baseId}-heading`} className="text-2xl font-bold text-gray-900 sm:text-3xl">
+    <section aria-labelledby={`${baseId}-heading`} className="mb-16 rounded-[28px] border border-ink/10 p-6 sm:p-8">
+      <h2 id={`${baseId}-heading`} className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">
         {heading}
       </h2>
-      <p className="mt-3 text-gray-600">Tick what is already true for your business. It takes a minute and nothing is sent anywhere.</p>
+      <p className="mt-3 text-ink-soft">Tick what is already true for your business. It takes a minute and nothing is sent anywhere.</p>
 
       <ul className="mt-6 space-y-3">
         {items.map((item, index) => (
           <li key={item}>
-            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 px-4 py-3 transition-colors hover:border-gray-400 has-[:checked]:border-purple-600 has-[:checked]:bg-purple-50">
+            <label className="flex cursor-pointer items-start gap-3 rounded-[20px] border border-ink/10 px-4 py-3 transition-colors hover:border-gray-400 has-[:checked]:border-brand has-[:checked]:bg-brand/10">
               <input
                 type="checkbox"
                 className="peer sr-only"
@@ -51,13 +51,13 @@ export function SelfCheck({ heading, items, topic }: Props) {
               <span
                 aria-hidden="true"
                 className={cn(
-                  "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border peer-focus-visible:ring-2 peer-focus-visible:ring-purple-500",
-                  ticked[index] ? "border-purple-600 bg-purple-600 text-white" : "border-gray-300 bg-white",
+                  "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border peer-focus-visible:ring-2 peer-focus-visible:ring-brand",
+                  ticked[index] ? "border-brand bg-brand text-white" : "border-ink/10 bg-white",
                 )}
               >
                 {ticked[index] && <Check className="h-3.5 w-3.5" />}
               </span>
-              <span className="leading-relaxed text-gray-800">{item}</span>
+              <span className="leading-relaxed text-ink">{item}</span>
             </label>
           </li>
         ))}
@@ -65,17 +65,17 @@ export function SelfCheck({ heading, items, topic }: Props) {
 
       <div aria-live="polite" className="mt-6">
         {touched && (
-          <div className="rounded-xl bg-gray-50 p-5">
-            <p className="font-semibold text-gray-900">
+          <div className="glass rounded-[20px] p-5">
+            <p className="font-semibold text-ink">
               {count} of {items.length} in place
             </p>
-            <p className="mt-1 leading-relaxed text-gray-600">{verdict(count, items.length)}</p>
+            <p className="mt-1 leading-relaxed text-ink-soft">{verdict(count, items.length)}</p>
             <a
               href={whatsappHref(message)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent("whatsapp_click", { source: "au_self_check", topic, score: count })}
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-700"
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-700"
             >
               <MessageCircle className="h-4 w-4" aria-hidden="true" />
               Ask what to fix first

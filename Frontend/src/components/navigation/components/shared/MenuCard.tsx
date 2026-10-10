@@ -27,7 +27,7 @@ export const MenuCard = ({ data, onItemClick }: MenuCardProps) => {
           
           <div className="absolute inset-0 rounded-lg overflow-hidden">
             <div className="relative h-full w-full">
-              <div className="absolute inset-0 transition-all duration-500 bg-black/0 group-hover:bg-black/40 rounded-lg" />
+              <div className="absolute inset-0 transition-all duration-500 bg-ink/0 group-hover:bg-ink/40 rounded-lg" />
               <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-transparent h-1/2 rounded-lg" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent rounded-lg" />
               <div className="absolute inset-0 backdrop-blur-0 group-hover:backdrop-blur-sm transition-all duration-500 rounded-lg" />
@@ -48,10 +48,10 @@ export const MenuCard = ({ data, onItemClick }: MenuCardProps) => {
       )
     }
     return (
-      <div className={`relative rounded-lg overflow-hidden h-48 w-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center group`}>
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
+      <div className={`relative rounded-lg overflow-hidden h-48 w-full bg-gradient-to-r from-brand to-violet flex items-center justify-center group`}>
+        <div className="absolute inset-0 bg-ink/10 group-hover:bg-ink/20 transition-colors" />
         <div className="relative z-10 text-center p-6 w-full">
-          <h3 className="font-bold text-2xl text-white">{data.label}</h3>
+          <h3 className="font-medium text-2xl text-white tracking-tight">{data.label}</h3>
           <p className="text-white/90 text-base mt-2">{data.callout}</p>
         </div>
       </div>
@@ -62,27 +62,27 @@ export const MenuCard = ({ data, onItemClick }: MenuCardProps) => {
 
   return (
     <div 
-      className="group py-2 px-3 -mx-1 rounded-lg hover:bg-gray-100/80 transition-colors cursor-pointer"
+      className="group py-2 px-3 -mx-1 rounded-lg hover:bg-white/40 transition-colors cursor-pointer"
       onClick={() => onItemClick?.(data)}
     >
       <div className="relative overflow-hidden">
         <div className="flex items-center gap-3 group-hover:translate-x-1 transition-transform duration-200">
           {IconComponent && (
-            <div className="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center flex-shrink-0 transition-colors">
-              <IconComponent className="h-3.5 w-3.5 text-gray-500 group-hover:scale-110 transition-transform" />
+            <div className="w-8 h-8 rounded-lg bg-white/70 group-hover:bg-gray-200 flex items-center justify-center flex-shrink-0 transition-colors">
+              <IconComponent className="h-3.5 w-3.5 text-ink-mute group-hover:scale-110 transition-transform" />
             </div>
           )}
           <div className="space-y-0.5 group-hover:translate-x-1 transition-transform duration-200">
           <div className="flex items-center gap-2">
-            <span className="font-medium text-sm text-gray-800 leading-tight">{data.label}</span>
+            <span className="font-medium text-sm text-ink leading-tight">{data.label}</span>
             {data.badge && (
-              <Badge variant="outline" className="text-xs px-1.5 py-0 h-5 border-gray-200 text-gray-500">
+              <Badge variant="outline" className="text-xs px-1.5 py-0 h-5 border-ink/10 text-ink-mute">
                 {data.badge}
               </Badge>
             )}
           </div>
           {data.callout && (
-            <p className="text-xs text-gray-500 leading-relaxed">{data.callout}</p>
+            <p className="text-xs text-ink-mute leading-relaxed">{data.callout}</p>
           )}
         </div>
       </div>

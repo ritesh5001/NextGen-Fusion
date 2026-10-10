@@ -77,20 +77,20 @@ export default function ServicesPage() {
   ]
 
   return (
-    <section className="bg-white py-24 sm:py-32 px-4 sm:px-6 lg:px-8">
+    <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8">
       <JsonLd data={schema} />
       <div className="max-w-7xl mx-auto">
         <div className="mb-14 max-w-3xl">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand/10 text-brand">
             Services
           </span>
-          <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+          <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-medium text-ink leading-tight tracking-tight">
             Everything you need to{" "}
-            <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
+            <span className="text-gradient">
               grow online
             </span>
           </h1>
-          <p className="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed">
+          <p className="mt-4 text-ink-soft text-base sm:text-lg leading-relaxed">
             From conversion-focused websites to SEO, software, and AI automation — explore how we
             help growing brands turn traffic into enquiries and sales.
           </p>
@@ -100,24 +100,24 @@ export default function ServicesPage() {
             nothing; the service pages are what we want to rank, and this
             page's job is to route intent to the right one. */}
         <div className="mb-14 grid max-w-5xl gap-8 md:grid-cols-2">
-          <div className="space-y-4 text-gray-600 leading-relaxed">
+          <div className="space-y-4 text-ink-soft leading-relaxed">
             <p>
               Fifteen services, but most projects start as one of three
-              conversations. <strong className="font-semibold text-gray-900">You need a site
+              conversations. <strong className="font-semibold text-ink">You need a site
               built</strong> — a new business, a rebrand, or an existing site that has become more
               expensive to change than it was to make. That is website development, web design and,
               if you sell online, ecommerce development.
             </p>
             <p>
-              <strong className="font-semibold text-gray-900">You have a site and it is not
+              <strong className="font-semibold text-ink">You have a site and it is not
               producing anything.</strong> That is usually SEO first — technical structure and
               speed before content — with PPC where you need enquiries this quarter rather than
               next, and social media where the audience is already there and the funnel is not.
             </p>
           </div>
-          <div className="space-y-4 text-gray-600 leading-relaxed">
+          <div className="space-y-4 text-ink-soft leading-relaxed">
             <p>
-              <strong className="font-semibold text-gray-900">You need something built that is
+              <strong className="font-semibold text-ink">You need something built that is
               not a website.</strong> Internal software, an Android app, an integration between
               systems that do not talk to each other, cloud infrastructure that stops falling over,
               or automation that removes a job nobody should be doing manually.
@@ -126,12 +126,12 @@ export default function ServicesPage() {
               Underneath all three is maintenance, which is the one nobody asks for and everybody
               needs. Every one of them is quoted in writing after a short conversation, with
               one fixed price and one delivery window. If you are not sure which of these you are,{" "}
-              <Link href="/contact/" className="font-medium text-purple-600 hover:underline">
+              <Link href="/contact/" className="font-medium text-brand hover:underline">
                 describe the problem
               </Link>{" "}
               rather than the solution and we will tell you — including when the answer is that you
               do not need us. You can also look at{" "}
-              <Link href="/work/" className="font-medium text-purple-600 hover:underline">
+              <Link href="/work/" className="font-medium text-brand hover:underline">
                 what we have delivered
               </Link>{" "}
               to see which of these we do most.
@@ -144,15 +144,15 @@ export default function ServicesPage() {
             <Link
               key={title}
               href={href}
-              className="group rounded-2xl border border-gray-100 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+              className="group rounded-[28px] border border-ink/10 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
             >
-              <h2 className="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+              <h2 className="text-lg font-medium text-ink group-hover:text-brand transition-colors tracking-tight">
                 {title}
               </h2>
-              <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+              <p className="mt-2 text-sm text-ink-soft leading-relaxed">
                 {serviceDescriptions[title]}
               </p>
-              <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-purple-600">
+              <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand">
                 Learn more
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>

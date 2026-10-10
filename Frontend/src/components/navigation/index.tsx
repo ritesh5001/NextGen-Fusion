@@ -34,7 +34,7 @@ export const Navigation = () => {
         </div>
 
         {/* Mobile Navigation - Fixed at bottom (no animation) */}
-        <div className="2xl:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-t border-gray-200">
+        <div className="2xl:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-t border-ink/10">
           <div className="flex items-center justify-between w-full max-w-[95vw] mx-auto px-4 py-2">
             {/* Logo and Language Toggle */}
             <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ export const Navigation = () => {
               <MobileNav onItemClick={handleItemClick} />
               <a 
                 href="#book-call" 
-                className="px-2 py-1 text-xs font-medium text-primary-foreground bg-primary rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
+                className="px-2 py-1 text-xs font-medium text-primary-foreground bg-primary rounded-full hover:bg-primary/90 transition-colors whitespace-nowrap"
               >
                 Book a Call
               </a>

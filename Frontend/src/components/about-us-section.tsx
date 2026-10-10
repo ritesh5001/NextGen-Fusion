@@ -63,7 +63,7 @@ export default function AboutUsSection() {
   return (
     <m.section 
       id="about" 
-      className="ambient-teal py-20 sm:py-24"
+      className="py-20 sm:py-24"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -78,7 +78,7 @@ export default function AboutUsSection() {
             </m.div>
             <m.h2 className="mb-8" variants={textVariants}>
               <span className="display block text-4xl sm:text-5xl lg:text-6xl">
-                <span className="mark-lime">Hello,</span> we&apos;re NextGen Fusion
+                <span className="text-gradient">Hello,</span> we&apos;re NextGen Fusion
               </span>
               <span className="mt-5 block text-xl tracking-tight text-ink-soft sm:text-2xl">
                 A web development studio in Lucknow &amp; Mumbai
@@ -110,7 +110,7 @@ export default function AboutUsSection() {
             </m.div>
 
             {/* Team Section */}
-            <m.div variants={itemVariants} className="wash-pink rounded-[32px] p-6 sm:p-8">
+            <m.div variants={itemVariants} className="wash-violet rounded-[32px] p-6 sm:p-8">
               <m.h2 className="text-2xl font-medium tracking-tight text-ink mb-3" variants={textVariants}>
                 Meet the Team Behind Our Work
               </m.h2>

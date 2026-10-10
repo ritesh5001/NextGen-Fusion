@@ -46,7 +46,7 @@ function ScoreRing({ score }: { score: number }) {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className={cn("text-3xl font-bold", tone.text)}>{score}</span>
-        <span className="text-xs text-gray-500">out of 100</span>
+        <span className="text-xs text-ink-mute">out of 100</span>
       </div>
     </div>
   )
@@ -58,11 +58,11 @@ function CheckRow({ check }: { check: SeoCheck }) {
     <li className="flex gap-3 py-4">
       <Icon className={cn("mt-0.5 h-5 w-5 shrink-0", className)} aria-label={label} />
       <div className="min-w-0">
-        <p className="font-medium text-gray-900">{check.label}</p>
-        <p className="mt-1 break-words text-sm leading-6 text-gray-600">{check.detail}</p>
+        <p className="font-medium text-ink">{check.label}</p>
+        <p className="mt-1 break-words text-sm leading-6 text-ink-soft">{check.detail}</p>
         {check.fix && (
-          <p className="mt-2 break-words rounded-xl bg-gray-50 px-3 py-2 text-sm leading-6 text-gray-700">
-            <span className="font-semibold text-gray-900">How to fix: </span>
+          <p className="mt-2 break-words rounded-[20px] bg-white/50 px-3 py-2 text-sm leading-6 text-ink-soft">
+            <span className="font-semibold text-ink">How to fix: </span>
             {check.fix}
           </p>
         )}
@@ -79,13 +79,13 @@ function Report({ report }: { report: SeoReport }) {
   const message = `Hi NextGen Fusion, I ran your SEO checker on ${host} (score ${report.score}/100). Can you help fix the issues?`
 
   return (
-    <div className="mt-8 rounded-3xl border border-gray-200 bg-white p-5 sm:p-8">
+    <div className="glass mt-8 rounded-[36px] p-5 sm:p-8">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
         <ScoreRing score={report.score} />
         <div className="min-w-0">
           <p className={cn("text-sm font-semibold uppercase tracking-wide", tone.text)}>{tone.word}</p>
-          <p className="mt-1 break-all text-lg font-semibold text-gray-900">{report.finalUrl}</p>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-1 break-all text-lg font-semibold text-ink">{report.finalUrl}</p>
+          <p className="mt-2 text-sm text-ink-soft">
             <span className="font-medium text-red-600">{counts.fail} to fix</span> ·{" "}
             <span className="font-medium text-amber-600">{counts.warn} to improve</span> ·{" "}
             <span className="font-medium text-emerald-600">{counts.pass} good</span>
@@ -98,8 +98,8 @@ function Report({ report }: { report: SeoReport }) {
         if (checks.length === 0) return null
         return (
           <section key={group} className="mt-8">
-            <h3 className="text-lg font-bold text-gray-900">{group}</h3>
-            <ul className="divide-y divide-gray-100">
+            <h3 className="text-lg font-medium text-ink tracking-tight">{group}</h3>
+            <ul className="divide-y divide-ink/10">
               {checks.map((check) => (
                 <CheckRow key={check.id} check={check} />
               ))}
@@ -108,9 +108,9 @@ function Report({ report }: { report: SeoReport }) {
         )
       })}
 
-      <div className="mt-8 rounded-2xl bg-gray-50 p-5">
-        <p className="font-semibold text-gray-900">What this check does not cover</p>
-        <p className="mt-1 text-sm leading-6 text-gray-600">
+      <div className="glass mt-8 rounded-[28px] p-5">
+        <p className="font-semibold text-ink">What this check does not cover</p>
+        <p className="mt-1 text-sm leading-6 text-ink-soft">
           Page speed in a real browser, backlinks and rankings. For speed, run the same page through Google&apos;s own
           tool.
         </p>
@@ -118,14 +118,14 @@ function Report({ report }: { report: SeoReport }) {
           href={`https://pagespeed.web.dev/analysis?url=${encodeURIComponent(report.finalUrl)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-purple-600 hover:underline"
+          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
         >
           Test speed on PageSpeed Insights <ExternalLink className="h-3.5 w-3.5" />
         </a>
       </div>
 
       {(counts.fail > 0 || counts.warn > 0) && (
-        <div className="mt-6 flex flex-col gap-3 rounded-2xl bg-[#0b0d12] p-5 text-white sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-6 flex flex-col gap-3 rounded-[28px] bg-ink p-5 text-white sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="font-semibold">Want these fixed?</p>
             <p className="mt-1 text-sm text-white/70">Send us the report and we&apos;ll tell you what to fix first, free.</p>
@@ -135,7 +135,7 @@ function Report({ report }: { report: SeoReport }) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackEvent("whatsapp_click", { source: "seo_checker" })}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-100"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-ink hover:bg-white/70"
           >
             <MessageCircle className="h-4 w-4" /> Send on WhatsApp
           </a>
@@ -174,7 +174,7 @@ export function SeoChecker() {
 
   return (
     <div>
-      <form onSubmit={onSubmit} className="rounded-3xl border border-gray-200 bg-white p-3 shadow-[0_20px_60px_rgba(17,19,24,0.08)] sm:p-4">
+      <form onSubmit={onSubmit} className="glass rounded-[36px] p-3 shadow-[0_20px_60px_rgba(17,19,24,0.08)] sm:p-4">
         <label htmlFor="seo-check-url" className="sr-only">
           Website address
         </label>
@@ -189,12 +189,12 @@ export function SeoChecker() {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="yourwebsite.com"
-            className="min-w-0 flex-1 rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-base text-gray-900 outline-none transition focus:border-[#8A38F5] focus:bg-white focus:ring-2 focus:ring-[#8A38F5]/15"
+            className="min-w-0 flex-1 rounded-[28px] border border-ink/10 bg-white/50 px-4 py-3.5 text-base text-ink outline-none transition focus:border-violet focus:bg-white focus:ring-2 focus:ring-violet/15"
           />
           <button
             type="submit"
             disabled={!url.trim() || loading || !captchaReady}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#111318] px-6 py-3.5 text-base font-semibold text-white transition hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-[28px] bg-ink px-6 py-3.5 text-base font-semibold text-white transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Search className="h-5 w-5" />}
             {loading ? "Checking…" : "Check my site"}
@@ -202,16 +202,16 @@ export function SeoChecker() {
         </div>
         <Turnstile ref={captchaRef} action="seo_checker" onToken={setCaptchaToken} className="mt-3" />
       </form>
-      <p className="mt-3 text-sm text-gray-500">
+      <p className="mt-3 text-sm text-ink-mute">
         Free, no sign-up. We read the page once, the way Google does, and don&apos;t store the result.{" "}
-        <Link href="#what-we-check" className="font-medium text-purple-600 hover:underline">
+        <Link href="#what-we-check" className="font-medium text-brand hover:underline">
           What we check
         </Link>
       </p>
 
       <div aria-live="polite">
-        {loading && <p className="mt-6 text-sm text-gray-600">Reading the page, robots.txt and sitemap. This takes up to 20 seconds…</p>}
-        {error && <p className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
+        {loading && <p className="mt-6 text-sm text-ink-soft">Reading the page, robots.txt and sitemap. This takes up to 20 seconds…</p>}
+        {error && <p className="mt-6 rounded-[28px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
         {report && <Report report={report} />}
       </div>
     </div>

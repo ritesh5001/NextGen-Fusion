@@ -66,20 +66,20 @@ export default async function StoreProductPage({ params }: PageProps) {
   ])
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([productSchema, breadcrumbs]) }}
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-24 pb-24">
-        <Link href="/store/" className="text-sm text-gray-500 hover:text-gray-900">
+        <Link href="/store/" className="text-sm text-ink-mute hover:text-ink">
           ← Back to store
         </Link>
 
         <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-2">
           {/* Media */}
           <div>
-            <div className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-50">
+            <div className="overflow-hidden rounded-[28px] border border-ink/10 bg-white/50">
               {product.cover_image ? (
                 <Image
                   src={product.cover_image}
@@ -107,7 +107,7 @@ export default async function StoreProductPage({ params }: PageProps) {
                     height={225}
                     sizes="(max-width: 1024px) 33vw, 16vw"
                     unoptimized={src.startsWith('http')}
-                    className="aspect-video w-full rounded-lg border border-gray-100 object-cover"
+                    className="aspect-video w-full rounded-lg border border-ink/10 object-cover"
                   />
                 ))}
               </div>
@@ -117,26 +117,26 @@ export default async function StoreProductPage({ params }: PageProps) {
           {/* Details */}
           <div>
             {product.category && (
-              <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800">
+              <span className="inline-flex items-center rounded-full bg-brand/10 px-3 py-1 text-sm font-medium text-brand">
                 {product.category}
               </span>
             )}
-            <h1 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">{product.title}</h1>
-            {product.summary && <p className="mt-3 text-lg text-gray-500">{product.summary}</p>}
+            <h1 className="mt-3 text-3xl font-medium text-ink sm:text-4xl tracking-tight">{product.title}</h1>
+            {product.summary && <p className="mt-3 text-lg text-ink-mute">{product.summary}</p>}
 
             {product.tech_stack.length > 0 && (
               <div className="mt-5 flex flex-wrap gap-2">
                 {product.tech_stack.map((t) => (
-                  <span key={t} className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+                  <span key={t} className="rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-ink-soft">
                     {t}
                   </span>
                 ))}
               </div>
             )}
 
-            <div className="mt-8 rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <div className="mt-8 rounded-[28px] border border-ink/10 p-6 shadow-sm">
               <BuyButton productId={product.id} slug={product.slug} title={product.title} priceInr={product.price_inr} />
-              <p className="mt-4 flex items-start gap-2 text-sm text-gray-600">
+              <p className="mt-4 flex items-start gap-2 text-sm text-ink-soft">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
                 <span><strong>Deployment &amp; setup included.</strong> Our support team will contact you after purchase to get it live for you.</span>
               </p>
@@ -145,7 +145,7 @@ export default async function StoreProductPage({ params }: PageProps) {
                   href={product.demo_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-purple-600 hover:underline"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
                 >
                   View live demo <ExternalLink className="h-3.5 w-3.5" />
                 </a>
@@ -155,16 +155,16 @@ export default async function StoreProductPage({ params }: PageProps) {
 
             <p className="mt-3 text-xs text-gray-400">
               By purchasing you agree to our{' '}
-              <Link href="/store/license/" className="underline hover:text-gray-600">License Agreement</Link> and{' '}
-              <Link href="/store/refunds/" className="underline hover:text-gray-600">Refund Policy</Link>.
+              <Link href="/store/license/" className="underline hover:text-ink-soft">License Agreement</Link> and{' '}
+              <Link href="/store/refunds/" className="underline hover:text-ink-soft">Refund Policy</Link>.
             </p>
 
             {product.features.length > 0 && (
               <div className="mt-8">
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">What&apos;s included</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-mute">What&apos;s included</h2>
                 <ul className="mt-3 space-y-2">
                   {product.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-gray-700">
+                    <li key={f} className="flex items-start gap-2 text-sm text-ink-soft">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
                       {f}
                     </li>
@@ -177,8 +177,8 @@ export default async function StoreProductPage({ params }: PageProps) {
 
         {product.description && (
           <div className="mt-14 max-w-3xl">
-            <h2 className="text-xl font-bold text-gray-900">About this product</h2>
-            <div className="mt-3 whitespace-pre-line text-gray-600">{product.description}</div>
+            <h2 className="text-xl font-medium text-ink tracking-tight">About this product</h2>
+            <div className="mt-3 whitespace-pre-line text-ink-soft">{product.description}</div>
           </div>
         )}
       </div>

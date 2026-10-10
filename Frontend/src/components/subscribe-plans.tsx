@@ -148,24 +148,24 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
         {plans.map((plan) => (
           <div
             key={plan.id}
-            className={`flex flex-col rounded-2xl border p-6 ${
-              plan.highlighted ? "border-transparent ring-2 ring-[#8A38F5] shadow-lg" : "border-gray-200 shadow-sm"
+            className={`flex flex-col rounded-[28px] border p-6 ${
+              plan.highlighted ? "border-transparent ring-2 ring-violet shadow-lg" : "border-ink/10 shadow-sm"
             }`}
           >
             {plan.highlighted && (
-              <span className="mb-3 inline-flex w-fit items-center rounded-full bg-gradient-to-r from-[#2B35AB] to-[#8A38F5] px-3 py-1 text-xs font-semibold text-white">
+              <span className="mb-3 inline-flex w-fit items-center rounded-full bg-gradient-to-r from-brand to-violet px-3 py-1 text-xs font-semibold text-white">
                 Most popular
               </span>
             )}
-            <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
-            <p className="mt-1 text-sm text-gray-500">{plan.tagline}</p>
+            <h3 className="text-lg font-medium text-ink tracking-tight">{plan.name}</h3>
+            <p className="mt-1 text-sm text-ink-mute">{plan.tagline}</p>
             <div className="mt-4">
-              <span className="text-3xl font-bold text-gray-900">{inr(plan.amount)}</span>
-              <span className="text-sm text-gray-500">/{plan.period === "year" ? "yr" : "mo"}</span>
+              <span className="text-3xl font-bold text-ink">{inr(plan.amount)}</span>
+              <span className="text-sm text-ink-mute">/{plan.period === "year" ? "yr" : "mo"}</span>
             </div>
             <ul className="mt-5 flex-1 space-y-2.5">
               {plan.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-sm text-gray-600">
+                <li key={f} className="flex items-start gap-2 text-sm text-ink-soft">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
                   <span>{f}</span>
                 </li>
@@ -175,10 +175,10 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
               type="button"
               onClick={() => startCheckout(plan)}
               disabled={status === "loading"}
-              className={`mt-6 rounded-lg px-4 py-2.5 text-sm font-semibold transition disabled:opacity-60 ${
+              className={`mt-6 rounded-full px-4 py-2.5 text-sm font-semibold transition disabled:opacity-60 ${
                 plan.highlighted
-                  ? "bg-gradient-to-r from-[#2B35AB] to-[#8A38F5] text-white hover:opacity-90"
-                  : "bg-gray-900 text-white hover:bg-gray-800"
+                  ? "bg-gradient-to-r from-brand to-violet text-white hover:opacity-90"
+                  : "bg-ink text-white hover:bg-ink"
               }`}
             >
               {status === "loading" && active?.id === plan.id
@@ -195,25 +195,25 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
 
       {/* Status modal (success / error) */}
       {active && (status === "success" || status === "error") && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4" onClick={close}>
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/50 p-4" onClick={close}>
+          <div className="glass w-full max-w-md rounded-[28px] p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between">
-              <h3 className="text-lg font-bold text-gray-900">{active.name}</h3>
-              <button onClick={close} className="rounded-full p-1 text-gray-400 hover:bg-gray-100" aria-label="Close">
+              <h3 className="text-lg font-medium text-ink tracking-tight">{active.name}</h3>
+              <button onClick={close} className="rounded-full p-1 text-gray-400 hover:bg-white/70" aria-label="Close">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {status === "success" ? (
               <div className="mt-6 space-y-4">
-                <div className="flex items-start gap-3 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-700">
+                <div className="flex items-start gap-3 rounded-[20px] bg-emerald-50 p-4 text-sm text-emerald-700">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
                   <span>{message}</span>
                 </div>
                 {active.id === "product-catalog" && (
                   <Link
                     href="/portal/products"
-                    className="flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#2B35AB] to-[#8A38F5] px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+                    className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-brand to-violet px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90"
                   >
                     Go to my products
                   </Link>
@@ -228,8 +228,8 @@ export default function SubscribePlans({ plans = subscriptionPlans }: { plans?: 
 
       {/* Loading overlay while the Razorpay SDK / order is being prepared */}
       {status === "loading" && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
-          <div className="flex items-center gap-3 rounded-xl bg-white px-5 py-4 text-sm font-medium text-gray-700 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/40">
+          <div className="glass flex items-center gap-3 rounded-[20px] px-5 py-4 text-sm font-medium text-ink-soft">
             <Loader2 className="h-5 w-5 animate-spin" /> Starting secure checkout…
           </div>
         </div>

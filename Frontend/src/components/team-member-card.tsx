@@ -17,7 +17,7 @@ export default function TeamMemberCard({
   buttonColor = "bg-teal-500 hover:bg-teal-600"
 }: TeamMemberCardProps) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div className="glass rounded-lg overflow-hidden transition-shadow duration-300">
       <div className="aspect-square bg-gray-200 relative">
         <Image
           src={image || "/placeholder.svg"}
@@ -26,7 +26,7 @@ export default function TeamMemberCard({
           className="object-cover"
         />
         {isLeader && (
-          <div className="absolute top-4 left-4 text-xs text-gray-500">
+          <div className="absolute top-4 left-4 text-xs text-ink-mute">
             Team Leader
           </div>
         )}
@@ -34,8 +34,8 @@ export default function TeamMemberCard({
       <div className="p-4">
         <div className="flex items-center justify-between">
           <div>
-            <h4 className="font-semibold text-gray-900">{name}</h4>
-            <p className="text-sm text-gray-600 mt-1">{role}</p>
+            <h4 className="font-semibold text-ink">{name}</h4>
+            <p className="text-sm text-ink-soft mt-1">{role}</p>
           </div>
           <button 
             className={`w-8 h-8 ${buttonColor} rounded-md flex items-center justify-center transition-colors duration-200`}

@@ -39,12 +39,12 @@ export default function WorkPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <JsonLd data={schema} />
       <main className="pt-24">
         <section className="mx-auto max-w-7xl px-6 pb-4">
-          <p className="text-sm font-medium uppercase tracking-wide text-purple-600">Our work</p>
-          <h1 className="mt-3 max-w-4xl text-4xl font-bold leading-tight text-gray-900 sm:text-5xl">
+          <p className="text-sm font-medium uppercase tracking-wide text-brand">Our work</p>
+          <h1 className="mt-3 max-w-4xl text-4xl font-medium leading-tight text-ink sm:text-5xl tracking-tight">
             Sites we&apos;ve delivered, and the stories behind them
           </h1>
         </section>
@@ -57,7 +57,7 @@ export default function WorkPage() {
 
         <div className="mx-auto max-w-7xl px-6 pb-16">
           <div className="grid gap-8 lg:grid-cols-2">
-            <div className="space-y-4 text-lg leading-relaxed text-gray-600">
+            <div className="space-y-4 text-lg leading-relaxed text-ink-soft">
               <p>
                 Everything above is live and in production. Most of it is ecommerce — ethnic wear,
                 jewellery, beauty, food and home brands selling direct — alongside B2B sites for
@@ -71,21 +71,21 @@ export default function WorkPage() {
                 content-led sites for firms whose customers research before they enquire.
               </p>
             </div>
-            <div className="space-y-4 text-lg leading-relaxed text-gray-600">
+            <div className="space-y-4 text-lg leading-relaxed text-ink-soft">
               <p>
-                Cards marked <strong className="font-semibold text-gray-900">Case study</strong> have a
+                Cards marked <strong className="font-semibold text-ink">Case study</strong> have a
                 full write-up: what the client came with, what we recommended and why, what got built,
-                and what it changed. Cards marked <strong className="font-semibold text-gray-900">Live
+                and what it changed. Cards marked <strong className="font-semibold text-ink">Live
                 site</strong> link straight to the store or site; open any of them and judge the work
                 directly.
               </p>
               <p className="text-base">
                 Looking for a specific capability instead?{" "}
-                <Link href="/services/" className="font-medium text-purple-600 hover:underline">
+                <Link href="/services/" className="font-medium text-brand hover:underline">
                   Browse services
                 </Link>{" "}
                 or{" "}
-                <Link href="/contact/" className="font-medium text-purple-600 hover:underline">
+                <Link href="/contact/" className="font-medium text-brand hover:underline">
                   tell us what you need
                 </Link>
                 .
@@ -93,17 +93,17 @@ export default function WorkPage() {
             </div>
           </div>
 
-          <div className="mt-10 rounded-2xl border border-gray-200 p-6">
-            <h2 className="text-lg font-bold text-gray-900">Case studies</h2>
+          <div className="mt-10 rounded-[28px] border border-ink/10 p-6">
+            <h2 className="text-lg font-medium text-ink tracking-tight">Case studies</h2>
             <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((project) => (
                 <li key={project.slug}>
                   <Link
                     href={`/work/${project.slug}/`}
-                    className="inline-block py-1 text-gray-700 underline-offset-4 hover:text-gray-900 hover:underline"
+                    className="inline-block py-1 text-ink-soft underline-offset-4 hover:text-ink hover:underline"
                   >
                     {project.title}{" "}
-                    <span className="text-gray-600">· {project.category}</span>
+                    <span className="text-ink-soft">· {project.category}</span>
                   </Link>
                 </li>
               ))}

@@ -40,7 +40,7 @@ function loadRazorpay(): Promise<boolean> {
 }
 
 const inputCls =
-  'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10'
+  'w-full rounded-lg border border-ink/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10'
 
 export function BuyButton({
   productId,
@@ -122,16 +122,16 @@ export function BuyButton({
 
   if (success) {
     return (
-      <div className="rounded-xl border border-green-200 bg-green-50 p-4">
+      <div className="rounded-[20px] border border-green-200 bg-green-50 p-4">
         <p className="font-semibold text-green-800">Payment successful 🎉</p>
         <p className="mt-1 text-sm text-green-700">Your license key:</p>
-        <code className="mt-1 block select-all rounded-md bg-white px-3 py-2 font-mono text-sm text-gray-900">
+        <code className="mt-1 block select-all rounded-md bg-white px-3 py-2 font-mono text-sm text-ink">
           {success.licenseKey}
         </code>
         {success.downloadUrl && (
           <a
             href={success.downloadUrl}
-            className="mt-4 inline-block rounded-lg bg-slate-900 px-6 py-3 text-base font-medium text-white transition hover:bg-slate-800"
+            className="mt-4 inline-block rounded-full bg-ink px-6 py-3 text-base font-medium text-white transition hover:bg-slate-800"
           >
             Download now
           </a>
@@ -149,15 +149,15 @@ export function BuyButton({
   return (
     <div>
       <div className="flex items-baseline gap-2">
-        <span className="text-3xl font-bold text-gray-900">{formatInr(priceInr)}</span>
-        <span className="text-sm text-gray-500">one-time · lifetime access</span>
+        <span className="text-3xl font-bold text-ink">{formatInr(priceInr)}</span>
+        <span className="text-sm text-ink-mute">one-time · lifetime access</span>
       </div>
 
       {!open ? (
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="mt-4 w-full rounded-lg bg-slate-900 px-6 py-3.5 text-base font-medium text-white transition hover:bg-slate-800 sm:w-auto"
+          className="mt-4 w-full rounded-full bg-ink px-6 py-3.5 text-base font-medium text-white transition hover:bg-slate-800 sm:w-auto"
         >
           Buy now
         </button>
@@ -178,14 +178,14 @@ export function BuyButton({
             <button
               type="submit"
               disabled={busy}
-              className="rounded-lg bg-slate-900 px-6 py-3 text-base font-medium text-white transition hover:bg-slate-800 disabled:opacity-60"
+              className="rounded-full bg-ink px-6 py-3 text-base font-medium text-white transition hover:bg-slate-800 disabled:opacity-60"
             >
               {busy ? 'Processing…' : `Pay ${formatInr(priceInr)}`}
             </button>
             <button
               type="button"
               onClick={() => { setOpen(false); setError('') }}
-              className="rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+              className="rounded-full border border-ink/10 px-4 py-3 text-sm text-ink-soft hover:bg-white/50"
             >
               Cancel
             </button>

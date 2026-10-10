@@ -145,7 +145,7 @@ export default function SocialProofSection() {
             <li key={label} className="glass rounded-[28px] p-5 sm:p-6">
               <div className="flex items-start justify-between gap-3">
                 <p className="display text-5xl sm:text-6xl">{value}</p>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-lime text-ink sm:h-11 sm:w-11">
+                <span className="icon-badge h-10 w-10 sm:h-11 sm:w-11">
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </span>
               </div>
@@ -167,14 +167,14 @@ export default function SocialProofSection() {
                   prefetch={false}
                   className="glass group flex h-full items-start gap-4 rounded-[28px] p-5 transition hover:-translate-y-0.5 hover:bg-white"
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-lime">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full icon-badge">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="display block text-3xl">{value}</span>
                     <span className="mt-1.5 block text-sm leading-6 text-ink-soft">{label}</span>
                   </span>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-lime">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-brand group-hover:text-white">
                     <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                   </span>
                 </Link>
@@ -186,7 +186,7 @@ export default function SocialProofSection() {
         <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-3 rounded-[28px] bg-ink px-6 py-6 text-white sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
           {standards.map(({ Icon, text }) => (
             <li key={text} className="flex items-center gap-3 text-sm">
-              <Icon className="h-5 w-5 shrink-0 text-lime" aria-hidden="true" />
+              <Icon className="h-5 w-5 shrink-0 text-brand-light" aria-hidden="true" />
               <span>{text}</span>
             </li>
           ))}

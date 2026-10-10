@@ -14,7 +14,7 @@ export const LanguageToggle = () => {
     <Button
       variant="ghost"
       size="sm"
-      className="text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg px-3 py-1.5"
+      className="text-sm font-medium text-ink-soft hover:bg-white/70 rounded-full px-3 py-1.5"
       onClick={toggleLanguage}
     >
       {language.toUpperCase()}

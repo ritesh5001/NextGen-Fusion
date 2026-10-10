@@ -75,28 +75,28 @@ export default async function BlogCategoryPage({
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <JsonLd data={schema} />
       <main className="pt-32 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <p className="text-sm font-medium text-purple-600 mb-3">
+            <p className="text-sm font-medium text-brand mb-3">
               <Link href="/blog/" className="hover:underline">
                 Blog
               </Link>{" "}
               / {category}
             </p>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium text-ink mb-6 tracking-tight">
               {copy?.heading ?? category}
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-ink-soft max-w-3xl mx-auto">
               {copy?.description ??
                 `${categoryPosts.length} ${categoryPosts.length === 1 ? "article" : "articles"} on ${category.toLowerCase()}.`}
             </p>
           </div>
 
           {copy && (
-            <div className="mx-auto mb-14 max-w-3xl space-y-4 text-lg leading-relaxed text-gray-700">
+            <div className="mx-auto mb-14 max-w-3xl space-y-4 text-lg leading-relaxed text-ink-soft">
               {copy.intro.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -105,7 +105,7 @@ export default async function BlogCategoryPage({
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="inline-flex min-h-11 items-center rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-800 hover:border-purple-600 hover:text-purple-700"
+                      className="inline-flex min-h-11 items-center rounded-full border border-ink/10 px-4 py-2 text-sm font-medium text-ink hover:border-brand hover:text-brand"
                     >
                       {link.label}
                     </Link>

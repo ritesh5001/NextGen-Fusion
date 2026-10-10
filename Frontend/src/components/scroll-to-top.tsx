@@ -31,7 +31,7 @@ export default function ScrollToTop() {
       {/* Mobile floating button only - positioned higher to avoid mobile navbar */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-24 right-6 z-50 md:hidden bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
+        className={`fixed bottom-24 right-6 z-50 md:hidden bg-gradient-to-r from-brand via-violet to-cyan text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
         aria-label="Scroll to top"

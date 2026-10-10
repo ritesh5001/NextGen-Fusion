@@ -151,7 +151,7 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
     : null
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       {faqSchema && (
         <script
           type="application/ld+json"
@@ -165,32 +165,32 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
               and a framer entrance kept it invisible until the motion features
               had loaded. */}
           <section
-            className="relative overflow-hidden rounded-3xl border border-gray-100 bg-gradient-to-br from-[#f8faff] via-white to-[#f4f7ff] p-8 sm:p-12 lg:p-16"
+            className="relative overflow-hidden rounded-[36px] border border-ink/10 bg-gradient-to-br from-[#f8faff] via-white to-[#f4f7ff] p-8 sm:p-12 lg:p-16"
           >
-            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#8A38F5]/10 blur-3xl" />
-            <div className="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-[#13CBD4]/10 blur-3xl" />
+            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-violet/10 blur-3xl" />
+            <div className="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-cyan/10 blur-3xl" />
             <div className="relative z-10 max-w-4xl">
               <BadgeSubtitle>{data.badge}</BadgeSubtitle>
-              <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
+              <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight text-ink tracking-tight">
                 {data.heroTitle}
-                <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
+                <span className="text-gradient">
                   {" "}{data.heroTitleHighlight}
                 </span>
               </h1>
-              <p className="mt-6 text-lg text-gray-600 leading-relaxed max-w-3xl">
+              <p className="mt-6 text-lg text-ink-soft leading-relaxed max-w-3xl">
                 {data.heroDescription}
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
                   href="/#contact-section"
-                  className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-6 py-3 text-white font-medium hover:bg-gray-800 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-white font-medium hover:bg-ink transition-colors"
                 >
                   Get a Free Consultation
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/work/"
-                  className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-ink/10 px-6 py-3 text-ink font-medium hover:bg-white/50 transition-colors"
                 >
                   View Case Studies
                 </Link>
@@ -201,19 +201,19 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {/* About + Who it's for */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <div className="grid lg:grid-cols-2 gap-8">
-              <div className="rounded-2xl border border-gray-100 p-8 bg-white shadow-sm">
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#2B35AB]/10 text-[#2B35AB]">
+              <div className="glass rounded-[28px] p-8">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10 text-brand">
                   <AboutIcon className="h-5 w-5" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">About {data.badge}</h2>
-                <p className="mt-4 text-gray-600 leading-relaxed">{data.aboutDescription}</p>
+                <h2 className="text-2xl font-medium text-ink tracking-tight">About {data.badge}</h2>
+                <p className="mt-4 text-ink-soft leading-relaxed">{data.aboutDescription}</p>
               </div>
-              <div className="rounded-2xl border border-gray-100 p-8 bg-white shadow-sm">
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#13CBD4]/10 text-[#0d9ea5]">
+              <div className="glass rounded-[28px] p-8">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-cyan/10 text-brand">
                   <TrendingUp className="h-5 w-5" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Who It Is For</h3>
-                <p className="mt-4 text-gray-600 leading-relaxed">{data.whoForDescription}</p>
+                <h3 className="text-2xl font-medium text-ink tracking-tight">Who It Is For</h3>
+                <p className="mt-4 text-ink-soft leading-relaxed">{data.whoForDescription}</p>
               </div>
             </div>
           </m.section>
@@ -221,12 +221,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {/* Pain Points */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Problems We Solve</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.painPointsHeading}</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">{data.painPointsHeading}</h2>
             <div className="mt-8 grid md:grid-cols-2 gap-4">
               {data.painPoints.map((point) => (
-                <div key={point} className="rounded-xl border border-red-100 bg-red-50/40 p-5 flex gap-3">
+                <div key={point} className="rounded-[20px] border border-red-100 bg-red-50/40 p-5 flex gap-3">
                   <ShieldCheck className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
-                  <p className="text-gray-700 leading-relaxed">{point}</p>
+                  <p className="text-ink-soft leading-relaxed">{point}</p>
                 </div>
               ))}
             </div>
@@ -235,24 +235,24 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {/* Solution */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Our Solution</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">How We Deliver Better {data.badge}</h2>
-            <div className="mt-8 rounded-2xl border border-gray-100 p-8 bg-gradient-to-br from-white to-gray-50">
-              <p className="text-gray-700 leading-relaxed text-lg">{data.solutionDescription}</p>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">How We Deliver Better {data.badge}</h2>
+            <div className="glass mt-8 rounded-[28px] p-8 to-gray-50">
+              <p className="text-ink-soft leading-relaxed text-lg">{data.solutionDescription}</p>
             </div>
           </m.section>
 
           {/* Features */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Key Features</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.featuresHeading}</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">{data.featuresHeading}</h2>
             <div className="mt-8 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
               {data.features.map((feature) => (
-                <div key={feature.title} className="rounded-2xl border border-gray-100 p-6 bg-white shadow-sm">
-                  <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#8A38F5]/10 text-[#8A38F5]">
+                <div key={feature.title} className="glass rounded-[28px] p-6">
+                  <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-violet/10 text-brand">
                     <CheckCircle2 className="h-5 w-5" />
                   </div>
-                  <h3 className="mt-4 text-lg font-semibold text-gray-900">{feature.title}</h3>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{feature.description}</p>
+                  <h3 className="mt-4 text-lg font-semibold text-ink">{feature.title}</h3>
+                  <p className="mt-2 text-sm text-ink-soft leading-relaxed">{feature.description}</p>
                 </div>
               ))}
             </div>
@@ -261,15 +261,15 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {/* Process */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Our Process</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.processHeading}</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">{data.processHeading}</h2>
             <div className="mt-8 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
               {data.processSteps.map((step, index) => (
-                <div key={step.title} className="rounded-2xl border border-gray-100 p-6 bg-white">
-                  <span className="inline-flex h-8 min-w-8 items-center justify-center rounded-full bg-gray-900 px-2 text-xs font-semibold text-white">
+                <div key={step.title} className="glass rounded-[28px] p-6">
+                  <span className="inline-flex h-8 min-w-8 items-center justify-center rounded-full bg-ink px-2 text-xs font-semibold text-white">
                     0{index + 1}
                   </span>
-                  <h3 className="mt-4 text-lg font-semibold text-gray-900">{step.title}</h3>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{step.description}</p>
+                  <h3 className="mt-4 text-lg font-semibold text-ink">{step.title}</h3>
+                  <p className="mt-2 text-sm text-ink-soft leading-relaxed">{step.description}</p>
                 </div>
               ))}
             </div>
@@ -278,16 +278,16 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {/* Benefits */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Benefits & ROI</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Business Outcomes You Can Expect</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">Business Outcomes You Can Expect</h2>
             <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {data.benefits.map((benefit) => (
-                <div key={benefit.title} className="rounded-2xl border border-gray-100 p-6 bg-white shadow-sm">
+                <div key={benefit.title} className="glass rounded-[28px] p-6">
                   {(() => {
                     const BenefitIcon = SERVICE_ICON_MAP[benefit.icon]
-                    return <BenefitIcon className="h-5 w-5 text-[#2B35AB]" />
+                    return <BenefitIcon className="h-5 w-5 text-brand" />
                   })()}
-                  <h3 className="mt-3 font-semibold text-gray-900">{benefit.title}</h3>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{benefit.text}</p>
+                  <h3 className="mt-3 font-semibold text-ink">{benefit.title}</h3>
+                  <p className="mt-2 text-sm text-ink-soft leading-relaxed">{benefit.text}</p>
                 </div>
               ))}
             </div>
@@ -296,12 +296,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {/* Technologies */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Technologies Used</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Tech Stack Behind Our {data.badge}</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">Tech Stack Behind Our {data.badge}</h2>
             <div className="mt-8 flex flex-wrap gap-3">
               {data.technologies.map((tech) => (
                 <span
                   key={tech}
-                  className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700"
+                  className="glass rounded-full px-4 py-2 text-sm font-medium text-ink-soft"
                 >
                   {tech}
                 </span>
@@ -314,15 +314,15 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {data.caseStudies.length > 0 && (
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Selected work</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Recent {data.badge} Projects</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">Recent {data.badge} Projects</h2>
             <div className="mt-8 grid md:grid-cols-2 gap-6">
               {data.caseStudies.map((project) => (
-                <div key={project.name} className="rounded-2xl border border-gray-100 p-7 bg-white shadow-sm">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-[#2B35AB]/10 px-3 py-1 text-xs font-semibold text-[#2B35AB]">
+                <div key={project.name} className="glass rounded-[28px] p-7">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold text-brand">
                     <Rocket className="h-3.5 w-3.5" />
                     Case study
                   </div>
-                  <h3 className="mt-4 text-2xl font-bold text-gray-900">
+                  <h3 className="mt-4 text-2xl font-medium text-ink tracking-tight">
                     {project.slug ? (
                       <Link href={`/work/${project.slug}/`} className="inline-block py-1 hover:underline">
                         {project.name}
@@ -331,12 +331,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
                       project.name
                     )}
                   </h3>
-                  <p className="mt-1 text-sm font-medium text-gray-500">{project.niche}</p>
-                  <p className="mt-4 text-gray-600 leading-relaxed">{project.summary}</p>
+                  <p className="mt-1 text-sm font-medium text-ink-mute">{project.niche}</p>
+                  <p className="mt-4 text-ink-soft leading-relaxed">{project.summary}</p>
                   {project.slug && (
                     <Link
                       href={`/work/${project.slug}/`}
-                      className="mt-4 inline-block py-1 text-sm font-semibold text-[#2B35AB] hover:underline"
+                      className="mt-4 inline-block py-1 text-sm font-semibold text-brand hover:underline"
                     >
                       Read the {project.name} case study
                     </Link>
@@ -352,13 +352,13 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {data.testimonials.length > 0 && (
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>Testimonials</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">What Clients Say About Our {data.badge}</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">What Clients Say About Our {data.badge}</h2>
             <div className="mt-8 grid md:grid-cols-3 gap-5">
               {data.testimonials.map((testimonial) => (
-                <div key={testimonial.author} className="rounded-2xl border border-gray-100 p-6 bg-white shadow-sm">
-                  <Sparkles className="h-5 w-5 text-[#8A38F5]" />
-                  <p className="mt-4 text-gray-700 leading-relaxed">&ldquo;{testimonial.quote}&rdquo;</p>
-                  <p className="mt-4 text-sm font-semibold text-gray-900">{testimonial.author}</p>
+                <div key={testimonial.author} className="glass rounded-[28px] p-6">
+                  <Sparkles className="h-5 w-5 text-brand" />
+                  <p className="mt-4 text-ink-soft leading-relaxed">&ldquo;{testimonial.quote}&rdquo;</p>
+                  <p className="mt-4 text-sm font-semibold text-ink">{testimonial.author}</p>
                 </div>
               ))}
             </div>
@@ -369,10 +369,10 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {data.deepDive && (
             <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
               <BadgeSubtitle>In practice</BadgeSubtitle>
-              <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.deepDive.heading}</h2>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">{data.deepDive.heading}</h2>
               <div className="mt-6 space-y-4">
                 {data.deepDive.body.map((paragraph) => (
-                  <p key={paragraph} className="text-gray-600 leading-relaxed">{paragraph}</p>
+                  <p key={paragraph} className="text-ink-soft leading-relaxed">{paragraph}</p>
                 ))}
               </div>
             </m.section>
@@ -382,15 +382,15 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {data.pricing && (
             <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
               <BadgeSubtitle>Pricing</BadgeSubtitle>
-              <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.pricing.heading}</h2>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">{data.pricing.heading}</h2>
               <div className="mt-6 space-y-4">
                 {data.pricing.body.map((paragraph) => (
-                  <p key={paragraph} className="text-gray-600 leading-relaxed">{paragraph}</p>
+                  <p key={paragraph} className="text-ink-soft leading-relaxed">{paragraph}</p>
                 ))}
               </div>
               <Link
                 href="/contact/"
-                className="mt-6 inline-block rounded-full border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
+                className="mt-6 inline-block rounded-full border border-ink/10 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-gray-900"
               >
                 Get a written quote
               </Link>
@@ -401,11 +401,11 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {data.industries && (
             <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
               <BadgeSubtitle>Industries</BadgeSubtitle>
-              <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.industries.heading}</h2>
-              <p className="mt-4 text-gray-600 leading-relaxed">{data.industries.intro}</p>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">{data.industries.heading}</h2>
+              <p className="mt-4 text-ink-soft leading-relaxed">{data.industries.intro}</p>
               <ul className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {data.industries.items.map((item) => (
-                  <li key={item} className="rounded-xl border border-gray-100 bg-white px-5 py-4 text-gray-700 shadow-sm">
+                  <li key={item} className="glass rounded-[20px] px-5 py-4 text-ink-soft">
                     {item}
                   </li>
                 ))}
@@ -417,13 +417,13 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {data.locationLinks && data.locationLinks.length > 0 && (
             <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
               <BadgeSubtitle>Where we work</BadgeSubtitle>
-              <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">Looking for this service in your city?</h2>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">Looking for this service in your city?</h2>
               <ul className="mt-6 grid sm:grid-cols-2 gap-3">
                 {data.locationLinks.map((location) => (
                   <li key={location.slug}>
                     <Link
                       href={`/${location.slug}/`}
-                      className="block rounded-xl border border-gray-200 px-5 py-4 font-medium text-gray-900 transition-colors hover:border-gray-900"
+                      className="block rounded-full border border-ink/10 px-5 py-4 font-medium text-ink transition-colors hover:border-gray-900"
                     >
                       {location.label}
                     </Link>
@@ -436,12 +436,12 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
           {/* FAQ */}
           <m.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
             <BadgeSubtitle>FAQ</BadgeSubtitle>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900">{data.badge} FAQs</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-medium text-ink tracking-tight">{data.badge} FAQs</h2>
             <div className="mt-8 space-y-4">
               {data.faqs.map((faq) => (
-                <div key={faq.question} className="rounded-2xl border border-gray-100 p-6 bg-white">
-                  <h3 className="font-semibold text-gray-900">{faq.question}</h3>
-                  <p className="mt-2 text-gray-600 leading-relaxed">{faq.answer}</p>
+                <div key={faq.question} className="glass rounded-[28px] p-6">
+                  <h3 className="font-semibold text-ink">{faq.question}</h3>
+                  <p className="mt-2 text-ink-soft leading-relaxed">{faq.answer}</p>
                 </div>
               ))}
             </div>
@@ -453,23 +453,23 @@ export default function ServicePageTemplate({ data }: { data: ServicePageData })
             whileInView="visible"
             viewport={{ once: true }}
             variants={sectionVariants}
-            className="rounded-3xl border border-gray-100 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 p-8 sm:p-12 text-white"
+            className="rounded-[36px] border border-ink/10 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 p-8 sm:p-12 text-white"
           >
             <div className="max-w-3xl">
               <BadgeSubtitle className="text-white/90 border-white/30">Ready to Start?</BadgeSubtitle>
-              <h2 className="mt-4 text-3xl sm:text-4xl font-bold leading-tight">{data.ctaTitle}</h2>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-medium leading-tight tracking-tight">{data.ctaTitle}</h2>
               <p className="mt-4 text-white/80 leading-relaxed">{data.ctaDescription}</p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
                   href="/#contact-section"
-                  className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-gray-900 font-semibold hover:bg-gray-100 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-ink font-semibold hover:bg-white/70 transition-colors"
                 >
                   Start Your Project
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/work/"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-6 py-3 text-white font-semibold hover:bg-white/10 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-white font-semibold hover:bg-white/10 transition-colors"
                 >
                   View Our Work
                 </Link>

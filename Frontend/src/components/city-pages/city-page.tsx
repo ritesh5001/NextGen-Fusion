@@ -51,7 +51,7 @@ export function CityPageView<C extends CityPage>({ region, city }: { region: Cit
   return (
     <>
       <JsonLd data={schemaFor(region, city)} />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen">
         <CityHero
           crumbs={[
             { name: "Home", href: "/" },
@@ -70,12 +70,12 @@ export function CityPageView<C extends CityPage>({ region, city }: { region: Cit
           <CitySections sections={page.sections} />
 
           <div className="mb-14">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Who we help in {city.name}</h2>
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">Who we help in {city.name}</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {page.industries.map((industry) => (
-                <div key={industry.name} className="rounded-2xl border border-gray-200 p-5">
-                  <p className="font-semibold text-gray-900">{industry.name}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">{industry.need}</p>
+                <div key={industry.name} className="rounded-[28px] border border-ink/10 p-5">
+                  <p className="font-semibold text-ink">{industry.name}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">{industry.need}</p>
                 </div>
               ))}
             </div>
@@ -95,10 +95,10 @@ export function CityPageView<C extends CityPage>({ region, city }: { region: Cit
           />
 
           <div className="mb-14">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Everything we do for {city.name} businesses</h2>
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">Everything we do for {city.name} businesses</h2>
             {cityServiceGroups.map((group) => (
               <div key={group.group} className="mt-8">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{group.label}</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-mute">{group.label}</h3>
                 <ul className="mt-3 grid gap-3 sm:grid-cols-2">
                   {cityServices
                     .filter((service) => service.group === group.group)
@@ -106,13 +106,13 @@ export function CityPageView<C extends CityPage>({ region, city }: { region: Cit
                       <li key={service.slug}>
                         <Link
                           href={cityServiceHref(region, city, service.slug)}
-                          className="group flex h-full flex-col rounded-2xl border border-gray-200 p-5 transition-colors hover:border-gray-900"
+                          className="group flex h-full flex-col rounded-[28px] border border-ink/10 p-5 transition-colors hover:border-gray-900"
                         >
-                          <span className="flex items-center justify-between gap-2 font-semibold text-gray-900">
+                          <span className="flex items-center justify-between gap-2 font-semibold text-ink">
                             {service.label} in {city.name}
-                            <ArrowRight className="h-4 w-4 shrink-0 text-gray-400 transition-transform group-hover:translate-x-0.5 group-hover:text-gray-900" aria-hidden="true" />
+                            <ArrowRight className="h-4 w-4 shrink-0 text-gray-400 transition-transform group-hover:translate-x-0.5 group-hover:text-ink" aria-hidden="true" />
                           </span>
-                          <span className="mt-2 text-sm leading-relaxed text-gray-600">{city.services[service.slug].card}</span>
+                          <span className="mt-2 text-sm leading-relaxed text-ink-soft">{city.services[service.slug].card}</span>
                         </Link>
                       </li>
                     ))}
@@ -122,8 +122,8 @@ export function CityPageView<C extends CityPage>({ region, city }: { region: Cit
           </div>
 
           <div className="mb-14">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Areas we work with</h2>
-            <p className="mt-4 leading-relaxed text-gray-600">{city.areas.join(" · ")}</p>
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">Areas we work with</h2>
+            <p className="mt-4 leading-relaxed text-ink-soft">{city.areas.join(" · ")}</p>
           </div>
 
           <CityFaqs faqs={page.faqs} />

@@ -115,7 +115,7 @@ const legal: FooterLink[] = [
 
 const WHATSAPP_URL = whatsappHref();
 
-const heading = "text-sm font-medium text-lime";
+const heading = "text-sm font-medium text-brand-light";
 const linkClass = "text-sm text-white/75 transition-colors duration-200 hover:text-white";
 
 function LinkColumn({ id, title, links }: { id: string; title: string; links: FooterLink[] }) {
@@ -146,7 +146,7 @@ export default function Footer() {
           readable over it. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_40%_at_100%_0%,rgba(220,245,74,0.16),rgba(220,245,74,0)_70%),radial-gradient(40%_45%_at_0%_100%,rgba(46,159,71,0.22),rgba(46,159,71,0)_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_40%_at_100%_0%,rgba(42,75,245,0.4),rgba(42,75,245,0)_70%),radial-gradient(40%_45%_at_0%_100%,rgba(138,92,246,0.3),rgba(138,92,246,0)_70%)]"
       />
       <div className="relative z-10 mx-auto max-w-7xl px-5 pt-14 pb-6 sm:px-6 lg:px-8 lg:pt-16">
         {/* Brand and links */}
@@ -163,7 +163,7 @@ export default function Footer() {
             <div className="mt-6 flex flex-wrap gap-3">
               <a
                 href="/contact/"
-                className="btn btn-lime btn-sm"
+                className="btn btn-brand btn-sm"
               >
                 Get a written quote
               </a>
@@ -179,34 +179,43 @@ export default function Footer() {
             <BrandProfileLinks tone="dark" className="mt-6" />
           </div>
 
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 lg:col-span-8">
+          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-8">
             <LinkColumn id="footer-services" title="Services" links={services} />
-
-            <div className="min-w-0">
-              <p id="footer-locations" className={heading}>
-                Locations
-              </p>
-              <div aria-labelledby="footer-locations" className="mt-4 space-y-5">
-                {locations.map((group) => (
-                  <div key={group.group}>
-                    <p className="text-xs text-white/60">{group.group}</p>
-                    <ul className="mt-2 space-y-2.5">
-                      {group.links.map((link) => (
-                        <li key={link.href}>
-                          <a href={link.href} className={linkClass}>
-                            {link.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             <LinkColumn id="footer-resources" title="Resources" links={resources} />
             <LinkColumn id="footer-company" title="Company" links={company} />
           </nav>
+        </div>
+
+        {/* Locations get their own band. Stacked in one column they were 24
+            rows tall and set the height of the whole footer; laid out by
+            region with the cities wrapping as pills, the same links fit in a
+            few lines. */}
+        <div className="glass-ink mt-12 rounded-[28px] p-5 sm:p-7">
+          <p id="footer-locations" className={heading}>
+            Locations
+          </p>
+          <div
+            aria-labelledby="footer-locations"
+            className="mt-5 grid gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-5"
+          >
+            {locations.map((group) => (
+              <div key={group.group} className="min-w-0">
+                <p className="text-xs text-white/60">{group.group}</p>
+                <ul className="mt-2.5 flex flex-wrap gap-1.5">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        className="inline-flex rounded-full bg-white/[0.07] px-3 py-1.5 text-xs text-white/80 transition-colors duration-200 hover:bg-white/15 hover:text-white"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Contact and offices: the site's name, address and phone, kept in

@@ -120,7 +120,7 @@ export default function SalesChatbot() {
       <m.button
         onClick={() => setOpen(true)}
         aria-label="Open sales assistant"
-        className="fixed bottom-24 right-5 z-[70] flex h-16 w-16 items-center justify-center rounded-full bg-[#111318] text-white shadow-[0_18px_48px_rgba(0,0,0,0.28)] transition hover:bg-[#1a1d24] md:bottom-8"
+        className="fixed bottom-24 right-5 z-[70] flex h-16 w-16 items-center justify-center rounded-full bg-ink text-white shadow-[0_18px_48px_rgba(0,0,0,0.28)] transition hover:bg-[#22263a] md:bottom-8"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.96 }}
       >
@@ -139,10 +139,10 @@ export default function SalesChatbot() {
             data-lenis-prevent-wheel
             data-lenis-prevent-touch
           >
-            <div className="bg-[#121419] px-5 py-4 text-white">
+            <div className="bg-ink px-5 py-4 text-white">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm uppercase tracking-[0.18em] text-[#f0d79b]">Sales Assistant</div>
+                  <div className="text-sm uppercase tracking-[0.18em] text-brand-light">Sales Assistant</div>
                   <div className="mt-1 text-lg font-semibold">Ask about cost, timeline, or process.</div>
                 </div>
                 <button
@@ -168,7 +168,7 @@ export default function SalesChatbot() {
                       className={`max-w-[86%] rounded-2xl px-4 py-3 text-sm leading-6 ${
                         message.role === "assistant"
                           ? "bg-white text-[#1d1d1d] border border-[#e7dfce]"
-                          : "bg-[#111318] text-white"
+                          : "bg-ink text-white"
                       }`}
                     >
                       {message.content}
@@ -238,7 +238,7 @@ export default function SalesChatbot() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Example: how long does a WooCommerce site take?"
                   rows={2}
-                  className="min-h-[52px] flex-1 resize-none rounded-2xl border border-[#e1d9c8] bg-[#fbfaf7] px-4 py-3 text-sm text-[#1f1f1f] outline-none transition focus:border-[#111318] focus:ring-2 focus:ring-[#111318]/10"
+                  className="min-h-[52px] flex-1 resize-none rounded-2xl border border-[#e1d9c8] bg-[#fbfaf7] px-4 py-3 text-sm text-[#1f1f1f] outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
                 />
                 <button onClick={sendMessage} disabled={loading || !input.trim()} className={sendButtonClass}>
                   <Send className="h-4 w-4" />
@@ -253,13 +253,13 @@ export default function SalesChatbot() {
 }
 
 const smallInputClass =
-  "w-full rounded-2xl border border-[#e1d9c8] bg-white px-3 py-2.5 text-sm text-[#1f1f1f] outline-none transition focus:border-[#111318] focus:ring-2 focus:ring-[#111318]/10"
+  "w-full rounded-2xl border border-[#e1d9c8] bg-white px-3 py-2.5 text-sm text-[#1f1f1f] outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
 
 const actionButtonClass =
-  "inline-flex items-center gap-2 rounded-full bg-[#111318] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#1a1d24]"
+  "inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#22263a]"
 
 const secondaryButtonClass =
   "inline-flex items-center gap-2 rounded-full border border-[#ddd4c0] bg-white px-4 py-2.5 text-sm font-medium text-[#2a2926] transition hover:border-[#b9aa82] hover:bg-[#faf7f1]"
 
 const sendButtonClass =
-  "inline-flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#111318] text-white transition hover:bg-[#1a1d24] disabled:cursor-not-allowed disabled:opacity-60"
+  "inline-flex h-[52px] w-[52px] items-center justify-center rounded-full bg-ink text-white transition hover:bg-[#22263a] disabled:cursor-not-allowed disabled:opacity-60"

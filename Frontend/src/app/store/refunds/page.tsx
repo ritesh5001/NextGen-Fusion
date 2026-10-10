@@ -14,13 +14,13 @@ export const metadata: Metadata = buildMetadata({
 // edit the bracketed placeholders before relying on it.
 export default function RefundsPage() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen">
       <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-24 pb-24">
-        <Link href="/store/" className="text-sm text-gray-500 hover:text-gray-900">← Back to store</Link>
-        <h1 className="mt-6 text-3xl font-bold text-gray-900 sm:text-4xl">Refund Policy</h1>
+        <Link href="/store/" className="text-sm text-ink-mute hover:text-ink">← Back to store</Link>
+        <h1 className="mt-6 text-3xl font-medium text-ink sm:text-4xl tracking-tight">Refund Policy</h1>
         <p className="mt-2 text-sm text-gray-400">Last updated: [DATE]</p>
 
-        <div className="mt-8 space-y-6 text-gray-600 leading-relaxed [&_h2]:mt-8 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-gray-900 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
+        <div className="mt-8 space-y-6 text-ink-soft leading-relaxed [&_h2]:mt-8 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-ink [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
           <p>
             Our products are digital goods (downloadable source code and files) delivered instantly after payment.
             Because access to the full source cannot be &quot;returned&quot; once downloaded, the following policy applies.
@@ -51,7 +51,7 @@ export default function RefundsPage() {
           <h2>4. How to request a refund</h2>
           <p>
             Email{' '}
-            <a href="mailto:contact@nextgenfusion.in" className="text-purple-600 hover:underline">contact@nextgenfusion.in</a>{' '}
+            <a href="mailto:contact@nextgenfusion.in" className="text-brand hover:underline">contact@nextgenfusion.in</a>{' '}
             with your order email, the product name, and your payment/reference id. We aim to respond within
             [2] business days.
           </p>
@@ -63,7 +63,7 @@ export default function RefundsPage() {
           </p>
 
           <p className="pt-4 text-sm text-gray-400">
-            See also our <Link href="/store/license/" className="text-purple-600 hover:underline">License Agreement</Link>.
+            See also our <Link href="/store/license/" className="text-brand hover:underline">License Agreement</Link>.
           </p>
         </div>
       </article>

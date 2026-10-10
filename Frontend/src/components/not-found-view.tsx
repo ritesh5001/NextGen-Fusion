@@ -147,7 +147,7 @@ export function NotFoundView() {
           margin: 0 !important;
         }
       `}</style>
-      <div className="min-h-screen bg-white flex items-center justify-center px-4" style={{ paddingTop: '0 !important', paddingBottom: '0 !important' }}>
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ paddingTop: '0 !important', paddingBottom: '0 !important' }}>
       <div className="max-w-4xl mx-auto text-center">
         {/* 404 Animation */}
         <m.div
@@ -168,10 +168,10 @@ export function NotFoundView() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium text-ink mb-6 tracking-tight">
             Oops! Page Not Found
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-ink-soft mb-8 max-w-2xl mx-auto leading-relaxed">
             The page you&apos;re looking for seems to have vanished into the digital void. 
             Don&apos;t worry, even the best developers get lost sometimes!
           </p>
@@ -210,7 +210,7 @@ export function NotFoundView() {
             <m.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Home className="w-5 h-5" />
               Back to Home
@@ -219,7 +219,7 @@ export function NotFoundView() {
 
           <button
             onClick={() => window.history.back()}
-            className="group inline-flex items-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all duration-300"
+            className="group inline-flex items-center gap-2 px-6 py-3 border-2 border-ink/10 text-ink-soft font-semibold rounded-full hover:border-gray-400 hover:bg-white/50 transition-all duration-300"
           >
             <ArrowLeft className="w-5 h-5" />
             Go Back
@@ -231,7 +231,7 @@ export function NotFoundView() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-12 text-sm text-gray-500"
+          className="mt-12 text-sm text-ink-mute"
         >
           <p>Lost? Don&apos;t worry, we&apos;ll help you find your way back to amazing digital experiences!</p>
         </m.div>

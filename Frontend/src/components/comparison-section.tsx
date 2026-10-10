@@ -57,7 +57,7 @@ function RowLinks({ links, className }: { links: ComparisonRow["links"]; classNa
           key={link.href}
           href={link.href}
           prefetch={false}
-          className="font-medium text-ink underline decoration-leaf decoration-2 underline-offset-4 hover:decoration-ink"
+          className="font-medium text-ink underline decoration-brand decoration-2 underline-offset-4 hover:decoration-ink"
         >
           {link.label} →
         </Link>
@@ -172,7 +172,7 @@ export default function ComparisonSection() {
               variants={textVariants}
             >
               <m.h2 className="display text-4xl sm:text-5xl lg:text-6xl" variants={textVariants}>
-                Why <span className="mark-lime">Partner</span> with Us?
+                Why <span className="text-gradient">Partner</span> with Us?
               </m.h2>
             </m.div>
             <m.div 
@@ -204,7 +204,7 @@ export default function ComparisonSection() {
                 <th className="p-6 text-left text-sm font-medium text-ink-mute">
                   Comparison
                 </th>
-                <th className="rounded-t-[24px] bg-lime p-6 text-left">
+                <th className="rounded-t-[24px] bg-gradient-to-br from-brand to-violet p-6 text-left">
                   <div className="flex items-center gap-3">
                     <m.div
                       whileHover={{ scale: 1.1 }}
@@ -218,7 +218,7 @@ export default function ComparisonSection() {
                         className="w-6 h-6 object-contain"
                       />
                     </m.div>
-                    <span className="font-medium text-ink">NextGen Fusion</span>
+                    <span className="font-medium text-white">NextGen Fusion</span>
                   </div>
                 </th>
                 <th className="p-6 text-left text-sm font-medium text-ink-mute">Other Agencies</th>
@@ -239,9 +239,9 @@ export default function ComparisonSection() {
                   whileHover="hover"
                 >
                   <td className="p-6 font-medium text-ink">{item.category}</td>
-                  <td className={`bg-lime/35 p-6 ${index === comparisonData.length - 1 ? "rounded-b-[24px]" : ""}`}>
+                  <td className={`bg-brand/[0.07] p-6 ${index === comparisonData.length - 1 ? "rounded-b-[24px]" : ""}`}>
                     <div className="flex items-start gap-3">
-                      <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-ink text-lime">
+                      <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full icon-badge">
                         <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
                       </span>
                       <div>
@@ -281,7 +281,7 @@ export default function ComparisonSection() {
                 <th className="p-3 text-left text-xs font-medium text-ink-mute">
                   Comparison
                 </th>
-                <th className="rounded-t-[20px] bg-lime p-3 text-left">
+                <th className="rounded-t-[20px] bg-gradient-to-br from-brand to-violet p-3 text-left">
                   <div className="flex items-center gap-2">
                     <m.div
                       whileHover={{ scale: 1.1 }}
@@ -295,7 +295,7 @@ export default function ComparisonSection() {
                         className="w-5 h-5 object-contain"
                       />
                     </m.div>
-                    <span className="font-medium text-ink text-sm">NextGen Fusion</span>
+                    <span className="font-medium text-white text-sm">NextGen Fusion</span>
                   </div>
                 </th>
                 <th className="p-3 text-left text-xs font-medium text-ink-mute">Other Agencies</th>
@@ -316,9 +316,9 @@ export default function ComparisonSection() {
                   whileHover="hover"
                 >
                   <td className="p-3 align-top font-medium text-ink text-sm">{item.category}</td>
-                  <td className={`bg-lime/35 p-3 align-top ${index === comparisonData.length - 1 ? "rounded-b-[20px]" : ""}`}>
+                  <td className={`bg-brand/[0.07] p-3 align-top ${index === comparisonData.length - 1 ? "rounded-b-[20px]" : ""}`}>
                     <div className="flex items-start gap-2">
-                      <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-ink text-lime">
+                      <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full icon-badge">
                         <Check className="h-2.5 w-2.5" strokeWidth={3} aria-hidden="true" />
                       </span>
                       <div>

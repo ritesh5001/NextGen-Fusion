@@ -42,18 +42,18 @@ export const HeroContent = ({ variants }: HeroContentProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05, duration: 0.3 }}
       >
-        <div className="inline-flex items-center px-4 py-1.5 border border-gray-200 rounded-lg bg-white/80 backdrop-blur-sm shadow-sm">
+        <div className="inline-flex items-center px-4 py-1.5 border border-ink/10 rounded-lg bg-white/80 backdrop-blur-sm shadow-sm">
           <div className="relative flex h-2.5 w-2.5 mr-2">
             <div className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></div>
             <div className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></div>
           </div>
-          <span className="text-xs font-medium text-gray-700">Available for work</span>
+          <span className="text-xs font-medium text-ink-soft">Available for work</span>
         </div>
       </motion.div>
 
       {/* Heading with blur reveal from left to right */}
       <motion.div
-        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight mb-8"
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-ink leading-tight mb-8"
         variants={animationVariants.sleek}
       >
         {/* Mobile Layout */}
@@ -100,10 +100,7 @@ export const HeroContent = ({ variants }: HeroContentProps) => {
               You After 
             </motion.span>
             <motion.span 
-              className="inline-block font-bold bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent" 
-              style={{
-                backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
-              }}
+              className="font-bold text-gradient"
               variants={animationVariants.ghostText}
             >
               Launch
@@ -114,7 +111,7 @@ export const HeroContent = ({ variants }: HeroContentProps) => {
 
       {/* Separate animation for subtitle */}
       <motion.div
-        className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed px-4 sm:px-0 -mt-2"
+        className="text-xs sm:text-sm md:text-base lg:text-lg text-ink-soft max-w-3xl mx-auto leading-relaxed px-4 sm:px-0 -mt-2"
         variants={animationVariants.subtitle}
       >
         <p className="mb-2">
@@ -206,7 +203,7 @@ export const HeroContent = ({ variants }: HeroContentProps) => {
           duration: 0.3,
           ease: [0.25, 0.46, 0.45, 0.94],
         }}
-        className="mt-4 text-sm text-gray-500"
+        className="mt-4 text-sm text-ink-mute"
       >
         Free 30-Minute Consultation • No Commitment Required
       </motion.p>

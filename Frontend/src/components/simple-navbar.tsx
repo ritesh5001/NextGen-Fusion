@@ -139,7 +139,7 @@ export default function SimpleNavbar() {
           {/* CTA Button */}
           <button
             type="button"
-            className="btn btn-lime h-[52px] px-6 text-sm"
+            className="btn btn-brand h-[52px] px-6 text-sm"
             onClick={() => openBookingModal({ requestType: 'meeting' })}
           >
             Book a Call
@@ -189,8 +189,8 @@ export default function SimpleNavbar() {
                       }
                       setIsMobileMenuOpen(false)
                     }}
-                    className={`flex w-full items-center gap-3 rounded-full p-3 text-left text-ink transition-colors ${
-                      isActive(item.href) ? "bg-lime" : "hover:bg-canvas"
+                    className={`flex w-full items-center gap-3 rounded-full p-3 text-left transition-colors ${
+                      isActive(item.href) ? "bg-brand text-white" : "text-ink hover:bg-canvas"
                     }`}
                   >
                     <item.Icon className="w-5 h-5" aria-hidden="true" />
@@ -263,7 +263,7 @@ export default function SimpleNavbar() {
 
               <button
                 type="button"
-                className="btn btn-lime btn-sm"
+                className="btn btn-brand btn-sm"
                 onClick={() => openBookingModal({ requestType: 'meeting' })}
               >
                 Book

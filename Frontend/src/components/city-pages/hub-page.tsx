@@ -46,7 +46,7 @@ export function CityHubPage<C extends CityPage>({ region }: { region: CityRegion
   return (
     <>
       <JsonLd data={schema(region)} />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen">
         <CityHero
           crumbs={[
             { name: "Home", href: "/" },
@@ -62,20 +62,20 @@ export function CityHubPage<C extends CityPage>({ region }: { region: CityRegion
 
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <div className="mb-14">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Find your city</h2>
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">Find your city</h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               {region.cities.map((city) => (
                 <li key={city.slug}>
                   <Link
                     href={cityPath(region, city)}
-                    className="group flex h-full flex-col rounded-2xl border border-gray-200 p-5 transition-colors hover:border-gray-900"
+                    className="group flex h-full flex-col rounded-[28px] border border-ink/10 p-5 transition-colors hover:border-gray-900"
                   >
-                    <span className="flex items-center justify-between gap-2 font-semibold text-gray-900">
+                    <span className="flex items-center justify-between gap-2 font-semibold text-ink">
                       {city.name}, {city.stateCode}
-                      <ArrowRight className="h-4 w-4 shrink-0 text-gray-400 group-hover:text-gray-900" aria-hidden="true" />
+                      <ArrowRight className="h-4 w-4 shrink-0 text-gray-400 group-hover:text-ink" aria-hidden="true" />
                     </span>
-                    <span className="mt-2 text-sm leading-relaxed text-gray-600">{city.summary}</span>
-                    <span className="mt-3 text-xs text-gray-500">Our hours there: {region.hours(city)}</span>
+                    <span className="mt-2 text-sm leading-relaxed text-ink-soft">{city.summary}</span>
+                    <span className="mt-3 text-xs text-ink-mute">Our hours there: {region.hours(city)}</span>
                   </Link>
                 </li>
               ))}
@@ -83,13 +83,13 @@ export function CityHubPage<C extends CityPage>({ region }: { region: CityRegion
           </div>
 
           <div className="mb-14">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">{hub.regionalHeading}</h2>
-            <p className="mt-4 leading-relaxed text-gray-600">{hub.regionalIntro}</p>
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">{hub.regionalHeading}</h2>
+            <p className="mt-4 leading-relaxed text-ink-soft">{hub.regionalIntro}</p>
             <dl className="mt-5 space-y-3">
               {hub.regionalCentres.map((region) => (
                 <div key={region.state} className="sm:flex sm:gap-3">
-                  <dt className="font-semibold text-gray-900 sm:w-48 sm:shrink-0">{region.state}</dt>
-                  <dd className="text-gray-600">{region.places.join(" · ")}</dd>
+                  <dt className="font-semibold text-ink sm:w-48 sm:shrink-0">{region.state}</dt>
+                  <dd className="text-ink-soft">{region.places.join(" · ")}</dd>
                 </div>
               ))}
             </dl>
@@ -108,22 +108,22 @@ export function CityHubPage<C extends CityPage>({ region }: { region: CityRegion
           <CitySections sections={hub.sections} />
 
           <div className="mb-14">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">{hub.essentialsHeading}</h2>
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">{hub.essentialsHeading}</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {hub.essentials.map((item) => (
-                <div key={item.heading} className="rounded-2xl border border-gray-200 p-5">
-                  <p className="font-semibold text-gray-900">{item.heading}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">{item.body}</p>
+                <div key={item.heading} className="rounded-[28px] border border-ink/10 p-5">
+                  <p className="font-semibold text-ink">{item.heading}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">{item.body}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="mb-14">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">What we do</h2>
+            <h2 className="text-2xl font-medium text-ink sm:text-3xl tracking-tight">What we do</h2>
             {cityServiceGroups.map((group) => (
               <div key={group.group} className="mt-6">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{group.label}</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-mute">{group.label}</h3>
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {cityServices
                     .filter((service) => service.group === group.group)
@@ -131,7 +131,7 @@ export function CityHubPage<C extends CityPage>({ region }: { region: CityRegion
                       <li key={service.slug}>
                         <Link
                           href={`/services/${service.serviceSlug}/`}
-                          className="inline-block rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-800 transition-colors hover:border-gray-900"
+                          className="inline-block rounded-full border border-ink/10 px-4 py-2 text-sm text-ink transition-colors hover:border-gray-900"
                         >
                           {service.label}
                         </Link>

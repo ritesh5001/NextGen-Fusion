@@ -64,14 +64,14 @@ export const MenuSection = ({ menu, onItemClick }: MenuSectionProps) => {
                 <Button
                   key={item.id}
                   variant={activeChannel === item.id ? "secondary" : "ghost"}
-                  className="relative rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:bg-gray-100/80"
+                  className="relative rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:bg-white/40"
                   onMouseEnter={() => handleMouseEnter(item.id)}
                   onMouseLeave={handleMouseLeave}
                 >
                   <span className="flex items-center gap-1.5">
                     <span>{item.label}</span>
                     {item.badge && (
-                      <Badge variant="outline" className="text-xs px-1.5 py-0.5 h-auto border-blue-200 text-blue-700">
+                      <Badge variant="outline" className="text-xs px-1.5 py-0.5 h-auto border-brand/25 text-brand">
                         {item.badge}
                       </Badge>
                     )}
@@ -93,20 +93,20 @@ export const MenuSection = ({ menu, onItemClick }: MenuSectionProps) => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:bg-gray-100/80 px-3 py-1.5 rounded-lg"
+                  className="flex items-center gap-1 text-sm font-medium text-ink-soft hover:bg-white/40 px-3 py-1.5 rounded-full"
                 >
                   EN
                   <ChevronDownIcon className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-32">
-                <DropdownMenuItem className="cursor-pointer hover:bg-gray-100">
+                <DropdownMenuItem className="cursor-pointer hover:bg-white/70">
                   English
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-gray-100">
+                <DropdownMenuItem className="cursor-pointer hover:bg-white/70">
                   日本語
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-gray-100">
+                <DropdownMenuItem className="cursor-pointer hover:bg-white/70">
                   Bahasa
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -118,10 +118,10 @@ export const MenuSection = ({ menu, onItemClick }: MenuSectionProps) => {
 
           {/* CTA Button */}
           <div className="flex items-center group">
-            <div className="bg-gray-800 text-white backdrop-blur-sm border border-gray-200/50 flex items-center rounded-lg px-3 py-0.5 transition-all duration-200 hover:bg-gray-500 cursor-pointer">
+            <div className="bg-ink text-white backdrop-blur-sm border border-ink/5 flex items-center rounded-lg px-3 py-0.5 transition-all duration-200 hover:bg-gray-500 cursor-pointer">
               <Button 
                 variant="ghost" 
-                className="rounded-md px-4 py-1 text-sm font-normal transition-colors duration-200 hover:bg-transparent hover:text-white cursor-pointer whitespace-nowrap"
+                className="rounded-full px-4 py-1 text-sm font-normal transition-colors duration-200 hover:bg-transparent hover:text-white cursor-pointer whitespace-nowrap"
               >
                 Book a Call
               </Button>
@@ -151,7 +151,7 @@ export const MenuSection = ({ menu, onItemClick }: MenuSectionProps) => {
               onMouseLeave={handleMouseLeave}
             >
               {/* Glassmorphism Dropdown */}
-              <div className="bg-white/75 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl border border-gray-200/60 ring-1 ring-gray-100/40">
+              <div className="bg-white/75 backdrop-blur-xl rounded-[28px] overflow-hidden shadow-2xl border border-ink/5 ring-1 ring-gray-100/40">
                 <div className="bg-gradient-to-b from-gray-50/30 to-white/20">
                   <motion.div
                     key={activeChannel}
@@ -168,9 +168,9 @@ export const MenuSection = ({ menu, onItemClick }: MenuSectionProps) => {
                               <div key={j} className={`${entry.list.some(item => item.isRightPanel) ? 'order-2' : 'order-1'}`}>
                                 {entry.label && (
                                   <div className="flex items-center gap-2 pb-3 pt-2">
-                                    <span className="text-base font-medium text-gray-600">{entry.label}</span>
+                                    <span className="text-base font-medium text-ink-soft">{entry.label}</span>
                                     {entry.badge && (
-                                      <Badge variant="secondary" className="text-sm px-2 py-0.5 h-auto bg-gray-50/70 backdrop-blur-sm border border-gray-200/40">
+                                      <Badge variant="secondary" className="text-sm px-2 py-0.5 h-auto bg-white/40 backdrop-blur-sm border border-ink/5">
                                         {entry.badge}
                                       </Badge>
                                     )}
@@ -190,9 +190,9 @@ export const MenuSection = ({ menu, onItemClick }: MenuSectionProps) => {
                               <div key={i} className="w-full">
                                 {list.label && (
                                   <div className="flex items-center gap-2 pb-3 pt-2">
-                                    <span className="text-base font-medium text-gray-600">{list.label}</span>
+                                    <span className="text-base font-medium text-ink-soft">{list.label}</span>
                                     {list.badge && (
-                                      <Badge variant="secondary" className="text-sm px-2 py-0.5 h-auto bg-gray-50/70 backdrop-blur-sm border border-gray-200/40">
+                                      <Badge variant="secondary" className="text-sm px-2 py-0.5 h-auto bg-white/40 backdrop-blur-sm border border-ink/5">
                                         {list.badge}
                                       </Badge>
                                     )}

@@ -160,7 +160,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     ]
 
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen">
         <JsonLd data={postSchema} />
 
         {/* Header Section */}
@@ -170,7 +170,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             <div className="flex items-center justify-between mb-6">
               <Link
                 href="/blog/"
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center gap-2 text-ink-soft hover:text-ink transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to Blog
@@ -180,7 +180,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                 {previous && (
                   <Link
                     href={`/blog/${previous.slug}`}
-                    className="px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    className="px-3 py-2 text-sm bg-white/70 hover:bg-gray-200 rounded-full transition-colors"
                   >
                     Previous
                   </Link>
@@ -188,7 +188,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                 {next && (
                   <Link
                     href={`/blog/${next.slug}`}
-                    className="px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    className="px-3 py-2 text-sm bg-white/70 hover:bg-gray-200 rounded-full transition-colors"
                   >
                     Next
                   </Link>
@@ -198,7 +198,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             
             <div className="text-center">
               {/* Meta Information */}
-              <div className="flex items-center justify-center gap-6 text-sm text-gray-600 mb-6">
+              <div className="flex items-center justify-center gap-6 text-sm text-ink-soft mb-6">
                 <div className="flex items-center gap-1">
                   <User className="w-4 h-4" />
                   <span>{blogPost.author}</span>
@@ -218,24 +218,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                 {blogPost.category ? (
                   <Link
                     href={`/blog/category/${categorySlug(blogPost.category)}/`}
-                    className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-200"
+                    className="bg-brand/10 text-brand px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-200"
                   >
                     {blogPost.category}
                   </Link>
                 ) : (
-                  <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium">
+                  <span className="bg-brand/10 text-brand px-4 py-2 rounded-full text-sm font-medium">
                     Article
                   </span>
                 )}
               </div>
 
               {/* Title */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 px-4 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium text-ink mb-6 px-4 leading-tight tracking-tight">
                 {blogPost.title}
               </h1>
 
               {/* Excerpt/Description */}
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+              <p className="text-xl text-ink-soft max-w-3xl mx-auto mb-8 leading-relaxed">
                 {blogPost.excerpt}
               </p>
 
@@ -254,7 +254,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
           {/* Cover Image */}
           <section className="mb-12">
-            <div className="w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl">
+            <div className="w-full max-w-4xl mx-auto rounded-[28px] overflow-hidden shadow-xl">
               <div className="w-full h-64 sm:h-80 md:h-96 relative bg-gradient-to-br from-purple-50 to-indigo-50">
                 <Image
                   src={normalizeImagePath(blogPost.cover_image)}
@@ -274,8 +274,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
               {/* Introduction */}
               {blogPost.introduction && (
                 <section className="mb-8">
-                  <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-8 border-l-4 border-purple-500 shadow-sm">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Introduction</h2>
+                  <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-[28px] p-8 border-l-4 border-brand shadow-sm">
+                    <h2 className="text-xl font-semibold text-ink mb-4">Introduction</h2>
                     <div
                       className="prose prose-gray max-w-none leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: blogPost.introduction }}
@@ -287,7 +287,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
               {/* Main Content */}
               <section className="mb-8">
                 <div
-                  className="prose prose-lg prose-gray max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-headings:mb-4 prose-headings:mt-8 prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-a:text-purple-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-ul:my-4 prose-li:my-2 prose-blockquote:border-l-purple-500 prose-blockquote:bg-purple-50 prose-blockquote:p-4 prose-blockquote:rounded-lg"
+                  className="prose prose-lg prose-gray max-w-none prose-headings:text-ink prose-headings:font-bold prose-headings:mb-4 prose-headings:mt-8 prose-p:text-ink-soft prose-p:leading-relaxed prose-p:mb-6 prose-a:text-brand prose-a:no-underline hover:prose-a:underline prose-strong:text-ink prose-code:bg-white/70 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-ul:my-4 prose-li:my-2 prose-blockquote:border-l-purple-500 prose-blockquote:bg-brand/10 prose-blockquote:p-4 prose-blockquote:rounded-lg"
                   dangerouslySetInnerHTML={{ __html: blogPost.content }}
                 />
               </section>
@@ -295,8 +295,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
               {/* Conclusion */}
               {blogPost.conclution && (
                 <section className="mb-8">
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-purple-200 shadow-sm">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Conclusion</h2>
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-[28px] p-8 border border-brand/25 shadow-sm">
+                    <h2 className="text-xl font-semibold text-ink mb-4">Conclusion</h2>
                     <div
                       className="prose prose-gray max-w-none leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: blogPost.conclution }}
@@ -309,8 +309,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             {/* Sidebar */}
             <aside className="lg:w-80">
               {/* Author Info */}
-              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-100 rounded-2xl p-6 mb-6 shadow-sm">
-                <h3 className="font-semibold text-gray-900 mb-4">About the Author</h3>
+              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-brand/25 rounded-[28px] p-6 mb-6 shadow-sm">
+                <h3 className="font-semibold text-ink mb-4">About the Author</h3>
                 <div className="flex items-center gap-4 mb-4">
                   {authorMember ? (
                     <Image
@@ -321,12 +321,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                       className="w-14 h-14 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                    <div className="w-14 h-14 bg-gradient-to-r from-brand to-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">
                       {blogPost.author.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <div>
-                    <p className="font-medium text-gray-900 text-lg">
+                    <p className="font-medium text-ink text-lg">
                       {authorMember ? (
                         <Link href={`/team/${authorMember.slug}/`} className="hover:underline">
                           {authorMember.name}
@@ -338,12 +338,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                     {/* The real job title, from the canonical team source. The
                         authority of a post like the WooCommerce write-up rests
                         entirely on the author being the person who did the work. */}
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-ink-soft">
                       {authorMember ? authorMember.role : "NextGen Fusion"}
                     </p>
                   </div>
                 </div>
-                <div className="text-sm text-gray-700 leading-relaxed">
+                <div className="text-sm text-ink-soft leading-relaxed">
                   {authorMember
                     ? authorMember.bio
                     : "Written by the NextGen Fusion team in Lucknow and Mumbai."}
@@ -351,28 +351,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
               </div>
 
               {/* Article Info */}
-              <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-6 shadow-sm">
-                <h3 className="font-semibold text-gray-900 mb-4">Article Info</h3>
+              <div className="glass rounded-[28px] p-6 mb-6">
+                <h3 className="font-semibold text-ink mb-4">Article Info</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <Calendar className="w-4 h-4 text-purple-500" />
-                    <span className="text-sm text-gray-600">{formatDate(blogPost.published_at)}</span>
+                    <Calendar className="w-4 h-4 text-brand" />
+                    <span className="text-sm text-ink-soft">{formatDate(blogPost.published_at)}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Clock className="w-4 h-4 text-purple-500" />
-                    <span className="text-sm text-gray-600">{formatReadTime(blogPost.read_duration)}</span>
+                    <Clock className="w-4 h-4 text-brand" />
+                    <span className="text-sm text-ink-soft">{formatReadTime(blogPost.read_duration)}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <User className="w-4 h-4 text-purple-500" />
-                    <span className="text-sm text-gray-600">{blogPost.author}</span>
+                    <User className="w-4 h-4 text-brand" />
+                    <span className="text-sm text-ink-soft">{blogPost.author}</span>
                   </div>
                 </div>
               </div>
 
               {/* Related Posts */}
               {related.length > 0 && (
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-4">Related Posts</h3>
+                <div className="glass rounded-[28px] p-6">
+                  <h3 className="font-semibold text-ink mb-4">Related Posts</h3>
                   <div className="space-y-4">
                     {related
                       .map((relatedPost: any) => (
@@ -381,7 +381,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                           href={`/blog/${relatedPost.slug}`}
                           className="block group"
                         >
-                          <div className="flex gap-3 p-3 rounded-lg hover:bg-purple-50 transition-colors duration-200">
+                          <div className="flex gap-3 p-3 rounded-lg hover:bg-brand/10 transition-colors duration-200">
                             <div className="w-16 h-16 relative rounded-lg overflow-hidden flex-shrink-0">
                               <Image
                                 src={normalizeImagePath(relatedPost.cover_image)}
@@ -392,10 +392,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                               />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-medium text-gray-900 group-hover:text-purple-600 transition-colors line-clamp-2 text-sm">
+                              <h4 className="font-medium text-ink group-hover:text-brand transition-colors line-clamp-2 text-sm">
                                 {relatedPost.title}
                               </h4>
-                              <p className="text-xs text-gray-500 mt-1">
+                              <p className="text-xs text-ink-mute mt-1">
                                 {formatDate(relatedPost.published_at)}
                               </p>
                             </div>
@@ -404,10 +404,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
                       ))
                     }
                   </div>
-                  <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="mt-4 pt-4 border-t border-ink/10">
                     <Link
                       href="/blog/"
-                      className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
+                      className="text-sm text-brand hover:text-brand font-medium flex items-center gap-1"
                     >
                       View all posts
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -421,16 +421,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
           </div>
 
           {/* Navigation Footer */}
-          <div className="flex items-center justify-between mt-12 pt-8 border-t border-gray-200">
+          <div className="flex items-center justify-between mt-12 pt-8 border-t border-ink/10">
             <div>
               {previous && (
                 <Link
                   href={`/blog/${previous.slug}`}
-                  className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  className="flex items-center gap-2 text-ink-soft hover:text-ink transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <div className="text-left">
-                    <div className="text-xs text-gray-500">Previous</div>
+                    <div className="text-xs text-ink-mute">Previous</div>
                     <div className="font-medium">{previous.title}</div>
                   </div>
                 </Link>
@@ -440,10 +440,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
               {next && (
                 <Link
                   href={`/blog/${next.slug}`}
-                  className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  className="flex items-center gap-2 text-ink-soft hover:text-ink transition-colors"
                 >
                   <div className="text-right">
-                    <div className="text-xs text-gray-500">Next</div>
+                    <div className="text-xs text-ink-mute">Next</div>
                     <div className="font-medium">{next.title}</div>
                   </div>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

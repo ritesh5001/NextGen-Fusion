@@ -87,18 +87,18 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={schema} />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen">
         <section className="mx-auto max-w-7xl px-4 pt-28 pb-14 sm:px-6 lg:px-8">
-          <p className="text-sm font-medium uppercase tracking-wide text-purple-600">About us</p>
-          <h1 className="mt-3 max-w-4xl text-4xl font-bold leading-tight text-gray-900 sm:text-5xl">
+          <p className="text-sm font-medium uppercase tracking-wide text-brand">About us</p>
+          <h1 className="mt-3 max-w-4xl text-4xl font-medium leading-tight text-ink sm:text-5xl tracking-tight">
             A small team that finishes what it starts
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-gray-600">
+          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-ink-soft">
             NextGen Fusion is a two-person web and product team working out of Lucknow and Mumbai.
             We build websites, online stores and the software behind them for D2C brands,
             manufacturers, institutes and B2B companies across India, the UK, Italy and the Gulf.
           </p>
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-gray-600">
+          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-ink-soft">
             We started it after watching the same thing happen to client after client: a decent site
             gets built, the agency invoices, and then nobody picks up the phone. Traffic drops, the
             payment gateway breaks during a sale, a plugin update takes the catalogue offline — and
@@ -106,42 +106,42 @@ export default function AboutPage() {
           </p>
 
           <dl className="mt-12 grid gap-6 sm:grid-cols-3">
-            <div className="rounded-2xl border border-gray-200 p-6">
-              <dt className="text-sm font-medium text-gray-500">Projects delivered</dt>
-              <dd className="mt-2 text-4xl font-bold text-gray-900">{PROJECTS_DELIVERED}</dd>
-              <p className="mt-2 text-sm text-gray-600">
+            <div className="rounded-[28px] border border-ink/10 p-6">
+              <dt className="text-sm font-medium text-ink-mute">Projects delivered</dt>
+              <dd className="mt-2 text-4xl font-bold text-ink">{PROJECTS_DELIVERED}</dd>
+              <p className="mt-2 text-sm text-ink-soft">
                 Websites, online stores and web apps, live for clients in India and abroad.
               </p>
             </div>
-            <div className="rounded-2xl border border-gray-200 p-6">
-              <dt className="text-sm font-medium text-gray-500">Written case studies</dt>
-              <dd className="mt-2 text-4xl font-bold text-gray-900">{caseStudyCount}</dd>
-              <p className="mt-2 text-sm text-gray-600">
+            <div className="rounded-[28px] border border-ink/10 p-6">
+              <dt className="text-sm font-medium text-ink-mute">Written case studies</dt>
+              <dd className="mt-2 text-4xl font-bold text-ink">{caseStudyCount}</dd>
+              <p className="mt-2 text-sm text-ink-soft">
                 Full build write-ups with scope, decisions and outcomes — not logo walls.
               </p>
             </div>
-            <div className="rounded-2xl border border-gray-200 p-6">
-              <dt className="text-sm font-medium text-gray-500">Clients ghosted after launch</dt>
-              <dd className="mt-2 text-4xl font-bold text-gray-900">0</dd>
-              <p className="mt-2 text-sm text-gray-600">
+            <div className="rounded-[28px] border border-ink/10 p-6">
+              <dt className="text-sm font-medium text-ink-mute">Clients ghosted after launch</dt>
+              <dd className="mt-2 text-4xl font-bold text-ink">0</dd>
+              <p className="mt-2 text-sm text-ink-soft">
                 The only metric on this page we would be embarrassed to get wrong.
               </p>
             </div>
           </dl>
         </section>
 
-        <section className="border-y border-gray-100 bg-gray-50 py-16">
+        <section className="border-y border-ink/10 py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900">How we work</h2>
-            <p className="mt-3 max-w-3xl text-gray-600">
+            <h2 className="text-3xl font-medium text-ink tracking-tight">How we work</h2>
+            <p className="mt-3 max-w-3xl text-ink-soft">
               Four commitments that decide what we take on and how we run it. They are the reason
               some projects go elsewhere, which is the point of writing them down.
             </p>
             <div className="mt-10 grid gap-8 md:grid-cols-2">
               {principles.map((principle) => (
                 <div key={principle.title}>
-                  <h3 className="text-xl font-bold text-gray-900">{principle.title}</h3>
-                  <p className="mt-3 leading-relaxed text-gray-600">{principle.body}</p>
+                  <h3 className="text-xl font-medium text-ink tracking-tight">{principle.title}</h3>
+                  <p className="mt-3 leading-relaxed text-ink-soft">{principle.body}</p>
                 </div>
               ))}
             </div>
@@ -149,14 +149,14 @@ export default function AboutPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900">The people</h2>
-          <p className="mt-3 max-w-3xl text-gray-600">
+          <h2 className="text-3xl font-medium text-ink tracking-tight">The people</h2>
+          <p className="mt-3 max-w-3xl text-ink-soft">
             Everyone listed here writes code, copy or strategy on client projects. There is no layer
             between you and them.
           </p>
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
             {team.map((member) => (
-              <div key={member.slug} className="flex gap-5 rounded-2xl border border-gray-200 p-6">
+              <div key={member.slug} className="flex gap-5 rounded-[28px] border border-ink/10 p-6">
                 <Image
                   src={member.image}
                   alt={`${member.name}, ${member.role} at NextGen Fusion`}
@@ -166,7 +166,7 @@ export default function AboutPage() {
                   className="h-20 w-20 shrink-0 rounded-full object-cover"
                 />
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">
+                  <h3 className="text-lg font-medium text-ink tracking-tight">
                     <Link
                       href={`/team/${member.slug}/`}
                       className="inline-block py-1 hover:underline"
@@ -174,34 +174,34 @@ export default function AboutPage() {
                       {member.name}
                     </Link>
                   </h3>
-                  <p className="text-sm font-medium text-purple-600">{member.role}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-gray-600">{member.bio}</p>
+                  <p className="text-sm font-medium text-brand">{member.role}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-ink-soft">{member.bio}</p>
                 </div>
               </div>
             ))}
           </div>
-          <p className="mt-8 text-sm text-gray-600">
+          <p className="mt-8 text-sm text-ink-soft">
             Full profiles are on the{" "}
-            <Link href="/team/" className="font-medium text-purple-600 hover:underline">
+            <Link href="/team/" className="font-medium text-brand hover:underline">
               team page
             </Link>
             , and open roles are listed on{" "}
-            <Link href="/careers/" className="font-medium text-purple-600 hover:underline">
+            <Link href="/careers/" className="font-medium text-brand hover:underline">
               careers
             </Link>
             .
           </p>
         </section>
 
-        <section className="border-t border-gray-100 py-16">
+        <section className="border-t border-ink/10 py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900">Where we are</h2>
+            <h2 className="text-3xl font-medium text-ink tracking-tight">Where we are</h2>
             <div className="mt-8 grid gap-8 sm:grid-cols-2">
               {offices.map((office) => (
-                <div key={office.city} className="rounded-2xl border border-gray-200 p-6">
-                  <h3 className="text-xl font-bold text-gray-900">{office.city}</h3>
-                  <address className="mt-2 not-italic text-gray-600">{office.address}</address>
-                  <p className="mt-3 text-sm text-gray-600">
+                <div key={office.city} className="rounded-[28px] border border-ink/10 p-6">
+                  <h3 className="text-xl font-medium text-ink tracking-tight">{office.city}</h3>
+                  <address className="mt-2 not-italic text-ink-soft">{office.address}</address>
+                  <p className="mt-3 text-sm text-ink-soft">
                     {office.contact.name} ·{" "}
                     <a
                       href={`tel:${office.contact.phoneE164}`}
@@ -213,15 +213,15 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
-            <p className="mt-8 max-w-3xl text-gray-600">
+            <p className="mt-8 max-w-3xl text-ink-soft">
               Most work is delivered remotely, but both offices take meetings. If you are in
               Lucknow or Mumbai and would rather talk in person than over a call,{" "}
-              <Link href="/contact/" className="font-medium text-purple-600 hover:underline">
+              <Link href="/contact/" className="font-medium text-brand hover:underline">
                 say so when you get in touch
               </Link>
               .
             </p>
-            <h3 className="mt-10 text-lg font-bold text-gray-900">Find us online</h3>
+            <h3 className="mt-10 text-lg font-medium text-ink tracking-tight">Find us online</h3>
             <BrandProfileLinks className="mt-4" />
           </div>
         </section>
