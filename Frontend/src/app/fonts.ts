@@ -32,7 +32,7 @@ export const trap = localFont({
  */
 
 /**
- * The italic accent in the hero headline ("Never abandoned."). One weight, one
+ * The italic accent in the hero headline ("that grow your business."). One weight, one
  * style, Latin only, applied by className on that single span instead of a
  * site-wide variable — so only the homepage requests the file, and Next's
  * generated fallback is size-matched to it, which keeps the swap from moving

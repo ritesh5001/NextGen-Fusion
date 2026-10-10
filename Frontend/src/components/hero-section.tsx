@@ -47,32 +47,22 @@ const HeroContent = () => (
       </div>
     </div>
 
-    {/* H1 — the query the homepage ranks for ("Web Development & AI Solutions
-        for Growing Businesses", matching the <title>) is kept, verbatim and
-        first, as the headline's lead line; the sharper line sits under it in
-        display type. A heading with no keyword was one reason Google kept
-        rewriting the title in results, so it stays inside the H1 rather than
-        moving to a badge.
-        Deliberately static: this block is the LCP element, and any entrance
-        animation on it delays LCP. Only the accent word eases into focus, and
-        it starts partly visible, never at opacity 0. */}
-    <h1 className="mb-6 max-sm:order-2">
-      <span className="mb-4 block text-base font-medium tracking-tight text-ink-soft sm:text-lg">
-        Web Development &amp; AI Solutions for Growing Businesses
-      </span>
-      <span className="display block text-[2.75rem] sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
-        Built to sell.
-        <span className={`hero-focus ${heroSerif.className} text-gradient block pr-[0.12em] text-[1.1em] leading-[1.02]`}>
-          Never abandoned.
-        </span>
+    {/* H1 — leads with the query the homepage ranks for and is close to the
+        <title>; a heading with no keyword was one reason Google kept rewriting
+        the title in results. Deliberately static: this is the LCP element, and
+        any entrance animation on it delays LCP. Only the accent phrase eases
+        into focus, and it starts partly visible, never at opacity 0. */}
+    <h1 className="display mb-6 max-sm:order-2 text-[2.75rem] sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
+      <span className="block text-balance">Web development &amp; AI solutions</span>{" "}
+      <span className={`hero-focus ${heroSerif.className} text-gradient block pr-[0.12em] text-[1.1em] leading-[1.02]`}>
+        that grow your business.
       </span>
     </h1>
 
-    {/* One sentence: what, for whom, and that we stay after launch. */}
+    {/* One description: what, for whom, and that we stay after launch. */}
     <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-ink-soft hero-rise hero-delay-4 max-sm:order-4 max-sm:mb-0 max-sm:mt-8">
-      Conversion-focused websites and online stores for growing D2C and ecommerce brands across
-      India and worldwide — designed, built and supported end to end, so they don&apos;t get
-      abandoned after launch.
+      Conversion-focused websites, online stores and AI automation for growing brands in India
+      and worldwide. Designed, built and supported end to end.
     </p>
 
     {/* CTA Buttons — one primary, one lighter secondary */}
