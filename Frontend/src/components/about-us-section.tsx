@@ -120,7 +120,7 @@ export default function AboutUsSection() {
               </m.p>
 
               {/* Team Member Avatars */}
-              <m.div className="flex justify-start" variants={textVariants}>
+              <m.div className="team-fan flex justify-start" variants={textVariants}>
                 <AnimatedTooltip items={teamMembers} />
               </m.div>
             </m.div>

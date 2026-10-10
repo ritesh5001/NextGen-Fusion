@@ -120,7 +120,7 @@ const WHATSAPP_URL = whatsappHref();
 const WORDMARK = "NextGen".split("");
 
 const heading = "text-sm font-medium text-brand-light";
-const linkClass = "text-sm text-white/75 transition-colors duration-200 hover:text-white";
+const linkClass = "ulink text-sm text-white/75 transition-colors duration-200 hover:text-white";
 
 function LinkColumn({ id, title, links }: { id: string; title: string; links: FooterLink[] }) {
   return (
@@ -229,12 +229,12 @@ export default function Footer() {
             <p className={heading}>Contact</p>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <a href={`mailto:${CONTACT_EMAIL}`} className="text-white/75 transition-colors duration-200 hover:text-white">
+                <a href={`mailto:${CONTACT_EMAIL}`} className="ulink text-white/75 transition-colors duration-200 hover:text-white">
                   {CONTACT_EMAIL}
                 </a>
               </li>
               <li>
-                <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-white/75 transition-colors duration-200 hover:text-white">
+                <a href={`tel:${PRIMARY_PHONE_E164}`} className="ulink text-white/75 transition-colors duration-200 hover:text-white">
                   {PRIMARY_PHONE_DISPLAY}
                 </a>
               </li>
@@ -254,7 +254,7 @@ export default function Footer() {
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`NextGen Fusion, ${office.address}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors duration-200 hover:text-white"
+                  className="ulink transition-colors duration-200 hover:text-white"
                 >
                   {office.address}
                 </a>
@@ -275,6 +275,7 @@ export default function Footer() {
             letters rise in as the footer arrives. */}
         <m.div
           aria-hidden="true"
+          data-wordmark
           className="mt-14 flex select-none justify-center overflow-hidden pb-[0.04em] pt-[0.06em] text-[min(21vw,20rem)] font-normal leading-none tracking-[-0.06em] text-white/90"
           initial="hidden"
           whileInView="visible"
@@ -297,7 +298,7 @@ export default function Footer() {
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {legal.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="transition-colors duration-200 hover:text-white">
+                <a href={link.href} className="ulink transition-colors duration-200 hover:text-white">
                   {link.label}
                 </a>
               </li>

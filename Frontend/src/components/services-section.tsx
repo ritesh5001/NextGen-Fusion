@@ -166,26 +166,26 @@ export default function ServicesSection() {
             outline is unchanged. */}
         <div className="grid gap-4 lg:grid-cols-3">
           {PILLARS.map((pillar, index) => (
-            <m.div key={pillar.label} variants={itemVariants} className="glass flex flex-col rounded-[36px] p-3">
-              <div className={`${pillar.wash} relative flex min-h-36 flex-col justify-between overflow-hidden rounded-[28px] p-6`}>
+            <m.div key={pillar.label} variants={itemVariants} className="svc-pillar glass flex flex-col rounded-[36px] p-3">
+              <div className={`${pillar.wash} svc-wash relative flex min-h-36 flex-col justify-between overflow-hidden rounded-[28px] p-6`}>
                 <span className="text-sm font-medium text-white/85">0{index + 1}</span>
                 <p className="text-2xl font-normal leading-tight tracking-tight text-white">{pillar.label}</p>
               </div>
-              <ul className="flex-1 divide-y divide-ink/10 px-3 pt-2">
+              <ul className="svc-list flex-1 divide-y divide-ink/10 px-3 pt-2">
                 {pillar.titles.map((title) => {
                   const service = services.find((item) => item.title === title)
                   if (!service) return null
                   const href = serviceRoutes[service.title] ?? "#"
                   return (
                     <li key={service.title}>
-                      <Link href={href} prefetch={false} className="group flex gap-4 py-5">
-                        <span className="icon-badge h-10 w-10">
+                      <Link href={href} prefetch={false} className="svc-row group flex gap-4 py-5">
+                        <span className="svc-icon icon-badge h-10 w-10">
                           <service.Icon className="h-[18px] w-[18px]" aria-hidden="true" />
                         </span>
                         <span className="min-w-0 flex-1">
                           <h3 className="flex items-start justify-between gap-3 text-base font-medium leading-snug tracking-tight text-ink">
-                            {service.title}
-                            <ArrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-ink-mute transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand" aria-hidden="true" />
+                            <span className="svc-title">{service.title}</span>
+                            <ArrowUpRight className="svc-arrow mt-0.5 h-4 w-4 shrink-0 text-ink-mute" aria-hidden="true" />
                           </h3>
                           <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{service.description}</p>
                         </span>

@@ -57,7 +57,7 @@ function RowLinks({ links, className }: { links: ComparisonRow["links"]; classNa
           key={link.href}
           href={link.href}
           prefetch={false}
-          className="font-medium text-ink underline decoration-brand decoration-2 underline-offset-4 hover:decoration-ink"
+          className="ulink ulink-static font-medium text-ink"
         >
           {link.label} →
         </Link>

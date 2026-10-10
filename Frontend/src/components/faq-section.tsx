@@ -290,12 +290,12 @@ export default function FAQSection() {
                         id={`faq-question-${index}`}
                         aria-expanded={activeIndex === index}
                         aria-controls={`faq-answer-${index}`}
-                        className="w-full flex items-center gap-3 rounded-[22px] bg-white p-2.5 pr-4 text-left transition-colors hover:bg-white/90"
+                        className="faq-q w-full flex items-center gap-3 rounded-[22px] bg-white p-2.5 pr-4 text-left transition-colors hover:bg-white/90"
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
                       >
                         <m.div 
-                          className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${activeIndex === index ? "icon-badge" : "bg-brand/10 text-brand"}`}
+                          className={`faq-plus flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${activeIndex === index ? "icon-badge" : "bg-brand/10 text-brand"}`}
                           animate={{ rotate: activeIndex === index ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
                         >

@@ -166,7 +166,7 @@ export default function PhoneInput({ onChange, placeholder = "Phone number" }: O
         value={phoneNumber}
         onChange={(e) => handlePhoneChange(e.target.value)}
         placeholder={placeholder}
-        className="min-w-0 flex-1 rounded-r-full bg-white px-4 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-2 focus:ring-ink"
+        className="min-w-0 flex-1 rounded-r-full bg-white px-4 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-4 focus:ring-brand/15"
       />
 
       {/* Dropdown */}

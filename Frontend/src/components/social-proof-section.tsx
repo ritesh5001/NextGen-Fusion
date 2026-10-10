@@ -93,7 +93,7 @@ function LogoTile({ slug, width, height, duplicate }: { slug: string; width: num
         prefetch={false}
         tabIndex={duplicate ? -1 : undefined}
         aria-label={duplicate ? undefined : `${title} case study`}
-        className="flex h-20 w-40 items-center justify-center rounded-[24px] bg-white px-4 shadow-[0_18px_36px_-28px_rgba(15,16,13,0.4)] transition hover:-translate-y-0.5 sm:h-24 sm:w-48"
+        className="logo-tile flex h-20 w-40 items-center justify-center rounded-[24px] bg-white px-4 shadow-[0_18px_36px_-28px_rgba(15,16,13,0.4)] sm:h-24 sm:w-48"
       >
         <Image
           src={`/images/clients/${slug}.webp`}
@@ -182,8 +182,9 @@ export default function SocialProofSection() {
                 <Link
                   href={href}
                   prefetch={false}
-                  data-cursor="View"
-                  className="glass group flex items-center gap-5 rounded-[28px] p-5 transition hover:bg-white sm:gap-8 sm:p-7"
+                  data-cursor="Read"
+                  data-tilt="4"
+                  className="tilt-card glass group flex items-center gap-5 rounded-[28px] p-5 transition hover:bg-white sm:gap-8 sm:p-7"
                 >
                   <span className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-8">
                     <CountUp value={value} className="display min-w-[4ch] text-5xl sm:text-7xl" />

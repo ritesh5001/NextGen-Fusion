@@ -1,6 +1,7 @@
 "use client"
 
 import { m } from "framer-motion"
+import { LayoutTemplate, PhoneCall, Rocket } from "lucide-react"
 import BadgeSubtitle from "./badge-subtitle"
 import { ProcessLine } from "@/components/motion/process-line"
 
@@ -37,6 +38,7 @@ const item = {
 
 // One wash per step, so the three cards read as a sequence at a glance.
 const STEP_WASH = ["wash-blue", "wash-violet", "wash-cyan"]
+const STEP_ICON = [PhoneCall, LayoutTemplate, Rocket]
 
 export default function ProcessSection() {
   return (
@@ -66,10 +68,16 @@ export default function ProcessSection() {
           viewport={{ once: true, margin: "-60px" }}
           variants={container}
         >
-          {steps.map((step, index) => (
-            <m.div key={step.number} variants={item} className="glass rounded-[32px] p-3">
-              <div className={`${STEP_WASH[index % STEP_WASH.length]} flex h-36 items-end rounded-[24px] p-5`}>
-                <span className="glass-blur flex h-14 w-14 items-center justify-center rounded-full text-2xl font-medium text-ink">
+          {steps.map((step, index) => {
+            const Icon = STEP_ICON[index % STEP_ICON.length]
+            return (
+            <m.div key={step.number} variants={item} className="step-card glass rounded-[32px] p-3">
+              <div className={`${STEP_WASH[index % STEP_WASH.length]} relative flex h-36 items-end overflow-hidden rounded-[24px] p-5`}>
+                {/* Decorative: a large ghost of the step number and an icon
+                    rise into the gradient on hover. */}
+                <span className="step-ghost" aria-hidden="true">{step.number}</span>
+                <Icon className="step-icon h-9 w-9 text-white" aria-hidden="true" />
+                <span className="glass-blur relative flex h-14 w-14 items-center justify-center rounded-full text-2xl font-medium text-ink">
                   {step.number}
                 </span>
               </div>
@@ -78,7 +86,8 @@ export default function ProcessSection() {
                 <p className="text-ink-soft leading-relaxed">{step.description}</p>
               </div>
             </m.div>
-          ))}
+            )
+          })}
         </m.div>
       </div>
     </section>

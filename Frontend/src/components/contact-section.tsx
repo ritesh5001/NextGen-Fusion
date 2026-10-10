@@ -313,7 +313,7 @@ export default function ContactSection() {
                       value={formData.firstName}
                       onChange={(e) => handleInputChange("firstName", e.target.value)}
                       placeholder="Alex Morgan"
-                      className="w-full rounded-full border border-transparent bg-white px-5 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-2 focus:ring-ink"
+                      className="w-full rounded-full border border-transparent bg-white px-5 py-3 text-base text-ink field-fx outline-none transition-[box-shadow,border-color] duration-200 placeholder:text-ink-mute/70 focus:border-brand focus:ring-4 focus:ring-brand/15"
                     />
                   </m.div>
 
@@ -329,7 +329,7 @@ export default function ContactSection() {
                       value={formData.email}
                       onChange={(e) => handleInputChange("email", e.target.value)}
                       placeholder="you@company.com"
-                      className="w-full rounded-full border border-transparent bg-white px-5 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-2 focus:ring-ink"
+                      className="w-full rounded-full border border-transparent bg-white px-5 py-3 text-base text-ink field-fx outline-none transition-[box-shadow,border-color] duration-200 placeholder:text-ink-mute/70 focus:border-brand focus:ring-4 focus:ring-brand/15"
                     />
                   </m.div>
 
@@ -358,7 +358,7 @@ export default function ContactSection() {
                       onChange={(e) => handleInputChange("message", e.target.value)}
                       placeholder="Tell us about your project..."
                       rows={3}
-                      className="w-full resize-none rounded-[24px] border border-transparent bg-white px-5 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-2 focus:ring-ink"
+                      className="w-full resize-none rounded-[24px] border border-transparent bg-white px-5 py-3 text-base text-ink field-fx outline-none transition-[box-shadow,border-color] duration-200 placeholder:text-ink-mute/70 focus:border-brand focus:ring-4 focus:ring-brand/15"
                     />
                   </m.div>
 

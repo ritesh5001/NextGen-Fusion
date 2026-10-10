@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
@@ -35,6 +35,18 @@ export default function SimpleNavbar() {
   const router = useRouter()
   const pathname = usePathname()
   const isHomePage = pathname === "/"
+  // One hover pill that slides to whichever link is under the pointer.
+  const pillRef = useRef<HTMLSpanElement>(null)
+  const movePill = (link: HTMLElement) => {
+    const pill = pillRef.current
+    if (!pill) return
+    pill.style.width = `${link.offsetWidth}px`
+    pill.style.transform = `translateX(${link.offsetLeft}px)`
+    pill.dataset.on = "true"
+  }
+  const hidePill = () => {
+    if (pillRef.current) pillRef.current.dataset.on = "false"
+  }
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -112,7 +124,8 @@ export default function SimpleNavbar() {
               <Image src="/images/site-logo.png" alt="" width={128} height={72} className="h-8 w-auto" />
             </Link>
 
-            <nav aria-label="Main" className="flex items-center gap-0.5">
+            <nav aria-label="Main" className="nav-links relative flex items-center gap-0.5" onPointerLeave={hidePill}>
+              <span ref={pillRef} className="nav-pill" aria-hidden="true" />
               {menuItems.map((item) => (
                 <Link
                   key={item.name}
@@ -124,11 +137,17 @@ export default function SimpleNavbar() {
                       handleLogoClick()
                     }
                   }}
-                  className={`rounded-full px-3.5 py-2 text-sm font-medium text-ink transition-colors ${
-                    isActive(item.href) ? "bg-white shadow-sm" : "hover:bg-white/60"
+                  onPointerEnter={(e) => movePill(e.currentTarget)}
+                  onFocus={(e) => movePill(e.currentTarget)}
+                  onBlur={hidePill}
+                  className={`relative z-[1] rounded-full px-3.5 py-2 text-sm font-medium text-ink transition-colors ${
+                    isActive(item.href) ? "bg-white shadow-sm" : ""
                   }`}
                 >
-                  {item.name}
+                  <span className="text-roll">
+                    <span>{item.name}</span>
+                    <span aria-hidden="true">{item.name}</span>
+                  </span>
                 </Link>
               ))}
             </nav>

@@ -126,7 +126,7 @@ export default function StackMarqueeSection() {
           {techStackLines.map((techLine, lineIndex) => (
             <m.div
               key={lineIndex}
-              className="flex overflow-hidden py-3"
+              className="stack-row flex overflow-hidden py-3"
               style={{
                 maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
                 WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
@@ -149,7 +149,7 @@ export default function StackMarqueeSection() {
                     {techLine.map((tech, techIndex) => (
                       <m.div
                         key={`${tech.name}-${duplicateIndex}-${techIndex}`}
-                        className="glass flex items-center gap-3 rounded-full py-2 pl-2 pr-5"
+                        className="stack-chip glass flex items-center gap-3 rounded-full py-2 pl-2 pr-5"
                         variants={imageVariants}
                         initial="hidden"
                         whileInView="visible"
