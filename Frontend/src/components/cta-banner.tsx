@@ -4,6 +4,7 @@ import { m } from "framer-motion"
 import Link from "next/link"
 import { ArrowUpRight, Phone } from "lucide-react"
 import { whatsappHref } from "@/lib/whatsapp"
+import { ScaleIn } from "@/components/motion/scale-in"
 
 interface CTABannerProps {
   className?: string
@@ -25,6 +26,7 @@ export default function CTABanner({ className = "", compact = false }: CTABanner
       transition={{ duration: 0.6 }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScaleIn>
         <div className="relative isolate w-full overflow-hidden rounded-[36px] bg-ink">
           <div aria-hidden="true" className="absolute inset-0 -z-10">
             <div className="orb orb-blue -left-[10%] -top-[40%] h-[140%] w-[45%]" />
@@ -65,6 +67,7 @@ export default function CTABanner({ className = "", compact = false }: CTABanner
             </div>
           </div>
         </div>
+        </ScaleIn>
       </div>
     </m.section>
   )

@@ -110,8 +110,25 @@ export default function FAQSection() {
 
   const faqs = homeFaqs
 
+  // A short "typing…" bubble before an answer appears, like the chat it is
+  // styled as. Skipped for reduced motion. The answer itself is mounted the
+  // whole time either way (see the Answer comment below).
+  const [typingIndex, setTypingIndex] = useState<number | null>(null)
+  const typingTimer = useRef<number | null>(null)
+  useEffect(() => () => {
+    if (typingTimer.current) window.clearTimeout(typingTimer.current)
+  }, [])
+
   const toggleFAQ = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index)
+    const opening = activeIndex !== index
+    setActiveIndex(opening ? index : null)
+    if (typingTimer.current) window.clearTimeout(typingTimer.current)
+    if (opening && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTypingIndex(index)
+      typingTimer.current = window.setTimeout(() => setTypingIndex(null), 650)
+    } else {
+      setTypingIndex(null)
+    }
   }
 
   const handleBackClick = () => {
@@ -291,6 +308,21 @@ export default function FAQSection() {
                         <span className="text-sm sm:text-base font-medium text-ink leading-snug">{faq.question}</span>
                       </m.button>
 
+                      <AnimatePresence>
+                        {typingIndex === index && (
+                          <m.div
+                            key="typing"
+                            aria-hidden="true"
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                            className="ml-8 inline-flex rounded-[22px] bg-ink px-4 py-3 text-white/80"
+                          >
+                            <span className="typing-dots"><span /><span /><span /></span>
+                          </m.div>
+                        )}
+                      </AnimatePresence>
                       {/* Answer.
                           Always mounted, never conditionally rendered. Collapsing
                           with `height: 0` keeps the text in the server HTML, where
@@ -304,7 +336,7 @@ export default function FAQSection() {
                         aria-labelledby={`faq-question-${index}`}
                         variants={answerVariants}
                         initial={false}
-                        animate={activeIndex === index ? "visible" : "hidden"}
+                        animate={activeIndex === index && typingIndex !== index ? "visible" : "hidden"}
                         className="overflow-hidden"
                       >
                         <div className="ml-8 rounded-[22px] bg-ink p-4 text-white">

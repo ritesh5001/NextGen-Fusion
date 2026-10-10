@@ -106,6 +106,18 @@
     backdrop-filter: blur(24px) saturate(1.6);
   }
 
+  /* The navbar: frosted but nearly opaque, because page text scrolls under
+     it and the two must never compete. */
+  .nav-glass {
+    background-color: rgb(255 255 255 / 0.86);
+    border: 1px solid rgb(255 255 255 / 0.9);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.9),
+      0 12px 32px -18px rgb(28 55 201 / 0.35);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(20px) saturate(1.8);
+  }
+
   /* Glass on the dark footer and dark panels. */
   .glass-ink {
     background-image: linear-gradient(150deg, rgb(255 255 255 / 0.1) 0%, rgb(255 255 255 / 0.03) 100%);
@@ -669,4 +681,248 @@ img[src$=".svg"] {
     background: transparent !important;
     mix-blend-mode: normal !important;
   }
+}
+/* ────────────────────────────────────────────────────────────────────────
+   Motion layer. Everything here is an enhancement: with JavaScript off,
+   `data-js` is never set and every rule below that hides something is inert.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* Preloader — first page of a visit only (data-intro, set in layout.tsx).
+   Pure CSS so it starts with the first paint instead of waiting for
+   hydration, and it removes itself even if the JS bundle never arrives. */
+@property --preload-n {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+.preloader {
+  display: none;
+}
+[data-js="true"]:not([data-intro="done"]) .preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  background: var(--color-brand);
+  color: #fff;
+  animation: preloader-out 0.5s cubic-bezier(0.76, 0, 0.24, 1) 0.7s forwards;
+}
+.preloader-count {
+  counter-reset: preload var(--preload-n);
+  font-size: clamp(4rem, 16vw, 11rem);
+  font-weight: 400;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  animation: preloader-count 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+.preloader-count::after {
+  content: counter(preload);
+}
+.preloader-label {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+@keyframes preloader-count {
+  to { --preload-n: 100; }
+}
+@keyframes preloader-out {
+  to {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+}
+
+/* Route transitions (route-transitions.tsx): the old page drops away, a
+   brand-blue panel shows for a beat, the new page wipes up over it. The
+   clicked project image carries `case-hero` and morphs into the case-study
+   hero. Browsers without the View Transitions API simply navigate. */
+::view-transition-image-pair(root) {
+  background: var(--color-brand);
+}
+::view-transition-old(root) {
+  animation: vt-old 0.28s cubic-bezier(0.4, 0, 1, 1) both;
+}
+::view-transition-new(root) {
+  animation: vt-new 0.55s cubic-bezier(0.76, 0, 0.24, 1) 0.12s both;
+}
+::view-transition-group(case-hero) {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+}
+@keyframes vt-old {
+  to { opacity: 0; transform: scale(0.97); }
+}
+@keyframes vt-new {
+  from { clip-path: inset(100% 0 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(case-hero) {
+    animation: none;
+  }
+}
+
+/* Word-by-word reveal behind a clip mask, for supporting hero lines. Never
+   used on the LCP element. CSS-only, so it plays from the first paint. */
+.mask-words .mw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.mask-words .mw > span {
+  display: inline-block;
+}
+[data-js="true"] .mask-words .mw > span {
+  animation: mask-word 0.55s cubic-bezier(0.25, 1, 0.5, 1) both;
+  animation-delay: calc(0.12s + var(--i, 0) * 0.045s);
+}
+[data-js="true"]:not([data-intro="done"]) .mask-words .mw > span {
+  /* first visit: start once the preloader has lifted */
+  animation-delay: calc(0.95s + var(--i, 0) * 0.045s);
+}
+@keyframes mask-word {
+  from { transform: translateY(105%); }
+  to { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-js="true"] .mask-words .mw > span {
+    animation: none;
+  }
+}
+
+/* FAQ "typing…" bubble. */
+.typing-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: typing-dot 1s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes typing-dot {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* Custom cursor (custom-cursor.tsx). Desktop + fine pointer only; the
+   system cursor stays visible, this only follows it. */
+.cursor-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 9999px;
+  background: var(--color-brand);
+  color: #fff;
+  pointer-events: none;
+  font-size: 0;
+  font-weight: 500;
+  transition: width 0.25s, height 0.25s, margin 0.25s, font-size 0.2s, opacity 0.2s;
+  opacity: 0;
+}
+.cursor-dot[data-on="true"] {
+  opacity: 1;
+}
+.cursor-dot[data-label]:not([data-label=""]) {
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  font-size: 0.8125rem;
+}
+
+/* CountUp (count-up.tsx): the real figure stays in the DOM, transparent,
+   while the running number is painted over it. */
+.count-up {
+  position: relative;
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+.count-up[data-counting] {
+  color: transparent;
+}
+.count-up[data-counting]::after {
+  content: attr(data-n);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--count-color, currentColor);
+  white-space: nowrap;
+}
+
+/* First visit: hold the hero's entrance until the preloader has lifted. */
+[data-js="true"]:not([data-intro="done"]) .hero-rise { animation-delay: 0.9s; }
+[data-js="true"]:not([data-intro="done"]) .hero-delay-1 { animation-delay: 0.95s; }
+[data-js="true"]:not([data-intro="done"]) .hero-delay-2 { animation-delay: 1s; }
+[data-js="true"]:not([data-intro="done"]) .hero-delay-3 { animation-delay: 1.05s; }
+[data-js="true"]:not([data-intro="done"]) .hero-delay-4 { animation-delay: 1.15s; }
+
+/* ScrollSpotlight (scroll-spotlight.tsx). */
+.spotlight [data-row] {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.spotlight[data-spotlight-on] [data-row]:not(.is-active) {
+  opacity: 0.4;
+  transform: scale(0.985);
+}
+
+/* HorizontalGallery (horizontal-gallery.tsx): a native swipe strip until
+   desktop JS pins it and drives the row from vertical scroll. */
+.gallery-viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-block: 0.5rem;
+}
+.gallery-viewport::-webkit-scrollbar {
+  display: none;
+}
+.gallery-track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  padding-inline: 1rem;
+}
+.gallery-track > * {
+  scroll-snap-align: start;
+}
+.gallery[data-pinned] .gallery-viewport {
+  overflow: hidden;
+  scroll-snap-type: none;
+}
+@media (min-width: 640px) {
+  .gallery-track { padding-inline: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .gallery-track { padding-inline: max(2rem, calc((100vw - 80rem) / 2 + 2rem)); }
+}
+
+/* VelocityMarquee: the words come from data-text, not the DOM text. */
+.marquee-text::before {
+  content: attr(data-text);
+  white-space: pre;
+  font-size: clamp(3.5rem, 11vw, 9.5rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(42 75 245 / 0.45);
 }

@@ -37,6 +37,36 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 }
 
+// The three jobs projects start as (see the section paragraph), with every
+// service under the one it belongs to.
+const PILLARS = [
+  {
+    label: "Build a site",
+    wash: "wash-blue",
+    titles: [
+      "Website Development Services",
+      "E-commerce Web Development Services",
+      "Web Design Services",
+      "Android App Development Services",
+    ],
+  },
+  {
+    label: "Get it producing enquiries",
+    wash: "wash-violet",
+    titles: ["SEO Services", "PPC Services", "Social Media Marketing Services", "Website Maintenance Services"],
+  },
+  {
+    label: "Build what isn't a website",
+    wash: "wash-cyan",
+    titles: [
+      "AI Automation and AI Development Services",
+      "Software Development Services",
+      "API Integration Services",
+      "Cloud Solutions",
+    ],
+  },
+]
+
 export default function ServicesSection() {
   const services = [
     {
@@ -129,37 +159,43 @@ export default function ServicesSection() {
           </m.p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-          {/* All twelve render: each card is a real <Link>, so this is the
-              homepage's internal-link signal for every service page. Slicing to
-              six left half of them with no link from the site's strongest page. */}
-          {services.map((service) => {
-            const href = serviceRoutes[service.title] ?? "#"
-
-            return (
-              <m.div key={service.title} variants={itemVariants} className="h-full">
-                <Link
-                  href={href}
-                  prefetch={false}
-                  className="glass group flex h-full flex-col rounded-[28px] p-6 transition hover:-translate-y-1 hover:bg-white"
-                >
-                  <div className="mb-8 flex items-center justify-between">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full icon-badge">
-                      <service.Icon className="h-5 w-5" aria-hidden="true" />
-                    </span>
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-brand group-hover:text-white">
-                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                  </div>
-                  <h3 className="mb-2 text-lg font-medium leading-snug tracking-tight text-ink">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-ink-soft">{service.description}</p>
-                </Link>
-              </m.div>
-            )
-          })}
+        {/* Three pillars, matching the three jobs the paragraph above names.
+            All twelve services still render as real <Link>s with their own
+            h3 — this is the homepage's internal-link signal for every service
+            page — and the pillar names are labels, not headings, so the page
+            outline is unchanged. */}
+        <div className="grid gap-4 lg:grid-cols-3">
+          {PILLARS.map((pillar, index) => (
+            <m.div key={pillar.label} variants={itemVariants} className="glass flex flex-col rounded-[36px] p-3">
+              <div className={`${pillar.wash} relative flex min-h-36 flex-col justify-between overflow-hidden rounded-[28px] p-6`}>
+                <span className="text-sm font-medium text-white/85">0{index + 1}</span>
+                <p className="text-2xl font-normal leading-tight tracking-tight text-white">{pillar.label}</p>
+              </div>
+              <ul className="flex-1 divide-y divide-ink/10 px-3 pt-2">
+                {pillar.titles.map((title) => {
+                  const service = services.find((item) => item.title === title)
+                  if (!service) return null
+                  const href = serviceRoutes[service.title] ?? "#"
+                  return (
+                    <li key={service.title}>
+                      <Link href={href} prefetch={false} className="group flex gap-4 py-5">
+                        <span className="icon-badge h-10 w-10">
+                          <service.Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <h3 className="flex items-start justify-between gap-3 text-base font-medium leading-snug tracking-tight text-ink">
+                            {service.title}
+                            <ArrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-ink-mute transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand" aria-hidden="true" />
+                          </h3>
+                          <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{service.description}</p>
+                        </span>
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            </m.div>
+          ))}
         </div>
 
         {/* View all services */}

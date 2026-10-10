@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowUpRight, X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/lib/booking"
+import { Magnetic } from "@/components/motion/magnetic"
 
 type MenuItem = {
   name: string
@@ -29,6 +30,7 @@ const menuItems: MenuItem[] = [
 
 export default function SimpleNavbar() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isHidden, setIsHidden] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
@@ -37,12 +39,28 @@ export default function SimpleNavbar() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
+    // Hides on the way down and returns on the way up, so it is out of the
+    // way while reading and one flick away when wanted. rAF-throttled.
+    let lastY = window.scrollY
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const y = window.scrollY
+      setIsScrolled(y > 50)
+      if (Math.abs(y - lastY) > 6) {
+        setIsHidden(y > lastY && y > 160)
+        lastY = y
+      }
+    }
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      if (!frame) frame = requestAnimationFrame(update)
     }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (frame) cancelAnimationFrame(frame)
+    }
   }, [])
 
   // Close mobile menu when route changes
@@ -75,11 +93,11 @@ export default function SimpleNavbar() {
           here made the navbar the reason the library sat in every page's
           first-load JS. */}
       <div
-        className={`hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center transition-[padding] ${isScrolled ? 'py-2' : 'py-4'}`}
+        className={`hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center transition-[padding,translate] duration-300 focus-within:translate-y-0 ${isScrolled ? 'py-2' : 'py-4'} ${isHidden ? '-translate-y-[130%]' : ''}`}
       >
         <div className="flex items-center gap-2 relative">
           {/* Navbar Container */}
-          <div className="glass-blur flex items-center gap-5 rounded-full py-1.5 pl-5 pr-1.5">
+          <div className="nav-glass flex items-center gap-5 rounded-full py-1.5 pl-5 pr-1.5">
             <Link
               href="/"
               onClick={(e) => {
@@ -117,7 +135,7 @@ export default function SimpleNavbar() {
           </div>
 
           {/* User Auth */}
-          <div className="glass-blur flex items-center gap-1 rounded-full p-1.5">
+          <div className="nav-glass flex items-center gap-1 rounded-full p-1.5">
             <Link
               href="/portal/login/"
               prefetch={false}
@@ -137,16 +155,18 @@ export default function SimpleNavbar() {
           </div>
 
           {/* CTA Button */}
-          <button
-            type="button"
-            className="btn btn-brand h-[52px] px-6 text-sm"
-            onClick={() => openBookingModal({ requestType: 'meeting' })}
-          >
-            Book a Call
-            <span className="btn-dot" aria-hidden="true">
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </span>
-          </button>
+          <Magnetic>
+            <button
+              type="button"
+              className="btn btn-brand h-[52px] px-6 text-sm"
+              onClick={() => openBookingModal({ requestType: 'meeting' })}
+            >
+              Book a Call
+              <span className="btn-dot" aria-hidden="true">
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </span>
+            </button>
+          </Magnetic>
         </div>
       </div>
 
@@ -221,7 +241,7 @@ export default function SimpleNavbar() {
         )}
 
         {/* Bottom Navigation Bar */}
-        <div className="glass-blur mx-4 mb-2 rounded-full py-2 pl-5 pr-2">
+        <div className="nav-glass mx-4 mb-2 rounded-full py-2 pl-5 pr-2">
           <div className="flex min-w-0 items-center justify-between gap-2">
             <Link
               href="/"

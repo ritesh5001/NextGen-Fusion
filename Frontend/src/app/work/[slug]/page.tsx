@@ -239,7 +239,12 @@ export default async function WorkDetailPage({ params }: PageProps) {
       {/* ── HERO IMAGE ── */}
       <div className="border-b border-ink/10">
         <div className="max-w-6xl mx-auto px-6 py-8">
-          <div className="relative w-full rounded-[28px] overflow-hidden shadow-2xl shadow-gray-300/40 bg-white/70">
+          {/* Shares its view-transition name with the card image clicked on
+              the homepage or /work/, so that image morphs into this one. */}
+          <div
+            className="relative w-full rounded-[28px] overflow-hidden shadow-2xl shadow-gray-300/40 bg-white/70"
+            style={{ viewTransitionName: "case-hero" }}
+          >
             <div className="relative aspect-[16/9]">
               <Image
                 src={project.images[0]}

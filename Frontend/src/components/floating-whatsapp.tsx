@@ -4,6 +4,7 @@ import { m } from "framer-motion"
 import { useState, useEffect } from "react"
 import { trackEvent } from "@/lib/analytics"
 import { WhatsAppIcon } from "@/components/icons/whatsapp-icon"
+import { useMobileHeroClear } from "@/hooks/use-mobile-hero-clear"
 
 interface FloatingWhatsAppProps {
   phoneNumber?: string
@@ -15,6 +16,7 @@ export default function FloatingWhatsApp({
   message = "Hi! I'm interested in your services. Could we schedule a quick call?"
 }: FloatingWhatsAppProps) {
   const [isVisible, setIsVisible] = useState(false)
+  const heroClear = useMobileHeroClear()
 
   useEffect(() => {
     // Show the button after a short delay for better UX
@@ -33,7 +35,7 @@ export default function FloatingWhatsApp({
     window.open(whatsappUrl, '_blank')
   }
 
-  if (!isVisible) return null
+  if (!isVisible || !heroClear) return null
 
   return (
     <m.div

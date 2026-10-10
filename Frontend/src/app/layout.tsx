@@ -216,8 +216,8 @@ export const metadata: Metadata = {
 
   // Additional meta tags
   other: {
-    "theme-color": "#2B35AB",
-    "msapplication-TileColor": "#2B35AB",
+    "theme-color": "#2A4BF5",
+    "msapplication-TileColor": "#2A4BF5",
     "msapplication-TileImage": "/favicon/ms-icon-144x144.png",
     "msapplication-config": "/favicon/browserconfig.xml",
     "p:domain_verify": "e81b27281c09b9645d59cd92969215c0",
@@ -265,16 +265,28 @@ export default function RootLayout({
     <html
       lang="en-IN"
       className={`${trap.variable} font-sans`}
+      // The inline script below sets data-js / data-intro before React
+      // hydrates, which React would otherwise report as a mismatch.
+      suppressHydrationWarning
     >
       <head>
+        {/* Runs before first paint. data-js gates every "hidden until
+            animated" style, so with JavaScript off or broken all content
+            renders in its final state. data-intro="done" skips the preloader
+            after the first page of a visit and for reduced motion. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var d=document.documentElement;d.setAttribute('data-js','true');try{if(sessionStorage.getItem('ngf-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches){d.setAttribute('data-intro','done')}else{sessionStorage.setItem('ngf-intro','1')}}catch(e){d.setAttribute('data-intro','done')}})()`,
+          }}
+        />
         {/* Meta tags tambahan untuk compatibility */}
         <meta
           name="format-detection"
           content="telephone=no, date=no, email=no, address=no"
         />
-        <meta name="theme-color" content="#2B35AB" />
-        <meta name="msapplication-navbutton-color" content="#2B35AB" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="#2B35AB" />
+        <meta name="theme-color" content="#2A4BF5" />
+        <meta name="msapplication-navbutton-color" content="#2A4BF5" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#2A4BF5" />
         <meta name="p:domain_verify" content="e81b27281c09b9645d59cd92969215c0" />
 
         {/* Favicons, apple-touch icons, tile metas and manifest are declared

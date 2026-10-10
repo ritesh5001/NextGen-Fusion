@@ -2,6 +2,7 @@
 
 import { m } from "framer-motion"
 import BadgeSubtitle from "./badge-subtitle"
+import { ProcessLine } from "@/components/motion/process-line"
 
 const steps = [
   {
@@ -57,6 +58,7 @@ export default function ProcessSection() {
           </m.h2>
         </m.div>
 
+        <ProcessLine steps={steps.length} />
         <m.div
           className="grid grid-cols-1 md:grid-cols-3 gap-4"
           initial="hidden"

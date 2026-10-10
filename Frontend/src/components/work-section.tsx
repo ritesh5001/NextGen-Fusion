@@ -3,9 +3,12 @@
 import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { StaticProject } from "@/lib/static-projects";
 import { useNearViewport } from "@/hooks/use-near-viewport";
+import { deliveredProjects } from "@/lib/delivered-projects";
+import { DeliveredCard } from "@/components/delivered-wall";
+import { HorizontalGallery } from "@/components/motion/horizontal-gallery";
 
 /** Cover image mounted only when the card nears the viewport (see useNearViewport). */
 function DeferredCover({ src, alt }: { src: string; alt: string }) {
@@ -42,11 +45,14 @@ export type FeaturedProject = Pick<
   "slug" | "title" | "category" | "coverImage" | "domain" | "results" | "shortDescription" | "tags"
 >;
 
+// The eight delivered sites the homepage has always shown (DeliveredWall limit).
+const delivered = deliveredProjects.slice(0, 8);
+
 export default function WorkSection({ featured }: { featured: FeaturedProject[] }) {
 
   return (
-    <section className="px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-20 sm:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <m.div
           className="mb-12"
@@ -71,80 +77,85 @@ export default function WorkSection({ featured }: { featured: FeaturedProject[] 
           </div>
         </m.div>
 
-        {/* Featured row */}
-        <m.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={container}
-        >
-          {featured.map((project) => (
-            <m.div key={project.slug} variants={item} className="h-full">
-              <Link
-                href={`/work/${project.slug}/`}
-                prefetch={false}
-                className="glass group flex h-full flex-col rounded-[36px] p-3 transition hover:bg-white"
-              >
-                {/* Image */}
-                <div className="relative overflow-hidden rounded-[26px] bg-canvas-deep aspect-[16/10]">
-                  <DeferredCover
-                    src={project.coverImage}
-                    alt={`${project.title} — ${project.category} project by NextGen Fusion`}
-                  />
-                  {/* Badges */}
-                  <div className="absolute top-4 left-4 flex gap-2">
-                    <span className="rounded-full bg-brand px-3 py-1 text-xs font-medium text-white">
-                      Featured
-                    </span>
-                    <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-ink">
-                      {project.category.split(" / ")[0]}
-                    </span>
-                  </div>
-                  {/* Arrow */}
-                  <div className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-brand text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <ArrowRight className="w-5 h-5" />
-                  </div>
-                </div>
+      </div>
 
-                {/* Meta */}
-                <div className="flex flex-1 flex-col px-3 pb-3 pt-6 sm:px-4">
-                  <p className="text-xs text-ink-mute mb-2">{project.domain}</p>
-                  {project.results?.[0] && (
-                    <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-ink">
-                      <span className="h-2 w-2 rounded-full bg-brand" aria-hidden="true" />
-                      {project.results[0].metric} {project.results[0].label}
-                    </p>
-                  )}
-                  <h3 className="text-2xl font-medium tracking-tight text-ink mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-ink-soft leading-relaxed line-clamp-2">
-                    {project.shortDescription}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 mt-4">
-                    {project.tags.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-canvas px-3 py-1 text-xs text-ink-soft"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink">
-                    Read More
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      {/* Featured case studies, then the delivered sites, in one row: pinned
+          and scroll-driven on desktop, swipeable on phones. The eight wall
+          cards and the "See all" link are the ones the homepage always had. */}
+      <HorizontalGallery className="mt-2">
+        {featured.map((project) => (
+          <div key={project.slug} data-gallery-item className="w-[min(84vw,600px)] shrink-0 lg:w-[620px]">
+            <Link
+              href={`/work/${project.slug}/`}
+              prefetch={false}
+              data-cursor="View"
+              className="glass group flex h-full flex-col rounded-[36px] p-3 transition hover:bg-white"
+            >
+              {/* Image */}
+              <div data-vt-image className="relative overflow-hidden rounded-[26px] bg-canvas-deep aspect-[16/10]">
+                <DeferredCover
+                  src={project.coverImage}
+                  alt={`${project.title} — ${project.category} project by NextGen Fusion`}
+                />
+                {/* Badges */}
+                <div className="absolute top-4 left-4 flex gap-2">
+                  <span className="rounded-full bg-brand px-3 py-1 text-xs font-medium text-white">
+                    Featured
+                  </span>
+                  <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-ink">
+                    {project.category.split(" / ")[0]}
                   </span>
                 </div>
-              </Link>
-            </m.div>
-          ))}
-        </m.div>
+                {/* Arrow */}
+                <div className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-brand text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <ArrowRight className="w-5 h-5" />
+                </div>
+              </div>
 
-        {/* Breadth (the full delivered-projects screenshot wall) is merged in
-            directly below this section in home-client, so no separate CTA here. */}
-      </div>
+              {/* Meta */}
+              <div className="flex flex-1 flex-col px-3 pb-3 pt-6 sm:px-4">
+                <p className="text-xs text-ink-mute mb-2">{project.domain}</p>
+                {project.results?.[0] && (
+                  <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-ink">
+                    <span className="h-2 w-2 rounded-full bg-brand" aria-hidden="true" />
+                    {project.results[0].metric} {project.results[0].label}
+                  </p>
+                )}
+                <h3 className="text-2xl font-medium tracking-tight text-ink mb-2">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-ink-soft leading-relaxed line-clamp-2">
+                  {project.shortDescription}
+                </p>
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {project.tags.slice(0, 3).map((tag) => (
+                    <span key={tag} className="rounded-full bg-canvas px-3 py-1 text-xs text-ink-soft">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink">
+                  Read More
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </Link>
+          </div>
+        ))}
+
+        {delivered.map((project) => (
+          <div key={project.slug} data-gallery-item data-cursor="View" className="w-[min(70vw,300px)] shrink-0 self-center">
+            <DeliveredCard project={project} />
+          </div>
+        ))}
+
+        <div data-gallery-item className="flex w-[min(70vw,300px)] shrink-0 items-center justify-center">
+          <Link href="/work/" prefetch={false} className="btn btn-ink">
+            See all projects delivered
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </HorizontalGallery>
     </section>
   );
 }

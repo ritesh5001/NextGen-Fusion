@@ -10,6 +10,7 @@ import { OFFICE_HOURS, offices } from "@/data/offices"
 import { trackEvent } from "@/lib/analytics"
 import { Turnstile, type TurnstileHandle } from "./turnstile"
 import { TURNSTILE_ENABLED } from "@/lib/turnstile"
+import { ScaleIn } from "@/components/motion/scale-in"
 
 // Animation variants
 const containerVariants = {
@@ -233,6 +234,7 @@ export default function ContactSection() {
           </m.p>
         </m.div>
 
+        <ScaleIn>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mx-auto">
           {/* Left Column - Benefits */}
           {/* An ink panel with a CSS glow, replacing a purple background image:
@@ -529,6 +531,7 @@ export default function ContactSection() {
             </AnimatePresence>
           </m.div>
         </div>
+        </ScaleIn>
 
         {/* Offices Section */}
         <div className="mt-20 sm:mt-24">

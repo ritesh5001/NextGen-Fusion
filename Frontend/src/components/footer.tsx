@@ -6,6 +6,7 @@ import { serviceNavItems } from "@/data/services-nav";
 import { SITE_TAGLINE } from "@/lib/seo";
 import { whatsappHref } from "@/lib/whatsapp";
 import { BrandProfileLinks } from "@/components/brand-profile-links";
+import { m } from "framer-motion";
 
 type FooterLink = { label: string; href: string };
 
@@ -114,6 +115,9 @@ const legal: FooterLink[] = [
 ];
 
 const WHATSAPP_URL = whatsappHref();
+
+// "NextGen" — the footer's big decorative wordmark, one letter per span.
+const WORDMARK = "NextGen".split("");
 
 const heading = "text-sm font-medium text-brand-light";
 const linkClass = "text-sm text-white/75 transition-colors duration-200 hover:text-white";
@@ -265,6 +269,27 @@ export default function Footer() {
             </div>
           ))}
         </div>
+
+        {/* Wordmark: decorative (aria-hidden), each letter drawn from a data
+            attribute so the brand name is not repeated in the page text. The
+            letters rise in as the footer arrives. */}
+        <m.div
+          aria-hidden="true"
+          className="mt-14 flex select-none justify-center overflow-hidden pb-[0.04em] pt-[0.06em] text-[min(21vw,20rem)] font-normal leading-none tracking-[-0.06em] text-white/90"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ staggerChildren: 0.035 }}
+        >
+          {WORDMARK.map((letter, index) => (
+            <m.span
+              key={index}
+              data-ch={letter}
+              className="inline-block bg-gradient-to-b from-white to-white/30 bg-clip-text text-transparent before:content-[attr(data-ch)]"
+              variants={{ hidden: { y: "100%" }, visible: { y: "0%", transition: { duration: 0.7, ease: [0.25, 1, 0.5, 1] } } }}
+            />
+          ))}
+        </m.div>
 
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">

@@ -36,7 +36,7 @@ function Chip({
   )
 }
 
-function DeliveredCard({ project }: { project: DeliveredProject }) {
+export function DeliveredCard({ project }: { project: DeliveredProject }) {
   const [errored, setErrored] = useState(false)
   const [mediaRef, near] = useNearViewport<HTMLDivElement>()
   const caseStudyHref = project.caseStudySlug ? `/work/${project.caseStudySlug}/` : undefined
@@ -52,7 +52,7 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
 
   return (
     <div className="glass group relative rounded-[24px] p-2 transition-all hover:-translate-y-1 hover:bg-white">
-      <div ref={mediaRef} className="relative aspect-[16/10] overflow-hidden rounded-[18px] bg-canvas-deep">
+      <div ref={mediaRef} data-vt-image className="relative aspect-[16/10] overflow-hidden rounded-[18px] bg-canvas-deep">
         {!near ? null : errored ? (
           <div className="wash-violet flex h-full w-full items-center justify-center px-3 text-center text-sm font-medium text-ink">
             {project.host}

@@ -4,6 +4,8 @@ import Link from "next/link"
 import { ArrowUpRight, Check } from "lucide-react"
 import { openBookingModal } from "@/lib/booking"
 import { PROJECTS_DELIVERED } from "@/lib/seo"
+import { Magnetic } from "@/components/motion/magnetic"
+import { MaskWords } from "@/components/motion/mask-words"
 
 /**
  * Entrance animations are plain CSS (`.hero-rise` in globals.css), not
@@ -15,9 +17,11 @@ import { PROJECTS_DELIVERED } from "@/lib/seo"
 const SIGNATURE = ["Sleek", "Fast", "Doesn't Ghost You"]
 
 const HeroContent = () => (
-  <div className="mx-auto max-w-4xl text-center">
+  // A column so phones can lift the call to action above the bottom bar
+  // (max-sm:order-*); the DOM, and so the reading order, is unchanged.
+  <div className="mx-auto flex max-w-4xl flex-col text-center">
     {/* Available for work badge */}
-    <div className="mb-7 hero-rise">
+    <div className="mb-6 hero-rise max-sm:order-1 sm:mb-7">
       <div className="eyebrow eyebrow-plain">
         <div className="relative flex h-2.5 w-2.5">
           <div className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-60 animate-ping"></div>
@@ -34,18 +38,22 @@ const HeroContent = () => (
         <title>; a heading with no keyword was one reason Google kept rewriting
         the title in results. Deliberately static: it is the LCP element on
         mobile, and any entrance animation on it delays LCP. */}
-    <h1 className="mb-7">
-      <span className="display block text-[2.5rem] sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
+    <h1 className="mb-7 max-sm:order-2">
+      <span className="display block text-[2.25rem] sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
         Web Development &amp; AI Solutions for Growing Businesses
       </span>
-      <span className="mx-auto mt-5 block max-w-2xl text-xl leading-snug tracking-tight text-ink-soft sm:text-2xl lg:text-[1.7rem]">
-        Websites &amp; online stores that don&apos;t get abandoned{" "}
-        <span className="text-gradient whitespace-nowrap">after launch</span>
+      {/* The headline line above is the LCP element and is never animated;
+          this supporting line rises word by word behind a mask instead. */}
+      <span className="mask-words mx-auto mt-5 block max-w-2xl text-xl leading-snug tracking-tight text-ink-soft sm:text-2xl lg:text-[1.7rem]">
+        <MaskWords text="Websites & online stores that don't get abandoned" />{" "}
+        <span className="whitespace-nowrap">
+          <MaskWords text="after launch" start={7} wordClassName="text-gradient" />
+        </span>
       </span>
     </h1>
 
     {/* Brand signature — decoration, not a heading. */}
-    <ul className="mb-7 flex flex-wrap justify-center gap-2">
+    <ul className="mb-7 flex flex-wrap justify-center gap-2 max-sm:order-4">
       {SIGNATURE.map((word, index) => (
         <li
           key={word}
@@ -60,14 +68,14 @@ const HeroContent = () => (
     </ul>
 
     {/* Subtitle — outcome, not feature list */}
-    <p className="mx-auto mb-4 max-w-2xl text-lg leading-relaxed text-ink-soft hero-rise hero-delay-4">
+    <p className="mx-auto mb-4 max-w-2xl text-lg leading-relaxed text-ink-soft hero-rise hero-delay-4 max-sm:order-4">
       Conversion-focused websites for growing D2C and ecommerce brands across India and
       worldwide — designed, built, and supported end to end.
     </p>
 
     {/* The Lucknow landing page owns the "website development company in
         Lucknow" query; the homepage links to it rather than competing for it. */}
-    <p className="mb-9 text-base text-ink-mute hero-rise hero-delay-4">
+    <p className="mb-9 text-base text-ink-mute hero-rise hero-delay-4 max-sm:order-4 max-sm:mb-0">
       Based in Lucknow? See our{" "}
       <Link
         href="/website-development-company-in-lucknow/"
@@ -82,24 +90,28 @@ const HeroContent = () => (
     </p>
 
     {/* CTA Buttons — one primary, one lighter secondary */}
-    <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center hero-rise hero-delay-4">
-      <button
-        type="button"
-        onClick={() => openBookingModal({ requestType: "meeting" })}
-        className="btn btn-brand sm:text-lg"
-      >
-        Book a Free Call
-        <span className="btn-dot" aria-hidden="true">
-          <ArrowUpRight className="h-4 w-4" />
-        </span>
-      </button>
-      <Link href="/work/" prefetch={false} className="btn btn-glass sm:text-lg">
-        See Our Work
-      </Link>
+    <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center hero-rise hero-delay-4 max-sm:order-3">
+      <Magnetic className="max-sm:w-full">
+        <button
+          type="button"
+          onClick={() => openBookingModal({ requestType: "meeting" })}
+          className="btn btn-brand max-sm:w-full sm:text-lg"
+        >
+          Book a Free Call
+          <span className="btn-dot" aria-hidden="true">
+            <ArrowUpRight className="h-4 w-4" />
+          </span>
+        </button>
+      </Magnetic>
+      <Magnetic className="max-sm:w-full">
+        <Link href="/work/" prefetch={false} className="btn btn-glass max-sm:w-full sm:text-lg">
+          See Our Work
+        </Link>
+      </Magnetic>
     </div>
 
     {/* Proof line directly under the CTA */}
-    <p className="mt-5 text-sm text-ink-mute hero-rise hero-delay-4">
+    <p className="mt-5 text-sm text-ink-mute hero-rise hero-delay-4 max-sm:order-3 max-sm:mb-8 max-sm:mt-4">
       {PROJECTS_DELIVERED} projects delivered · 0 clients ghosted
     </p>
   </div>
@@ -108,7 +120,7 @@ const HeroContent = () => (
 // Main Hero Section Component
 export default function HeroSection() {
   return (
-    <div className="relative w-full px-3 pb-12 pt-6 sm:px-6 lg:px-8 lg:pb-20 xl:pt-28">
+    <div className="relative w-full px-3 pb-12 pt-3 sm:px-6 sm:pt-6 lg:px-8 lg:pb-20 xl:pt-28">
       <div className="relative mx-auto max-w-7xl">
         {/* Colour for the glass to blur: CSS gradients, so there is nothing to
             download and nothing here can become the LCP element. */}
@@ -119,7 +131,7 @@ export default function HeroSection() {
           <div className="orb orb-pink orb-drift-slow bottom-[-8%] left-[10%] h-[36%] w-[30%]" />
         </div>
 
-        <div className="glass-blur rounded-[36px] px-5 py-12 sm:rounded-[48px] sm:px-10 sm:py-16 lg:py-20">
+        <div className="glass-blur rounded-[32px] px-5 pb-10 pt-8 sm:rounded-[48px] sm:px-10 sm:py-16 lg:py-20">
           <HeroContent />
         </div>
       </div>

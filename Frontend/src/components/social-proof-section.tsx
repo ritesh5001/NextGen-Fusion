@@ -18,6 +18,8 @@ import {
 import { deliveredProjects } from "@/lib/delivered-projects"
 import { staticProjects } from "@/lib/static-projects"
 import { PROJECTS_DELIVERED } from "@/lib/seo"
+import { CountUp } from "@/components/motion/count-up"
+import { ScrollSpotlight } from "@/components/motion/scroll-spotlight"
 
 /**
  * Client logos, taken from each client's own website (or, where the site
@@ -139,58 +141,63 @@ export default function SocialProofSection() {
         </ul>
       </div>
 
-      <div className="mx-auto mt-10 max-w-7xl px-4 sm:mt-14 sm:px-6 lg:px-8">
-        <ul className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {stats.map(({ Icon, value, label, detail }) => (
-            <li key={label} className="glass rounded-[28px] p-5 sm:p-6">
-              <div className="flex items-start justify-between gap-3">
-                <p className="display text-5xl sm:text-6xl">{value}</p>
-                <span className="icon-badge h-10 w-10 sm:h-11 sm:w-11">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+      {/* One numbers moment instead of three blocks in a row (stat cards,
+          proof cards, dark trust bar) that repeated each other. On desktop
+          the heading and the standards stay pinned while the figures scroll
+          past and light up one by one. */}
+      <div className="mx-auto mt-14 grid max-w-7xl gap-10 px-4 sm:mt-20 sm:px-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 lg:px-8">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <h3 className="display text-3xl sm:text-4xl lg:text-5xl">What clients run on what we built</h3>
+          <ul className="mt-8 space-y-2">
+            {standards.map(({ Icon, text }) => (
+              <li key={text} className="glass flex items-center gap-3 rounded-full py-2 pl-2 pr-5 text-sm text-ink">
+                <span className="icon-badge h-8 w-8">
+                  <Icon className="h-4 w-4" aria-hidden="true" />
                 </span>
-              </div>
-              <p className="mt-6 text-sm font-medium text-ink sm:text-base">{label}</p>
-              <p className="mt-1 text-xs text-ink-mute sm:text-sm">{detail}</p>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-12 sm:mt-14">
-          <h3 className="text-center text-sm font-medium text-ink-mute">
-            What clients run on what we built
-          </h3>
-          <ul className="mt-5 grid gap-3 sm:gap-4 md:grid-cols-3">
-            {results.map(({ Icon, value, label, href }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  prefetch={false}
-                  className="glass group flex h-full items-start gap-4 rounded-[28px] p-5 transition hover:-translate-y-0.5 hover:bg-white"
-                >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full icon-badge">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="display block text-3xl">{value}</span>
-                    <span className="mt-1.5 block text-sm leading-6 text-ink-soft">{label}</span>
-                  </span>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-brand group-hover:text-white">
-                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                </Link>
+                <span>{text}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-3 rounded-[28px] bg-ink px-6 py-6 text-white sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
-          {standards.map(({ Icon, text }) => (
-            <li key={text} className="flex items-center gap-3 text-sm">
-              <Icon className="h-5 w-5 shrink-0 text-brand-light" aria-hidden="true" />
-              <span>{text}</span>
-            </li>
-          ))}
-        </ul>
+        <ScrollSpotlight>
+          <ul className="space-y-3">
+            {stats.map(({ Icon, value, label, detail }) => (
+              <li key={label} data-row className="glass flex items-center gap-5 rounded-[28px] p-5 sm:gap-8 sm:p-7">
+                {/* Number over label on phones, side by side from sm up. */}
+                <span className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-8">
+                  <CountUp value={value} className="display min-w-[4ch] text-5xl sm:text-7xl" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-base font-medium text-ink sm:text-lg">{label}</span>
+                    <span className="mt-1 block text-sm text-ink-mute">{detail}</span>
+                  </span>
+                </span>
+                <span className="icon-badge hidden h-11 w-11 sm:inline-flex">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+              </li>
+            ))}
+            {results.map(({ Icon, value, label, href }) => (
+              <li key={href} data-row>
+                <Link
+                  href={href}
+                  prefetch={false}
+                  data-cursor="View"
+                  className="glass group flex items-center gap-5 rounded-[28px] p-5 transition hover:bg-white sm:gap-8 sm:p-7"
+                >
+                  <span className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-8">
+                    <CountUp value={value} className="display min-w-[4ch] text-5xl sm:text-7xl" />
+                    <span className="min-w-0 flex-1 text-sm leading-6 text-ink-soft sm:text-base">{label}</span>
+                  </span>
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-brand group-hover:text-white">
+                    <Icon className="h-5 w-5 group-hover:hidden" aria-hidden="true" />
+                    <ArrowUpRight className="hidden h-5 w-5 group-hover:block" aria-hidden="true" />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </ScrollSpotlight>
       </div>
     </section>
   )

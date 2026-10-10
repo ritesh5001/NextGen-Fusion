@@ -15,7 +15,7 @@ const StackMarqueeSection = dynamic(() => import("@/components/stack-marquee-sec
 const FAQSection = dynamic(() => import("@/components/faq-section"))
 const ContactSection = dynamic(() => import("@/components/contact-section"))
 const WorkSection = dynamic(() => import("@/components/work-section"))
-const DeliveredWall = dynamic(() => import("@/components/delivered-wall"))
+const VelocityMarquee = dynamic(() => import("@/components/motion/velocity-marquee").then((mod) => mod.VelocityMarquee))
 
 export default function HomeClient({ featuredProjects }: { featuredProjects: FeaturedProject[] }) {
   return (
@@ -24,10 +24,12 @@ export default function HomeClient({ featuredProjects }: { featuredProjects: Fea
         <HeroSection />
       </div>
       <SocialProofSection />
-      <div id="work" className="defer-render">
+      {/* No defer-render here: content-visibility contains paint, which would
+          trap the pinned gallery's position: fixed inside this box. */}
+      <div id="work">
         <WorkSection featured={featuredProjects} />
-        <DeliveredWall limit={8} hideHeader showViewAll />
       </div>
+      <VelocityMarquee words={["Websites", "Online stores", "Apps", "AI automation", "SEO"]} />
       <div className="defer-render">
         <ComparisonSection />
       </div>

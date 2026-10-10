@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { AnimatePresence, m } from "framer-motion"
 import { Sparkles, Send, X, CalendarDays, PhoneCall } from "lucide-react"
 import { openBookingModal } from "./booking-modal"
+import { useMobileHeroClear } from "@/hooks/use-mobile-hero-clear"
 
 type ChatMessage = {
   role: "assistant" | "user"
@@ -13,6 +14,7 @@ type ChatMessage = {
 const LENIS_SCROLL_LOCK_EVENT = "lenis-scroll-lock"
 
 export default function SalesChatbot() {
+  const heroClear = useMobileHeroClear()
   const [open, setOpen] = useState(false)
   const [conversationId, setConversationId] = useState("")
   const [input, setInput] = useState("")
@@ -120,7 +122,11 @@ export default function SalesChatbot() {
       <m.button
         onClick={() => setOpen(true)}
         aria-label="Open sales assistant"
-        className="fixed bottom-24 right-5 z-[70] flex h-16 w-16 items-center justify-center rounded-full bg-ink text-white shadow-[0_18px_48px_rgba(0,0,0,0.28)] transition hover:bg-[#22263a] md:bottom-8"
+        aria-hidden={!heroClear || undefined}
+        tabIndex={heroClear ? undefined : -1}
+        className={`fixed bottom-24 right-5 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-ink text-white shadow-[0_18px_48px_rgba(0,0,0,0.28)] transition-[background-color,opacity,translate] duration-300 hover:bg-[#22263a] md:bottom-8 md:h-16 md:w-16 ${
+          heroClear ? "" : "pointer-events-none translate-y-6 opacity-0"
+        }`}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.96 }}
       >
