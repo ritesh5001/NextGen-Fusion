@@ -1,14 +1,11 @@
 "use client"
 
 import { m, AnimatePresence } from "framer-motion"
-import Image from "next/image"
 import { ArrowRight, ArrowLeft, Target, Map, Lightbulb, Users, CheckCircle, AlertCircle, MapPin, Phone } from "lucide-react"
 import { useRef, useState } from "react"
-import { useNearViewport } from "@/hooks/use-near-viewport"
 import BadgeSubtitle from "./badge-subtitle"
 import PhoneInput from "./phone-input"
 import { apiService, ContactFormData } from "@/lib/api"
-import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { OFFICE_HOURS, offices } from "@/data/offices"
 import { trackEvent } from "@/lib/analytics"
 import { Turnstile, type TurnstileHandle } from "./turnstile"
@@ -70,22 +67,6 @@ const textVariants = {
   }
 }
 
-const iconVariants = {
-  hidden: { 
-    opacity: 0, 
-    scale: 0.8,
-    rotate: -10
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      duration: 0.5
-    }
-  }
-}
-
 const formVariants = {
   hidden: { 
     opacity: 0, 
@@ -117,10 +98,6 @@ interface FormData {
 }
 
 export default function ContactSection() {
-  const { getIconSrc } = useMobileIcon()
-  // The artwork is a CSS background, which the browser fetches as soon as the
-  // element is styled, so it is only set once the panel nears the viewport.
-  const [panelRef, panelNear] = useNearViewport<HTMLDivElement>()
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -139,24 +116,24 @@ export default function ContactSection() {
 
   const benefits = [
     {
-      icon: <Target className="w-4 h-4 text-white" />,
+      icon: <Target className="w-4 h-4 text-ink" />,
       title: "A straight answer on fit",
       description:
         "We tell you on the first call whether we are the right team, including when the answer is that you do not need us.",
     },
     {
-      icon: <Map className="w-4 h-4 text-white" />,
+      icon: <Map className="w-4 h-4 text-ink" />,
       title: "A written scope",
       description:
         "What we would build, one fixed price and one delivery window, in writing, before you pay anything.",
     },
     {
-      icon: <Lightbulb className="w-4 h-4 text-white" />,
+      icon: <Lightbulb className="w-4 h-4 text-ink" />,
       title: "Builds like yours",
       description: "The case studies closest to your business, so you can see what we built for someone in your position.",
     },
     {
-      icon: <Users className="w-4 h-4 text-white" />,
+      icon: <Users className="w-4 h-4 text-ink" />,
       title: "Support after launch",
       description: "A support plan quoted upfront with every project, so the site does not go stale the month after it ships.",
     },
@@ -229,7 +206,7 @@ export default function ContactSection() {
   return (
     <m.section 
       id="contact-section" 
-      className="bg-white pt-20 sm:pt-24 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 lg:px-8"
+      className="ambient-lime px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -238,46 +215,17 @@ export default function ContactSection() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <m.div 
-          className="text-center mb-8 sm:mb-12 md:mb-16"
+          className="text-center mb-10 sm:mb-14"
           variants={itemVariants}
         >
-          <m.div 
-            className="mb-4"
-            variants={textVariants}
-          >
+          <m.div className="mb-5" variants={textVariants}>
             <BadgeSubtitle>Contact Us</BadgeSubtitle>
           </m.div>
-          <m.h2 
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4 sm:mb-6"
-            variants={textVariants}
-          >
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4">
-              <span>Time to Stop Scrolling,</span>
-            </div>{" "}
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-1 sm:mt-2">
-              <span>Let&apos;s</span>{" "}
-              <m.div 
-                className="relative inline-block mx-1"
-                variants={iconVariants}
-              >
-                <Image 
-                  src={getIconSrc("/images/hand.svg", "/images/hand.png")}
-                  alt="Hand" 
-                  width={56} 
-                  height={56}
-                  className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 lg:w-14 lg:h-14" 
-                />
-              </m.div>
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-400 bg-clip-text text-transparent">
-                Discuss
-              </span>
-            </div>{" "}
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-1 sm:mt-2">
-              <span>and Cook It Up!</span>
-            </div>
+          <m.h2 className="display mx-auto mb-5 max-w-3xl text-4xl sm:text-5xl lg:text-6xl" variants={textVariants}>
+            Time to Stop Scrolling, Let&apos;s <span className="mark-lime">Discuss</span> and Cook It Up!
           </m.h2>
           <m.p 
-            className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed"
+            className="text-ink-soft text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
             variants={textVariants}
           >
             We&apos;re here to listen. Book a meeting with our team to discuss your vision, explore possibilities, and start
@@ -285,44 +233,33 @@ export default function ContactSection() {
           </m.p>
         </m.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mx-auto">
           {/* Left Column - Benefits */}
-          <div 
-            ref={panelRef}
-            className="relative rounded-lg overflow-hidden flex-1 w-full flex flex-col p-8 gap-7 text-white bg-[#2B35AB]"
-            style={{
-              // WebP, not the original PNG. As a CSS background this never
-              // passes through /_next/image, so it skipped the AVIF pipeline
-              // every other image on the site gets — and at 288 KB it was the
-              // single largest request on the homepage, bigger than any JS
-              // chunk. The WebP is 14 KB for the same 476x580 artwork.
-              backgroundImage: panelNear ? 'url(/images/contactdesc.webp)' : undefined,
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'top',
-              minHeight: '100%'
-            }}
-          >
+          {/* An ink panel with a CSS glow, replacing a purple background image:
+              one request fewer, and it follows the theme colours. */}
+          <div className="relative flex w-full flex-1 flex-col gap-8 overflow-hidden rounded-[36px] bg-ink p-7 text-white sm:p-9">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_100%_0%,rgba(220,245,74,0.28),rgba(220,245,74,0)_70%),radial-gradient(60%_50%_at_0%_100%,rgba(46,159,71,0.35),rgba(46,159,71,0)_70%)]"
+            />
             <div className="relative">
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-tight">
+              <h3 className="text-3xl font-normal leading-tight tracking-tight sm:text-4xl">
                 <p className="m-0">What Will You Get</p>
                 <p className="m-0">in Meeting</p>
               </h3>
             </div>
             
-            <div className="flex flex-col gap-3">
+            <div className="relative flex flex-col gap-2">
               {benefits.map((benefit, index) => (
-                <div key={index} className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] flex items-center justify-center">
-                      {benefit.icon}
-                    </div>
+                <div key={index} className="glass-ink flex items-start gap-4 rounded-[24px] p-4">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-lime">
+                    {benefit.icon}
                   </div>
-                  <div className="flex-1 flex flex-col justify-center py-0 px-3 pb-2 gap-2.5 rounded-r-lg">
-                    <div className="font-medium text-sm sm:text-base leading-tight">
+                  <div className="flex flex-1 flex-col justify-center gap-1.5">
+                    <div className="text-base font-medium leading-tight">
                       {benefit.title}
                     </div>
-                    <div className="text-xs sm:text-sm leading-tight opacity-90">
+                    <div className="text-sm leading-snug text-white/75">
                       {benefit.description}
                     </div>
                   </div>
@@ -333,7 +270,7 @@ export default function ContactSection() {
 
           {/* Right Column - Form */}
           <m.div 
-            className="bg-white rounded-xl sm:rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 shadow-sm min-h-[350px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px]"
+            className="glass rounded-[36px] p-6 sm:p-9 lg:min-h-[600px]"
             variants={cardVariants}
           >
             <AnimatePresence mode="wait">
@@ -351,30 +288,15 @@ export default function ContactSection() {
                       className="relative"
                       variants={textVariants}
                     >
-                      <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+                      <h3 className="display text-3xl sm:text-4xl">
                         <span className="relative inline-block">
                           Pop
-                          <m.img 
-                            src="/images/paperplane.svg" 
-                            alt="" 
-                            loading="lazy" 
-                            className="absolute top-0 left-1 sm:left-2 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 z-10 transform rotate-12" 
-                            animate={{ 
-                              x: [0, 5, 0],
-                              rotate: [12, 15, 12]
-                            }}
-                            transition={{ 
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            }}
-                          />
                         </span>
                         {" "}Us a
                       </h3>
-                      <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Message</h3>
+                      <h3 className="display text-3xl sm:text-4xl">Message</h3>
                     </m.div>
-                    <span className="text-xs sm:text-sm text-gray-500">1 of 2 Steps</span>
+                    <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink-soft">1 of 2 Steps</span>
                   </div>
 
                   <m.div
@@ -383,13 +305,13 @@ export default function ContactSection() {
                     animate="visible"
                     transition={{ delay: 0.1 }}
                   >
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Fullname</label>
+                    <label className="mb-2 block pl-5 text-sm font-medium text-ink-soft">Fullname</label>
                     <input
                       type="text"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange("firstName", e.target.value)}
                       placeholder="Alex Morgan"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 text-sm sm:text-base"
+                      className="w-full rounded-full border border-transparent bg-white px-5 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-2 focus:ring-ink"
                     />
                   </m.div>
 
@@ -399,13 +321,13 @@ export default function ContactSection() {
                     animate="visible"
                     transition={{ delay: 0.2 }}
                   >
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Email</label>
+                    <label className="mb-2 block pl-5 text-sm font-medium text-ink-soft">Email</label>
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange("email", e.target.value)}
                       placeholder="you@company.com"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 text-sm sm:text-base"
+                      className="w-full rounded-full border border-transparent bg-white px-5 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-2 focus:ring-ink"
                     />
                   </m.div>
 
@@ -415,7 +337,7 @@ export default function ContactSection() {
                     animate="visible"
                     transition={{ delay: 0.3 }}
                   >
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Phone Number</label>
+                    <label className="mb-2 block pl-5 text-sm font-medium text-ink-soft">Phone Number</label>
                     <PhoneInput
                       onChange={(value) => handleInputChange("phoneNumber", value)}
                       placeholder="Phone number"
@@ -428,13 +350,13 @@ export default function ContactSection() {
                     animate="visible"
                     transition={{ delay: 0.4 }}
                   >
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Message</label>
+                    <label className="mb-2 block pl-5 text-sm font-medium text-ink-soft">Message</label>
                     <textarea
                       value={formData.message}
                       onChange={(e) => handleInputChange("message", e.target.value)}
                       placeholder="Tell us about your project..."
                       rows={3}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 resize-none text-sm sm:text-base"
+                      className="w-full resize-none rounded-[24px] border border-transparent bg-white px-5 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-2 focus:ring-ink"
                     />
                   </m.div>
 
@@ -447,7 +369,7 @@ export default function ContactSection() {
                     <m.button
                       onClick={handleNext}
                       disabled={!isStep1Valid}
-                      className="w-full bg-gray-900 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
+                      className="w-full btn btn-lime disabled:cursor-not-allowed disabled:bg-canvas-deep disabled:text-ink-mute disabled:shadow-none"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -472,29 +394,14 @@ export default function ContactSection() {
                       className="relative"
                       variants={textVariants}
                     >
-                      <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+                      <h3 className="display text-3xl sm:text-4xl">
                         <span className="relative inline-block">
                           How Did You
-                          <m.img 
-                            src="/images/paperplane.svg" 
-                            alt="" 
-                            loading="lazy" 
-                            className="absolute top-0 left-1 sm:left-2 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 z-10 transform rotate-12" 
-                            animate={{ 
-                              x: [0, 5, 0],
-                              rotate: [12, 15, 12]
-                            }}
-                            transition={{ 
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            }}
-                          />
                         </span>
                         {" "}Find Us?
                       </h3>
                     </m.div>
-                    <span className="text-xs sm:text-sm text-gray-500">2 of 2 Steps</span>
+                    <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink-soft">2 of 2 Steps</span>
                   </div>
 
                   <m.div
@@ -503,16 +410,17 @@ export default function ContactSection() {
                     animate="visible"
                     transition={{ delay: 0.1 }}
                   >
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-3 sm:mb-4">Referral Source</label>
+                    <label className="mb-3 block text-sm font-medium text-ink-soft">Referral Source</label>
                     <div className="grid grid-cols-2 gap-2 sm:gap-3">
                       {referralOptions.map((option, index) => (
                         <m.button
                           key={option}
                           onClick={() => handleInputChange("referralSource", option)}
-                          className={`p-2 sm:p-3 rounded-lg border-2 text-xs sm:text-sm font-medium transition-all duration-200 ${
+                          aria-pressed={formData.referralSource === option}
+                          className={`rounded-full px-4 py-3 text-sm font-medium transition-colors duration-200 ${
                             formData.referralSource === option
-                              ? "border-gray-900 bg-gray-900 text-white"
-                              : "border-gray-300 text-gray-700 hover:border-gray-400"
+                              ? "bg-ink text-white"
+                              : "bg-white text-ink-soft hover:text-ink"
                           }`}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
@@ -531,7 +439,7 @@ export default function ContactSection() {
                   <div className="flex gap-2 sm:gap-3 pt-2 sm:pt-4">
                     <m.button
                       onClick={handleBack}
-                      className="flex-1 bg-gray-100 text-gray-700 py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
+                      className="btn flex-1 bg-white text-ink hover:bg-canvas"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -541,7 +449,7 @@ export default function ContactSection() {
                     <m.button
                       onClick={handleSubmit}
                       disabled={!isStep2Valid || isSubmitting || !captchaReady}
-                      className="flex-1 bg-gray-900 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
+                      className="flex-1 btn btn-lime disabled:cursor-not-allowed disabled:bg-canvas-deep disabled:text-ink-mute disabled:shadow-none"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -555,7 +463,7 @@ export default function ContactSection() {
               {/* Error Message */}
               {submitStatus === 'error' && (
                 <m.div 
-                  className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3"
+                  className="mt-4 p-4 bg-red-50 border border-red-200 rounded-[24px] flex items-center gap-3"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -582,13 +490,13 @@ export default function ContactSection() {
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, type: "spring" }}
                   >
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-lime rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-ink" />
                     </div>
                   </m.div>
                   
                   <m.h3 
-                    className="text-xl sm:text-2xl font-bold text-gray-900"
+                    className="display text-3xl"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
@@ -597,7 +505,7 @@ export default function ContactSection() {
                   </m.h3>
                   
                   <m.p 
-                    className="text-gray-600 text-sm sm:text-base"
+                    className="text-ink-soft text-base"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
@@ -607,7 +515,7 @@ export default function ContactSection() {
                   
                   <m.button
                     onClick={handleReset}
-                    className="bg-gray-900 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 text-sm sm:text-base"
+                    className="btn btn-ink"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, y: 20 }}
@@ -623,47 +531,44 @@ export default function ContactSection() {
         </div>
 
         {/* Offices Section */}
-        <div className="mt-16 sm:mt-20 md:mt-24 pt-12 sm:pt-16 md:pt-20 border-t border-gray-200">
+        <div className="mt-20 sm:mt-24">
           <m.div 
-            className="text-center mb-8 sm:mb-12 md:mb-16"
+            className="text-center mb-10 sm:mb-14"
             variants={itemVariants}
           >
-            <m.div 
-              className="mb-4"
-              variants={textVariants}
-            >
+            <m.div className="mb-5" variants={textVariants}>
               <BadgeSubtitle>Our Offices</BadgeSubtitle>
             </m.div>
             <m.h2 
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
+              className="display mb-4 text-3xl sm:text-4xl lg:text-5xl"
               variants={textVariants}
             >
               Visit Us at Our Locations
             </m.h2>
             <m.p 
-              className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto"
+              className="text-ink-soft text-base sm:text-lg max-w-2xl mx-auto"
               variants={textVariants}
             >
               Connect with us at either of our offices for in-person consultations and support.
             </m.p>
           </m.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {offices.map((office, index) => (
               <m.div
                 key={office.city}
-                className="border border-gray-200 rounded-xl p-6 sm:p-8 hover:shadow-lg transition-shadow duration-300 bg-white"
+                className="glass rounded-[32px] p-6 sm:p-8"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-white" />
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-lime flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-ink" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                    <h3 className="display text-3xl">
                       {office.city}
                     </h3>
                   </div>
@@ -671,19 +576,19 @@ export default function ContactSection() {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <MapPin className="w-5 h-5 text-ink-mute flex-shrink-0 mt-0.5" />
+                    <p className="text-ink-soft text-sm leading-relaxed">
                       {office.address}
                     </p>
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4">
-                    <p className="text-sm font-medium text-gray-700 mb-3">
+                  <div className="border-t border-ink/10 pt-4">
+                    <p className="text-sm font-medium text-ink-soft mb-3">
                       <strong>Managed by:</strong> {office.contact.name}
                     </p>
                     <a
                       href={`tel:${office.contact.phone}`}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200"
+                      className="btn btn-ink btn-sm"
                     >
                       <Phone className="w-4 h-4" />
                       {office.contact.phone}

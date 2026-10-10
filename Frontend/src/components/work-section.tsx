@@ -45,37 +45,25 @@ export type FeaturedProject = Pick<
 export default function WorkSection({ featured }: { featured: FeaturedProject[] }) {
 
   return (
-    <section className="bg-white py-28 px-4 sm:px-6 lg:px-8">
+    <section className="px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <m.div
-          className="mb-14"
+          className="mb-12"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={container}
         >
-          <m.div variants={item} className="mb-3">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-              Projects delivered
-            </span>
+          <m.div variants={item} className="mb-5">
+            <span className="eyebrow">Projects delivered</span>
           </m.div>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
-            <m.h2
-              variants={item}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
-            >
-              Projects that{" "}
-              <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                deliver results
-              </span>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5">
+            <m.h2 variants={item} className="display text-4xl sm:text-5xl lg:text-6xl">
+              Projects that <span className="mark-lime whitespace-nowrap">deliver results</span>
             </m.h2>
-            <m.div variants={item} whileHover={{ scale: 1.05 }}>
-              <Link
-                href="/work/"
-                prefetch={false}
-                className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors group whitespace-nowrap"
-              >
+            <m.div variants={item}>
+              <Link href="/work/" prefetch={false} className="btn btn-glass btn-sm group">
                 View all projects
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -85,66 +73,69 @@ export default function WorkSection({ featured }: { featured: FeaturedProject[] 
 
         {/* Featured row */}
         <m.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
           variants={container}
         >
           {featured.map((project) => (
-            <m.div key={project.slug} variants={item}>
-              <Link href={`/work/${project.slug}/`} prefetch={false} className="group block">
+            <m.div key={project.slug} variants={item} className="h-full">
+              <Link
+                href={`/work/${project.slug}/`}
+                prefetch={false}
+                className="glass group flex h-full flex-col rounded-[36px] p-3 transition hover:bg-white"
+              >
                 {/* Image */}
-                <div className="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[16/10] mb-5 shadow-lg shadow-gray-200/60">
+                <div className="relative overflow-hidden rounded-[26px] bg-canvas-deep aspect-[16/10]">
                   <DeferredCover
                     src={project.coverImage}
                     alt={`${project.title} — ${project.category} project by NextGen Fusion`}
                   />
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   {/* Badges */}
                   <div className="absolute top-4 left-4 flex gap-2">
-                    <span className="bg-gradient-to-r from-[#2B35AB] to-[#8A38F5] text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+                    <span className="rounded-full bg-lime px-3 py-1 text-xs font-medium text-ink">
                       Featured
                     </span>
-                    <span className="bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-medium px-3 py-1 rounded-full border border-white/60">
+                    <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-ink">
                       {project.category.split(" / ")[0]}
                     </span>
                   </div>
                   {/* Arrow */}
-                  <div className="absolute bottom-5 right-5 w-9 h-9 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
-                    <ArrowRight className="w-4 h-4 text-gray-900" />
+                  <div className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-lime text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <ArrowRight className="w-5 h-5" />
                   </div>
                 </div>
 
                 {/* Meta */}
-                <div>
-                  <p className="text-xs text-gray-400 mb-1">{project.domain}</p>
+                <div className="flex flex-1 flex-col px-3 pb-3 pt-6 sm:px-4">
+                  <p className="text-xs text-ink-mute mb-2">{project.domain}</p>
                   {project.results?.[0] && (
-                    <p className="mb-2 text-sm font-semibold bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
+                    <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-ink">
+                      <span className="h-2 w-2 rounded-full bg-leaf" aria-hidden="true" />
                       {project.results[0].metric} {project.results[0].label}
                     </p>
                   )}
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors mb-2">
+                  <h3 className="text-2xl font-medium tracking-tight text-ink mb-2">
                     {project.title}
                   </h3>
-                  <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
+                  <p className="text-sm text-ink-soft leading-relaxed line-clamp-2">
                     {project.shortDescription}
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-purple-600 group-hover:text-purple-700">
-                    Read More
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                  <div className="flex flex-wrap gap-1.5 mt-3">
+                  <div className="flex flex-wrap gap-1.5 mt-4">
                     {project.tags.slice(0, 3).map((tag) => (
                       <span
                         key={tag}
-                        className="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-md"
+                        className="rounded-full bg-canvas px-3 py-1 text-xs text-ink-soft"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink">
+                    Read More
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
                 </div>
               </Link>
             </m.div>

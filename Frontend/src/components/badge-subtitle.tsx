@@ -7,7 +7,7 @@ interface BadgeSubtitleProps {
 
 export default function BadgeSubtitle({ children, className = '' }: BadgeSubtitleProps) {
   return (
-    <span className={`inline-block px-3 py-1 text-sm text-gray-600 border border-gray-300 rounded-md bg-transparent ${className}`}>
+    <span className={`eyebrow ${className}`}>
       {children}
     </span>
   );

@@ -153,11 +153,11 @@ export default function PhoneInput({ onChange, placeholder = "Phone number" }: O
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-3 border border-gray-300 border-r-0 rounded-l-lg hover:border-gray-400 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200 bg-white min-w-[100px]"
+        className="flex min-w-[104px] items-center gap-2 rounded-l-full border-r border-canvas-deep bg-white py-3 pl-5 pr-3 text-ink outline-none transition-shadow duration-200 focus:ring-2 focus:ring-ink"
       >
         <span className="text-lg">{selectedCountry.flag}</span>
         <span className="text-sm font-medium">{selectedCountry.dialCode}</span>
-        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-4 h-4 text-ink-mute transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       {/* Phone Number Input */}
@@ -166,21 +166,21 @@ export default function PhoneInput({ onChange, placeholder = "Phone number" }: O
         value={phoneNumber}
         onChange={(e) => handlePhoneChange(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 px-4 py-3 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200"
+        className="min-w-0 flex-1 rounded-r-full bg-white px-4 py-3 text-base text-ink outline-none transition-shadow duration-200 placeholder:text-ink-mute/70 focus:ring-2 focus:ring-ink"
       />
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-hidden">
-          <div className="p-3 border-b border-gray-200">
+        <div className="absolute top-full left-0 z-50 mt-2 max-h-80 w-80 max-w-[calc(100vw-4rem)] overflow-hidden rounded-[24px] bg-white shadow-[0_24px_48px_-24px_rgba(15,16,13,0.5)]">
+          <div className="p-3 border-b border-canvas-deep">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-ink-mute" />
               <input
                 type="text"
                 placeholder="Search countries..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
+                className="w-full rounded-full bg-canvas py-2 pl-10 pr-4 text-ink outline-none focus:ring-2 focus:ring-ink"
               />
             </div>
           </div>
@@ -190,17 +190,17 @@ export default function PhoneInput({ onChange, placeholder = "Phone number" }: O
                 key={`${country.code}-${country.dialCode}`}
                 type="button"
                 onClick={() => handleCountrySelect(country)}
-                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-left transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-canvas text-left transition-colors"
               >
                 <span className="text-lg">{country.flag}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-gray-900 truncate">{country.name}</div>
-                  <div className="text-sm text-gray-500">{country.dialCode}</div>
+                  <div className="text-sm font-medium text-ink truncate">{country.name}</div>
+                  <div className="text-sm text-ink-mute">{country.dialCode}</div>
                 </div>
               </button>
             ))}
             {filteredCountries.length === 0 && (
-              <div className="px-4 py-8 text-center text-gray-500">No countries found</div>
+              <div className="px-4 py-8 text-center text-ink-mute">No countries found</div>
             )}
           </div>
         </div>

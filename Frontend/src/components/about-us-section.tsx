@@ -1,10 +1,8 @@
 "use client"
 
 import { m } from "framer-motion"
-import Image from "next/image"
 import BadgeSubtitle from "./badge-subtitle"
 import { AnimatedTooltip } from "./ui/animated-tooltip"
-import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { team } from "@/data/team"
 import { staticProjects } from "@/lib/static-projects"
 import { PROJECTS_DELIVERED } from "@/lib/seo"
@@ -49,32 +47,7 @@ const textVariants = {
   }
 }
 
-const imageVariants = {
-  hidden: { 
-    opacity: 0, 
-    scale: 0.8,
-    rotate: -10
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      duration: 0.6
-    }
-  },
-  hover: {
-    scale: 1.1,
-    rotate: 5,
-    transition: {
-      duration: 0.3
-    }
-  }
-}
-
 export default function AboutUsSection() {
-  const { getIconSrc } = useMobileIcon()
-  
   // Derived from the canonical team source. This section used to carry its own
   // copy of the roster, with its own guessed LinkedIn URLs — which is how the
   // site ended up publishing links to profiles nobody had checked.
@@ -90,81 +63,44 @@ export default function AboutUsSection() {
   return (
     <m.section 
       id="about" 
-      className="bg-white py-32"
+      className="ambient-teal py-20 sm:py-24"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={containerVariants}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-10 lg:gap-16 items-start">
           {/* Left Column */}
           <m.div variants={itemVariants}>
-            <m.div 
-              className="mb-6"
-              variants={textVariants}
-            >
+            <m.div className="mb-5" variants={textVariants}>
               <BadgeSubtitle>About Us</BadgeSubtitle>
             </m.div>
-            <m.h2
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-8"
-              variants={textVariants}
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                <m.div 
-                  className="relative -translate-y-1 inline-block overflow-hidden hero-icon"
-                  variants={imageVariants}
-                  whileHover="hover"
-                >
-                  <Image
-                    src={getIconSrc("/images/handwaves.svg", "/images/handwaves.png")}
-                    alt=""
-                    width={56}
-                    height={56}
-                    className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
-                  />
-                </m.div>
-                <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                  Hello,
-                </span>
-                <span>we&apos;re</span>
-              </div>{" "}
-              <span className="text-gray-900">NextGen Fusion</span>
-              <span className="mt-3 block text-lg font-semibold text-gray-700 sm:text-xl md:text-2xl">
+            <m.h2 className="mb-8" variants={textVariants}>
+              <span className="display block text-4xl sm:text-5xl lg:text-6xl">
+                <span className="mark-lime">Hello,</span> we&apos;re NextGen Fusion
+              </span>
+              <span className="mt-5 block text-xl tracking-tight text-ink-soft sm:text-2xl">
                 A web development studio in Lucknow &amp; Mumbai
               </span>
             </m.h2>
           </m.div>
 
           {/* Right Column */}
-          <m.div 
-            className="space-y-12"
-            variants={containerVariants}
-          >
+          <m.div className="space-y-4" variants={containerVariants}>
             {/* Two column text content */}
-            <m.div 
-              className="grid sm:grid-cols-2 gap-8"
-              variants={itemVariants}
-            >
-              <m.div
-                variants={textVariants}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Why we showed up</h3>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+            <m.div className="grid sm:grid-cols-2 gap-4" variants={itemVariants}>
+              <m.div variants={textVariants} className="glass rounded-[28px] p-6 sm:p-7">
+                <h3 className="text-xl font-medium tracking-tight text-ink mb-3">Why we showed up</h3>
+                <p className="text-ink-soft text-sm sm:text-base leading-relaxed">
                   Most of our enquiries come from businesses whose previous developer stopped replying.
                   So we stay on after launch, on a support plan quoted upfront, and the person
                   who wrote your code is the person who answers when something needs changing.
                 </p>
               </m.div>
-              <m.div
-                variants={textVariants}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Our Focus and Work</h3>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+              <m.div variants={textVariants} className="glass rounded-[28px] p-6 sm:p-7">
+                <h3 className="text-xl font-medium tracking-tight text-ink mb-3">Our Focus and Work</h3>
+                <p className="text-ink-soft text-sm sm:text-base leading-relaxed">
                   {PROJECTS_DELIVERED} websites, online stores and web apps delivered for D2C brands,
                   manufacturers, institutes and B2B firms, with {staticProjects.length} of them written up
                   as case studies you can check. We judge
@@ -174,28 +110,17 @@ export default function AboutUsSection() {
             </m.div>
 
             {/* Team Section */}
-            <m.div variants={itemVariants}>
-              <m.h2 
-                className="text-2xl font-bold text-gray-900 mb-3"
-                variants={textVariants}
-              >
+            <m.div variants={itemVariants} className="wash-pink rounded-[32px] p-6 sm:p-8">
+              <m.h2 className="text-2xl font-medium tracking-tight text-ink mb-3" variants={textVariants}>
                 Meet the Team Behind Our Work
               </m.h2>
-              <m.p 
-                className="text-gray-600 text-sm sm:text-base mb-8"
-                variants={textVariants}
-              >
+              <m.p className="text-ink text-sm sm:text-base mb-8 max-w-md" variants={textVariants}>
                 {team.length} people across Lucknow and Mumbai. The developer who scopes your project
                 writes the code.
               </m.p>
 
               {/* Team Member Avatars */}
-              <m.div 
-                className="flex justify-start"
-                variants={textVariants}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
+              <m.div className="flex justify-start" variants={textVariants}>
                 <AnimatedTooltip items={teamMembers} />
               </m.div>
             </m.div>

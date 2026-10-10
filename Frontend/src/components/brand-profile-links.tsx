@@ -20,8 +20,8 @@ const ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
 }
 
 const TONES = {
-  light: "border-gray-200 text-gray-700 hover:border-gray-900 hover:text-gray-900",
-  dark: "border-white/25 text-gray-300 hover:border-white hover:text-white",
+  light: "glass text-ink-soft hover:bg-white hover:text-ink",
+  dark: "glass-ink text-white/80 hover:bg-white/15 hover:text-white",
 }
 
 /**
@@ -46,7 +46,7 @@ export function BrandProfileLinks({
               target="_blank"
               rel="me noopener noreferrer"
               className={cn(
-                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
+                "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
                 TONES[tone],
               )}
             >

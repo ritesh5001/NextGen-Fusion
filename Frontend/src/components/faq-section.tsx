@@ -2,9 +2,7 @@
 import { m, AnimatePresence } from "framer-motion"
 import { Plus, Minus, MoreVertical } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
-import Image from "next/image"
 import BadgeSubtitle from "./badge-subtitle"
-import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { homeFaqs } from "@/data/home-faqs"
 
 // Animation variants
@@ -63,22 +61,6 @@ const textVariants = {
   }
 }
 
-const iconVariants = {
-  hidden: { 
-    opacity: 0, 
-    scale: 0.8,
-    rotate: -10
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      duration: 0.5
-    }
-  }
-}
-
 const faqVariants = {
   hidden: { 
     opacity: 0, 
@@ -122,7 +104,6 @@ const answerVariants = {
 }
 
 export default function FAQSection() {
-  const { getIconSrc } = useMobileIcon()
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -158,7 +139,7 @@ export default function FAQSection() {
   return (
     <m.section 
       id="faq" 
-      className="relative bg-white py-16 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -168,52 +149,15 @@ export default function FAQSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column - Header */}
           <m.div 
-            className="lg:sticky lg:top-8"
+            className="lg:sticky lg:top-28"
             variants={itemVariants}
           >
-            <m.div 
-              className="mb-6"
-              variants={textVariants}
-            >
+            <m.div className="mb-5" variants={textVariants}>
               <BadgeSubtitle>Frequently Asked Questions</BadgeSubtitle>
             </m.div>
-            <m.h2 
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6"
-              variants={textVariants}
-            >
-              <div className="flex flex-wrap items-center gap-4">
-                <m.div 
-                  className="relative inline-block"
-                  variants={iconVariants}
-                >
-                  <Image
-                    src={getIconSrc("/images/chat.svg", "/images/chat.png")}
-                    alt=""
-                    width={48}
-                    height={48}
-                    className="object-contain w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
-                  />
-                </m.div>
-                <span className="inline-block bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                  Questions
-                </span>
-                <m.div 
-                  className="relative inline-block"
-                  variants={iconVariants}
-                >
-                  <Image
-                    src={getIconSrc("/images/people.svg", "/images/people.png")}
-                    alt=""
-                    width={48}
-                    height={48}
-                    className="object-contain w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
-                  />
-                </m.div>
-              </div>{" "}
-                <span className="inline-block">
-                  about working with us, answered
-                </span>
-              </m.h2>
+            <m.h2 className="display text-4xl sm:text-5xl lg:text-6xl" variants={textVariants}>
+              <span className="mark-lime">Questions</span> about working with us, answered
+            </m.h2>
             </m.div>
 
           {/* Right Column - Chat Interface */}
@@ -222,23 +166,15 @@ export default function FAQSection() {
             variants={itemVariants}
           >
             <m.div 
-              className="w-full max-w-md"
+              className="w-full max-w-xl"
               variants={cardVariants}
             >
               {/* Chat Interface */}
-              <div className="bg-white rounded-2xl shadow-lg overflow-hidden relative">
-                {/* Gradient Background */}
-                <m.div 
-                  className="absolute inset-0 bg-gradient-to-br from-purple-100 via-blue-50 to-blue-200 opacity-30"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 0.3 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1 }}
-                />
+              <div className="wash-green relative rounded-[40px] p-3 sm:p-4">
 
                 {/* Chat Header */}
                 <m.div 
-                  className="relative bg-white px-4 py-4 border-b border-gray-100"
+                  className="relative rounded-full bg-white px-3 py-2.5"
                   variants={textVariants}
                 >
                   <div className="flex items-center justify-between">
@@ -246,27 +182,27 @@ export default function FAQSection() {
                       type="button"
                       onClick={handleBackClick} 
                       aria-label="Back"
-                      className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-gray-100"
+                      className="grid h-9 w-9 place-items-center rounded-full bg-canvas transition-colors hover:bg-canvas-deep"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </svg>
                     </m.button>
                     <div className="flex items-center gap-3">
                       <m.div 
-                        className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center"
+                        className="w-9 h-9 bg-lime rounded-full flex items-center justify-center"
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <span className="text-white text-xs font-bold">TC</span>
+                        <span className="text-ink text-xs font-semibold">TC</span>
                       </m.div>
                       <div className="text-center">
-                        <div className="text-sm font-semibold text-gray-900">
+                        <div className="text-sm font-medium text-ink">
                           {activeIndex !== null ? "NextGen Fusion" : "Your Questions"}
                         </div>
-                        <div className="text-xs text-gray-600">Usually replies within a day</div>
+                        <div className="text-xs text-ink-mute">Usually replies within a day</div>
                       </div>
                     </div>
                     <div className="relative" ref={dropdownRef}>
@@ -275,27 +211,27 @@ export default function FAQSection() {
                         onClick={toggleDropdown} 
                         aria-label="More options"
                         aria-expanded={showDropdown}
-                        className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-gray-100"
+                        className="grid h-9 w-9 place-items-center rounded-full bg-canvas transition-colors hover:bg-canvas-deep"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
-                        <MoreVertical className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                        <MoreVertical className="w-4 h-4 sm:w-5 sm:h-5 text-ink" />
                       </m.button>
 
                       {/* Dropdown Menu */}
                       <AnimatePresence>
                         {showDropdown && (
                           <m.div 
-                            className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-4 px-4 z-10"
+                            className="absolute right-0 top-full mt-3 w-64 bg-white rounded-[24px] shadow-[0_24px_48px_-24px_rgba(15,16,13,0.5)] py-4 px-4 z-10"
                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
                             transition={{ duration: 0.2 }}
                           >
-                            <p className="text-sm text-gray-600 text-center leading-relaxed">
+                            <p className="text-sm text-ink-soft text-center leading-relaxed">
                               What do you expect to find here? 
                               <br />
-                              <span className="text-xs text-gray-400 mt-1 block">
+                              <span className="text-xs text-ink-mute mt-1 block">
                                 Maybe some chat options or settings?
                               </span>
                             </p>
@@ -308,17 +244,17 @@ export default function FAQSection() {
 
                 {/* Today Badge */}
                 <m.div 
-                  className="relative px-4 py-2"
+                  className="relative px-4 pb-1 pt-4"
                   variants={textVariants}
                 >
                   <div className="flex justify-center">
-                    <span className="bg-gray-800 text-white text-xs px-3 py-1 rounded-full">Today</span>
+                    <span className="bg-ink/70 text-white text-xs px-3 py-1 rounded-full">Today</span>
                   </div>
                 </m.div>
 
                 {/* Chat Content */}
                 <m.div 
-                  className="relative p-4 space-y-3 min-h-[600px]"
+                  className="relative space-y-2 p-1 pt-3 sm:p-2 sm:pt-3"
                   variants={containerVariants}
                 >
                   {faqs.map((faq, index) => (
@@ -337,22 +273,22 @@ export default function FAQSection() {
                         id={`faq-question-${index}`}
                         aria-expanded={activeIndex === index}
                         aria-controls={`faq-answer-${index}`}
-                        className="w-full flex items-start gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200/50 hover:border-gray-300/50 transition-all text-left group shadow-sm"
+                        className="w-full flex items-center gap-3 rounded-[22px] bg-white p-2.5 pr-4 text-left transition-colors hover:bg-white/90"
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
                       >
                         <m.div 
-                          className="flex-shrink-0 mt-0.5"
+                          className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${activeIndex === index ? "bg-ink text-lime" : "bg-lime text-ink"}`}
                           animate={{ rotate: activeIndex === index ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
                         >
                           {activeIndex === index ? (
-                            <Minus className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
+                            <Minus className="w-4 h-4" />
                           ) : (
-                          <Plus className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
+                          <Plus className="w-4 h-4" />
                           )}
                         </m.div>
-                        <span className="text-xs sm:text-sm font-medium text-gray-900 leading-relaxed">{faq.question}</span>
+                        <span className="text-sm sm:text-base font-medium text-ink leading-snug">{faq.question}</span>
                       </m.button>
 
                       {/* Answer.
@@ -371,8 +307,8 @@ export default function FAQSection() {
                         animate={activeIndex === index ? "visible" : "hidden"}
                         className="overflow-hidden"
                       >
-                        <div className="bg-blue-500/90 backdrop-blur-sm text-white p-3 rounded-xl ml-7 shadow-sm">
-                          <p className="text-xs sm:text-sm leading-relaxed">{faq.answer}</p>
+                        <div className="ml-8 rounded-[22px] bg-ink p-4 text-white">
+                          <p className="text-sm leading-relaxed">{faq.answer}</p>
                         </div>
                       </m.div>
                     </m.div>

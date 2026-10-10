@@ -26,10 +26,9 @@ function Chip({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
-        active
-          ? "border-transparent bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] text-white shadow-sm"
-          : "border-gray-200 text-gray-600 hover:border-gray-400"
+      aria-pressed={active}
+      className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+        active ? "bg-ink text-white" : "glass text-ink-soft hover:bg-white"
       }`}
     >
       {children}
@@ -49,13 +48,13 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
   // stretched ::after already makes the whole card clickable, but tap-target
   // audits measure the link's own box.
   const primaryClass =
-    "inline-block max-w-full truncate py-0.5 align-top after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-purple-500"
+    "inline-block max-w-full truncate py-0.5 align-top after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-[24px] focus-visible:after:ring-2 focus-visible:after:ring-ink"
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
-      <div ref={mediaRef} className="relative aspect-[16/10] overflow-hidden bg-gray-50">
+    <div className="glass group relative rounded-[24px] p-2 transition-all hover:-translate-y-1 hover:bg-white">
+      <div ref={mediaRef} className="relative aspect-[16/10] overflow-hidden rounded-[18px] bg-canvas-deep">
         {!near ? null : errored ? (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2B35AB]/10 via-[#8A38F5]/10 to-[#13CBD4]/10 px-3 text-center text-sm font-semibold text-gray-500">
+          <div className="wash-pink flex h-full w-full items-center justify-center px-3 text-center text-sm font-medium text-ink">
             {project.host}
           </div>
         ) : (
@@ -69,22 +68,22 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
           />
         )}
         {caseStudyHref ? (
-          <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-purple-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-lime px-2.5 py-1 text-xs font-medium text-ink">
             <FileText className="h-3 w-3" aria-hidden="true" />
             Case study
           </span>
         ) : (
-          <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-gray-700 shadow">
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-xs font-medium text-ink">
             <Globe className="h-3 w-3" aria-hidden="true" />
             Live site
           </span>
         )}
-        <div className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 opacity-0 shadow transition-opacity group-hover:opacity-100">
-          {caseStudyHref ? <ArrowRight className="h-4 w-4 text-gray-900" /> : <ArrowUpRight className="h-4 w-4 text-gray-900" />}
+        <div className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full bg-ink text-lime opacity-0 transition-opacity group-hover:opacity-100">
+          {caseStudyHref ? <ArrowRight className="h-4 w-4" /> : <ArrowUpRight className="h-4 w-4" />}
         </div>
       </div>
-      <div className="px-3 py-2.5">
-        <p className="truncate text-sm font-semibold text-gray-900 group-hover:text-purple-600">
+      <div className="px-2 pb-1.5 pt-3">
+        <p className="truncate text-sm font-medium text-ink">
           {caseStudyHref ? (
             <Link href={caseStudyHref} prefetch={false} className={primaryClass}>
               {project.name}
@@ -102,15 +101,15 @@ function DeliveredCard({ project }: { project: DeliveredProject }) {
             href={project.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative z-10 flex min-h-6 w-fit max-w-full items-center gap-0.5 truncate py-1 text-xs text-gray-600 hover:text-gray-900 hover:underline"
+            className="relative z-10 flex min-h-6 w-fit max-w-full items-center gap-0.5 truncate py-1 text-xs text-ink-mute hover:text-ink hover:underline"
           >
             Live site: {project.host}
             <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
           </a>
         ) : (
-          <p className="truncate py-1 text-xs text-gray-600">{project.host}</p>
+          <p className="truncate py-1 text-xs text-ink-mute">{project.host}</p>
         )}
-        <span className="mt-1.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
+        <span className="mt-1.5 inline-block rounded-full bg-canvas px-2.5 py-0.5 text-xs font-medium text-ink-soft">
           {project.subcategory ?? CATEGORY_LABELS[project.category]}
         </span>
       </div>
@@ -171,27 +170,23 @@ export default function DeliveredWall({
   const items = limit ? base.slice(0, limit) : base
 
   return (
-    <section className={`bg-white px-4 sm:px-6 lg:px-8 ${hideHeader ? "pb-20 pt-0" : "py-20"}`}>
+    <section className={`px-4 sm:px-6 lg:px-8 ${hideHeader ? "pb-20 pt-0" : "py-20"}`}>
       <div className="mx-auto max-w-7xl">
         {!hideHeader && (
           <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800">
-                Projects delivered
-              </span>
-              <HeadingTag className="mt-3 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+              <span className="eyebrow">Projects delivered</span>
+              <HeadingTag className="display mt-5 text-4xl sm:text-5xl lg:text-6xl">
                 {heading.includes(" ") ? (
                   <>
                     {heading.split(" ").slice(0, -1).join(" ")}{" "}
-                    <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-                      {heading.split(" ").slice(-1)}
-                    </span>
+                    <span className="mark-lime">{heading.split(" ").slice(-1)}</span>
                   </>
                 ) : (
                   heading
                 )}
               </HeadingTag>
-              <p className="mt-3 max-w-2xl text-gray-500">
+              <p className="mt-4 max-w-2xl text-ink-soft">
                 {subheading ?? "Live websites and stores built and shipped for real businesses."}
               </p>
             </div>
@@ -199,7 +194,7 @@ export default function DeliveredWall({
               <Link
                 href="/work/"
                 prefetch={false}
-                className="inline-flex shrink-0 items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+                className="btn btn-glass btn-sm shrink-0"
               >
                 See all projects
                 <ArrowUpRight className="h-4 w-4" />
@@ -226,7 +221,7 @@ export default function DeliveredWall({
             </div>
 
             {activeCat === "ecommerce" && (
-              <div className="flex flex-wrap gap-2 border-t border-gray-100 pt-4">
+              <div className="flex flex-wrap gap-2 border-t border-ink/10 pt-4">
                 <Chip active={activeSub === "all"} onClick={() => setActiveSub("all")}>
                   All products
                 </Chip>
@@ -251,7 +246,7 @@ export default function DeliveredWall({
             <Link
               href="/work/"
               prefetch={false}
-              className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-6 py-3 text-sm font-medium text-gray-700 transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+              className="btn btn-ink"
             >
               See all projects delivered
               <ArrowUpRight className="h-4 w-4" />

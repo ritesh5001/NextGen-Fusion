@@ -285,7 +285,7 @@ export default function RootLayout({
         />
 
       </head>
-      <body className="min-h-screen bg-white md:pb-0 pb-24">
+      <body className="min-h-screen md:pb-0 pb-24">
         <Analytics />
         <ErrorBoundary>
           <LenisProvider>

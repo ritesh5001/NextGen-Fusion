@@ -115,8 +115,8 @@ const legal: FooterLink[] = [
 
 const WHATSAPP_URL = whatsappHref();
 
-const heading = "text-xs font-semibold uppercase tracking-[0.14em] text-white";
-const linkClass = "text-sm text-gray-300 transition-colors duration-200 hover:text-white";
+const heading = "text-sm font-medium text-lime";
+const linkClass = "text-sm text-white/75 transition-colors duration-200 hover:text-white";
 
 function LinkColumn({ id, title, links }: { id: string; title: string; links: FooterLink[] }) {
   return (
@@ -139,30 +139,31 @@ function LinkColumn({ id, title, links }: { id: string; title: string; links: Fo
 
 export default function Footer() {
   return (
-    <footer
-      className="relative w-full bg-black bg-cover bg-center text-white"
-      style={{ backgroundImage: "url('/images/footerbg.webp')" }}
-      suppressHydrationWarning
-    >
-      {/* Darkens the background image evenly, so small text stays readable
-          where the image turns bright. */}
-      <div aria-hidden="true" className="absolute inset-0 bg-black/60" />
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-14 pb-6 sm:px-6 lg:px-8 lg:pt-16">
+    <footer className="px-2 pb-2 sm:px-3 sm:pb-3">
+      <div className="relative overflow-hidden rounded-[32px] bg-ink text-white sm:rounded-[40px]">
+      {/* A CSS glow in the theme colours, where a background image used to be:
+          one request fewer on every page. Kept faint so small text stays
+          readable over it. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_40%_at_100%_0%,rgba(220,245,74,0.16),rgba(220,245,74,0)_70%),radial-gradient(40%_45%_at_0%_100%,rgba(46,159,71,0.22),rgba(46,159,71,0)_70%)]"
+      />
+      <div className="relative z-10 mx-auto max-w-7xl px-5 pt-14 pb-6 sm:px-6 lg:px-8 lg:pt-16">
         {/* Brand and links */}
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
-            <Link href="/" prefetch={false} className="text-2xl font-bold tracking-tight text-white">
+            <Link href="/" prefetch={false} className="text-3xl font-normal tracking-tight text-white">
               NextGen Fusion
             </Link>
-            <p className="mt-4 max-w-sm text-base font-semibold leading-snug text-white">{SITE_TAGLINE}</p>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-300">
+            <p className="mt-4 max-w-sm text-base font-medium leading-snug text-white">{SITE_TAGLINE}</p>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/75">
               A remote team in India working with international clients. We serve businesses in the
               US, Canada, the UK, Europe, the UAE and Australia.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
                 href="/contact/"
-                className="inline-flex items-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-colors duration-200 hover:bg-gray-200"
+                className="btn btn-lime btn-sm"
               >
                 Get a written quote
               </a>
@@ -170,7 +171,7 @@ export default function Footer() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center rounded-full border border-white/25 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-white"
+                className="btn btn-sm glass-ink text-white hover:bg-white/15"
               >
                 WhatsApp us
               </a>
@@ -188,7 +189,7 @@ export default function Footer() {
               <div aria-labelledby="footer-locations" className="mt-4 space-y-5">
                 {locations.map((group) => (
                   <div key={group.group}>
-                    <p className="text-xs text-gray-400">{group.group}</p>
+                    <p className="text-xs text-white/60">{group.group}</p>
                     <ul className="mt-2 space-y-2.5">
                       {group.links.map((link) => (
                         <li key={link.href}>
@@ -215,27 +216,27 @@ export default function Footer() {
             <p className={heading}>Contact</p>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <a href={`mailto:${CONTACT_EMAIL}`} className="text-gray-300 transition-colors duration-200 hover:text-white">
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-white/75 transition-colors duration-200 hover:text-white">
                   {CONTACT_EMAIL}
                 </a>
               </li>
               <li>
-                <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-gray-300 transition-colors duration-200 hover:text-white">
+                <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-white/75 transition-colors duration-200 hover:text-white">
                   {PRIMARY_PHONE_DISPLAY}
                 </a>
               </li>
-              <li className="text-gray-400">{OFFICE_HOURS.label}</li>
+              <li className="text-white/60">{OFFICE_HOURS.label}</li>
             </ul>
           </div>
 
           {offices.map((office) => (
             <div key={office.city}>
               <p className={heading}>
-                <a href={office.landingPath} className="transition-colors duration-200 hover:text-gray-300">
+                <a href={office.landingPath} className="transition-colors duration-200 hover:text-white/75">
                   {office.city} office
                 </a>
               </p>
-              <address className="mt-4 text-sm not-italic leading-relaxed text-gray-300">
+              <address className="mt-4 text-sm not-italic leading-relaxed text-white/75">
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`NextGen Fusion, ${office.address}`)}`}
                   target="_blank"
@@ -247,7 +248,7 @@ export default function Footer() {
                 <br />
                 <a
                   href={`tel:${office.contact.phoneE164}`}
-                  className="mt-1 inline-block text-gray-300 transition-colors duration-200 hover:text-white"
+                  className="mt-1 inline-block text-white/75 transition-colors duration-200 hover:text-white"
                 >
                   {office.contact.phone}
                 </a>
@@ -257,7 +258,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-gray-400 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 NextGen Fusion. All rights reserved.</p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {legal.map((link) => (
@@ -269,6 +270,7 @@ export default function Footer() {
             ))}
           </ul>
         </div>
+      </div>
       </div>
     </footer>
   );

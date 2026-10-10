@@ -95,7 +95,7 @@ export default function StackMarqueeSection() {
 
   return (
     <m.section
-      className="bg-white py-32 overflow-hidden"
+      className="py-20 sm:py-24 overflow-hidden"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -106,14 +106,11 @@ export default function StackMarqueeSection() {
           className="text-center"
           variants={itemVariants}
         >
-          <m.div
-            className="mb-4"
-            variants={textVariants}
-          >
+          <m.div className="mb-5" variants={textVariants}>
             <BadgeSubtitle>Tech Stack</BadgeSubtitle>
           </m.div>
           <m.h2
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6"
+            className="display text-4xl sm:text-5xl lg:text-6xl"
             variants={textVariants}
           >
             The tools that accompany our workflow.
@@ -129,7 +126,7 @@ export default function StackMarqueeSection() {
           {techStackLines.map((techLine, lineIndex) => (
             <m.div
               key={lineIndex}
-              className="flex overflow-hidden rounded-lg"
+              className="flex overflow-hidden py-3"
               style={{
                 maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
                 WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
@@ -141,45 +138,34 @@ export default function StackMarqueeSection() {
               transition={{ delay: lineIndex * 0.2 }}
             >
               <div
-                className={`flex gap-8 sm:gap-12 ${lineIndex % 2 === 0 ? "animate-marquee-right" : "animate-marquee-left"}`}
+                className={`flex gap-3 sm:gap-4 ${lineIndex % 2 === 0 ? "animate-marquee-right" : "animate-marquee-left"}`}
                 style={{
                   width: "max-content",
                 }}
               >
                 {/* Duplicate the tech stack multiple times for seamless loop */}
                 {[...Array(3)].map((_, duplicateIndex) => (
-                  <div key={`${lineIndex}-${duplicateIndex}`} className="flex gap-8 sm:gap-12">
+                  <div key={`${lineIndex}-${duplicateIndex}`} className="flex gap-3 sm:gap-4">
                     {techLine.map((tech, techIndex) => (
                       <m.div
                         key={`${tech.name}-${duplicateIndex}-${techIndex}`}
-                        className="flex flex-col items-center gap-2 group"
+                        className="glass flex items-center gap-3 rounded-full py-2 pl-2 pr-5"
                         variants={imageVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
                         transition={{ delay: lineIndex * 0.2 + techIndex * 0.05 }}
-                        whileHover={{
-                          scale: 1.1,
-                          y: -5,
-                          transition: { duration: 0.2 }
-                        }}
                       >
-                        <div className="relative">
+                        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white">
                           <Image
                             src={tech.iconUrl}
                             alt={tech.name}
                             width={64}
                             height={64}
-                            className="w-16 h-16 transition-all duration-300 group-hover:drop-shadow-lg object-contain"
+                            className="h-7 w-7 object-contain"
                           />
-                          {/* Subtle glow effect on hover */}
-                          <div
-                            className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-xl bg-blue-500"
-                          />
-                        </div>
-                        <span className="text-xs sm:text-sm font-medium text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                          {tech.name}
                         </span>
+                        <span className="whitespace-nowrap text-sm font-medium text-ink">{tech.name}</span>
                       </m.div>
                     ))}
                   </div>

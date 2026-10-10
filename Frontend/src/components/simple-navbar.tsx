@@ -4,8 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
+import { ArrowUpRight, X, Menu, Home, Briefcase, BookOpen, MessageCircle, User, Wrench, Phone, LogIn, UserPlus, Store, Users, type LucideIcon } from "lucide-react"
 import { openBookingModal } from "@/lib/booking"
 
 type MenuItem = {
@@ -67,6 +66,9 @@ export default function SimpleNavbar() {
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
 
+  const isActive = (href: string) =>
+    href === "/" ? isHomePage : pathname.startsWith(href)
+
   return (
     <header>
       {/* Desktop Navbar. Plain elements with no entrance animation: framer-motion
@@ -75,17 +77,9 @@ export default function SimpleNavbar() {
       <div
         className={`hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center transition-[padding] ${isScrolled ? 'py-2' : 'py-4'}`}
       >
-        <div className="flex items-center gap-4 relative">
+        <div className="flex items-center gap-2 relative">
           {/* Navbar Container */}
-          <div
-            className="flex items-center gap-6 px-6 py-3 rounded-full lg:gap-8 lg:px-8"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.4)",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid rgba(128, 128, 128, 0.2)",
-            }}
-          >
+          <div className="glass-blur flex items-center gap-5 rounded-full py-1.5 pl-5 pr-1.5">
             <Link
               href="/"
               onClick={(e) => {
@@ -100,18 +94,21 @@ export default function SimpleNavbar() {
               <Image src="/images/site-logo.png" alt="" width={128} height={72} className="h-8 w-auto" />
             </Link>
 
-            <nav aria-label="Main" className="flex items-center gap-4 lg:gap-6">
+            <nav aria-label="Main" className="flex items-center gap-0.5">
               {menuItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
                   onClick={(e) => {
                     if (item.href === "/" && isHomePage) {
                       e.preventDefault()
                       handleLogoClick()
                     }
                   }}
-                  className="text-black font-medium hover:text-gray-600 transition-colors"
+                  className={`rounded-full px-3.5 py-2 text-sm font-medium text-ink transition-colors ${
+                    isActive(item.href) ? "bg-white shadow-sm" : "hover:bg-white/60"
+                  }`}
                 >
                   {item.name}
                 </Link>
@@ -120,19 +117,11 @@ export default function SimpleNavbar() {
           </div>
 
           {/* User Auth */}
-          <div
-            className="flex items-center gap-1.5 rounded-full p-1"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.4)",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid rgba(128, 128, 128, 0.2)",
-            }}
-          >
+          <div className="glass-blur flex items-center gap-1 rounded-full p-1.5">
             <Link
               href="/portal/login/"
               prefetch={false}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-black font-semibold text-xs sm:text-sm hover:bg-white/50 transition-colors"
+              className="flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-ink transition-colors hover:bg-white/60"
             >
               <LogIn className="w-4 h-4" aria-hidden="true" />
               Login
@@ -140,7 +129,7 @@ export default function SimpleNavbar() {
             <Link
               href="/portal/signup/"
               prefetch={false}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 text-white font-semibold text-xs sm:text-sm hover:bg-slate-800 transition-colors"
+              className="flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-[#25271f]"
             >
               <UserPlus className="w-4 h-4" aria-hidden="true" />
               Sign Up
@@ -148,20 +137,16 @@ export default function SimpleNavbar() {
           </div>
 
           {/* CTA Button */}
-          <div
-            className="px-4 py-2 rounded-full"
-            style={{
-              backgroundColor: "rgba(0, 0, 0, 0.9)",
-              border: "1px solid rgba(128, 128, 128, 0.3)",
-            }}
+          <button
+            type="button"
+            className="btn btn-lime h-[52px] px-6 text-sm"
+            onClick={() => openBookingModal({ requestType: 'meeting' })}
           >
-            <Button
-              className="bg-transparent text-white hover:bg-gray-800 transition-all duration-300 font-semibold text-xs sm:text-sm"
-              onClick={() => openBookingModal({ requestType: 'meeting' })}
-            >
-              Book a Call
-            </Button>
-          </div>
+            Book a Call
+            <span className="btn-dot" aria-hidden="true">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </span>
+          </button>
         </div>
       </div>
 
@@ -177,32 +162,26 @@ export default function SimpleNavbar() {
       <div className="xl:hidden fixed inset-x-0 bottom-0 z-50 max-w-full">
         {isMobileMenuOpen && (
           <div id="mobile-menu" className="absolute bottom-20 left-4 right-4 menu-pop">
-            <div
-              className="max-h-[calc(100dvh-7rem)] overflow-y-auto rounded-2xl shadow-2xl border p-4"
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.92)",
-                backdropFilter: "blur(25px)",
-                WebkitBackdropFilter: "blur(25px)",
-                border: "1px solid rgba(255, 255, 255, 0.3)",
-                boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.15)",
-              }}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <p className="font-semibold text-gray-800">Menu</p>
+            {/* Near-opaque: the menu sits over page text, which must not show
+                through and compete with the links. */}
+            <div className="glass-blur max-h-[calc(100dvh-7rem)] overflow-y-auto rounded-[28px] !bg-white/90 p-4">
+              <div className="flex justify-between items-center mb-3">
+                <p className="pl-2 text-sm font-medium text-ink-mute">Menu</p>
                 <button
                   type="button"
                   onClick={toggleMobileMenu}
                   aria-label="Close menu"
-                  className="p-2 text-gray-800 hover:bg-gray-100 rounded-full transition-colors"
+                  className="rounded-full bg-canvas p-2 text-ink transition-colors hover:bg-canvas-deep"
                 >
                   <X className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
-              <nav aria-label="Mobile" className="space-y-2">
+              <nav aria-label="Mobile" className="space-y-1">
                 {menuItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
+                    aria-current={isActive(item.href) ? "page" : undefined}
                     onClick={(e) => {
                       if (item.href === "/" && isHomePage) {
                         e.preventDefault()
@@ -210,7 +189,9 @@ export default function SimpleNavbar() {
                       }
                       setIsMobileMenuOpen(false)
                     }}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
+                    className={`flex w-full items-center gap-3 rounded-full p-3 text-left text-ink transition-colors ${
+                      isActive(item.href) ? "bg-lime" : "hover:bg-canvas"
+                    }`}
                   >
                     <item.Icon className="w-5 h-5" aria-hidden="true" />
                     <span className="font-medium">{item.name}</span>
@@ -220,7 +201,7 @@ export default function SimpleNavbar() {
                   href="/portal/login/"
                   prefetch={false}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
+                  className="flex w-full items-center gap-3 rounded-full p-3 text-left text-ink transition-colors hover:bg-canvas"
                 >
                   <LogIn className="w-5 h-5" aria-hidden="true" />
                   <span className="font-medium">User Login</span>
@@ -229,7 +210,7 @@ export default function SimpleNavbar() {
                   href="/portal/signup/"
                   prefetch={false}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left text-gray-800"
+                  className="flex w-full items-center gap-3 rounded-full p-3 text-left text-ink transition-colors hover:bg-canvas"
                 >
                   <UserPlus className="w-5 h-5" aria-hidden="true" />
                   <span className="font-medium">User Sign Up</span>
@@ -240,16 +221,7 @@ export default function SimpleNavbar() {
         )}
 
         {/* Bottom Navigation Bar */}
-        <div
-          className="px-4 py-3 mx-4 mb-2 rounded-full"
-          style={{
-            backgroundColor: "rgba(255, 255, 255, 0.2)",
-            backdropFilter: "blur(30px)",
-            WebkitBackdropFilter: "blur(30px)",
-            border: "1px solid rgba(255, 255, 255, 0.3)",
-            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
-          }}
-        >
+        <div className="glass-blur mx-4 mb-2 rounded-full py-2 pl-5 pr-2">
           <div className="flex min-w-0 items-center justify-between gap-2">
             <Link
               href="/"
@@ -271,12 +243,12 @@ export default function SimpleNavbar() {
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
-              className="p-2 rounded-full hover:bg-white/20 transition-[background-color,transform] active:scale-95"
+              className="rounded-full p-2.5 transition-[background-color,transform] hover:bg-white/60 active:scale-95"
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6 text-black" aria-hidden="true" />
+                <X className="w-6 h-6 text-ink" aria-hidden="true" />
               ) : (
-                <Menu className="w-6 h-6 text-black" aria-hidden="true" />
+                <Menu className="w-6 h-6 text-ink" aria-hidden="true" />
               )}
             </button>
 
@@ -284,23 +256,18 @@ export default function SimpleNavbar() {
               <a
                 href="tel:+917348228167"
                 aria-label="Call NextGen Fusion on +91 73482 28167"
-                className="p-2 rounded-full transition-transform active:scale-95"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.3)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  border: "1px solid rgba(255, 255, 255, 0.4)",
-                }}
+                className="rounded-full bg-white/80 p-2.5 transition-transform active:scale-95"
               >
-                <Phone className="w-5 h-5 text-green-700" aria-hidden="true" />
+                <Phone className="w-5 h-5 text-ink" aria-hidden="true" />
               </a>
 
-              <Button
-                className="bg-black text-white hover:bg-gray-800 transition-all duration-300 font-semibold text-xs px-3 py-2 rounded-full"
+              <button
+                type="button"
+                className="btn btn-lime btn-sm"
                 onClick={() => openBookingModal({ requestType: 'meeting' })}
               >
                 Book
-              </Button>
+              </button>
             </div>
           </div>
         </div>

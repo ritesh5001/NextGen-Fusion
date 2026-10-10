@@ -84,12 +84,14 @@ function LogoTile({ slug, width, height, duplicate }: { slug: string; width: num
   const title = titleBySlug.get(slug) ?? slug
   return (
     <li className={`shrink-0 pr-3 sm:pr-4${duplicate ? " logo-marquee-dup" : ""}`} aria-hidden={duplicate || undefined}>
+      {/* Solid white, not glass: most client logos are exported on a white
+          background, which would show as a box on a translucent tile. */}
       <Link
         href={`/work/${slug}/`}
         prefetch={false}
         tabIndex={duplicate ? -1 : undefined}
         aria-label={duplicate ? undefined : `${title} case study`}
-        className="flex h-20 w-40 items-center justify-center rounded-2xl border border-gray-200 bg-white px-4 transition hover:border-gray-300 hover:shadow-md sm:h-24 sm:w-48"
+        className="flex h-20 w-40 items-center justify-center rounded-[24px] bg-white px-4 shadow-[0_18px_36px_-28px_rgba(15,16,13,0.4)] transition hover:-translate-y-0.5 sm:h-24 sm:w-48"
       >
         <Image
           src={`/images/clients/${slug}.webp`}
@@ -113,20 +115,20 @@ function LogoTile({ slug, width, height, duplicate }: { slug: string; width: num
 // globals.css), so this section adds no JavaScript to the homepage.
 export default function SocialProofSection() {
   return (
-    <section aria-labelledby="social-proof-heading" className="border-y border-gray-100 bg-gradient-to-b from-white to-gray-50/70 py-16 sm:py-20">
+    <section aria-labelledby="social-proof-heading" className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#2B35AB]">Trusted by growing brands</p>
-          <h2 id="social-proof-heading" className="mt-3 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="eyebrow">Trusted by growing brands</p>
+          <h2 id="social-proof-heading" className="display mt-5 text-3xl sm:text-4xl lg:text-5xl">
             Websites and stores businesses run on every day
           </h2>
-          <p className="mt-3 text-base text-gray-600 sm:text-lg">
+          <p className="mt-4 text-base text-ink-soft sm:text-lg">
             From D2C fashion labels to B2B marketplaces, in India, the UAE, the UK and Italy.
           </p>
         </div>
       </div>
 
-      <div className="logo-marquee-viewport relative mt-10 overflow-hidden sm:mt-12">
+      <div className="logo-marquee-viewport relative mt-10 overflow-hidden py-4 sm:mt-12">
         <ul className="logo-marquee">
           {logos.map((logo) => (
             <LogoTile key={logo.slug} {...logo} duplicate={false} />
@@ -137,24 +139,24 @@ export default function SocialProofSection() {
         </ul>
       </div>
 
-      <div className="mx-auto mt-12 max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+      <div className="mx-auto mt-10 max-w-7xl px-4 sm:mt-14 sm:px-6 lg:px-8">
         <ul className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {stats.map(({ Icon, value, label, detail }) => (
-            <li key={label} className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2B35AB]/10 text-[#2B35AB] sm:h-11 sm:w-11">
-                <Icon className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <p className="mt-4 bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-3xl font-bold text-transparent sm:text-4xl">
-                {value}
-              </p>
-              <p className="mt-1 text-sm font-semibold text-gray-900 sm:text-base">{label}</p>
-              <p className="mt-1 text-xs text-gray-600 sm:text-sm">{detail}</p>
+            <li key={label} className="glass rounded-[28px] p-5 sm:p-6">
+              <div className="flex items-start justify-between gap-3">
+                <p className="display text-5xl sm:text-6xl">{value}</p>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-lime text-ink sm:h-11 sm:w-11">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+              </div>
+              <p className="mt-6 text-sm font-medium text-ink sm:text-base">{label}</p>
+              <p className="mt-1 text-xs text-ink-mute sm:text-sm">{detail}</p>
             </li>
           ))}
         </ul>
 
-        <div className="mt-10 sm:mt-12">
-          <h3 className="text-center text-sm font-semibold uppercase tracking-[0.18em] text-gray-600">
+        <div className="mt-12 sm:mt-14">
+          <h3 className="text-center text-sm font-medium text-ink-mute">
             What clients run on what we built
           </h3>
           <ul className="mt-5 grid gap-3 sm:gap-4 md:grid-cols-3">
@@ -163,26 +165,28 @@ export default function SocialProofSection() {
                 <Link
                   href={href}
                   prefetch={false}
-                  className="group flex h-full items-start gap-4 rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-[#2B35AB]/40 hover:shadow-md"
+                  className="glass group flex h-full items-start gap-4 rounded-[28px] p-5 transition hover:-translate-y-0.5 hover:bg-white"
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-white">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-lime">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-2xl font-bold text-gray-900">{value}</span>
-                    <span className="mt-1 block text-sm leading-6 text-gray-600">{label}</span>
+                    <span className="display block text-3xl">{value}</span>
+                    <span className="mt-1.5 block text-sm leading-6 text-ink-soft">{label}</span>
                   </span>
-                  <ArrowUpRight className="h-5 w-5 shrink-0 text-gray-400 transition group-hover:text-[#2B35AB]" aria-hidden="true" />
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-canvas text-ink transition group-hover:bg-lime">
+                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                  </span>
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        <ul className="mt-10 grid grid-cols-1 gap-x-6 gap-y-3 rounded-2xl bg-gray-900 px-5 py-6 text-white sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
+        <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-3 rounded-[28px] bg-ink px-6 py-6 text-white sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
           {standards.map(({ Icon, text }) => (
             <li key={text} className="flex items-center gap-3 text-sm">
-              <Icon className="h-5 w-5 shrink-0 text-[#13CBD4]" aria-hidden="true" />
+              <Icon className="h-5 w-5 shrink-0 text-lime" aria-hidden="true" />
               <span>{text}</span>
             </li>
           ))}

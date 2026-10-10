@@ -2,9 +2,9 @@
 
 import { m } from "framer-motion"
 import Image from "next/image"
+import { Check, X } from "lucide-react"
 import Link from "next/link"
 import BadgeSubtitle from "./badge-subtitle"
-import { useMobileIcon } from "@/hooks/use-mobile-icon"
 import { OFFICE_HOURS } from "@/data/offices"
 import { priceTier } from "@/lib/estimator-pricing"
 
@@ -57,7 +57,7 @@ function RowLinks({ links, className }: { links: ComparisonRow["links"]; classNa
           key={link.href}
           href={link.href}
           prefetch={false}
-          className="font-medium text-purple-600 underline-offset-4 hover:underline"
+          className="font-medium text-ink underline decoration-leaf decoration-2 underline-offset-4 hover:decoration-ink"
         >
           {link.label} →
         </Link>
@@ -106,29 +106,6 @@ const textVariants = {
   }
 }
 
-const iconVariants = {
-  hidden: { 
-    opacity: 0, 
-    scale: 0.8,
-    rotate: -10
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      duration: 0.5
-    }
-  },
-  hover: {
-    scale: 1.1,
-    rotate: 5,
-    transition: {
-      duration: 0.3
-    }
-  }
-}
-
 const tableVariants = {
   hidden: { 
     opacity: 0, 
@@ -169,11 +146,9 @@ const rowVariants = {
 const MotionTr = m.tr
 
 export default function ComparisonSection() {
-  const { getIconSrc } = useMobileIcon()
-  
   return (
     <m.section 
-      className="bg-white pt-40 pb-24 px-4 sm:px-6 lg:px-8"
+      className="px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
@@ -186,7 +161,7 @@ export default function ComparisonSection() {
           variants={itemVariants}
         >
           <m.div 
-            className="mb-4 text-left"
+            className="mb-5 text-left"
             variants={textVariants}
           >
             <BadgeSubtitle>Advantages</BadgeSubtitle>
@@ -196,43 +171,15 @@ export default function ComparisonSection() {
               className="text-left"
               variants={textVariants}
             >
-              <m.h2 
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-none"
-                variants={textVariants}
-              >
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <span>Why</span>{" "}
-                  <m.div 
-                    className="relative inline-block"
-                    variants={iconVariants}
-                    whileHover="hover"
-                  >
-                    <Image
-                      src={getIconSrc("/images/Handsake.svg", "/images/handshake.png")}
-                      alt=""
-                      width={56}
-                      height={56}
-                      className="rounded-lg object-cover w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14"
-                    />
-                  </m.div>
-                  <span 
-                    className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent" 
-                    style={{
-                      backgroundImage: 'linear-gradient(90deg, #2B35AB 0%, #8A38F5 46%, #13CBD4 90%)'
-                    }}
-                  >
-                    Partner
-                  </span>
-                </div>
-                {" "}
-                <div>with Us?</div>
+              <m.h2 className="display text-4xl sm:text-5xl lg:text-6xl" variants={textVariants}>
+                Why <span className="mark-lime">Partner</span> with Us?
               </m.h2>
             </m.div>
             <m.div 
               className="flex items-center"
               variants={textVariants}
             >
-              <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+              <p className="text-ink-soft text-base sm:text-lg leading-relaxed">
                 Four claims, each linked to something you can check: how we quote, our timelines, the
                 case studies and support after launch. Check any of them before you call us.
               </p>
@@ -242,7 +189,7 @@ export default function ComparisonSection() {
 
         {/* Desktop Table - Hidden on Mobile */}
         <m.div 
-          className="hidden sm:block overflow-hidden rounded-2xl border border-gray-200"
+          className="glass hidden sm:block overflow-hidden rounded-[32px] p-2"
           variants={tableVariants}
         >
           <table className="w-full">
@@ -254,10 +201,10 @@ export default function ComparisonSection() {
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                <th className="bg-white p-6 text-left font-semibold text-gray-900 border-r border-gray-200">
+                <th className="p-6 text-left text-sm font-medium text-ink-mute">
                   Comparison
                 </th>
-                <th className="bg-white p-6 text-left border-r border-gray-200">
+                <th className="rounded-t-[24px] bg-lime p-6 text-left">
                   <div className="flex items-center gap-3">
                     <m.div
                       whileHover={{ scale: 1.1 }}
@@ -271,10 +218,10 @@ export default function ComparisonSection() {
                         className="w-6 h-6 object-contain"
                       />
                     </m.div>
-                    <span className="font-semibold text-black">NextGen Fusion</span>
+                    <span className="font-medium text-ink">NextGen Fusion</span>
                   </div>
                 </th>
-                <th className="bg-white p-6 text-left font-semibold text-gray-900">Other Agencies</th>
+                <th className="p-6 text-left text-sm font-medium text-ink-mute">Other Agencies</th>
               </MotionTr>
             </thead>
 
@@ -283,7 +230,7 @@ export default function ComparisonSection() {
               {comparisonData.map((item, index) => (
                 <MotionTr 
                   key={item.category} 
-                  className="border-t border-gray-200"
+                  className="border-t border-ink/5"
                   variants={rowVariants}
                   initial="hidden"
                   whileInView="visible"
@@ -291,26 +238,24 @@ export default function ComparisonSection() {
                   transition={{ delay: index * 0.1 }}
                   whileHover="hover"
                 >
-                  <td className="bg-white p-6 font-medium text-gray-900 border-r border-gray-200">{item.category}</td>
-                  <td className="bg-gray-50 p-6 border-r border-gray-200">
+                  <td className="p-6 font-medium text-ink">{item.category}</td>
+                  <td className={`bg-lime/35 p-6 ${index === comparisonData.length - 1 ? "rounded-b-[24px]" : ""}`}>
                     <div className="flex items-start gap-3">
-                      <m.div 
-                        className="w-4 h-4 bg-gray-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
-                        whileHover={{ scale: 1.2 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                      </m.div>
+                      <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-ink text-lime">
+                        <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
+                      </span>
                       <div>
-                        <p className="text-sm text-gray-700">{item.livingTech}</p>
+                        <p className="text-sm leading-relaxed text-ink">{item.livingTech}</p>
                         <RowLinks links={item.links} className="text-sm" />
                       </div>
                     </div>
                   </td>
-                  <td className="bg-white p-6">
+                  <td className="p-6">
                     <div className="flex items-start gap-3">
-                      <div className="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0 mt-1"></div>
-                      <p className="text-sm text-gray-600">{item.others}</p>
+                      <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-canvas-deep text-ink-mute">
+                        <X className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
+                      </span>
+                      <p className="text-sm leading-relaxed text-ink-mute">{item.others}</p>
                     </div>
                   </td>
                 </MotionTr>
@@ -321,7 +266,7 @@ export default function ComparisonSection() {
 
         {/* Mobile Table */}
         <m.div 
-          className="sm:hidden overflow-hidden rounded-2xl border border-gray-200"
+          className="glass sm:hidden overflow-hidden rounded-[28px] p-1.5"
           variants={tableVariants}
         >
           <table className="w-full">
@@ -333,10 +278,10 @@ export default function ComparisonSection() {
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                <th className="bg-white p-4 text-left font-semibold text-gray-900 border-r border-gray-200 text-sm">
+                <th className="p-3 text-left text-xs font-medium text-ink-mute">
                   Comparison
                 </th>
-                <th className="bg-white p-4 text-left border-r border-gray-200">
+                <th className="rounded-t-[20px] bg-lime p-3 text-left">
                   <div className="flex items-center gap-2">
                     <m.div
                       whileHover={{ scale: 1.1 }}
@@ -350,10 +295,10 @@ export default function ComparisonSection() {
                         className="w-5 h-5 object-contain"
                       />
                     </m.div>
-                    <span className="font-semibold text-black text-sm">NextGen Fusion</span>
+                    <span className="font-medium text-ink text-sm">NextGen Fusion</span>
                   </div>
                 </th>
-                <th className="bg-white p-4 text-left font-semibold text-gray-900 text-sm">Other Agencies</th>
+                <th className="p-3 text-left text-xs font-medium text-ink-mute">Other Agencies</th>
               </MotionTr>
             </thead>
 
@@ -362,7 +307,7 @@ export default function ComparisonSection() {
               {comparisonData.map((item, index) => (
                 <MotionTr 
                   key={item.category} 
-                  className="border-t border-gray-200"
+                  className="border-t border-ink/5"
                   variants={rowVariants}
                   initial="hidden"
                   whileInView="visible"
@@ -370,26 +315,24 @@ export default function ComparisonSection() {
                   transition={{ delay: index * 0.1 }}
                   whileHover="hover"
                 >
-                  <td className="bg-white p-4 font-medium text-gray-900 border-r border-gray-200 text-sm">{item.category}</td>
-                  <td className="bg-gray-50 p-4 border-r border-gray-200">
+                  <td className="p-3 align-top font-medium text-ink text-sm">{item.category}</td>
+                  <td className={`bg-lime/35 p-3 align-top ${index === comparisonData.length - 1 ? "rounded-b-[20px]" : ""}`}>
                     <div className="flex items-start gap-2">
-                      <m.div 
-                        className="w-3 h-3 bg-gray-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
-                        whileHover={{ scale: 1.2 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <div className="w-1 h-1 bg-white rounded-full"></div>
-                      </m.div>
+                      <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-ink text-lime">
+                        <Check className="h-2.5 w-2.5" strokeWidth={3} aria-hidden="true" />
+                      </span>
                       <div>
-                        <p className="text-xs text-gray-700">{item.livingTech}</p>
+                        <p className="text-xs leading-relaxed text-ink">{item.livingTech}</p>
                         <RowLinks links={item.links} className="text-xs" />
                       </div>
                     </div>
                   </td>
-                  <td className="bg-white p-4">
+                  <td className="p-3 align-top">
                     <div className="flex items-start gap-2">
-                      <div className="w-3 h-3 bg-gray-300 rounded-full flex-shrink-0 mt-1"></div>
-                      <p className="text-xs text-gray-600">{item.others}</p>
+                      <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-canvas-deep text-ink-mute">
+                        <X className="h-2.5 w-2.5" strokeWidth={3} aria-hidden="true" />
+                      </span>
+                      <p className="text-xs leading-relaxed text-ink-mute">{item.others}</p>
                     </div>
                   </td>
                 </MotionTr>

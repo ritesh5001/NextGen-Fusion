@@ -19,7 +19,7 @@ const DeliveredWall = dynamic(() => import("@/components/delivered-wall"))
 
 export default function HomeClient({ featuredProjects }: { featuredProjects: FeaturedProject[] }) {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-white">
+    <main className="min-h-screen overflow-x-hidden">
       <div id="hero">
         <HeroSection />
       </div>

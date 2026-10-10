@@ -45,6 +45,214 @@
   --animate-grid: grid 15s linear infinite;
 }
 
+/* ────────────────────────────────────────────────────────────────────────
+   Design system: soft grey canvas, frosted glass, pills, one lime accent.
+
+   Everything on the public site is built from the tokens and classes below,
+   so a colour or radius is changed here, not in sixty components.
+
+   Rules of thumb:
+   - Lime is a FILL (buttons, dots, highlights) with ink text on top. It is
+     never text on a light surface: it fails contrast there.
+   - `.glass` is translucent white with no blur. `.glass-blur` adds the real
+     backdrop-filter and is for the few surfaces that sit over a colour wash
+     or over scrolling content (the navbar). Blur is expensive on phones, so
+     it is opt-in rather than the default.
+   - Washes are layered radial gradients, not blurred images: no network
+     request, no `filter: blur()` paint cost.
+   ──────────────────────────────────────────────────────────────────────── */
+@theme {
+  --color-canvas: #ecece9;
+  --color-canvas-deep: #e1e1dc;
+  --color-ink: #0f100d;
+  /* Body copy and captions: 9.9:1 and 4.9:1 on canvas. */
+  --color-ink-soft: #3f423a;
+  --color-ink-mute: #63665e;
+  --color-lime: #dcf54a;
+  --color-lime-bright: #e6fb62;
+  --color-leaf: #2e9f47;
+  --color-blush: #f472a8;
+  --color-lilac: #cdb7f2;
+  --color-tide: #2f9fc4;
+  --color-ember: #f59e3f;
+}
+
+@layer components {
+  .glass {
+    background-color: rgb(255 255 255 / 0.62);
+    border: 1px solid rgb(255 255 255 / 0.8);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.9),
+      0 1px 2px rgb(15 16 13 / 0.04),
+      0 24px 48px -30px rgb(15 16 13 / 0.25);
+  }
+
+  .glass-blur {
+    background-color: rgb(255 255 255 / 0.42);
+    border: 1px solid rgb(255 255 255 / 0.65);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.7),
+      0 24px 48px -30px rgb(15 16 13 / 0.3);
+    -webkit-backdrop-filter: blur(22px) saturate(1.5);
+    backdrop-filter: blur(22px) saturate(1.5);
+  }
+
+  /* Glass on the dark footer and dark panels. */
+  .glass-ink {
+    background-color: rgb(255 255 255 / 0.06);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  /* Display type: Trap at its lightest weight, set tight. */
+  .display {
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+    color: var(--color-ink);
+  }
+
+  /* Replaces the old indigo→cyan gradient text. A lime highlighter behind the
+     key phrase keeps the emphasis while the words stay ink-dark and readable. */
+  .mark-lime {
+    background-color: var(--color-lime);
+    color: var(--color-ink);
+    border-radius: 9999px;
+    padding: 0.04em 0.36em 0.1em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--color-ink-soft);
+    background-color: rgb(255 255 255 / 0.62);
+    border: 1px solid rgb(255 255 255 / 0.8);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9), 0 8px 20px -14px rgb(15 16 13 / 0.3);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    flex: none;
+    border-radius: 9999px;
+    background-color: var(--color-lime);
+    box-shadow: 0 0 0 1px rgb(15 16 13 / 0.18);
+  }
+  .eyebrow-plain::before {
+    content: none;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border-radius: 9999px;
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn-sm {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.875rem;
+  }
+  .btn-lime {
+    background-color: var(--color-lime);
+    color: var(--color-ink);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 14px 28px -16px rgb(120 150 10 / 0.9);
+  }
+  .btn-lime:hover {
+    background-color: var(--color-lime-bright);
+    transform: translateY(-1px);
+  }
+  .btn-ink {
+    background-color: var(--color-ink);
+    color: #fff;
+  }
+  .btn-ink:hover {
+    background-color: #25271f;
+    transform: translateY(-1px);
+  }
+  .btn-glass {
+    color: var(--color-ink);
+    background-color: rgb(255 255 255 / 0.62);
+    border: 1px solid rgb(255 255 255 / 0.8);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9), 0 14px 28px -20px rgb(15 16 13 / 0.35);
+  }
+  .btn-glass:hover {
+    background-color: rgb(255 255 255 / 0.9);
+    transform: translateY(-1px);
+  }
+  /* The round arrow badge inside a button. */
+  .btn-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-right: -0.6rem;
+    border-radius: 9999px;
+    background-color: var(--color-ink);
+    color: var(--color-lime);
+  }
+
+  .wash-green {
+    background:
+      radial-gradient(110% 85% at 0% 0%, #1f9a3f 0%, rgb(31 154 63 / 0) 64%),
+      radial-gradient(70% 55% at 100% 100%, #e6dc55 0%, rgb(230 220 85 / 0) 66%),
+      radial-gradient(70% 60% at 95% 0%, #a9dc45 0%, rgb(169 220 69 / 0) 62%),
+      #5fb94c;
+  }
+  .wash-pink {
+    background:
+      radial-gradient(110% 90% at 8% 100%, #f472a8 0%, rgb(244 114 168 / 0) 60%),
+      radial-gradient(90% 80% at 100% 0%, #cdb7f2 0%, rgb(205 183 242 / 0) 66%),
+      #f3d6e6;
+  }
+  .wash-teal {
+    background:
+      radial-gradient(110% 90% at 0% 0%, #2f9fc4 0%, rgb(47 159 196 / 0) 60%),
+      radial-gradient(95% 80% at 100% 100%, #f59e3f 0%, rgb(245 158 63 / 0) 62%),
+      #b4dde2;
+  }
+  .wash-peach {
+    background: linear-gradient(180deg, #f6c39b 0%, #d6e08c 46%, #4fae52 100%);
+  }
+  /* The same washes at a whisper, for tinting a whole section of canvas.
+     Every blob is centred vertically with a radius under 50%, so it has faded
+     to nothing by the section's top and bottom edges. Centred any higher or
+     lower, the tint stops in a hard horizontal line where the section ends. */
+  .ambient-lime {
+    background-image:
+      radial-gradient(46% 48% at 92% 46%, rgb(220 245 74 / 0.4) 0%, rgb(220 245 74 / 0) 100%),
+      radial-gradient(38% 44% at 2% 56%, rgb(47 174 72 / 0.13) 0%, rgb(47 174 72 / 0) 100%);
+  }
+  .ambient-pink {
+    background-image:
+      radial-gradient(44% 46% at 4% 44%, rgb(244 114 168 / 0.2) 0%, rgb(244 114 168 / 0) 100%),
+      radial-gradient(42% 46% at 98% 58%, rgb(205 183 242 / 0.36) 0%, rgb(205 183 242 / 0) 100%);
+  }
+  .ambient-teal {
+    background-image:
+      radial-gradient(44% 46% at 98% 44%, rgb(47 159 196 / 0.2) 0%, rgb(47 159 196 / 0) 100%),
+      radial-gradient(40% 44% at 2% 58%, rgb(245 158 63 / 0.2) 0%, rgb(245 158 63 / 0) 100%);
+  }
+}
+
 @keyframes grid {
   0% {
     transform: translateY(-50%);
@@ -228,6 +436,11 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* The body shows through under the mobile bottom bar and on overscroll, so
+     it takes the canvas colour wherever the public site is mounted. */
+  body:has(.public-site) {
+    background-color: var(--color-canvas);
   }
 }
 

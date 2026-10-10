@@ -19,7 +19,9 @@ export default function LayoutChrome({ children }: { children: React.ReactNode }
   if (isAdmin || isPortal) return <>{children}</>
 
   return (
-    <>
+    // `public-site` scopes the canvas background to the marketing site; the
+    // admin and portal keep their own white shell (see globals.css).
+    <div className="public-site bg-canvas text-ink">
       <IntegratedNavbar />
       {children}
       <BookingModal />
@@ -29,6 +31,6 @@ export default function LayoutChrome({ children }: { children: React.ReactNode }
         message="Hi! I came across NextGen Fusion and I'm interested in discussing a project. Could we schedule a quick call?"
       />
       <Footer />
-    </>
+    </div>
   )
 }

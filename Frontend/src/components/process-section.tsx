@@ -34,49 +34,47 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.55 } },
 }
 
+// One wash per step, so the three cards read as a sequence at a glance.
+const STEP_WASH = ["wash-green", "wash-pink", "wash-teal"]
+
 export default function ProcessSection() {
   return (
-    <section className="bg-white py-28 px-4 sm:px-6 lg:px-8">
+    <section className="px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <m.div
-          className="mb-14 text-center"
+          className="mb-12 text-center"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={container}
         >
-          <m.div variants={item} className="mb-4">
+          <m.div variants={item} className="mb-5">
             <BadgeSubtitle>How we work</BadgeSubtitle>
           </m.div>
-          <m.h2
-            variants={item}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
-          >
+          <m.h2 variants={item} className="display text-4xl sm:text-5xl lg:text-6xl">
             From idea to launch in{" "}
-            <span className="bg-gradient-to-r from-[#2B35AB] via-[#8A38F5] to-[#13CBD4] bg-clip-text text-transparent">
-              three simple steps
-            </span>
+            <span className="mark-lime whitespace-nowrap">three simple steps</span>
           </m.h2>
         </m.div>
 
         <m.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
           variants={container}
         >
-          {steps.map((step) => (
-            <m.div
-              key={step.number}
-              variants={item}
-              className="relative rounded-2xl border border-gray-100 bg-white p-8 shadow-sm"
-            >
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#2B35AB] to-[#8A38F5] text-lg font-bold text-white">
-                {step.number}
+          {steps.map((step, index) => (
+            <m.div key={step.number} variants={item} className="glass rounded-[32px] p-3">
+              <div className={`${STEP_WASH[index % STEP_WASH.length]} flex h-36 items-end rounded-[24px] p-5`}>
+                <span className="glass-blur flex h-14 w-14 items-center justify-center rounded-full text-2xl font-medium text-ink">
+                  {step.number}
+                </span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{step.description}</p>
+              <div className="px-4 pb-5 pt-6">
+                <h3 className="text-2xl font-medium tracking-tight text-ink mb-3">{step.title}</h3>
+                <p className="text-ink-soft leading-relaxed">{step.description}</p>
+              </div>
             </m.div>
           ))}
         </m.div>
