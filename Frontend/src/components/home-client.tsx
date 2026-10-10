@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
 import HeroSection from "@/components/hero-section"
 import SocialProofSection from "@/components/social-proof-section"
-import type { FeaturedProject } from "@/components/work-section"
+import type { CaseStudySummary, FeaturedProject } from "@/components/work-section"
 
 // A server component: it only arranges sections, so the social-proof strip
 // and the case-study data stay on the server. Below-the-fold sections are code-split so their JS (and framer-motion usage)
@@ -17,7 +17,13 @@ const ContactSection = dynamic(() => import("@/components/contact-section"))
 const WorkSection = dynamic(() => import("@/components/work-section"))
 const VelocityMarquee = dynamic(() => import("@/components/motion/velocity-marquee").then((mod) => mod.VelocityMarquee))
 
-export default function HomeClient({ featuredProjects }: { featuredProjects: FeaturedProject[] }) {
+export default function HomeClient({
+  featuredProjects,
+  caseStudySummaries,
+}: {
+  featuredProjects: FeaturedProject[]
+  caseStudySummaries: Record<string, CaseStudySummary>
+}) {
   return (
     <main className="min-h-screen overflow-x-hidden">
       <div id="hero">
@@ -27,7 +33,7 @@ export default function HomeClient({ featuredProjects }: { featuredProjects: Fea
       {/* No defer-render here: content-visibility contains paint, which would
           trap the pinned gallery's position: fixed inside this box. */}
       <div id="work">
-        <WorkSection featured={featuredProjects} />
+        <WorkSection featured={featuredProjects} caseStudySummaries={caseStudySummaries} />
       </div>
       <VelocityMarquee words={["Websites", "Online stores", "Apps", "AI automation", "SEO"]} />
       <div className="defer-render">

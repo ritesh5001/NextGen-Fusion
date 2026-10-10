@@ -265,3 +265,6 @@ export const deliveredProjects: DeliveredProject[] = (rawUrls as string[])
   // Order follows delivered-urls.json, so the homepage teaser shows the first N there.
   
   .filter((project) => project.hasImage && !CLOSED_HOSTS.has(project.host))
+
+/** The delivered sites the homepage Projects section shows, in delivered-urls.json order. */
+export const homepageDelivered = deliveredProjects.slice(0, 8)

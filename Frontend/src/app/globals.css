@@ -926,3 +926,276 @@ img[src$=".svg"] {
   color: transparent;
   -webkit-text-stroke: 1.5px rgb(42 75 245 / 0.45);
 }
+
+/* ProjectShowcase (motion/project-showcase.tsx). Phones and reduced motion:
+   a swipeable row of cards. Desktop with motion: a pinned stage, driven by
+   GSAP under the same media query, so server HTML already has the right layout. */
+.showcase {
+  border-radius: 36px;
+  overflow: hidden;
+  background: var(--color-ink);
+  color: #fff;
+}
+.showcase-pin {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+}
+.showcase-side {
+  display: contents;
+}
+.showcase-count,
+.showcase-index,
+.showcase-progress,
+.showcase-screens {
+  display: none;
+}
+.showcase-stage {
+  order: 1;
+}
+.showcase-footer {
+  order: 2;
+}
+.showcase-cards {
+  display: flex;
+  gap: 1rem;
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.showcase-cards::-webkit-scrollbar {
+  display: none;
+}
+.showcase-card {
+  flex: 0 0 min(85vw, 420px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.75rem 0.75rem 1.25rem;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 24px;
+  background: rgb(255 255 255 / 0.04);
+}
+.showcase-card > .min-w-0,
+.showcase-result {
+  padding-inline: 0.5rem;
+}
+.showcase-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #151936;
+}
+.showcase-result {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.showcase-metric {
+  display: block;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(90deg, #fff, var(--color-brand-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.showcase-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.showcase-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+.showcase-links a:hover,
+.showcase-links a:focus-visible {
+  border-color: var(--color-brand-light);
+  background: rgb(255 255 255 / 0.08);
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .showcase-count {
+    display: block;
+  }
+  .showcase-pin {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.6fr);
+    gap: clamp(24px, 3vw, 48px);
+    height: 100svh;
+    min-height: 640px;
+    /* Extra room at the bottom keeps the links clear of the floating WhatsApp and AI buttons. */
+    padding: clamp(28px, 4vh, 48px) clamp(20px, 3vw, 48px) 96px;
+  }
+  .showcase-side {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .showcase-index {
+    display: grid;
+    margin-top: auto;
+    padding: 0;
+    list-style: none;
+  }
+  .showcase-index li {
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .showcase-index li:last-child {
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .showcase-index-row {
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    align-items: baseline;
+    gap: 10px;
+    width: 100%;
+    padding: 7px 0;
+    text-align: left;
+    color: rgb(255 255 255 / 0.45);
+    transition: color 0.3s;
+  }
+  .showcase-index-row:hover,
+  .showcase-index-row:focus-visible,
+  .showcase-index-row.is-active {
+    color: #fff;
+  }
+  .showcase-index-row.is-active > span:first-child {
+    color: var(--color-brand-light);
+  }
+  .showcase-index-title {
+    font-size: clamp(15px, 1.25vw, 19px);
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .showcase-index-row.is-active .showcase-index-title {
+    transform: translateX(8px);
+  }
+  .showcase-progress {
+    display: block;
+    height: 2px;
+    margin-top: 1rem;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgb(255 255 255 / 0.12);
+  }
+  .showcase-progress span {
+    display: block;
+    height: 100%;
+    transform-origin: left;
+    background: linear-gradient(90deg, var(--color-brand), var(--color-violet));
+    transition: transform 0.4s ease;
+  }
+  .showcase-footer {
+    margin-top: 1.25rem;
+  }
+  .showcase-stage {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 1.25rem;
+    min-width: 0;
+  }
+  .showcase-screens {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 20px;
+    background: #151936;
+  }
+  .showcase-screen {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(100% 0 0 0);
+    will-change: clip-path;
+  }
+  .showcase-screen:first-child {
+    clip-path: inset(0);
+  }
+  .showcase-screen img {
+    top: 34px !important;
+    height: calc(100% - 34px) !important;
+  }
+  .showcase-bar {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding-inline: 14px;
+    background: #0b0d1e;
+    font: 12px var(--font-mono);
+    color: rgb(255 255 255 / 0.75);
+  }
+  .showcase-bar i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.18);
+  }
+  .showcase-bar span {
+    margin-left: 10px;
+  }
+  .showcase-cards {
+    display: grid;
+    min-height: 120px;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  .showcase-card {
+    grid-area: 1 / 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.5rem 1.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition: opacity 0.35s, transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0.35s;
+  }
+  .showcase-card.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .showcase-thumb {
+    display: none;
+  }
+  .showcase-card > .min-w-0,
+  .showcase-result {
+    padding: 0;
+  }
+  .showcase-result {
+    align-items: flex-end;
+    text-align: right;
+  }
+  .showcase-metric {
+    font-size: clamp(30px, 3.4vw, 54px);
+  }
+  .showcase-links {
+    justify-content: flex-end;
+  }
+}

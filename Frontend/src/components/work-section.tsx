@@ -1,42 +1,15 @@
 "use client";
 
-import { m } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { StaticProject } from "@/lib/static-projects";
-import { useNearViewport } from "@/hooks/use-near-viewport";
-import { deliveredProjects } from "@/lib/delivered-projects";
-import { DeliveredCard } from "@/components/delivered-wall";
-import { HorizontalGallery } from "@/components/motion/horizontal-gallery";
-
-/** Cover image mounted only when the card nears the viewport (see useNearViewport). */
-function DeferredCover({ src, alt }: { src: string; alt: string }) {
-  const [ref, near] = useNearViewport<HTMLDivElement>();
-  return (
-    <div ref={ref} className="absolute inset-0">
-      {near && (
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-          sizes="(max-width: 1024px) 100vw, 50vw"
-        />
-      )}
-    </div>
-  );
-}
-
-const container = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55 } },
-};
+import {
+  CATEGORY_LABELS,
+  homepageDelivered,
+  isSiteOffline,
+  type DeliveredProject,
+} from "@/lib/delivered-projects";
+import { ProjectShowcase, type ShowcaseItem } from "@/components/motion/project-showcase";
 
 /** The fields this section renders; passed from the server so the full case
  *  study data never ships to the browser. */
@@ -45,117 +18,91 @@ export type FeaturedProject = Pick<
   "slug" | "title" | "category" | "coverImage" | "domain" | "results" | "shortDescription" | "tags"
 >;
 
-// The eight delivered sites the homepage has always shown (DeliveredWall limit).
-const delivered = deliveredProjects.slice(0, 8);
+/** Summary of a case study that sits behind one of the homepage's delivered sites. */
+export type CaseStudySummary = {
+  category: string;
+  shortDescription: string;
+  result: { metric: string; label: string } | null;
+  tags: string[];
+};
 
-export default function WorkSection({ featured }: { featured: FeaturedProject[] }) {
+const firstPart = (category: string) => category.split(" / ")[0];
+
+function fromFeatured(project: FeaturedProject): ShowcaseItem {
+  const offline = isSiteOffline(project.domain);
+  return {
+    key: project.slug,
+    title: project.title,
+    category: firstPart(project.category),
+    image: project.coverImage,
+    host: project.domain,
+    description: project.shortDescription,
+    result: project.results?.[0],
+    tags: project.tags.slice(0, 3),
+    caseStudyHref: `/work/${project.slug}/`,
+    liveUrl: offline ? undefined : `https://${project.domain}`,
+  };
+}
+
+function fromDelivered(project: DeliveredProject, summary?: CaseStudySummary): ShowcaseItem {
+  const label =
+    project.subcategory && project.subcategory !== "Other"
+      ? project.subcategory
+      : project.category === "custom"
+        ? "Web app"
+        : CATEGORY_LABELS[project.category];
+  return {
+    key: project.slug,
+    title: project.name,
+    category: summary ? firstPart(summary.category) : label,
+    image: project.image,
+    host: project.host,
+    description: summary?.shortDescription,
+    result: summary?.result ?? undefined,
+    tags: summary?.tags ?? [],
+    caseStudyHref: project.caseStudySlug ? `/work/${project.caseStudySlug}/` : undefined,
+    liveUrl: project.url,
+  };
+}
+
+export default function WorkSection({
+  featured,
+  caseStudySummaries,
+}: {
+  featured: FeaturedProject[];
+  caseStudySummaries: Record<string, CaseStudySummary>;
+}) {
+  const featuredSlugs = new Set(featured.map((p) => p.slug));
+  const items: ShowcaseItem[] = [
+    ...featured.map(fromFeatured),
+    ...homepageDelivered
+      .filter((p) => !p.caseStudySlug || !featuredSlugs.has(p.caseStudySlug))
+      .map((p) => fromDelivered(p, p.caseStudySlug ? caseStudySummaries[p.caseStudySlug] : undefined)),
+  ];
+  // Projects whose live site is down go last, so the section opens on work a visitor can open.
+  items.sort((a, b) => Number(!a.liveUrl) - Number(!b.liveUrl));
 
   return (
-    <section className="py-20 sm:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <m.div
-          className="mb-12"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          variants={container}
-        >
-          <m.div variants={item} className="mb-5">
-            <span className="eyebrow">Projects delivered</span>
-          </m.div>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5">
-            <m.h2 variants={item} className="display text-4xl sm:text-5xl lg:text-6xl">
-              Projects that <span className="text-gradient whitespace-nowrap">deliver results</span>
-            </m.h2>
-            <m.div variants={item}>
-              <Link href="/work/" prefetch={false} className="btn btn-glass btn-sm group">
-                View all projects
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </m.div>
-          </div>
-        </m.div>
-
-      </div>
-
-      {/* Featured case studies, then the delivered sites, in one row: pinned
-          and scroll-driven on desktop, swipeable on phones. The eight wall
-          cards and the "See all" link are the ones the homepage always had. */}
-      <HorizontalGallery className="mt-2">
-        {featured.map((project) => (
-          <div key={project.slug} data-gallery-item className="w-[min(84vw,600px)] shrink-0 lg:w-[620px]">
-            <Link
-              href={`/work/${project.slug}/`}
-              prefetch={false}
-              data-cursor="View"
-              className="glass group flex h-full flex-col rounded-[36px] p-3 transition hover:bg-white"
-            >
-              {/* Image */}
-              <div data-vt-image className="relative overflow-hidden rounded-[26px] bg-canvas-deep aspect-[16/10]">
-                <DeferredCover
-                  src={project.coverImage}
-                  alt={`${project.title} — ${project.category} project by NextGen Fusion`}
-                />
-                {/* Badges */}
-                <div className="absolute top-4 left-4 flex gap-2">
-                  <span className="rounded-full bg-brand px-3 py-1 text-xs font-medium text-white">
-                    Featured
-                  </span>
-                  <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-ink">
-                    {project.category.split(" / ")[0]}
-                  </span>
-                </div>
-                {/* Arrow */}
-                <div className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-brand text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <ArrowRight className="w-5 h-5" />
-                </div>
-              </div>
-
-              {/* Meta */}
-              <div className="flex flex-1 flex-col px-3 pb-3 pt-6 sm:px-4">
-                <p className="text-xs text-ink-mute mb-2">{project.domain}</p>
-                {project.results?.[0] && (
-                  <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-ink">
-                    <span className="h-2 w-2 rounded-full bg-brand" aria-hidden="true" />
-                    {project.results[0].metric} {project.results[0].label}
-                  </p>
-                )}
-                <h3 className="text-2xl font-medium tracking-tight text-ink mb-2">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-ink-soft leading-relaxed line-clamp-2">
-                  {project.shortDescription}
-                </p>
-                <div className="flex flex-wrap gap-1.5 mt-4">
-                  {project.tags.slice(0, 3).map((tag) => (
-                    <span key={tag} className="rounded-full bg-canvas px-3 py-1 text-xs text-ink-soft">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink">
-                  Read More
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </div>
-            </Link>
-          </div>
-        ))}
-
-        {delivered.map((project) => (
-          <div key={project.slug} data-gallery-item data-cursor="View" className="w-[min(70vw,300px)] shrink-0 self-center">
-            <DeliveredCard project={project} />
-          </div>
-        ))}
-
-        <div data-gallery-item className="flex w-[min(70vw,300px)] shrink-0 items-center justify-center">
-          <Link href="/work/" prefetch={false} className="btn btn-ink">
-            See all projects delivered
+    <section className="px-3 py-16 sm:py-20 lg:px-4" aria-labelledby="work-heading">
+      <ProjectShowcase
+        items={items}
+        heading={
+          <>
+            <h2 id="work-heading" className="display mt-3 text-4xl text-white sm:text-5xl">
+              Projects that <span className="text-gradient">deliver results</span>
+            </h2>
+            <p className="mt-4 max-w-[36ch] text-[15px] leading-relaxed text-white/60">
+              Marketplaces, SaaS and online stores for clients in India, the UAE, the UK and Italy.
+            </p>
+          </>
+        }
+        footer={
+          <Link href="/work/" prefetch={false} className="btn btn-sm bg-white text-ink hover:bg-white/90">
+            See all projects
             <ArrowUpRight className="h-4 w-4" />
           </Link>
-        </div>
-      </HorizontalGallery>
+        }
+      />
     </section>
   );
 }

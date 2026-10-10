@@ -4,6 +4,8 @@ import { JsonLd } from "@/components/json-ld"
 import { homeFaqs } from "@/data/home-faqs"
 import { officeSchemas } from "@/lib/office-schema"
 import { staticProjects } from "@/lib/static-projects"
+import { homepageDelivered } from "@/lib/delivered-projects"
+import type { CaseStudySummary } from "@/components/work-section"
 import { DEFAULT_OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, SITE_TAGLINE, siteUrl } from "@/lib/seo"
 
 
@@ -74,11 +76,23 @@ const featuredProjects = staticProjects
     slug, title, category, coverImage, domain, results, shortDescription, tags,
   }))
 
+// Case studies behind the delivered sites the Projects section shows, so those
+// cards carry a description and a result without shipping every write-up.
+const homepageCaseStudySlugs = new Set(homepageDelivered.map((p) => p.caseStudySlug).filter(Boolean))
+const caseStudySummaries: Record<string, CaseStudySummary> = Object.fromEntries(
+  staticProjects
+    .filter((p) => !p.featured && homepageCaseStudySlugs.has(p.slug))
+    .map((p) => [
+      p.slug,
+      { category: p.category, shortDescription: p.shortDescription, result: p.results[0] ?? null, tags: p.tags.slice(0, 3) },
+    ]),
+)
+
 export default function Home() {
   return (
     <>
       <JsonLd data={homeSchema} />
-      <HomeClient featuredProjects={featuredProjects} />
+      <HomeClient featuredProjects={featuredProjects} caseStudySummaries={caseStudySummaries} />
     </>
   )
 }
